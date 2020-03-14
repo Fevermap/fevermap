@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fever Map</title>
+  <style type="text/css">
+  html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    color: #fff;
+    background-color: #eee;
+    font-family: Roboto,Arial,sans-serif;
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cover {
+    width: 510px;
+    vertical-align: middle;
+    /* height: 220px; */
+    margin: -110px 0 0 -260px;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    background-color: #222d; /* d = transparency */
+    border-radius: 8px;
+    padding: 0 20px
+    font-size: 18px;
+    line-height: 1.4
+  }
+
+  h1 {
+    font-weight: 500;
+    line-height: 1.1;
+    font-size: 32px;
+  }
+  
+  p {
+    padding: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+  
+  form {
+    margin: 12px;
+  }
+  </style>
+</head>
+
+<body>
+
+  <div class="cover">
+    <h1>The Fever Map</h1>
+    <p>Current methods of tracking the spread of the Corona virus do not yield a complete picture. It is far to slow and cumbersome to test everybody, and there isn't enough tests anyway.</p>
+    <p>The Fever Map is an effort to fix this by having ordinary people around the world self-report their fever. Using biological population methods we can estimate the prevalence of COVID-19 infections in real-time and provide authorities with data that helps them fight the pandemic.</p>
+    <p>To participate, just sign up and use 1 minute once a day on the app.</p>
+    
+    <div id="phplistsubscriberesult"></div>
+      <form action="https://fevermap.hosted.phplist.com/lists/?p=subscribe&id=1" method="post" id="phplistsubscribeform">
+      <input type="text" name="email" value="" id="emailaddress" />
+      <button type="submit" id="phplistsubscribe">Sign up</button>
+    </form>
+
+    <p>We are currently working on creating the app and the system behind it. Sign up below to be notified when you can start participating. We need a lot of users!</p>
+
+  </div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/phplist/phplist-subscribe-0.2.min.js"></script>
+<script type="text/javascript">
+var pleaseEnter = "email@example.com";
+var thanksForSubscribing = '<div class="subscribed">Thanks for signing up! We will announce when we are launching.</div>'; 
+</script>
+
+</body>
+</html>
+
