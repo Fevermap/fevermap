@@ -5,6 +5,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fever Map</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-160636162-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-160636162-1');
+  </script>
+
   <style type="text/css">
   html {
     height: 100%;
@@ -43,7 +54,7 @@
     line-height: 1.1;
     font-size: 32px;
   }
-  
+
   p {
     padding: 10px;
   }
@@ -52,7 +63,7 @@
     text-decoration: none;
     color: #fff;
   }
-  
+
   form {
     margin: 12px;
   }
@@ -66,7 +77,7 @@
     <p>Current methods of tracking the spread of the Corona virus do not yield a complete picture. It is far to slow and cumbersome to test everybody, and there isn't enough tests anyway.</p>
     <p>The Fever Map is an effort to fix this by having ordinary people around the world self-report their fever. Using biological population methods we can estimate the prevalence of COVID-19 infections in real-time and provide authorities with data that helps them fight the pandemic.</p>
     <p>To participate, just sign up and use 1 minute once a day on the app.</p>
-    
+
     <div id="phplistsubscriberesult"></div>
       <form action="https://fevermap.hosted.phplist.com/lists/?p=subscribe&id=1" method="post" id="phplistsubscribeform">
       <input type="text" name="email" value="" id="emailaddress" />
@@ -82,9 +93,8 @@
 <script type="text/javascript" src="https://s3.amazonaws.com/phplist/phplist-subscribe-0.2.min.js"></script>
 <script type="text/javascript">
 var pleaseEnter = "email@example.com";
-var thanksForSubscribing = '<div class="subscribed">Thanks for signing up! We will announce when we are launching.</div>'; 
+var thanksForSubscribing = '<div class="subscribed">Thanks for signing up! We will announce when we are launching.</div>';
 </script>
 
 </body>
 </html>
-
