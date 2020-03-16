@@ -6,7 +6,6 @@ class LanguageController extends LitElement {
         super();
         this.setLang();
     }
-    firstUpdated(_changedProperties) {}
 
     setLang() {
         let setLangInStorage = localStorage.getItem('USER_SET_LANG');

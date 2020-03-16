@@ -31,6 +31,9 @@ class FevermapNavigation extends LitElement {
             navigationDiv = navigationDiv.parentNode;
         }
         let targetView = navigationDiv.dataset.navigationView;
+        if (targetView === this.currentView) {
+            return;
+        }
         let navigationOrder = navigationDiv.dataset.navigationOrder;
         this.transitionToNewView(targetView, navigationOrder);
         this.currentView = targetView;
@@ -73,10 +76,12 @@ class FevermapNavigation extends LitElement {
 
     handleSlideIn(newView, transitionClass) {
         this.rootElem.prepend(newView);
+        newView.style.display = 'none';
         // Give it time to hit the DOM
         setTimeout(() => {
             let newViewWrapper = newView.querySelector('.view-wrapper');
             newViewWrapper.classList.add(transitionClass);
+            newView.style.display = 'block';
             this.addSlideInClassRemoveListener(newViewWrapper, transitionClass);
         }, 0);
     }

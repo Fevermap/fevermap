@@ -5,10 +5,13 @@ import { MDCCheckbox } from '@material/checkbox/component';
 import { MDCTextField } from '@material/textfield/component';
 import maleIcon from 'src/assets/images/male.svg';
 import femaleIcon from 'src/assets/images/female.svg';
+import { MDCRipple } from '@material/ripple/component';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
         return {
+            latestEntry: { type: Object },
+
             hasFever: { type: Boolean },
             feverAmount: { type: Number },
             feverAmountNowKnown: { type: Boolean },
@@ -22,10 +25,13 @@ class FevermapDataEntry extends LitElement {
 
     constructor() {
         super();
+        let latestEntry = JSON.parse(localStorage.getItem('LATEST_ENTRY'));
         this.hasFever = false;
         this.feverAmount = 37;
         this.feverAmountNotKnown = false;
-        this.gender = 'male';
+        this.gender = latestEntry ? latestEntry.gender : 'male';
+        this.location = latestEntry ? latestEntry.location : null;
+        this.latestEntry = latestEntry ? latestEntry : null;
     }
 
     firstUpdated(_changedProperties) {
@@ -34,6 +40,7 @@ class FevermapDataEntry extends LitElement {
 
     initializeComponents() {
         const textField = new MDCTextField(this.querySelector('.mdc-text-field'));
+        const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'));
     }
 
     handleFeverButton() {
@@ -56,7 +63,19 @@ class FevermapDataEntry extends LitElement {
         }
     }
 
-    initializeSlider() {}
+    handleSubmit() {
+        let feverData = {};
+        feverData.hasFever = this.hasFever;
+        feverData.feverAmount = this.hasFever ? this.feverAmount : null;
+        feverData.feverAmountNotKnown = this.feverAmountNotKnown;
+        feverData.birthYear = this.querySelector('#birth-year').value;
+        feverData.gender = this.gender;
+        feverData.location = '';
+
+        console.table(feverData);
+
+        localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
+    }
 
     render() {
         return html`
@@ -66,6 +85,7 @@ class FevermapDataEntry extends LitElement {
 
                     <div class="entry-fields">
                         ${this.getFeverMeter()} ${this.getYearOfBirthInput()} ${this.getGenderInput()}
+                        ${this.getGeoLocationInput()} ${this.getSubmitButton()}
                     </div>
                 </div>
             </div>
@@ -151,7 +171,13 @@ class FevermapDataEntry extends LitElement {
                 <p>Birth year</p>
                 <label class="mdc-text-field">
                     <div class="mdc-text-field__ripple"></div>
-                    <input class="mdc-text-field__input" type="text" aria-labelledby="year-of-birth" />
+                    <input
+                        id="birth-year"
+                        class="mdc-text-field__input"
+                        type="text"
+                        aria-labelledby="year-of-birth"
+                        value="${this.latestEntry ? this.latestEntry.birthYear : ''}"
+                    />
                     <span class="mdc-floating-label" id="year-of-birth">Year of birth (years 1900-2020)</span>
                     <div class="mdc-line-ripple"></div>
                 </label>
@@ -182,6 +208,25 @@ class FevermapDataEntry extends LitElement {
                         <img src="${femaleIcon}" />
                         <p>Female</p>
                     </div>
+                </div>
+            </div>
+        `;
+    }
+
+    getGeoLocationInput() {
+        return html``;
+    }
+
+    getSubmitButton() {
+        return html`
+            <div class="entry-field">
+                <div class="submit-button">
+                    <button class="mdc-button mdc-button--outlined" @click="${this.handleSubmit}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">send</i>
+                        <span class="mdc-button__label">Submit</span>
+                    </button>
                 </div>
             </div>
         `;

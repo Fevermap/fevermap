@@ -59,6 +59,7 @@ fevermap-landing, fevermap-stats, fevermap-data-entry {
   top: 0.5rem;
   right: 0.5rem;
   display: flex;
+  z-index: 100;
 }
 
 .language-switcher > p {
