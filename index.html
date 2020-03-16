@@ -42,6 +42,9 @@
 
   .overlay {
     background-image: url('website-background.jpg');
+    position: absolute;
+    top: 0;
+    left: 0;
 
     /* Ensure overlay fills whole screen */
     width: 100%;
@@ -57,16 +60,20 @@
     -webkit-filter: blur(8px);
   }
 
-  .cover {
-    /* Position box in the middle of screen area */
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  .cover-wrapper {
+    /* Position content in the middle of screen area */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    width: 100%;
+    height: 100%;
+  }
+
+  .cover {
     /* Don't get too wide or too narrow on very big or small screens */
     max-width: 550px;
-    min-width: 330px;
+    height: fit-content;
 
     z-index: 2;
     background-color: #222d; /* d = transparency */
@@ -99,29 +106,37 @@
     font-size: 18px;
     line-height: 1.4
   }
+
+  @media only screen and (max-width: 400px) {
+    .cover-wrapper {
+      align-items: unset;
+    }
+  }
   </style>
 </head>
 
 <body>
   <div class="overlay"></div>
 
-  <div class="cover">
-    <h1>The Fever Map</h1>
+  <div class="cover-wrapper">
+    <div class="cover">
+      <h1>The Fever Map</h1>
 
-    <p>Current methods of tracking the spread of the Corona virus do not yield a complete picture. It is far to slow and cumbersome to test everybody, and there isn't enough tests anyway.</p>
+      <p>Current methods of tracking the spread of the Corona virus do not yield a complete picture. It is far to slow and cumbersome to test everybody, and there isn't enough tests anyway.</p>
 
-    <p>The Fever Map is an effort to fix this by having ordinary people around the world self-report their fever. Using biological population methods we can estimate the prevalence of COVID-19 infections in real-time and provide authorities with data that helps them fight the pandemic.</p>
+      <p>The Fever Map is an effort to fix this by having ordinary people around the world self-report their fever. Using biological population methods we can estimate the prevalence of COVID-19 infections in real-time and provide authorities with data that helps them fight the pandemic.</p>
 
-    <p>To participate, just sign up and use 1 minute once a day on the app.</p>
+      <p>To participate, just sign up and use 1 minute once a day on the app.</p>
 
-    <div id="phplistsubscriberesult"></div>
-      <form action="https://fevermap.hosted.phplist.com/lists/?p=subscribe&id=1" method="post" id="phplistsubscribeform">
-      <input type="text" name="email" value="" id="emailaddress" />
-      <button type="submit" id="phplistsubscribe">Sign up</button>
-    </form>
+      <div id="phplistsubscriberesult"></div>
+        <form action="https://fevermap.hosted.phplist.com/lists/?p=subscribe&id=1" method="post" id="phplistsubscribeform">
+        <input type="text" name="email" value="" id="emailaddress" />
+        <button type="submit" id="phplistsubscribe">Sign up</button>
+      </form>
 
-    <p><em>We are currently working on creating the app and the system behind it. Sign up to be notified when you can start participating. We need a lot of users!</em></p>
+      <p><em>We are currently working on creating the app and the system behind it. Sign up to be notified when you can start participating. We need a lot of users!</em></p>
 
+    </div>
   </div>
 
 
