@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fever Map</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-160636162-1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-160636162-1');
+  </script>
+
+  <style type="text/css">
+  /* Ensure are fills entire screen */
+  html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    color: #fff;
+    background-color: #eee;
+    font-family: Roboto,Arial,sans-serif;
+    text-align: center;
+    font-size: 18px;
+    line-height: 1.4;
+
+    /* Ensure are fills entire screen */
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .overlay {
+    background-image: url('website-background.jpg');
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    /* Ensure overlay fills whole screen */
+    width: 100%;
+    height: 100%;
+
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    /* Add the blur effect */
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  }
+
+  .cover-wrapper {
+    /* Position content in the middle of screen area */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+  }
+
+  .cover {
+    /* Don't get too wide or too narrow on very big or small screens */
+    max-width: 550px;
+    height: fit-content;
+
+    z-index: 2;
+    background-color: #222d; /* d = transparency */
+    border-radius: 8px;
+    padding: 0 20px
+  }
+
+  h1 {
+    font-weight: 500;
+    line-height: 1.1;
+    font-size: 32px;
+  }
+
+  p {
+    padding: 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  form {
+    margin: 12px;
+  }
+
+  /* Make call-to-action elements stand out */
+  input, button {
+    padding: 6px;
+    font-size: 18px;
+    line-height: 1.4
+  }
+
+  @media only screen and (max-width: 400px) {
+    .cover-wrapper {
+      align-items: unset;
+    }
+  }
+  </style>
+</head>
+
+<body>
+  <div class="overlay"></div>
+
+  <div class="cover-wrapper">
+    <div class="cover">
+      <h1>The Fever Map</h1>
+
+      <p>Current methods of tracking the spread of the Corona virus do not yield a complete picture. It is far to slow and cumbersome to test everybody, and there isn't enough tests anyway.</p>
+
+      <p>The Fever Map is an effort to fix this by having ordinary people around the world self-report their fever. Using biological population methods we can estimate the prevalence of COVID-19 infections in real-time and provide authorities with data that helps them fight the pandemic.</p>
+
+      <p>To participate, just sign up and use 1 minute once a day on the app.</p>
+
+      <div id="phplistsubscriberesult"></div>
+        <form action="https://fevermap.hosted.phplist.com/lists/?p=subscribe&id=1" method="post" id="phplistsubscribeform">
+        <input type="text" name="email" value="" id="emailaddress" />
+        <button type="submit" id="phplistsubscribe">Sign up</button>
+      </form>
+
+      <p><em>We are currently working on creating the app and the system behind it. Sign up to be notified when you can start participating. We need a lot of users!</em></p>
+
+    </div>
+  </div>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://s3.amazonaws.com/phplist/phplist-subscribe-0.2.min.js"></script>
+<script type="text/javascript">
+var pleaseEnter = "email@example.com";
+var thanksForSubscribing = '<div class="subscribed">Thanks for signing up! We will announce when we are launching.</div>';
+</script>
+
+</body>
+</html>
