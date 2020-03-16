@@ -1,9 +1,0 @@
-#!/bin/bash
-git stash
-git pull
-npm run build
-
-cd data-gatherer
-node data-gatherer.js
-cd ..
-cp corona-data.json dist/
