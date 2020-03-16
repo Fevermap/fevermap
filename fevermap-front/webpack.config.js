@@ -38,7 +38,7 @@ module.exports = {
                     // Creates `style` nodes from JS strings
                     'style-loader',
                     // Translates CSS into CommonJS
-                    MiniCssExtractPlugin.loader,
+                    //MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {

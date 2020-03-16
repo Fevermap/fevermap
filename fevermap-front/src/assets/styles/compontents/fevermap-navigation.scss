@@ -5,6 +5,7 @@
   position: fixed;
   bottom: 0;
   left: 0;
+  z-index: 10;
 
   background: #FFF;
   display: flex;
@@ -18,6 +19,7 @@
     align-items: center;
     justify-content: center;
     padding: 0.5rem 0 0;
+    cursor: pointer;
 
     &--selected {
       material-icon, p {
@@ -27,10 +29,67 @@
 
     material-icon {
       font-size: 2rem;
+      span {
+        color: inherit;
+      }
     }
 
     p {
       margin: 0 0 0.5rem 0;
     }
   }
+}
+
+/* Navigation transitions */
+
+
+.view-wrapper {
+  width: 100%;
+  animation-duration: 0.6s;
+  animation-timing-function: linear;
+  transform: translate(0,0);
+
+  &--transitioning-to-left {
+    animation-name: transition-to-left;
+    position: absolute;
+    top: 0;
+  }
+
+  &--transitioning-from-left {
+    animation-name: transition-from-left;
+    position: absolute;
+    top: 0;
+  }
+
+  &--transitioning-to-right {
+    animation-name: transition-to-right;
+    position: absolute;
+    top: 0;
+  }
+
+  &--transitioning-from-right {
+    animation-name: transition-from-right;
+    position: absolute;
+    top: 0;
+  }
+}
+
+@keyframes transition-to-left {
+  0% {transform: translate(0,0)}
+  100% {transform: translate(-100%, 0)}
+}
+
+@keyframes transition-from-right {
+  0% {transform: translate(100%,0)}
+  100% {transform: translate(0, 0)}
+}
+
+@keyframes transition-from-left {
+  0% {transform: translate(-100%,0)}
+  100% {transform: translate(0, 0)}
+}
+
+@keyframes transition-to-right {
+  0% {transform: translate(0,0)}
+  100% {transform: translate(100%, 0)}
 }

@@ -1,7 +1,11 @@
 import { LitElement, html } from 'lit-element';
 import 'src/app/views/fevermap-landing';
+import 'src/app/views/fevermap-stats';
+import 'src/app/views/fevermap-data-entry';
 import 'src/app/components/fevermap-navigation';
 import 'src/app/components/material-icon';
+import 'src/app/components/language-controller';
+import Translator from './util/translator';
 
 class FevermapRoot extends LitElement {
     static get properties() {
@@ -10,8 +14,9 @@ class FevermapRoot extends LitElement {
 
     render() {
         return html`
-            <fevermap-landing></fevermap-landing>
-            <fevermap-navigation></fevermap-navigation>
+            <language-controller></language-controller>
+            <fevermap-data-entry></fevermap-data-entry>
+            <fevermap-navigation currentView="fevermap-landing"></fevermap-navigation>
         `;
     }
     createRenderRoot() {
