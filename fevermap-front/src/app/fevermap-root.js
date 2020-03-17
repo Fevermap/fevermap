@@ -15,7 +15,7 @@ class FevermapRoot extends LitElement {
     render() {
         return html`
             <language-controller></language-controller>
-            <fevermap-data-entry></fevermap-data-entry>
+            <fevermap-landing></fevermap-landing>
             <fevermap-navigation currentView="fevermap-landing"></fevermap-navigation>
         `;
     }

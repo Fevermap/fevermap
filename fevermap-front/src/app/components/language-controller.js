@@ -2,9 +2,22 @@ import { LitElement, html } from 'lit-element';
 import Translator from '../util/translator';
 
 class LanguageController extends LitElement {
+    static get properties() {
+        return {
+            visible: { type: Boolean },
+        };
+    }
+
     constructor() {
         super();
         this.setLang();
+        this.visible = true;
+    }
+
+    firstUpdated(_changedProperties) {
+        document.body.addEventListener('scroll', () => {
+            this.visible = document.body.scrollTop <= 0;
+        });
     }
 
     setLang() {
@@ -35,7 +48,7 @@ class LanguageController extends LitElement {
 
     render() {
         return html`
-            <div class="language-switcher">
+            <div class="language-switcher${this.visible ? '' : ' language-switcher--hidden'}">
                 <p>${Translator.get('language')}</p>
                 <select id="language-selector" @change="${this.handleLanguageChange}"
                     ><option value="${Translator.getLang().key}">${Translator.getLang().name}</option>

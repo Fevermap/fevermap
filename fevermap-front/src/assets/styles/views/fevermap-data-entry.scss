@@ -7,6 +7,11 @@
 
 .entry-fields {
 
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.1;
+  }
+
   .entry-field {
     margin-bottom: 4rem;
   }
@@ -23,6 +28,7 @@
     margin: 2rem auto 0;
     height: 65px;
     color: #FFF;
+    cursor: pointer;
 
     .fever-button {
       width: 50%;
@@ -91,6 +97,7 @@
     flex-direction: column;
     padding: 1.5em 0 0;
     border-radius: 5px;
+    cursor: pointer;
 
     img {
       width: 35%;
@@ -136,6 +143,35 @@
       color: #32cd32;
       border-color: #32cd32;
     }
+  }
+}
+
+p.subtitle {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+}
+
+p.mdc-theme--error {
+  font-size: 1rem;
+}
+
+.geolocation-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  button {
+    &:not(:disabled) {
+      color: #3f51b5;
+      border-color: #3f51b5;
+    }
+  }
+}
+
+.entry-disclaimer {
+  p {
+    color: #ed143d;
   }
 }
 

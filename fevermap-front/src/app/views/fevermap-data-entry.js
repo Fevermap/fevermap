@@ -1,21 +1,29 @@
 import { LitElement, html, css } from 'lit-element';
-import Translator from '../util/translator';
 import { MDCSlider } from '@material/slider';
 import { MDCCheckbox } from '@material/checkbox/component';
-import { MDCTextField } from '@material/textfield/component';
 import maleIcon from 'src/assets/images/male.svg';
 import femaleIcon from 'src/assets/images/female.svg';
 import { MDCRipple } from '@material/ripple/component';
+import GeolocatorService from '../services/geolocator-service';
+import 'src/app/components/input-field';
+import SnackBar from '../components/snackbar';
+import ScrollService from '../services/scroll-service';
+import dayjs from 'dayjs';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
         return {
             latestEntry: { type: Object },
+            lastSubmissionTime: { type: String },
+            lastSubmissionIsTooCloseToNow: { type: Boolean },
 
             hasFever: { type: Boolean },
             feverAmount: { type: Number },
             feverAmountNowKnown: { type: Boolean },
             gender: { type: String },
+            geoCodingInfo: { type: Object },
+
+            errorMessage: { type: String },
         };
     }
 
@@ -26,21 +34,46 @@ class FevermapDataEntry extends LitElement {
     constructor() {
         super();
         let latestEntry = JSON.parse(localStorage.getItem('LATEST_ENTRY'));
+        let lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
+        if (lastEntryTime) {
+            this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
+            this.lastSubmissionIsTooCloseToNow = Date.now() - Number(lastEntryTime) < 43200000; // 12 hours in milliseconds
+        }
+        this.errorMessage = null;
         this.hasFever = false;
         this.feverAmount = 37;
         this.feverAmountNotKnown = false;
         this.gender = latestEntry ? latestEntry.gender : 'male';
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
+        this.geoCodingInfo = latestEntry ? latestEntry.geoCodingInfo : null;
     }
 
     firstUpdated(_changedProperties) {
         this.initializeComponents();
+        this.getGeoLocationInfo();
     }
 
     initializeComponents() {
-        const textField = new MDCTextField(this.querySelector('.mdc-text-field'));
         const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'));
+    }
+
+    async getGeoLocationInfo(forceUpdate) {
+        if (!this.geoCodingInfo || this.locationDataIsInvalid(this.geoCodingInfo) || forceUpdate) {
+            navigator.geolocation.getCurrentPosition(async success => {
+                this.geoCodingInfo = await GeolocatorService.getGeoCodingInfo(
+                    success.coords.latitude,
+                    success.coords.longitude
+                );
+
+                delete this.geoCodingInfo.success;
+                this.performUpdate();
+                console.log(this.geoCodingInfo);
+                if (forceUpdate) {
+                    SnackBar.success('Location updated successfully.');
+                }
+            });
+        }
     }
 
     handleFeverButton() {
@@ -66,15 +99,63 @@ class FevermapDataEntry extends LitElement {
     handleSubmit() {
         let feverData = {};
         feverData.hasFever = this.hasFever;
-        feverData.feverAmount = this.hasFever ? this.feverAmount : null;
-        feverData.feverAmountNotKnown = this.feverAmountNotKnown;
+        feverData.feverAmount = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
         feverData.birthYear = this.querySelector('#birth-year').value;
         feverData.gender = this.gender;
         feverData.location = '';
+        feverData.geoCodingInfo = this.getGeoCodingInputInfo();
+
+        if (this.locationDataIsInvalid(feverData.geoCodingInfo)) {
+            this.errorMessage = 'Location data is invalid';
+            return;
+        }
+        this.errorMessage = null;
 
         console.table(feverData);
-
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
+        localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', Date.now());
+        this.lastSubmissionTime = dayjs(Number(Date.now())).format('DD-MM-YYYY : HH:mm');
+        this.lastSubmissionIsTooCloseToNow = true;
+        SnackBar.success('Successfully submitted data entry');
+        ScrollService.scrollToTop();
+    }
+
+    locationDataIsInvalid(locationData) {
+        return (
+            !locationData ||
+            !locationData.country ||
+            !locationData.city ||
+            !locationData.postal_code ||
+            Object.values(locationData).includes('undefined')
+        );
+    }
+
+    getGeoCodingInputInfo() {
+        let city = this.querySelector('#location-city').getValue();
+        let postal_code = this.querySelector('#location-postal-code').getValue();
+        let country = this.querySelector('#location-country').getValue();
+        let coords = this.geoCodingInfo.coords;
+        return { city, postal_code, country, coords };
+    }
+
+    async handlePostalCodeChange(newPostalCode) {
+        if (newPostalCode === this.geoCodingInfo.postal_code) {
+            return;
+        }
+        let geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
+            newPostalCode,
+            this.geoCodingInfo.country
+        );
+        if (!geoCodingInfo.success) {
+            console.error(geoCodingInfo);
+            SnackBar.error('Could not get location data.');
+            this.errorMessage = 'Could not get location. Check the location information.';
+            return;
+        }
+        this.errorMessage = null;
+        delete geoCodingInfo.success;
+        this.geoCodingInfo = geoCodingInfo;
+        SnackBar.success('Location updated successfully.');
     }
 
     render() {
@@ -82,8 +163,22 @@ class FevermapDataEntry extends LitElement {
             <div class="container view-wrapper">
                 <div class="fevermap-data-entry-content">
                     <h1>Data Entry</h1>
-
-                    <div class="entry-fields">
+                    ${this.lastSubmissionTime
+                        ? html`
+                              <div class="entry-disclaimer">
+                                  <p>Last submission: ${this.lastSubmissionTime}</p>
+                                  ${this.lastSubmissionIsTooCloseToNow
+                                      ? html`
+                                            <p>
+                                                To prevent unnecessary data, submissions are restricted to once every 12
+                                                hours.
+                                            </p>
+                                        `
+                                      : ''}
+                              </div>
+                          `
+                        : ''}
+                    <div class="entry-fields${this.lastSubmissionIsTooCloseToNow ? ' entry-fields--disabled' : ''}">
                         ${this.getFeverMeter()} ${this.getYearOfBirthInput()} ${this.getGenderInput()}
                         ${this.getGeoLocationInput()} ${this.getSubmitButton()}
                     </div>
@@ -169,18 +264,12 @@ class FevermapDataEntry extends LitElement {
         return html`
             <div class="entry-field">
                 <p>Birth year</p>
-                <label class="mdc-text-field">
-                    <div class="mdc-text-field__ripple"></div>
-                    <input
-                        id="birth-year"
-                        class="mdc-text-field__input"
-                        type="text"
-                        aria-labelledby="year-of-birth"
-                        value="${this.latestEntry ? this.latestEntry.birthYear : ''}"
-                    />
-                    <span class="mdc-floating-label" id="year-of-birth">Year of birth (years 1900-2020)</span>
-                    <div class="mdc-line-ripple"></div>
-                </label>
+                <input-field
+                    placeHolder="Year of birth (years 1900 - 2020)"
+                    fieldId="year-of-birth-input"
+                    id="birth-year"
+                    value="${this.latestEntry ? this.latestEntry.birthYear : ''}"
+                ></input-field>
             </div>
         `;
     }
@@ -214,12 +303,62 @@ class FevermapDataEntry extends LitElement {
     }
 
     getGeoLocationInput() {
-        return html``;
+        return html`
+            <div class="entry-field">
+                <p>Location information</p>
+                <input-field
+                    placeHolder="City"
+                    fieldId="location-city-input"
+                    id="location-city"
+                    value="${this.geoCodingInfo ? this.geoCodingInfo.city : ''}"
+                    ?disabled=${true}
+                ></input-field>
+                <input-field
+                    placeHolder="Country"
+                    fieldId="location-country-input"
+                    id="location-country"
+                    value="${this.geoCodingInfo ? this.geoCodingInfo.country : ''}"
+                    ?disabled="${true}"
+                ></input-field>
+                <input-field
+                    placeHolder="Postal code"
+                    fieldId="location-postal-code"
+                    id="location-postal-code"
+                    value="${this.geoCodingInfo ? this.geoCodingInfo.postal_code : ''}"
+                    @input-blur="${e => this.handlePostalCodeChange(e.target.getValue())}"
+                ></input-field>
+                <p class="subtitle">
+                    Location is determined using location API.
+                </p>
+                <p class="subtitle">To update location information, postal code field or press the button below</p>
+                <div class="geolocation-button">
+                    <button class="mdc-button mdc-button--outlined">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
+                        <span class="mdc-button__label">Update location</span>
+                    </button>
+                </div>
+                <div class="geolocation-button">
+                    <button class="mdc-button mdc-button--outlined" @click="${() => this.getGeoLocationInfo(true)}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
+                        <span class="mdc-button__label">Get location from GPS</span>
+                    </button>
+                </div>
+            </div>
+        `;
     }
 
     getSubmitButton() {
         return html`
             <div class="entry-field">
+                ${this.errorMessage
+                    ? html`
+                          <p class="mdc-theme--error">${this.errorMessage}</p>
+                      `
+                    : ''}
                 <div class="submit-button">
                     <button class="mdc-button mdc-button--outlined" @click="${this.handleSubmit}">
                         <div class="mdc-button__ripple"></div>

@@ -68,9 +68,6 @@ module.exports = {
             template: './src/index.html',
             inject: false,
         }),
-        new MiniCssExtractPlugin({
-            filename: '/style.css',
-        }),
 
         new CopyWebpackPlugin([
             {
