@@ -330,7 +330,9 @@ class FevermapDataEntry extends LitElement {
                 <p class="subtitle">
                     Location is determined using location API.
                 </p>
-                <p class="subtitle">To update location information, postal code field or press the button below</p>
+                <p class="subtitle">
+                    To update location information, update the value in the postal code field or press the button below.
+                </p>
                 <div class="geolocation-button">
                     <button class="mdc-button mdc-button--outlined">
                         <div class="mdc-button__ripple"></div>
