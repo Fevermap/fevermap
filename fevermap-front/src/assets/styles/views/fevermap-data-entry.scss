@@ -190,6 +190,20 @@ p.mdc-theme--error {
   }
 }
 
+.queued-entries-field {
+  p {
+    color: #FF9800;
+  }
+  .submit-queued-button {
+    button {
+      &:not(:disabled) {
+        color: #FF9800;
+        border-color: #FF9800;
+      }
+    }
+  }
+}
+
 .submission-summary {
   p {
     font-size: 1rem;

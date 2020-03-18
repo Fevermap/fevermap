@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
 import Translator from '../util/translator';
+import logoImg from 'src/assets/images/logo.png';
 
 class FevermapLanding extends LitElement {
     static get properties() {
@@ -23,7 +24,7 @@ class FevermapLanding extends LitElement {
         return html`
             <div class="container view-wrapper">
                 <div class="fevermap-landing-content">
-                    <h1>Fever Map</h1>
+                    <img src="${logoImg}" />
                     <div class="about mb-4">
                         <h2>About</h2>
                         <p>

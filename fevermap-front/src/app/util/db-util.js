@@ -2,11 +2,16 @@ const dbName = 'FeverMapDB';
 const versionNum = 1;
 
 export const FEVER_ENTRIES = 'feverEntries';
+export const QUEUED_ENTRIES = 'queuedEntries';
 
 const objectStores = [
     {
         name: FEVER_ENTRIES,
         options: { keyPath: 'id' },
+    },
+    {
+        name: QUEUED_ENTRIES,
+        options: { keyPath: 'id', autoIncrement: true },
     },
 ];
 
@@ -104,6 +109,22 @@ export default class DBUtil {
             let objectStore = transaction.objectStore(targetDataStore);
 
             let request = objectStore.add(data);
+        });
+    }
+
+    async delete(targetDataStore, identifier) {
+        await this.makeSureDbIsReady();
+        return new Promise((resolve, reject) => {
+            let request = this.db
+                .transaction([targetDataStore], 'readwrite')
+                .objectStore(targetDataStore)
+                .delete(identifier);
+            request.oncomplete = e => {
+                resolve(e);
+            };
+            request.onerror = e => {
+                reject(e);
+            };
         });
     }
 }

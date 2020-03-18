@@ -4,6 +4,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = {
     entry: { main: './src/index.js' },
@@ -90,6 +91,17 @@ module.exports = {
                 from: 'robots.txt',
                 to: '.',
             },
+            {
+                context: './src',
+                from: 'manifest.json',
+                to: '.',
+            },
         ]),
+        new InjectManifest({
+            swDest: 'service-worker.js',
+            swSrc: 'src/service-worker.js',
+            exclude: [/webcomponents/],
+            include: [/\.css$/, /\.js$/, /\.html$/],
+        }),
     ],
 };

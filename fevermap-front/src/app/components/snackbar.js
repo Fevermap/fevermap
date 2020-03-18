@@ -25,7 +25,7 @@ export default class SnackBar extends LitElement {
         this.elem.open();
         this.elem.listen('MDCSnackbar:closing', () => {
             setTimeout(() => {
-                //this.remove();
+                this.remove();
             }, 1000);
         });
     }

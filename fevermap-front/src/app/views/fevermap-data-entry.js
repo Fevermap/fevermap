@@ -9,7 +9,8 @@ import 'src/app/components/input-field';
 import SnackBar from '../components/snackbar';
 import ScrollService from '../services/scroll-service';
 import dayjs from 'dayjs';
-import DBUtil, { FEVER_ENTRIES } from '../util/db-util';
+import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
+import DataEntryService from '../services/data-entry-service';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -18,6 +19,8 @@ class FevermapDataEntry extends LitElement {
             lastSubmissionTime: { type: String },
             lastSubmissionIsTooCloseToNow: { type: Boolean },
             previousSubmissions: { type: Array },
+            hasQueuedEntries: { type: Boolean },
+            queuedEntries: { type: Array },
 
             hasFever: { type: Boolean },
             feverAmount: { type: Number },
@@ -50,19 +53,31 @@ class FevermapDataEntry extends LitElement {
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? latestEntry.geoCodingInfo : null;
         this.previousSubmissions = [];
+        this.hasQueuedEntries = false;
+        this.queuedEntries = [];
     }
 
     firstUpdated(_changedProperties) {
         this.initializeComponents();
         this.getGeoLocationInfo();
         this.getPreviousSubmissionsFromIndexedDb();
+        this.getQueuedEntriesFromIndexedDb();
     }
 
     async getPreviousSubmissionsFromIndexedDb() {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
-        if (previousSubmissions) {
+        if (previousSubmissions && previousSubmissions.length > 0) {
             this.previousSubmissions = previousSubmissions;
+        }
+    }
+
+    async getQueuedEntriesFromIndexedDb() {
+        let db = await DBUtil.getInstance();
+        const queuedSubmissions = await db.getAll(QUEUED_ENTRIES);
+        if (queuedSubmissions && queuedSubmissions.length > 0) {
+            this.hasQueuedEntries = true;
+            this.queuedEntries = queuedSubmissions;
         }
     }
 
@@ -112,37 +127,55 @@ class FevermapDataEntry extends LitElement {
         return slider;
     }
 
-    handleSubmit() {
+    async handleSubmit() {
         let feverData = {};
         let submissionTime = Date.now();
 
         feverData.hasFever = this.hasFever;
         feverData.feverAmount = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
-        feverData.birthYear = this.querySelector('#birth-year').value;
+        feverData.birthYear = this.querySelector('#birth-year').getValue();
         feverData.gender = this.gender;
-        feverData.location = '';
         feverData.geoCodingInfo = this.getGeoCodingInputInfo();
         feverData.submissionTime = submissionTime;
+        console.log(feverData);
 
+        if (feverData.birthYear > 2020 || feverData.birthYear < 1900) {
+            this.errorMessage = 'AGE_NOT_IN_RANGE';
+            return;
+        }
+
+        if (feverData.hasFever && (feverData.feverAmount < 37 || feverData.feverAmount > 44)) {
+            this.errorMessage = 'FEVER_AMOUNT_MANIPULATED';
+            return;
+        }
         if (this.locationDataIsInvalid(feverData.geoCodingInfo)) {
-            this.errorMessage = 'Location data is invalid';
+            this.errorMessage = 'LOCATION_DATA_INVALID';
             return;
         }
         this.errorMessage = null;
 
-        const submissionSuccessful = true; // Insert fetch operation here
+        const submissionResponse = await DataEntryService.handleDataEntrySubmission(feverData);
 
-        if (submissionSuccessful) {
+        if (submissionResponse.success) {
             // For now we add a random number.
             // This will be replaced with the id provided by the backend API
             feverData.id = Math.floor(Math.random() * 99999);
             this.handlePostSubmissionActions(feverData, submissionTime);
         } else {
-            SnackBar.error('Data entry error.');
+            switch (submissionResponse.reason) {
+                case 'INVALID_DATA':
+                    SnackBar.error('INVALID_DATA');
+                    break;
+                case 'NETWORK_STATUS_OFFLINE':
+                    this.handlePostSubmissionActions(feverData, submissionTime, true);
+                    break;
+                default:
+                    SnackBar.error('Data entry error.');
+            }
         }
     }
 
-    async handlePostSubmissionActions(feverData, submissionTime) {
+    async handlePostSubmissionActions(feverData, submissionTime, entryGotQueued) {
         console.table(feverData);
 
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
@@ -151,11 +184,38 @@ class FevermapDataEntry extends LitElement {
         this.lastSubmissionTime = dayjs(Number(submissionTime)).format('DD-MM-YYYY : HH:mm');
         this.lastSubmissionIsTooCloseToNow = true;
 
-        const db = await DBUtil.getInstance();
-        const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
-
-        SnackBar.success('Successfully submitted data entry');
+        if (!entryGotQueued) {
+            const db = await DBUtil.getInstance();
+            const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
+            SnackBar.success('Successfully submitted data entry');
+        } else {
+            SnackBar.success('NETWORK_STATUS_OFFLINE');
+        }
         ScrollService.scrollToTop();
+    }
+
+    async submitQueuedEntries() {
+        let db = await DBUtil.getInstance();
+        let successfulSyncCount = 0;
+        await this.queuedEntries.map(async (entry, i) => {
+            const id = entry.id;
+            delete entry.id;
+            const submissionResponse = await DataEntryService.handleDataEntrySubmission(entry, false);
+            if (submissionResponse.success) {
+                db.delete(QUEUED_ENTRIES, id);
+                successfulSyncCount++;
+                console.log('SYNC');
+            }
+            if (i === this.queuedEntries.length - 1) {
+                console.log(successfulSyncCount);
+                if (successfulSyncCount > 0) {
+                    SnackBar.success('Successfully synced entries');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
+                }
+            }
+        });
     }
 
     locationDataIsInvalid(locationData) {
@@ -216,6 +276,7 @@ class FevermapDataEntry extends LitElement {
                               </div>
                           `
                         : ''}
+                    ${this.getQueuedEntriesField()}
                     <div class="entry-fields${this.lastSubmissionIsTooCloseToNow ? ' entry-fields--disabled' : ''}">
                         ${this.getFeverMeter()} ${this.getYearOfBirthInput()} ${this.getGenderInput()}
                         ${this.getGeoLocationInput()} ${this.getSubmitButton()}
@@ -223,6 +284,29 @@ class FevermapDataEntry extends LitElement {
                     ${this.getPreviousSubmissionsSummary()}
                 </div>
             </div>
+        `;
+    }
+
+    getQueuedEntriesField() {
+        return html`
+            ${this.hasQueuedEntries
+                ? html`
+                      <div class="queued-entries-field">
+                          <p>
+                              You have ${this.queuedEntries.length} entries that haven't been yet synced with the
+                              server.
+                          </p>
+                          <div class="submit-queued-button">
+                              <button class="mdc-button mdc-button--outlined" @click="${this.submitQueuedEntries}">
+                                  <div class="mdc-button__ripple"></div>
+
+                                  <i class="material-icons mdc-button__icon" aria-hidden="true">sync</i>
+                                  <span class="mdc-button__label">Sync now</span>
+                              </button>
+                          </div>
+                      </div>
+                  `
+                : ''}
         `;
     }
 
@@ -431,7 +515,7 @@ class FevermapDataEntry extends LitElement {
                                 : ' submission--no-fever'}"
                         >
                             <p>
-                                ${dayjs(submission.submissionTime).format('DD-MM-YYYY : HH:mm')}: Fever:
+                                ${dayjs(submission.submissionTime).format('DD-MM-YYYY:HH:mm')} - Fever:
                                 ${submission.hasFever ? 'Yes' : 'No'}
                                 ${submission.hasFever ? `, ${submission.feverAmount} °C` : ''}
                             </p>
