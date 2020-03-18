@@ -49,6 +49,25 @@ class FevermapDataEntry extends LitElement {
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? latestEntry.geoCodingInfo : null;
+
+        // Actual usage of F versus C in measuring body temperature is unclear, this mapping largely assumes
+        // weather and body temperature units correlate.
+        this.fahrenheitTerritories = {
+            'CA': false, // Canada uses both, and F mostly for cooking
+            'US': true,
+            'US-AS': true,
+            'US-GU': true,
+            'US-MP': true,
+            'US-PR': true,
+            'US-UM': true,
+            'US-VI': true,
+            'BZ': true,     // Belize
+            'PW': true,     // Palau
+            'FM': true,     // Micronesia
+            'BS': true,     // Bahamas
+            'MH': true,     // Marshall Islands
+            'KY': true,     // Cayman
+        };
         this.previousSubmissions = [];
     }
 
@@ -102,6 +121,32 @@ class FevermapDataEntry extends LitElement {
                 });
             });
         }
+    }
+
+    fahrenheitToCelsius(value) {
+        return ((value - 32) / 1.8).toFixed(1);
+    }
+
+    celsiusToFahrenheit(value) {
+        return (value * 1.8 + 32).toFixed(1);
+    }
+
+    useFahrenheit() {
+        return this.geoCodingInfo.countryShort
+            ? !! this.fahrenheitTerritories[this.geoCodingInfo.countryShort]
+            : false;
+    }
+
+    /**
+     * @param reverse Use the other unit
+     * @param value Value to stringify, leave undefined to use input value
+     * @returns {string}
+     */
+    getFeverWithUnit(reverse, value) {
+        let feverValue = arguments.length >=2 ? value : this.feverAmount;
+        return !!reverse ^ this.useFahrenheit()
+            ? this.celsiusToFahrenheit(feverValue) + ' °F'
+            : feverValue + ' °C';
     }
 
     initSlider() {
@@ -274,7 +319,9 @@ class FevermapDataEntry extends LitElement {
                                               </div>
                                           </div>
                                       </div>
-                                      <p class="fever-amount-display">${this.feverAmount} °C of fever</p>
+                                      <p class="fever-amount-display">
+                                          ${this.getFeverWithUnit()} of fever (${this.getFeverWithUnit(true)})
+                                      </p>
                                   </div>
                                   <div
                                       class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
@@ -433,7 +480,7 @@ class FevermapDataEntry extends LitElement {
                             <p>
                                 ${dayjs(submission.submissionTime).format('DD-MM-YYYY : HH:mm')}: Fever:
                                 ${submission.hasFever ? 'Yes' : 'No'}
-                                ${submission.hasFever ? `, ${submission.feverAmount} °C` : ''}
+                                ${submission.hasFever ? `, ${this.getFeverWithUnit(false, submission.feverAmount)}` : ''}
                             </p>
                         </div>
                     `;
