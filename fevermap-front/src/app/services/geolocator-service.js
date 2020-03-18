@@ -25,11 +25,15 @@ export default class GeolocatorService {
         }
         let firstResult = res.results[0];
         let addressComponents = firstResult.address_components;
+        let postal = addressComponents.find(a => a.types.indexOf('postal_code') !== -1) || {};
+        let city = addressComponents.find(a => a.types.indexOf('locality') !== -1) || {};
+        let country = addressComponents.find(a => a.types.indexOf('country') !== -1) || {};
         return {
             success: true,
-            postal_code: addressComponents[0].long_name,
-            city: addressComponents[1].long_name,
-            country: addressComponents[2].long_name,
+            postal_code: postal.long_name,
+            city: city.long_name,
+            country: country.long_name,
+            countryShort: country.short_name,
             coords: firstResult.geometry.location,
         };
     }
