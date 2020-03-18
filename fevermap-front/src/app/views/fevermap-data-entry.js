@@ -9,6 +9,7 @@ import 'src/app/components/input-field';
 import SnackBar from '../components/snackbar';
 import ScrollService from '../services/scroll-service';
 import dayjs from 'dayjs';
+import DBUtil, { FEVER_ENTRIES } from '../util/db-util';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -16,6 +17,7 @@ class FevermapDataEntry extends LitElement {
             latestEntry: { type: Object },
             lastSubmissionTime: { type: String },
             lastSubmissionIsTooCloseToNow: { type: Boolean },
+            previousSubmissions: { type: Array },
 
             hasFever: { type: Boolean },
             feverAmount: { type: Number },
@@ -47,11 +49,21 @@ class FevermapDataEntry extends LitElement {
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? latestEntry.geoCodingInfo : null;
+        this.previousSubmissions = [];
     }
 
     firstUpdated(_changedProperties) {
         this.initializeComponents();
         this.getGeoLocationInfo();
+        this.getPreviousSubmissionsFromIndexedDb();
+    }
+
+    async getPreviousSubmissionsFromIndexedDb() {
+        let db = await DBUtil.getInstance();
+        const previousSubmissions = await db.getAll(FEVER_ENTRIES);
+        if (previousSubmissions) {
+            this.previousSubmissions = previousSubmissions;
+        }
     }
 
     initializeComponents() {
@@ -102,12 +114,15 @@ class FevermapDataEntry extends LitElement {
 
     handleSubmit() {
         let feverData = {};
+        let submissionTime = Date.now();
+
         feverData.hasFever = this.hasFever;
         feverData.feverAmount = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
         feverData.birthYear = this.querySelector('#birth-year').value;
         feverData.gender = this.gender;
         feverData.location = '';
         feverData.geoCodingInfo = this.getGeoCodingInputInfo();
+        feverData.submissionTime = submissionTime;
 
         if (this.locationDataIsInvalid(feverData.geoCodingInfo)) {
             this.errorMessage = 'Location data is invalid';
@@ -115,11 +130,30 @@ class FevermapDataEntry extends LitElement {
         }
         this.errorMessage = null;
 
+        const submissionSuccessful = true; // Insert fetch operation here
+
+        if (submissionSuccessful) {
+            // For now we add a random number.
+            // This will be replaced with the id provided by the backend API
+            feverData.id = Math.floor(Math.random() * 99999);
+            this.handlePostSubmissionActions(feverData, submissionTime);
+        } else {
+            SnackBar.error('Data entry error.');
+        }
+    }
+
+    async handlePostSubmissionActions(feverData, submissionTime) {
         console.table(feverData);
+
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
-        localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', Date.now());
-        this.lastSubmissionTime = dayjs(Number(Date.now())).format('DD-MM-YYYY : HH:mm');
+        localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
+
+        this.lastSubmissionTime = dayjs(Number(submissionTime)).format('DD-MM-YYYY : HH:mm');
         this.lastSubmissionIsTooCloseToNow = true;
+
+        const db = await DBUtil.getInstance();
+        const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
+
         SnackBar.success('Successfully submitted data entry');
         ScrollService.scrollToTop();
     }
@@ -186,6 +220,7 @@ class FevermapDataEntry extends LitElement {
                         ${this.getFeverMeter()} ${this.getYearOfBirthInput()} ${this.getGenderInput()}
                         ${this.getGeoLocationInput()} ${this.getSubmitButton()}
                     </div>
+                    ${this.getPreviousSubmissionsSummary()}
                 </div>
             </div>
         `;
@@ -380,6 +415,29 @@ class FevermapDataEntry extends LitElement {
                         <span class="mdc-button__label">Submit</span>
                     </button>
                 </div>
+            </div>
+        `;
+    }
+
+    getPreviousSubmissionsSummary() {
+        return html`
+            <div class="submission-summary">
+                <p>Previous submissions</p>
+                ${this.previousSubmissions.map(submission => {
+                    return html`
+                        <div
+                            class="submission${submission.hasFever
+                                ? ' submission--has-fever'
+                                : ' submission--no-fever'}"
+                        >
+                            <p>
+                                ${dayjs(submission.submissionTime).format('DD-MM-YYYY : HH:mm')}: Fever:
+                                ${submission.hasFever ? 'Yes' : 'No'}
+                                ${submission.hasFever ? `, ${submission.feverAmount} °C` : ''}
+                            </p>
+                        </div>
+                    `;
+                })}
             </div>
         `;
     }

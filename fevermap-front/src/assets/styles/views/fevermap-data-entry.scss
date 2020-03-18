@@ -190,6 +190,23 @@ p.mdc-theme--error {
   }
 }
 
+.submission-summary {
+  p {
+    font-size: 1rem;
+    color: inherit;
+  }
+
+  .submission {
+    &--has-fever {
+      color: #ed143d
+    }
+
+    &--no-fever {
+      color: #32cd32;
+    }
+  }
+}
+
 @media only screen and (max-width: 780px) {
 
   .fevermap-data-entry-content {
