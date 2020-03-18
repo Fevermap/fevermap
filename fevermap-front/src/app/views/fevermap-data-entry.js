@@ -79,20 +79,25 @@ class FevermapDataEntry extends LitElement {
         this.hasFever = !this.hasFever;
         if (this.hasFever) {
             setTimeout(() => {
-                const slider = new MDCSlider(this.querySelector('.mdc-slider'));
-                slider.listen('MDCSlider:change', () => {
-                    this.feverAmount = slider.value;
-                });
+                let slider = this.initSlider();
 
                 let checkboxElem = this.querySelector('.mdc-checkbox');
                 const checkbox = new MDCCheckbox(checkboxElem);
                 checkboxElem.addEventListener('change', () => {
                     this.feverAmountNotKnown = checkbox.checked;
-                    this.feverAmount = checkbox.checked ? 0 : slider.value;
+                    this.feverAmount = checkbox.checked ? 0 : slider.value.toFixed(1);
                     slider.getDefaultFoundation().setDisabled(checkbox.checked);
                 });
             });
         }
+    }
+
+    initSlider() {
+        const slider = new MDCSlider(this.querySelector('.mdc-slider'));
+        slider.listen('MDCSlider:input', () => {
+            this.feverAmount = slider.value.toFixed(1);
+        });
+        return slider;
     }
 
     handleSubmit() {
@@ -191,9 +196,9 @@ class FevermapDataEntry extends LitElement {
             <div class="entry-field">
                 <p>Do you have fever at the moment?</p>
                 <div
-                    class="fever-answer-button mdc-elevation--z3${this.hasFever
-                        ? ' fever-answer-button--has-fever'
-                        : ' fever-answer-button--no-fever'}"
+                    class="fever-answer-button mdc-elevation--z3${
+                        this.hasFever ? ' fever-answer-button--has-fever' : ' fever-answer-button--no-fever'
+                    }"
                     @click="${this.handleFeverButton}"
                 >
                     <div class="no-button fever-button${this.hasFever ? '' : ' fever-button--selected'}">
@@ -203,58 +208,65 @@ class FevermapDataEntry extends LitElement {
                         <p>Yes</p>
                     </div>
                 </div>
-                ${this.hasFever
-                    ? html`
-                          <p>How much</p>
-                          <div class="fever-slider">
-                              <div
-                                  class="mdc-slider mdc-slider--discrete"
-                                  tabindex="0"
-                                  role="slider"
-                                  aria-valuemin="37"
-                                  aria-valuemax="44"
-                                  aria-valuenow="37"
-                                  aria-label="Select Value"
-                              >
-                                  <div class="mdc-slider__track-container">
-                                      <div class="mdc-slider__track"></div>
-                                  </div>
-                                  <div class="mdc-slider__thumb-container">
-                                      <div class="mdc-slider__pin">
-                                          <span class="mdc-slider__pin-value-marker"></span>
-                                      </div>
-                                      <svg class="mdc-slider__thumb" width="21" height="21">
-                                          <circle cx="10.5" cy="10.5" r="7.875"></circle>
-                                      </svg>
-                                      <div class="mdc-slider__focus-ring"></div>
-                                  </div>
-                              </div>
-                          </div>
-                          ${this.feverAmountNotKnown
-                              ? ''
-                              : html`
-                                    <p class="fever-amount-display">${this.feverAmount} degrees of fever</p>
-                                `}
-                          <div class="mdc-form-field">
-                              <div class="mdc-checkbox">
-                                  <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" />
-                                  <div class="mdc-checkbox__background">
-                                      <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                          <path
-                                              class="mdc-checkbox__checkmark-path"
-                                              fill="none"
-                                              d="M1.73,12.91 8.1,19.28 22.79,4.59"
-                                          />
-                                      </svg>
-                                      <div class="mdc-checkbox__mixedmark"></div>
-                                  </div>
-                                  <div class="mdc-checkbox__ripple"></div>
-                              </div>
+                    ${
+                        this.hasFever
+                            ? html`
+                                  <div class="fever-meters ${this.feverAmountNotKnown ? ' fever-meters--hidden' : ''}">
+                                      <p>How much</p>
 
-                              <label for="checkbox-1">Don't know exactly, not measured</label>
-                          </div>
-                      `
-                    : ''}
+                                      <div class="fever-slider">
+                                          <div
+                                              class="mdc-slider"
+                                              tabindex="0"
+                                              role="slider"
+                                              aria-valuemin="37"
+                                              aria-valuemax="44"
+                                              aria-valuenow="37"
+                                              aria-label="Select Value"
+                                              data-step="0.1"
+                                          >
+                                              <div class="mdc-slider__track-container">
+                                                  <div class="mdc-slider__track"></div>
+                                              </div>
+                                              <div class="mdc-slider__thumb-container">
+                                                  <div class="mdc-slider__pin">
+                                                      <span class="mdc-slider__pin-value-marker"></span>
+                                                  </div>
+                                                  <svg class="mdc-slider__thumb" width="21" height="21">
+                                                      <circle cx="10.5" cy="10.5" r="7.875"></circle>
+                                                  </svg>
+                                                  <div class="mdc-slider__focus-ring"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <p class="fever-amount-display">${this.feverAmount} °C of fever</p>
+                                  </div>
+                                  <div
+                                      class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
+                                          ? ' fever-not-measured-field--checked'
+                                          : ''}"
+                                  >
+                                      <div class="mdc-checkbox">
+                                          <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" />
+                                          <div class="mdc-checkbox__background">
+                                              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                                  <path
+                                                      class="mdc-checkbox__checkmark-path"
+                                                      fill="none"
+                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                                                  />
+                                              </svg>
+                                              <div class="mdc-checkbox__mixedmark"></div>
+                                          </div>
+                                          <div class="mdc-checkbox__ripple"></div>
+                                      </div>
+
+                                      <label for="checkbox-1">Don't know exactly, not measured</label>
+                                  </div>
+                              `
+                            : ''
+                    }
+                </div>
             </div>
         `;
     }

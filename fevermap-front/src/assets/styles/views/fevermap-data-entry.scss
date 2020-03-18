@@ -74,6 +74,18 @@
   }
 }
 
+.fever-meters {
+  &--hidden {
+    display: none;
+  }
+}
+
+.fever-not-measured-field {
+  &--checked {
+    margin-top: 3rem;
+  }
+}
+
 .mdc-text-field {
   width: 100%;
 }
