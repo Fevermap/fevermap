@@ -50,24 +50,24 @@
 
 
     &--has-fever {
-      background: #32cd32;
+      background: #ed143d;
 
       .fever-button {
         color: #FFF;
 
         &--selected {
-          color: #32cd32;
+          color: #ed143d;
         }
       }
     }
 
     &--no-fever {
-      background: red;
+      background: #32cd32;
       .fever-button {
         color: #FFF;
 
         &--selected {
-          color: red;
+          color: #32cd32;
         }
       }
     }
