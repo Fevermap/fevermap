@@ -40,6 +40,18 @@
   }
 }
 
+
+@media only screen and (max-width: 400px) {
+
+  .fevermap-navigation-wrapper {
+    .fevermap-navigation-block {
+      material-icon {
+        font-size: 1.6rem;
+      }
+    }
+  }
+}
+
 /* Navigation transitions */
 
 

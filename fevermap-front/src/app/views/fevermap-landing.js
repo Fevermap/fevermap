@@ -3,7 +3,9 @@ import Translator from '../util/translator';
 
 class FevermapLanding extends LitElement {
     static get properties() {
-        return {};
+        return {
+            currentParticipantCount: { type: Number },
+        };
     }
 
     static get styles() {
@@ -12,6 +14,7 @@ class FevermapLanding extends LitElement {
 
     constructor() {
         super();
+        this.currentParticipantCount = 0;
     }
 
     firstUpdated(_changedProperties) {}
@@ -40,6 +43,9 @@ class FevermapLanding extends LitElement {
                         <p>
                             The data collected by Fevermap is anonymized and will be used to help with raising awareness
                             of the current global situation.
+                        </p>
+                        <p class="participant-count-subtitle">
+                            To this day, Fever Map has accumulated reports from ${this.currentParticipantCount} people.
                         </p>
                     </div>
                     <div class="participation mb-4">

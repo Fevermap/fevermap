@@ -68,7 +68,6 @@ class FevermapDataEntry extends LitElement {
 
                 delete this.geoCodingInfo.success;
                 this.performUpdate();
-                console.log(this.geoCodingInfo);
                 if (forceUpdate) {
                     SnackBar.success('Location updated successfully.');
                 }
