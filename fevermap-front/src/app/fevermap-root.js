@@ -5,7 +5,7 @@ import 'src/app/views/fevermap-data-entry';
 import 'src/app/components/fevermap-navigation';
 import 'src/app/components/material-icon';
 import 'src/app/components/language-controller';
-import Translator from './util/translator';
+import 'src/app/components/dialog';
 
 class FevermapRoot extends LitElement {
     static get properties() {

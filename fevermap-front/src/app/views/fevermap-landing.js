@@ -1,6 +1,7 @@
 import { LitElement, html, css } from 'lit-element';
 import Translator from '../util/translator';
 import logoImg from 'src/assets/images/logo.png';
+import Dialog from '../components/dialog';
 
 class FevermapLanding extends LitElement {
     static get properties() {
