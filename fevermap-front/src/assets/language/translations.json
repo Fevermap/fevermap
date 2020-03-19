@@ -21,6 +21,7 @@
     },
     "entry": {
       "data_entry": "Datan syöttö",
+      "first_entry_disclaimer": "Kirjaukset merkitään tietokantaan laitteen mukaan, jonka vuoksi toivomme, että syötät tietosi aina samalta laitteelta. Tällöin voimme seurata kuumetilasi kehittymistä paremmin.",
       "last_submission": "Viimeisin kirjaus",
       "submission_period_disclaimer": "Välttyäksemme turhalta datalta, kirjaukset on rajoitettu tehtäväksi kerran joka 12. tunti.",
       "queued_entries": "Sinulla on %{queuedEntries} kirjausta, joita ei ole vielä synkronoitu serverin kanssa.",
@@ -92,6 +93,7 @@
     },
     "entry": {
       "data_entry": "Data entry",
+      "first_entry_disclaimer": "Entries are submitted into the database based on your device. We would appreciate that you submitted your information from the same device every time. This will allow us to monitor your fever status better.",
       "last_submission": "Last submission",
       "submission_period_disclaimer": "To prevent unnecessary data, submissions are restricted to once every 12 hours.",
       "queued_entries": "You have %{queuedEntries} entries that haven't been yet synced with the server.",

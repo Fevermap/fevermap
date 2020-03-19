@@ -23,6 +23,7 @@ class FevermapDataEntry extends LitElement {
             previousSubmissions: { type: Array },
             hasQueuedEntries: { type: Boolean },
             queuedEntries: { type: Array },
+            firstTimeSubmitting: { type: Boolean },
 
             hasFever: { type: Boolean },
             feverAmount: { type: Number },
@@ -50,6 +51,7 @@ class FevermapDataEntry extends LitElement {
             this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
             this.lastSubmissionIsTooCloseToNow = Date.now() - Number(lastEntryTime) < 43200000; // 12 hours in milliseconds
         }
+        this.firstTimeSubmitting = latestEntry == null;
         this.errorMessage = null;
         this.hasFever = false;
         this.feverAmount = 37;
@@ -344,6 +346,11 @@ class FevermapDataEntry extends LitElement {
             <div class="container view-wrapper">
                 <div class="fevermap-data-entry-content">
                     <h1>${Translator.get('entry.data_entry')}</h1>
+                    ${this.firstTimeSubmitting
+                        ? html`
+                              <p class="first-entry-disclaimer">${Translator.get('entry.first_entry_disclaimer')}</p>
+                          `
+                        : ''}
                     ${this.lastSubmissionTime
                         ? html`
                               <div class="entry-disclaimer">
