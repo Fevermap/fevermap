@@ -68,6 +68,15 @@
         "location_data_invalid": "Syötetty sijaintidata ei ole sallittu.",
         "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa."
       }
+    },
+
+    "dialog": {
+      "pwa_installer": {
+        "title": "Asenna Fever Map",
+        "content": "Fever Map on mahdollista asentaa progressiivisen verkkosovelluksena. Asennettuna sovellus tarjoaa lisätoimintoja kuten parempaa suorituskykyä ja push notifikaatioita (tulossa pian).",
+        "approve_text": "Asenna",
+        "decline_text": "Ehkä myöhemmin"
+      }
     }
   },
   "en": {
@@ -139,6 +148,14 @@
         "fever_temp_value_invalid": "The fever temperature value is not valid.",
         "location_data_invalid": "The given location data is invalid.",
         "api_data_invalid": "Data sent to the API was invalid."
+      }
+    },
+    "dialog": {
+      "pwa_installer": {
+        "title": "Install Fever Map",
+        "content": "Fever Map can be installed as a Progressive Web Application. If installed, we can provide you with great extra features like faster runtime and push notifications (coming soon).",
+        "approve_text": "Install",
+        "decline_text": "Maybe later"
       }
     }
   }

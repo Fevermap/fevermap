@@ -1,4 +1,5 @@
 import Dialog from '../components/dialog';
+import Translator from '../util/translator';
 
 export default class PWAService {
     static init(deferredPrompt) {
@@ -22,11 +23,10 @@ export default class PWAService {
             return;
         }
         Dialog.open({
-            title: 'Install Fever Map',
-            content:
-                'Fever Map can be installed as a Progressive Web Application. If installed, we can provide you with great extra features like faster runtime and push notifications (coming soon).',
-            approveText: 'Install',
-            declineText: 'Maybe later',
+            title: Translator.get('dialog.pwa_installer.title'),
+            content: Translator.get('dialog.pwa_installer.content'),
+            approveText: Translator.get('dialog.pwa_installer.approve_text'),
+            declineText: Translator.get('dialog.pwa_installer.decline_text'),
             approveEvent: 'pwa-install-approve',
             declineEvent: 'pwa-install-decline',
         });

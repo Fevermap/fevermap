@@ -538,8 +538,8 @@ class FevermapDataEntry extends LitElement {
                     ?disabled=${true}
                 ></input-field>
                 <select-field
-                    id="${Translator.get('entry.questions.country')}"
-                    label="Country"
+                    id="location-country"
+                    label="${Translator.get('entry.questions.country')}"
                     .options="${this.countrySelectionOptions}"
                     selectedValueIndex="${this.selectedCountryIndex}"
                 ></select-field>
