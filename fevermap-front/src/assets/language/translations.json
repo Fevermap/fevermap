@@ -2,12 +2,142 @@
   "fi": {
     "lang_name": "Suomi",
     "language": "Kieli",
-    "fevermap_title": "Fever Map"
+    "fevermap_title": "Fever Map",
+
+    "landing": {
+      "about": "Tietoa",
+      "about_content_explanation": "on Koronavirusepidemiaa koskevan datan keräykseen luotu verkkosovellus.",
+      "about_current_methods": "Tämän hetken seurantatavat eivät anna kokonaiskuvaa tilanteesta. Kaikkien testauttaminen on aivan liian hidasta ja työlästä, eikä testejäkään varmasti ole tarpeeksi.",
+      "about_motivation": "Fever Mapin tarkoitus on korjata tämä antamalla kansalaisille tapa raportoida omasta kuumetilastaan. Näin voimme arvioida Koronavirustartuntojen määrää reaaliajassa ja tarjota viranomaisille hyödyllistä dataa taisteluun pandemian kanssa.",
+      "about_data_collection": "Fever Mapin keräämä data anonymisoidaan ja sitä käytetään globaalin tilanteen tietoisuuden lisäämiseksi.",
+      "about_current_participant_count": "Tähän päivään mennessä Fever Map on kerännyt raportteja %{participantCount} ihmiseltä.",
+
+      "how_to_participate": "Kuinka osallistun?",
+      "participation_info": "Osallistuaksesi sinun tulee mitata kuumeesi, ja syöttää kuumetilasi ja hieman tietoa itsestäsi datan syöttönäkymässä.",
+      "info_disclaimer": "Enne kysy tietoja, joista sinut voitaisiin tunnistaa. Arvostamme yksityisyyttäsi.",
+
+      "how_will_my_data_be_used": "Kuinka dataani tullaan käyttämään?",
+      "data_use_explanation": "Datasi anonymisoidaan jonka jälkeen se jaetaan avoimena datana API-rajapinnan kautta."
+    },
+    "entry": {
+      "data_entry": "Datan syöttö",
+      "last_submission": "Viimeisin kirjaus",
+      "submission_period_disclaimer": "Välttyäksemme turhalta datalta, kirjaukset on rajoitettu tehtäväksi kerran joka 12. tunti.",
+      "queued_entries": "Sinulla on %{queuedEntries} kirjausta, joita ei ole vielä synkronoitu serverin kanssa.",
+      "sync_now": "Synkronoi nyt",
+      "questions": {
+        "do_you_have_fever": "Onko sinulla kuumetta tällä hetkellä?",
+        "yes": "Kyllä",
+        "no": "Ei",
+        "how_much": "Paljonko?",
+        "degrees_of_fever": "%{degrees} astetta kuumetta",
+        "not_measured": "En tiedä tarkalleen, en ole mitannut.",
+        "birth_year": "Syntymävuosi",
+        "birth_year_placeholder": "Syntymävuosi (vuodet 1900 - 2020)",
+        "gender_in_passport": "Passissa tai muussa virallisessa dokumentissa merkitty sukupuoli.",
+        "male": "Mies",
+        "female": "Nainen",
+        "location_information": "Sijaintitiedot",
+        "city": "Kaupunki",
+        "country": "Maa",
+        "postal_code": "Postinumero",
+        "location_determination_subtitle": "Sijainti määritellään sijaintirajapintaa käyttäen. Sallithan sijaintitunnistimien käytön.",
+        "location_change_subtitle": "Päivittääksesi sijaintitiedot, päivitä tiedot maa- ja postinumerokentissä ja paina alla olevaa painiketta.",
+        "update_location": "Päivitä sijainti",
+        "use_gps": "Hae sijainti GPS avulla"
+      },
+      "previous_submissions": "Viimeisimmät kirjaukset",
+      "submit": "Lähetä"
+    },
+
+    "stats": {
+      "stats": "Tilastot"
+    },
+
+    "system_messages": {
+      "success": {
+        "location_update": "Sijainti päivitetty onnistuneesti",
+        "data_entry": "Kirjaus lisätty onnistuneesti",
+        "offline_entry_queued": "Olet offline tilassa. Kirjaus lisätään jonoon.",
+        "sync_finished": "Onnistuneesti synkronoitu kirjaukset."
+      },
+      "error": {
+        "age_not_in_range": "Syntymävuosi ei ole sallitussa haarukassa (1900 - 2020).",
+        "fever_temp_value_invalid": "Kuumeen määrä ei ole sallittu luku.",
+        "location_data_invalid": "Syötetty sijaintidata ei ole sallittu.",
+        "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa."
+      }
+    }
   },
   "en": {
 
     "lang_name": "English",
     "language": "Language",
-    "fevermap_title": "Fever Map"
+    "fevermap_title": "Fever Map",
+
+    "landing": {
+      "about": "About",
+      "about_content_explanation": "is a web application created for simple fever data collection in the Coronavirus epidemic.",
+      "about_current_methods": "Current methods of tracking the spread of the Corona virus do not yield a complete picture. It is far to slow and cumbersome to test everybody, and there isn't enough tests anyway.",
+      "about_motivation": "The Fever Map is an effort to fix this by having ordinary people around the world self-report their fever. Using biological population methods we can estimate the prevalence of COVID-19 infections in real-time and provide authorities with data that helps them fight the pandemic.",
+      "about_data_collection": "The data collected by Fever Map is anonymized and will be used to help with raising awareness of the current global situation.",
+      "about_current_participant_count": "To this day, Fever Map has accumulated reports from %{participantCount} people.",
+
+      "how_to_participate": "How do I participate?",
+      "participation_info": "To participate, you need to measure your own body temperature, and submit it with a few other pieces of information at the Data entry -view.",
+      "info_disclaimer": "We will not ask you for any data, that could be used to identify you. We value your privacy.",
+
+      "how_will_my_data_be_used": "How will my data be used?",
+      "data_use_explanation": "The data will be anonymized, and shared as open data through our API."
+    },
+    "entry": {
+      "data_entry": "Data entry",
+      "last_submission": "Last submission",
+      "submission_period_disclaimer": "To prevent unnecessary data, submissions are restricted to once every 12 hours.",
+      "queued_entries": "You have %{queuedEntries} entries that haven't been yet synced with the server.",
+      "sync_now": "Sync now",
+      "questions": {
+        "do_you_have_fever": "Do you have fever at the moment?",
+        "yes": "Yes",
+        "no": "No",
+        "how_much": "How much?",
+        "degrees_of_fever": "%{degrees} of fever",
+        "not_measured": "Don't know exactly, not measured.",
+        "birth_year": "Birth year",
+        "birth_year_placeholder": "Year of birth (years 1900 - 2020)",
+        "gender_in_passport": "Gender as stated in your passport or other government records",
+        "male": "Male",
+        "female": "Female",
+        "location_information": "Location information",
+        "city": "City",
+        "country": "Country",
+        "postal_code": "Postal code",
+        "location_determination_subtitle": "Location is determined using location API. Make sure to allow location sensors.",
+        "location_change_subtitle": "To update location information, update the value in the country and postal code field or press the button below.",
+        "update_location": "Update location",
+        "use_gps": "Get location from GPS"
+      },
+      "previous_submissions": "Previous submissions",
+      "submit": "Submit"
+    },
+
+    "stats": {
+      "stats": "Stats"
+    },
+
+    "system_messages": {
+      "success": {
+        "location_update": "Location updated successfully",
+        "data_entry": "Successfully submitted data entry",
+        "offline_entry_queued": "Seems like you are offline. Entry has been queued.",
+        "sync_finished": "Successfully synced entries."
+      },
+      "error": {
+        "age_not_in_range": "Given birth year is not in the allowed range (1900 - 2020).",
+        "fever_temp_value_invalid": "The fever temperature value is not valid.",
+        "location_data_invalid": "The given location data is invalid.",
+        "api_data_invalid": "Data sent to the API was invalid."
+      }
+    }
   }
 }

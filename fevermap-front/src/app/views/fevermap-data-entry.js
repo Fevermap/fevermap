@@ -12,6 +12,7 @@ import ScrollService from '../services/scroll-service';
 import dayjs from 'dayjs';
 import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import DataEntryService from '../services/data-entry-service';
+import Translator from '../util/translator';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -57,7 +58,6 @@ class FevermapDataEntry extends LitElement {
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? JSON.parse(lastLocation) : null;
-        console.log(this.latestEntry);
 
         // Actual usage of F versus C in measuring body temperature is unclear, this mapping largely assumes
         // weather and body temperature units correlate.
@@ -140,7 +140,7 @@ class FevermapDataEntry extends LitElement {
 
                 this.performUpdate();
                 if (forceUpdate) {
-                    SnackBar.success('Location updated successfully.');
+                    SnackBar.success(Translator.get('system_messages.success.location_update'));
                 }
             });
         } else {
@@ -215,20 +215,21 @@ class FevermapDataEntry extends LitElement {
         feverData.gender = this.gender === 'male' ? 'M' : 'F';
         const geoCodingInfo = await this.getGeoCodingInputInfo();
         feverData.location_country_code = geoCodingInfo.country_code;
+        feverData.location_postal_code = geoCodingInfo.postal_code;
         feverData.location_lng = geoCodingInfo.location_lng;
         feverData.location_lat = geoCodingInfo.location_lat;
 
         if (feverData.birth_year > 2020 || feverData.birth_year < 1900) {
-            this.errorMessage = 'AGE_NOT_IN_RANGE';
+            this.errorMessage = Translator.get('system_messages.error.age_not_in_range');
             return;
         }
 
         if (feverData.fever_status && (feverData.fever_temp < 37 || feverData.fever_temp > 44)) {
-            this.errorMessage = 'FEVER_AMOUNT_MANIPULATED';
+            this.errorMessage = Translator.get('system_messages.error.fever_temp_value_invalid');
             return;
         }
         if (this.locationDataIsInvalid(geoCodingInfo)) {
-            this.errorMessage = 'LOCATION_DATA_INVALID';
+            this.errorMessage = Translator.get('system_messages.error.location_data_invalid');
             return;
         }
         this.errorMessage = null;
@@ -240,20 +241,18 @@ class FevermapDataEntry extends LitElement {
         } else {
             switch (submissionResponse.reason) {
                 case 'INVALID_DATA':
-                    SnackBar.error('INVALID_DATA');
+                    SnackBar.error(Translator.get('system_messages.error.api_data_invalid'));
                     break;
                 case 'NETWORK_STATUS_OFFLINE':
                     this.handlePostSubmissionActions(feverData, Date.now(), true);
                     break;
                 default:
-                    SnackBar.error('Data entry error.');
+                    SnackBar.error(Translator.get('system_messages.error.api_data_invalid'));
             }
         }
     }
 
     async handlePostSubmissionActions(feverData, submissionTime, entryGotQueued) {
-        console.table(feverData);
-
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
         localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
 
@@ -263,9 +262,9 @@ class FevermapDataEntry extends LitElement {
         if (!entryGotQueued) {
             const db = await DBUtil.getInstance();
             const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
-            SnackBar.success('Successfully submitted data entry');
+            SnackBar.success(Translator.get('system_messages.success.data_entry'));
         } else {
-            SnackBar.success('NETWORK_STATUS_OFFLINE');
+            SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
         }
         ScrollService.scrollToTop();
     }
@@ -284,7 +283,7 @@ class FevermapDataEntry extends LitElement {
             }
             if (i === this.queuedEntries.length - 1) {
                 if (successfulSyncCount > 0) {
-                    SnackBar.success('Successfully synced entries');
+                    SnackBar.success(Translator.get('system_messages.success.sync_finished'));
                     setTimeout(() => {
                         window.location.reload();
                     }, 3000);
@@ -309,7 +308,12 @@ class FevermapDataEntry extends LitElement {
         );
         localStorage.setItem('LAST_LOCATION', JSON.stringify(geoCodingInfo));
 
-        return { country_code: geoCodingInfo.countryShort, location_lat: coords.lat, location_lng: coords.lng };
+        return {
+            country_code: geoCodingInfo.countryShort,
+            location_lat: coords.lat,
+            location_lng: coords.lng,
+            postal_code: geoCodingInfo.postal_code,
+        };
     }
 
     async handleLocationUpdate() {
@@ -325,30 +329,29 @@ class FevermapDataEntry extends LitElement {
         );
         if (!geoCodingInfo.success) {
             console.error(geoCodingInfo);
-            SnackBar.error('LOCATION_DATA_ERROR');
-            this.errorMessage = 'Could not get location. Check the location information.';
+            SnackBar.error(Translator.get('system_messages.error.location_data_invalid'));
+            this.errorMessage = Translator.get('system_messages.error.location_data_invalid');
             return;
         }
         this.errorMessage = null;
         delete geoCodingInfo.success;
         this.geoCodingInfo = geoCodingInfo;
-        SnackBar.success('Location updated successfully.');
+        SnackBar.success(Translator.get('system_messages.success.location_update'));
     }
 
     render() {
         return html`
             <div class="container view-wrapper">
                 <div class="fevermap-data-entry-content">
-                    <h1>Data Entry</h1>
+                    <h1>${Translator.get('entry.data_entry')}</h1>
                     ${this.lastSubmissionTime
                         ? html`
                               <div class="entry-disclaimer">
-                                  <p>Last submission: ${this.lastSubmissionTime}</p>
+                                  <p>${Translator.get('entry.last_submission')}: ${this.lastSubmissionTime}</p>
                                   ${this.lastSubmissionIsTooCloseToNow
                                       ? html`
                                             <p>
-                                                To prevent unnecessary data, submissions are restricted to once every 12
-                                                hours.
+                                                ${Translator.get('entry.submission_period_disclaimer')}
                                             </p>
                                         `
                                       : ''}
@@ -372,15 +375,14 @@ class FevermapDataEntry extends LitElement {
                 ? html`
                       <div class="queued-entries-field">
                           <p>
-                              You have ${this.queuedEntries.length} entries that haven't been yet synced with the
-                              server.
+                              ${Translator.get('entry.queued_entries', { queuedEntries: this.queuedEntries.length })}
                           </p>
                           <div class="submit-queued-button">
                               <button class="mdc-button mdc-button--outlined" @click="${this.submitQueuedEntries}">
                                   <div class="mdc-button__ripple"></div>
 
                                   <i class="material-icons mdc-button__icon" aria-hidden="true">sync</i>
-                                  <span class="mdc-button__label">Sync now</span>
+                                  <span class="mdc-button__label">${Translator.get('entry.sync_now')}</span>
                               </button>
                           </div>
                       </div>
@@ -392,7 +394,7 @@ class FevermapDataEntry extends LitElement {
     getFeverMeter() {
         return html`
             <div class="entry-field">
-                <p>Do you have fever at the moment?</p>
+                <p>${Translator.get('entry.questions.do_you_have_fever')}</p>
                 <div
                     class="fever-answer-button mdc-elevation--z3${
                         this.hasFever ? ' fever-answer-button--has-fever' : ' fever-answer-button--no-fever'
@@ -400,18 +402,18 @@ class FevermapDataEntry extends LitElement {
                 >
                     <div class="no-button fever-button${this.hasFever ? '' : ' fever-button--selected'}"
                     @click="${() => this.handleFeverButton(false)}">
-                        <p>No</p>
+                        <p>${Translator.get('entry.questions.no')}</p>
                     </div>
                     <div class="yes-button fever-button${this.hasFever ? ' fever-button--selected' : ''}"
                     @click="${() => this.handleFeverButton(true)}">
-                        <p>Yes</p>
+                        <p>${Translator.get('entry.questions.yes')}</p>
                     </div>
                 </div>
                     ${
                         this.hasFever
                             ? html`
                                   <div class="fever-meters ${this.feverAmountNotKnown ? ' fever-meters--hidden' : ''}">
-                                      <p>How much</p>
+                                      <p>${Translator.get('entry.questions.how_much')}</p>
 
                                       <div class="fever-slider">
                                           <div
@@ -439,7 +441,10 @@ class FevermapDataEntry extends LitElement {
                                           </div>
                                       </div>
                                       <p class="fever-amount-display">
-                                          ${this.getFeverWithUnit()} of fever (${this.getFeverWithUnit(true)})
+                                          ${Translator.get('entry.questions.degrees_of_fever', {
+                                              degrees: this.getFeverWithUnit(),
+                                          })}
+                                          (${this.getFeverWithUnit(true)})
                                       </p>
                                   </div>
                                   <div
@@ -462,7 +467,7 @@ class FevermapDataEntry extends LitElement {
                                           <div class="mdc-checkbox__ripple"></div>
                                       </div>
 
-                                      <label for="checkbox-1">Don't know exactly, not measured</label>
+                                      <label for="checkbox-1">${Translator.get('entry.questions.not_measured')}</label>
                                   </div>
                               `
                             : ''
@@ -475,9 +480,9 @@ class FevermapDataEntry extends LitElement {
     getYearOfBirthInput() {
         return html`
             <div class="entry-field">
-                <p>Birth year</p>
+                <p>${Translator.get('entry.questions.birth_year')}</p>
                 <input-field
-                    placeHolder="Year of birth (years 1900 - 2020)"
+                    placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
                     fieldId="year-of-birth-input"
                     id="birth-year"
                     value="${this.latestEntry ? this.latestEntry.birth_year : ''}"
@@ -489,7 +494,7 @@ class FevermapDataEntry extends LitElement {
     getGenderInput() {
         return html`
             <div class="entry-field">
-                <p>Gender as stated in your passport or other government records</p>
+                <p>${Translator.get('entry.questions.gender_in_passport')}</p>
                 <div class="gender-input-holder mdc-elevation--z3">
                     <div
                         @click="${() => (this.gender = 'male')}"
@@ -498,7 +503,7 @@ class FevermapDataEntry extends LitElement {
                             : ''}"
                     >
                         <img src="${maleIcon}" />
-                        <p>Male</p>
+                        <p>${Translator.get('entry.questions.male')}</p>
                     </div>
                     <div
                         @click="${() => (this.gender = 'female')}"
@@ -507,7 +512,7 @@ class FevermapDataEntry extends LitElement {
                             : ''}"
                     >
                         <img src="${femaleIcon}" />
-                        <p>Female</p>
+                        <p>${Translator.get('entry.questions.female')}</p>
                     </div>
                 </div>
             </div>
@@ -517,22 +522,22 @@ class FevermapDataEntry extends LitElement {
     getGeoLocationInput() {
         return html`
             <div class="entry-field">
-                <p>Location information</p>
+                <p>${Translator.get('entry.questions.location_information')}</p>
                 <input-field
-                    placeHolder="City"
+                    placeHolder="${Translator.get('entry.questions.city')}"
                     fieldId="location-city-input"
                     id="location-city"
                     value="${this.geoCodingInfo ? this.geoCodingInfo.city : ''}"
                     ?disabled=${true}
                 ></input-field>
                 <select-field
-                    id="location-country"
+                    id="${Translator.get('entry.questions.country')}"
                     label="Country"
                     .options="${this.countrySelectionOptions}"
                     selectedValueIndex="${this.selectedCountryIndex}"
                 ></select-field>
                 <input-field
-                    placeHolder="Postal code"
+                    placeHolder="${Translator.get('entry.questions.postal_code')}"
                     fieldId="location-postal-code"
                     id="location-postal-code"
                     value="${this.geoCodingInfo && this.geoCodingInfo.postal_code
@@ -540,17 +545,17 @@ class FevermapDataEntry extends LitElement {
                         : ''}"
                 ></input-field>
                 <p class="subtitle">
-                    Location is determined using location API.
+                    ${Translator.get('entry.questions.location_determination_subtitle')}
                 </p>
                 <p class="subtitle">
-                    To update location information, update the value in the postal code field or press the button below.
+                    ${Translator.get('entry.questions.location_change_subtitle')}
                 </p>
                 <div class="geolocation-button">
                     <button class="mdc-button mdc-button--outlined" @click="${() => this.handleLocationUpdate()}">
                         <div class="mdc-button__ripple"></div>
 
                         <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
-                        <span class="mdc-button__label">Update location</span>
+                        <span class="mdc-button__label">${Translator.get('entry.questions.update_location')}</span>
                     </button>
                 </div>
                 <div class="geolocation-button">
@@ -558,7 +563,7 @@ class FevermapDataEntry extends LitElement {
                         <div class="mdc-button__ripple"></div>
 
                         <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
-                        <span class="mdc-button__label">Get location from GPS</span>
+                        <span class="mdc-button__label">${Translator.get('entry.questions.use_gps')}</span>
                     </button>
                 </div>
             </div>
@@ -578,7 +583,7 @@ class FevermapDataEntry extends LitElement {
                         <div class="mdc-button__ripple"></div>
 
                         <i class="material-icons mdc-button__icon" aria-hidden="true">send</i>
-                        <span class="mdc-button__label">Submit</span>
+                        <span class="mdc-button__label">${Translator.get('entry.submit')}</span>
                     </button>
                 </div>
             </div>
@@ -588,7 +593,7 @@ class FevermapDataEntry extends LitElement {
     getPreviousSubmissionsSummary() {
         return html`
             <div class="submission-summary">
-                <p>Previous submissions</p>
+                <p>${Translator.get('entry.previous_submissions')}</p>
                 ${this.previousSubmissions.map(submission => {
                     return html`
                         <div
@@ -598,7 +603,9 @@ class FevermapDataEntry extends LitElement {
                         >
                             <p>
                                 ${dayjs(submission.submission_time).format('DD-MM-YYYY:HH:mm')} - Fever:
-                                ${submission.fever_status ? 'Yes' : 'No'}${submission.fever_status
+                                ${submission.fever_status
+                                    ? Translator.get('entry.questions.yes')
+                                    : Translator.get('entry.questions.no')}${submission.fever_status
                                     ? `, ${this.getFeverWithUnit(false, submission.fever_temp)}`
                                     : ''}
                             </p>

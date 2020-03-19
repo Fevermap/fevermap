@@ -1,4 +1,5 @@
 import { LitElement, html } from 'lit-element';
+import Translator from '../util/translator';
 
 class FevermapNavigation extends LitElement {
     static get properties() {
@@ -99,7 +100,7 @@ class FevermapNavigation extends LitElement {
                     data-navigation-order="1"
                 >
                     <material-icon icon="info"></material-icon>
-                    <p>About</p>
+                    <p>${Translator.get('landing.about')}</p>
                 </div>
                 <div
                     @click="${this.handleNavigationClick}"
@@ -111,7 +112,7 @@ class FevermapNavigation extends LitElement {
                     data-navigation-order="2"
                 >
                     <material-icon icon="add_comment"></material-icon>
-                    <p>Data Entry</p>
+                    <p>${Translator.get('entry.data_entry')}</p>
                 </div>
                 <div
                     @click="${this.handleNavigationClick}"
@@ -123,7 +124,7 @@ class FevermapNavigation extends LitElement {
                     data-navigation-order="3"
                 >
                     <material-icon icon="assessment"></material-icon>
-                    <p>Statistics</p>
+                    <p>${Translator.get('stats.stats')}</p>
                 </div>
             </div>
             ,

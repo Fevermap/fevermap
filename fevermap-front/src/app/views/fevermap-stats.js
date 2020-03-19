@@ -20,7 +20,7 @@ class FevermapStats extends LitElement {
         return html`
             <div class="container view-wrapper">
                 <div class="fevermap-stats-content">
-                    <h1>Stats</h1>
+                    <h1>${Translator.get('stats.stats')}</h1>
                 </div>
             </div>
         `;
