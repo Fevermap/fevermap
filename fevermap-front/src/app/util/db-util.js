@@ -7,7 +7,7 @@ export const QUEUED_ENTRIES = 'queuedEntries';
 const objectStores = [
     {
         name: FEVER_ENTRIES,
-        options: { keyPath: 'id' },
+        options: { keyPath: 'id', autoIncrement: true },
     },
     {
         name: QUEUED_ENTRIES,

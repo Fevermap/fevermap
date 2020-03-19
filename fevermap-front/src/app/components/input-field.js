@@ -38,6 +38,12 @@ class InputField extends LitElement {
         return this.elem.getDefaultFoundation().getValue();
     }
 
+    setValue(value) {
+        if (this.elem) {
+            this.elem.getDefaultFoundation().setValue(value);
+        }
+    }
+
     handleBlur(e) {
         this.dispatchEvent(new CustomEvent('input-blur', e));
     }

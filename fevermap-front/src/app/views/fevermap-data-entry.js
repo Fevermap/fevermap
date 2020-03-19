@@ -6,6 +6,7 @@ import femaleIcon from 'src/assets/images/female.svg';
 import { MDCRipple } from '@material/ripple/component';
 import GeolocatorService from '../services/geolocator-service';
 import 'src/app/components/input-field';
+import 'src/app/components/select-field';
 import SnackBar from '../components/snackbar';
 import ScrollService from '../services/scroll-service';
 import dayjs from 'dayjs';
@@ -26,7 +27,10 @@ class FevermapDataEntry extends LitElement {
             feverAmount: { type: Number },
             feverAmountNowKnown: { type: Boolean },
             gender: { type: String },
+
             geoCodingInfo: { type: Object },
+            countrySelectionOptions: { type: Array },
+            selectedCountryIndex: { type: Number },
 
             errorMessage: { type: String },
         };
@@ -40,6 +44,7 @@ class FevermapDataEntry extends LitElement {
         super();
         let latestEntry = JSON.parse(localStorage.getItem('LATEST_ENTRY'));
         let lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
+        let lastLocation = localStorage.getItem('LAST_LOCATION');
         if (lastEntryTime) {
             this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
             this.lastSubmissionIsTooCloseToNow = Date.now() - Number(lastEntryTime) < 43200000; // 12 hours in milliseconds
@@ -48,29 +53,31 @@ class FevermapDataEntry extends LitElement {
         this.hasFever = false;
         this.feverAmount = 37;
         this.feverAmountNotKnown = false;
-        this.gender = latestEntry ? latestEntry.gender : 'male';
+        this.gender = latestEntry && latestEntry.gender === 'F' ? 'female' : 'male';
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
-        this.geoCodingInfo = latestEntry ? latestEntry.geoCodingInfo : null;
+        this.geoCodingInfo = latestEntry ? JSON.parse(lastLocation) : null;
+        console.log(this.latestEntry);
 
         // Actual usage of F versus C in measuring body temperature is unclear, this mapping largely assumes
         // weather and body temperature units correlate.
         this.fahrenheitTerritories = {
-            'CA': false, // Canada uses both, and F mostly for cooking
-            'US': true,
+            CA: false, // Canada uses both, and F mostly for cooking
+            US: true,
             'US-AS': true,
             'US-GU': true,
             'US-MP': true,
             'US-PR': true,
             'US-UM': true,
             'US-VI': true,
-            'BZ': true,     // Belize
-            'PW': true,     // Palau
-            'FM': true,     // Micronesia
-            'BS': true,     // Bahamas
-            'MH': true,     // Marshall Islands
-            'KY': true,     // Cayman
+            BZ: true, // Belize
+            PW: true, // Palau
+            FM: true, // Micronesia
+            BS: true, // Bahamas
+            MH: true, // Marshall Islands
+            KY: true, // Cayman
         };
+        this.createCountrySelectOptions();
         this.previousSubmissions = [];
         this.hasQueuedEntries = false;
         this.queuedEntries = [];
@@ -81,6 +88,16 @@ class FevermapDataEntry extends LitElement {
         this.getGeoLocationInfo();
         this.getPreviousSubmissionsFromIndexedDb();
         this.getQueuedEntriesFromIndexedDb();
+    }
+
+    createCountrySelectOptions() {
+        this.countrySelectionOptions = GeolocatorService.getCountryList().map(entry => ({
+            id: entry.country.country_id,
+            name: `${entry.country.country_name.substring(0, 1)}${entry.country.country_name
+                .substring(1)
+                .toLowerCase()} (${entry.country.country_id})`,
+        }));
+        this.selectedCountryIndex = 0;
     }
 
     async getPreviousSubmissionsFromIndexedDb() {
@@ -105,7 +122,7 @@ class FevermapDataEntry extends LitElement {
     }
 
     async getGeoLocationInfo(forceUpdate) {
-        if (!this.geoCodingInfo || this.locationDataIsInvalid(this.geoCodingInfo) || forceUpdate) {
+        if (!this.geoCodingInfo || forceUpdate) {
             navigator.geolocation.getCurrentPosition(async success => {
                 this.geoCodingInfo = await GeolocatorService.getGeoCodingInfo(
                     success.coords.latitude,
@@ -113,16 +130,29 @@ class FevermapDataEntry extends LitElement {
                 );
 
                 delete this.geoCodingInfo.success;
+
+                let countryInSelect = this.countrySelectionOptions.find(
+                    opt => opt.id === this.geoCodingInfo.countryShort
+                );
+                if (countryInSelect) {
+                    this.selectedCountryIndex = this.countrySelectionOptions.indexOf(countryInSelect) + 1; // Take into account the empty option
+                }
+
                 this.performUpdate();
                 if (forceUpdate) {
                     SnackBar.success('Location updated successfully.');
                 }
             });
+        } else {
+            let countryInSelect = this.countrySelectionOptions.find(opt => opt.id === this.geoCodingInfo.countryShort);
+            if (countryInSelect) {
+                this.selectedCountryIndex = this.countrySelectionOptions.indexOf(countryInSelect) + 1; // Take into account the empty option
+            }
         }
     }
 
-    handleFeverButton() {
-        this.hasFever = !this.hasFever;
+    handleFeverButton(hasFever) {
+        this.hasFever = hasFever;
         if (this.hasFever) {
             setTimeout(() => {
                 let slider = this.initSlider();
@@ -147,8 +177,8 @@ class FevermapDataEntry extends LitElement {
     }
 
     useFahrenheit() {
-        return this.geoCodingInfo.countryShort
-            ? !! this.fahrenheitTerritories[this.geoCodingInfo.countryShort]
+        return this.geoCodingInfo && this.geoCodingInfo.countryShort
+            ? !!this.fahrenheitTerritories[this.geoCodingInfo.countryShort]
             : false;
     }
 
@@ -158,10 +188,8 @@ class FevermapDataEntry extends LitElement {
      * @returns {string}
      */
     getFeverWithUnit(reverse, value) {
-        let feverValue = arguments.length >=2 ? value : this.feverAmount;
-        return !!reverse ^ this.useFahrenheit()
-            ? this.celsiusToFahrenheit(feverValue) + ' °F'
-            : feverValue + ' °C';
+        let feverValue = arguments.length >= 2 ? value : this.feverAmount;
+        return !!reverse ^ this.useFahrenheit() ? this.celsiusToFahrenheit(feverValue) + ' °F' : feverValue + ' °C';
     }
 
     initSlider() {
@@ -174,26 +202,32 @@ class FevermapDataEntry extends LitElement {
 
     async handleSubmit() {
         let feverData = {};
-        let submissionTime = Date.now();
+        let device_id = localStorage.getItem('DEVICE_ID');
+        if (!device_id) {
+            device_id = Date.now();
+            localStorage.setItem('DEVICE_ID', device_id);
+        }
 
-        feverData.hasFever = this.hasFever;
-        feverData.feverAmount = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
-        feverData.birthYear = this.querySelector('#birth-year').getValue();
-        feverData.gender = this.gender;
-        feverData.geoCodingInfo = this.getGeoCodingInputInfo();
-        feverData.submissionTime = submissionTime;
-        console.log(feverData);
+        feverData.device_id = device_id;
+        feverData.fever_status = this.hasFever;
+        feverData.fever_temp = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
+        feverData.birth_year = this.querySelector('#birth-year').getValue();
+        feverData.gender = this.gender === 'male' ? 'M' : 'F';
+        const geoCodingInfo = await this.getGeoCodingInputInfo();
+        feverData.location_country_code = geoCodingInfo.country_code;
+        feverData.location_lng = geoCodingInfo.location_lng;
+        feverData.location_lat = geoCodingInfo.location_lat;
 
-        if (feverData.birthYear > 2020 || feverData.birthYear < 1900) {
+        if (feverData.birth_year > 2020 || feverData.birth_year < 1900) {
             this.errorMessage = 'AGE_NOT_IN_RANGE';
             return;
         }
 
-        if (feverData.hasFever && (feverData.feverAmount < 37 || feverData.feverAmount > 44)) {
+        if (feverData.fever_status && (feverData.fever_temp < 37 || feverData.fever_temp > 44)) {
             this.errorMessage = 'FEVER_AMOUNT_MANIPULATED';
             return;
         }
-        if (this.locationDataIsInvalid(feverData.geoCodingInfo)) {
+        if (this.locationDataIsInvalid(geoCodingInfo)) {
             this.errorMessage = 'LOCATION_DATA_INVALID';
             return;
         }
@@ -202,17 +236,14 @@ class FevermapDataEntry extends LitElement {
         const submissionResponse = await DataEntryService.handleDataEntrySubmission(feverData);
 
         if (submissionResponse.success) {
-            // For now we add a random number.
-            // This will be replaced with the id provided by the backend API
-            feverData.id = Math.floor(Math.random() * 99999);
-            this.handlePostSubmissionActions(feverData, submissionTime);
+            this.handlePostSubmissionActions(feverData, submissionResponse.submission_time);
         } else {
             switch (submissionResponse.reason) {
                 case 'INVALID_DATA':
                     SnackBar.error('INVALID_DATA');
                     break;
                 case 'NETWORK_STATUS_OFFLINE':
-                    this.handlePostSubmissionActions(feverData, submissionTime, true);
+                    this.handlePostSubmissionActions(feverData, Date.now(), true);
                     break;
                 default:
                     SnackBar.error('Data entry error.');
@@ -248,11 +279,10 @@ class FevermapDataEntry extends LitElement {
             const submissionResponse = await DataEntryService.handleDataEntrySubmission(entry, false);
             if (submissionResponse.success) {
                 db.delete(QUEUED_ENTRIES, id);
+                await db.add(FEVER_ENTRIES, entry);
                 successfulSyncCount++;
-                console.log('SYNC');
             }
             if (i === this.queuedEntries.length - 1) {
-                console.log(successfulSyncCount);
                 if (successfulSyncCount > 0) {
                     SnackBar.success('Successfully synced entries');
                     setTimeout(() => {
@@ -264,34 +294,38 @@ class FevermapDataEntry extends LitElement {
     }
 
     locationDataIsInvalid(locationData) {
-        return (
-            !locationData ||
-            !locationData.country ||
-            !locationData.city ||
-            !locationData.postal_code ||
-            Object.values(locationData).includes('undefined')
+        return !locationData || !locationData.country_code || !locationData.location_lat || !locationData.location_lng;
+    }
+
+    async getGeoCodingInputInfo() {
+        const postal_code = this.querySelector('#location-postal-code').getValue();
+        const country = this.querySelector('#location-country').getValue();
+
+        const coords = this.geoCodingInfo.coords;
+
+        const geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
+            postal_code,
+            country.value.id
         );
+        localStorage.setItem('LAST_LOCATION', JSON.stringify(geoCodingInfo));
+
+        return { country_code: geoCodingInfo.countryShort, location_lat: coords.lat, location_lng: coords.lng };
     }
 
-    getGeoCodingInputInfo() {
-        let city = this.querySelector('#location-city').getValue();
-        let postal_code = this.querySelector('#location-postal-code').getValue();
-        let country = this.querySelector('#location-country').getValue();
-        let coords = this.geoCodingInfo.coords;
-        return { city, postal_code, country, coords };
-    }
+    async handleLocationUpdate() {
+        const postal_code = this.querySelector('#location-postal-code').getValue();
+        const country = this.querySelector('#location-country').getValue();
 
-    async handlePostalCodeChange(newPostalCode) {
-        if (newPostalCode === this.geoCodingInfo.postal_code) {
+        if (!postal_code || !country) {
             return;
         }
-        let geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
-            newPostalCode,
-            this.geoCodingInfo.country
+        const geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
+            postal_code,
+            country.value.id
         );
         if (!geoCodingInfo.success) {
             console.error(geoCodingInfo);
-            SnackBar.error('Could not get location data.');
+            SnackBar.error('LOCATION_DATA_ERROR');
             this.errorMessage = 'Could not get location. Check the location information.';
             return;
         }
@@ -363,12 +397,13 @@ class FevermapDataEntry extends LitElement {
                     class="fever-answer-button mdc-elevation--z3${
                         this.hasFever ? ' fever-answer-button--has-fever' : ' fever-answer-button--no-fever'
                     }"
-                    @click="${this.handleFeverButton}"
                 >
-                    <div class="no-button fever-button${this.hasFever ? '' : ' fever-button--selected'}">
+                    <div class="no-button fever-button${this.hasFever ? '' : ' fever-button--selected'}"
+                    @click="${() => this.handleFeverButton(false)}">
                         <p>No</p>
                     </div>
-                    <div class="yes-button fever-button${this.hasFever ? ' fever-button--selected' : ''}">
+                    <div class="yes-button fever-button${this.hasFever ? ' fever-button--selected' : ''}"
+                    @click="${() => this.handleFeverButton(true)}">
                         <p>Yes</p>
                     </div>
                 </div>
@@ -445,7 +480,7 @@ class FevermapDataEntry extends LitElement {
                     placeHolder="Year of birth (years 1900 - 2020)"
                     fieldId="year-of-birth-input"
                     id="birth-year"
-                    value="${this.latestEntry ? this.latestEntry.birthYear : ''}"
+                    value="${this.latestEntry ? this.latestEntry.birth_year : ''}"
                 ></input-field>
             </div>
         `;
@@ -490,19 +525,19 @@ class FevermapDataEntry extends LitElement {
                     value="${this.geoCodingInfo ? this.geoCodingInfo.city : ''}"
                     ?disabled=${true}
                 ></input-field>
-                <input-field
-                    placeHolder="Country"
-                    fieldId="location-country-input"
+                <select-field
                     id="location-country"
-                    value="${this.geoCodingInfo ? this.geoCodingInfo.country : ''}"
-                    ?disabled="${true}"
-                ></input-field>
+                    label="Country"
+                    .options="${this.countrySelectionOptions}"
+                    selectedValueIndex="${this.selectedCountryIndex}"
+                ></select-field>
                 <input-field
                     placeHolder="Postal code"
                     fieldId="location-postal-code"
                     id="location-postal-code"
-                    value="${this.geoCodingInfo ? this.geoCodingInfo.postal_code : ''}"
-                    @input-blur="${e => this.handlePostalCodeChange(e.target.getValue())}"
+                    value="${this.geoCodingInfo && this.geoCodingInfo.postal_code
+                        ? this.geoCodingInfo.postal_code
+                        : ''}"
                 ></input-field>
                 <p class="subtitle">
                     Location is determined using location API.
@@ -511,7 +546,7 @@ class FevermapDataEntry extends LitElement {
                     To update location information, update the value in the postal code field or press the button below.
                 </p>
                 <div class="geolocation-button">
-                    <button class="mdc-button mdc-button--outlined">
+                    <button class="mdc-button mdc-button--outlined" @click="${() => this.handleLocationUpdate()}">
                         <div class="mdc-button__ripple"></div>
 
                         <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
@@ -557,14 +592,15 @@ class FevermapDataEntry extends LitElement {
                 ${this.previousSubmissions.map(submission => {
                     return html`
                         <div
-                            class="submission${submission.hasFever
+                            class="submission${submission.fever_status
                                 ? ' submission--has-fever'
                                 : ' submission--no-fever'}"
                         >
                             <p>
-                                ${dayjs(submission.submissionTime).format('DD-MM-YYYY:HH:mm')} - Fever:
-                                ${submission.hasFever ? 'Yes' : 'No'}
-                                ${submission.hasFever ? `, ${this.getFeverWithUnit(false, submission.feverAmount)}` : ''}
+                                ${dayjs(submission.submission_time).format('DD-MM-YYYY:HH:mm')} - Fever:
+                                ${submission.fever_status ? 'Yes' : 'No'}${submission.fever_status
+                                    ? `, ${this.getFeverWithUnit(false, submission.fever_temp)}`
+                                    : ''}
                             </p>
                         </div>
                     `;
