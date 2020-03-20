@@ -9,6 +9,7 @@ class InputField extends LitElement {
             value: { type: String },
             elem: { type: Object },
             disabled: { type: Boolean },
+            type: { type: String },
         };
     }
 
@@ -19,6 +20,7 @@ class InputField extends LitElement {
         this.value = '';
         this.elem = null;
         this.disabled = false;
+        this.type = 'text';
     }
 
     firstUpdated(_changedProperties) {
@@ -54,7 +56,7 @@ class InputField extends LitElement {
                 <div class="mdc-text-field__ripple"></div>
                 <input
                     class="mdc-text-field__input"
-                    type="text"
+                    type="${this.type}"
                     aria-labelledby="${this.fieldId}"
                     value="${this.value}"
                     ?disabled="${this.disabled}"

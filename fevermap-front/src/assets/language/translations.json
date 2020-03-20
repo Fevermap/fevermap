@@ -66,7 +66,8 @@
         "age_not_in_range": "Syntymävuosi ei ole sallitussa haarukassa (1900 - 2020).",
         "fever_temp_value_invalid": "Kuumeen määrä ei ole sallittu luku.",
         "location_data_invalid": "Syötetty sijaintidata ei ole sallittu.",
-        "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa."
+        "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa.",
+        "gender_not_set": "Sukupuolta ei ole valittu."
       }
     },
 
@@ -147,7 +148,8 @@
         "age_not_in_range": "Given birth year is not in the allowed range (1900 - 2020).",
         "fever_temp_value_invalid": "The fever temperature value is not valid.",
         "location_data_invalid": "The given location data is invalid.",
-        "api_data_invalid": "Data sent to the API was invalid."
+        "api_data_invalid": "Data sent to the API was invalid.",
+        "gender_not_set": "Gender is not set."
       }
     },
     "dialog": {

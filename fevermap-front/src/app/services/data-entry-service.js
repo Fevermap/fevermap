@@ -1,13 +1,15 @@
 import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 
+const apiSubmitUrl = 'https://dev.fevermap.net/api/v0/submit';
+
 export default class DataEntryService {
     static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
         try {
-            let response = await fetch('localhost'); // The real post comes here
+            let response = await fetch(apiSubmitUrl);
             if (!response.ok) {
                 return { success: false, reason: 'INVALID_DATA' };
             }
-            const resJson = await response.text(); // Change to json on real one
+            const resJson = await response.json(); // Change to json on real one
             return { success: true, data: resJson };
         } catch (err) {
             console.error('Error: ', err);

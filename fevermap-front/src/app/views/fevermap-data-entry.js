@@ -53,10 +53,10 @@ class FevermapDataEntry extends LitElement {
         }
         this.firstTimeSubmitting = latestEntry == null;
         this.errorMessage = null;
-        this.hasFever = false;
+        this.hasFever = null;
         this.feverAmount = 37;
         this.feverAmountNotKnown = false;
-        this.gender = latestEntry && latestEntry.gender === 'F' ? 'female' : 'male';
+        this.gender = latestEntry ? latestEntry.gender : null;
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? JSON.parse(lastLocation) : null;
@@ -214,7 +214,7 @@ class FevermapDataEntry extends LitElement {
         feverData.fever_status = this.hasFever;
         feverData.fever_temp = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
         feverData.birth_year = this.querySelector('#birth-year').getValue();
-        feverData.gender = this.gender === 'male' ? 'M' : 'F';
+        feverData.gender = this.gender;
         const geoCodingInfo = await this.getGeoCodingInputInfo();
         feverData.location_country_code = geoCodingInfo.country_code;
         feverData.location_postal_code = geoCodingInfo.postal_code;
@@ -226,7 +226,15 @@ class FevermapDataEntry extends LitElement {
             return;
         }
 
-        if (feverData.fever_status && (feverData.fever_temp < 37 || feverData.fever_temp > 44)) {
+        if (feverData.gender === null) {
+            this.errorMessage = Translator.get('system_messages.error.gender_not_set');
+            return;
+        }
+
+        if (
+            feverData.fever_status === null ||
+            (feverData.fever_status && (feverData.fever_temp < 37 || feverData.fever_temp > 44))
+        ) {
             this.errorMessage = Translator.get('system_messages.error.fever_temp_value_invalid');
             return;
         }
@@ -239,7 +247,7 @@ class FevermapDataEntry extends LitElement {
         const submissionResponse = await DataEntryService.handleDataEntrySubmission(feverData);
 
         if (submissionResponse.success) {
-            this.handlePostSubmissionActions(feverData, submissionResponse.submission_time);
+            this.handlePostSubmissionActions(feverData, Date.now());
         } else {
             switch (submissionResponse.reason) {
                 case 'INVALID_DATA':
@@ -405,9 +413,10 @@ class FevermapDataEntry extends LitElement {
                 <div
                     class="fever-answer-button mdc-elevation--z3${
                         this.hasFever ? ' fever-answer-button--has-fever' : ' fever-answer-button--no-fever'
-                    }"
+                    }
+                    ${this.hasFever === null ? ' fever-answer-button--not-set' : ''}"
                 >
-                    <div class="no-button fever-button${this.hasFever ? '' : ' fever-button--selected'}"
+                    <div class="no-button fever-button${this.hasFever === false ? ' fever-button--selected' : ''}"
                     @click="${() => this.handleFeverButton(false)}">
                         <p>${Translator.get('entry.questions.no')}</p>
                     </div>
@@ -493,6 +502,7 @@ class FevermapDataEntry extends LitElement {
                     fieldId="year-of-birth-input"
                     id="birth-year"
                     value="${this.latestEntry ? this.latestEntry.birth_year : ''}"
+                    type="number"
                 ></input-field>
             </div>
         `;
@@ -502,21 +512,21 @@ class FevermapDataEntry extends LitElement {
         return html`
             <div class="entry-field">
                 <p>${Translator.get('entry.questions.gender_in_passport')}</p>
-                <div class="gender-input-holder mdc-elevation--z3">
+                <div
+                    class="gender-input-holder mdc-elevation--z3${this.gender == null
+                        ? ' gender-input-holder--none-selected'
+                        : ''}"
+                >
                     <div
-                        @click="${() => (this.gender = 'male')}"
-                        class="gender-input gender-input--male${this.gender === 'male'
-                            ? ' gender-input--selected'
-                            : ''}"
+                        @click="${() => (this.gender = 'M')}"
+                        class="gender-input gender-input--male${this.gender === 'M' ? ' gender-input--selected' : ''}"
                     >
                         <img src="${maleIcon}" />
                         <p>${Translator.get('entry.questions.male')}</p>
                     </div>
                     <div
-                        @click="${() => (this.gender = 'female')}"
-                        class="gender-input gender-input--female${this.gender === 'female'
-                            ? ' gender-input--selected'
-                            : ''}"
+                        @click="${() => (this.gender = 'F')}"
+                        class="gender-input gender-input--female${this.gender === 'F' ? ' gender-input--selected' : ''}"
                     >
                         <img src="${femaleIcon}" />
                         <p>${Translator.get('entry.questions.female')}</p>

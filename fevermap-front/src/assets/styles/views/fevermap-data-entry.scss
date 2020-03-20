@@ -71,6 +71,19 @@
         }
       }
     }
+
+
+    &--not-set {
+      background: lightgray;
+
+      .fever-button {
+        color: #000;
+      }
+
+      .fever-button:first-child {
+        border-right: 2px solid #000;
+      }
+    }
   }
 }
 
@@ -102,6 +115,14 @@
   flex-direction: row;
   justify-content: space-between;
   border-radius: 5px;
+
+  &--none-selected {
+    background: lightgray;
+
+    .gender-input:first-child {
+      border-right: 2px solid;
+    }
+  }
 
   .gender-input {
     transition: 0.2s ease-in;
