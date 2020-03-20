@@ -7,6 +7,7 @@ export default class DataEntryService {
         try {
             let response = await fetch(apiSubmitUrl, {
                 method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(feverData),
             });
             if (!response.ok) {
