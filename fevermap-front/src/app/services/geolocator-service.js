@@ -46,19 +46,19 @@ export default class GeolocatorService {
     }
 
     static findCityFromAddressComponents(addressComponents) {
-        const locality = addressComponents.find(a => a.types.indexOf('locality') !== -1);
-        if (locality) return locality;
-        const postalTown = addressComponents.find(a => a.types.indexOf('postal_town') !== -1);
-        if (postalTown) return postalTown;
-        const administrativeAreaLevelOne = addressComponents.find(
-            a => a.types.indexOf('administrative_area_level_1') !== -1
-        );
-        if (administrativeAreaLevelOne) return administrativeAreaLevelOne;
-        const administrativeAreaLevelTwo = addressComponents.find(
-            a => a.types.indexOf('administrative_area_level_2') !== -1
-        );
-        if (administrativeAreaLevelTwo) return administrativeAreaLevelTwo;
-        return '';
+        function findComponent(type) {
+            return addressComponents.find(a => a.types.indexOf(type) !== -1);
+        }
+        const componentSearchOrder = [
+            'locality',
+            'postal_town',
+            'administrative_area_level_1',
+            'administrative_area_level_2',
+            'administrative_area_level_3'
+        ];
+
+        const found = componentSearchOrder.map(findComponent).find(i => !!i);
+        return found || {};
     }
 
     /**
