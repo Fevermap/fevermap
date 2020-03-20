@@ -1,0 +1,13 @@
+.mdc-snackbar {
+  z-index:999 !important;
+
+  &--error {
+
+    .mdc-snackbar__surface {
+      background-color: red;
+    }
+    .mdc-snackbar__label {
+      color: #FFF;
+    }
+  }
+}

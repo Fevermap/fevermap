@@ -1,0 +1,254 @@
+@use "~@material/button/mixins";
+
+.fevermap-data-entry-content {
+  margin: 3rem 30% 10%;
+  height: 100%;
+}
+
+.entry-fields {
+
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.1;
+  }
+
+  .entry-field {
+    margin-bottom: 4rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+  .fever-answer-button {
+    transition: 0.2s linear;
+    display: flex;
+    flex-direction: row;
+    width: 75%;
+    border-radius: 5px;
+    margin: 2rem auto 0;
+    height: 65px;
+    color: #FFF;
+    cursor: pointer;
+
+    .fever-button {
+      width: 50%;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: inherit;
+
+      &--selected {
+        background: #FFF;
+        margin: 3px;
+      }
+      p {
+        color: inherit;
+        font-size: 1.8rem;
+      }
+    }
+
+
+    &--has-fever {
+      background: #ed143d;
+
+      .fever-button {
+        color: #FFF;
+
+        &--selected {
+          color: #ed143d;
+        }
+      }
+    }
+
+    &--no-fever {
+      background: #32cd32;
+      .fever-button {
+        color: #FFF;
+
+        &--selected {
+          color: #32cd32;
+        }
+      }
+    }
+
+
+    &--not-set {
+      background: lightgray;
+
+      .fever-button {
+        color: #000;
+      }
+
+      .fever-button:first-child {
+        border-right: 2px solid #000;
+      }
+    }
+  }
+}
+
+.fever-meters {
+  opacity: 1;
+  transition: 0.1s linear;
+  &--hidden {
+    pointer-events: none;
+    opacity: 0;
+  }
+}
+
+.fever-not-measured-field {
+  &--checked {
+    /*margin-top: 3rem;*/
+  }
+}
+
+.mdc-text-field {
+  width: 100%;
+}
+
+.fever-amount-display {
+  margin: 0 0.5rem 1rem;
+}
+
+.gender-input-holder {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-radius: 5px;
+
+  &--none-selected {
+    background: lightgray;
+
+    .gender-input:first-child {
+      border-right: 2px solid;
+    }
+  }
+
+  .gender-input {
+    transition: 0.2s ease-in;
+    flex-basis: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1.5em 0 0;
+    border-radius: 5px;
+    cursor: pointer;
+
+    img {
+      width: 35%;
+      max-width: 250px;
+    }
+
+    &--female {
+      img {
+        width: 40%;
+      }
+    }
+
+    &--selected {
+      background: #32cd32;
+
+      img {
+        filter: invert(1);
+      }
+
+      p {
+        color: #FFF;
+      }
+    }
+  }
+}
+
+.mdc-slider {
+  color: #FFF;
+}
+
+.submit-button {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .mdc-button {
+    width: 100%;
+    height: 60px;
+    font-size: 1.3rem;
+
+    &:not(:disabled) {
+      color: #32cd32;
+      border-color: #32cd32;
+    }
+  }
+}
+
+p.subtitle {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+}
+
+p.mdc-theme--error {
+  font-size: 1rem;
+}
+
+.geolocation-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  button {
+    &:not(:disabled) {
+      color: #3f51b5;
+      border-color: #3f51b5;
+    }
+  }
+}
+
+.entry-disclaimer {
+  p {
+    color: #ed143d;
+  }
+}
+
+.queued-entries-field {
+  p {
+    color: #FF9800;
+  }
+  .submit-queued-button {
+    button {
+      &:not(:disabled) {
+        color: #FF9800;
+        border-color: #FF9800;
+      }
+    }
+  }
+}
+
+.submission-summary {
+  p {
+    font-size: 1rem;
+    color: inherit;
+  }
+
+  .submission {
+    &--has-fever {
+      color: #ed143d
+    }
+
+    &--no-fever {
+      color: #32cd32;
+    }
+  }
+}
+
+.first-entry-disclaimer {
+  color: #ed143d;
+}
+
+@media only screen and (max-width: 780px) {
+
+  .fevermap-data-entry-content {
+    margin: 3rem 5%;
+  }
+}
