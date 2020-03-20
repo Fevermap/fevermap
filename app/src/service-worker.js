@@ -8,6 +8,8 @@ import * as navigationPreload from 'workbox-navigation-preload';
 const OFFLINE_CACHE_NAME = 'offline-cache';
 const OFFLINE_FALLBACK_HTML_URL = '/index.html';
 
+self.__WB_DISABLE_DEV_LOGS = true;
+
 registerRoute(/\.js$/, new NetworkFirst());
 
 precacheAndRoute(self.__WB_MANIFEST || []);

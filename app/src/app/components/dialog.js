@@ -30,7 +30,6 @@ export default class Dialog extends LitElement {
         this.elem.open();
 
         this.elem.listen('MDCDialog:closed', e => {
-            console.log(e);
             if (e.detail.action === 'yes') {
                 document.dispatchEvent(new CustomEvent(this.dialogApproveEvent));
             }
