@@ -54,7 +54,7 @@ export default class GeolocatorService {
             'postal_town',
             'administrative_area_level_1',
             'administrative_area_level_2',
-            'administrative_area_level_3'
+            'administrative_area_level_3',
         ];
 
         const found = componentSearchOrder.map(findComponent).find(i => !!i);

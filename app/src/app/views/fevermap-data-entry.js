@@ -212,14 +212,16 @@ class FevermapDataEntry extends LitElement {
 
         feverData.device_id = device_id;
         feverData.fever_status = this.hasFever;
-        feverData.fever_temp = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
+        if (this.hasFever) {
+            feverData.fever_temp = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
+        }
         feverData.birth_year = this.querySelector('#birth-year').getValue();
         feverData.gender = this.gender;
         const geoCodingInfo = await this.getGeoCodingInputInfo();
         feverData.location_country_code = geoCodingInfo.country_code;
         feverData.location_postal_code = geoCodingInfo.postal_code;
-        feverData.location_lng = geoCodingInfo.location_lng;
-        feverData.location_lat = geoCodingInfo.location_lat;
+        feverData.location_lng = geoCodingInfo.location_lng.toFixed(7);
+        feverData.location_lat = geoCodingInfo.location_lat.toFixed(7);
 
         if (feverData.birth_year > 2020 || feverData.birth_year < 1900) {
             this.errorMessage = Translator.get('system_messages.error.age_not_in_range');
