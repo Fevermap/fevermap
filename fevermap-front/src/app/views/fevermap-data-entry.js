@@ -47,7 +47,7 @@ class FevermapDataEntry extends LitElement {
         let latestEntry = JSON.parse(localStorage.getItem('LATEST_ENTRY'));
         let lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
         let lastLocation = localStorage.getItem('LAST_LOCATION');
-        if (lastEntryTime) {
+        if (lastEntryTime && lastEntryTime !== 'undefined') {
             this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
             this.lastSubmissionIsTooCloseToNow = Date.now() - Number(lastEntryTime) < 43200000; // 12 hours in milliseconds
         }
