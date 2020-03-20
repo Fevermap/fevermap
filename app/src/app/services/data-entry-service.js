@@ -5,7 +5,10 @@ const apiSubmitUrl = 'https://dev.fevermap.net/api/v0/submit';
 export default class DataEntryService {
     static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
         try {
-            let response = await fetch(apiSubmitUrl);
+            let response = await fetch(apiSubmitUrl, {
+                method: "POST",
+                body: JSON.stringify(feverData)
+            });
             if (!response.ok) {
                 return { success: false, reason: 'INVALID_DATA' };
             }
