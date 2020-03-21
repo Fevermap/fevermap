@@ -1,11 +1,44 @@
+# Website fevermap.net is updated on every master branch commit
 pages:
   script:
-  - mkdir .public
-  - cp -r * .public
-  - mv .public public
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
   artifacts:
     paths:
-    - public
+      - public
   only:
-  - master
+    - master
 
+stages:
+  - test
+  - deploy
+
+before_script:
+  - apt-get update -qq
+  - apt-get install -qq git
+  # Setup SSH deploy keys
+  - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+  - eval $(ssh-agent -s)
+  - ssh-add <(echo "$FEVERMAP_APP_USER_SSH_PRIVATE_KEY")
+
+test:
+  stage: test
+  script:
+    - make test
+
+staging:
+  stage: deploy
+  script:
+    - echo "Not implemented"
+    - ssh fevermap@dev.fevermap.net -p 33100 -o StrictHostKeyChecking=no "cd /var/www/fevermap && make update-master && make run"
+  only:
+    - master
+
+# Production server does not yet exist, this is a placeholder only
+production:
+  stage: deploy
+  script:
+    - echo "Not implemented"
+  only:
+    - tags
