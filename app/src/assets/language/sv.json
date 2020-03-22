@@ -1,0 +1,81 @@
+{
+  "lang_name": "Svenska",
+  "language": "Språk",
+  "fevermap_title": "Fevermap",
+
+  "landing": {
+    "about": "Om Fevermap",
+    "about_title": "Vad är Fevermap?",
+    "about_content_explanation": "är en webbapplikation skapad för att samla in data om Covid-19 epidemin.",
+    "about_current_methods": "Nuvarande metoder för att följa med Coronavirusets spridning ger inte en fullständig bild. Det tar för länge att testa alla, och det finns hur som helst inte testutrustning för det.",
+    "about_solution": "Fevermap is the solution for this problem. With Fevermap, ordinary people around the world can anonymously self-report their fever and other symptoms. This means that we can estimate the true prevalence of COVID-19 infections in real-time and provide authorities with data that helps them make data-based, correct and timely decisions about protective measures.",
+    "about_data_collection": "Data som insamlas av Fevermap är anonyma och kommer att användas för att öka medvetenheten om den globala situationen.",
+    "about_current_participant_count": "Hittills har Fevermap samlat in rapporter från %{participantCount} personer.",
+
+    "how_to_participate": "Hur kan jag delta?",
+    "participation_info": "För att delta behöver du mäta din egen kroppstemperatur, och skicka in den tillsammans med annan information i datavyn.",
+    "info_disclaimer": "Vi ber inte om någon information som kan identifiera dig. Vi värnar om din integritet.",
+
+    "how_will_my_data_be_used": "Hur kommer min data att användas?",
+    "data_use_explanation": "All data anonymiseras och delas som öppen data genom vår API."
+  },
+  "entry": {
+    "data_entry": "Datainmatning",
+    "first_entry_disclaimer": "Dataposterna skickas in på basen av den dator eller telefon du använder. Vi skulle uppskatta om du kan använda samma apparat varje gång. Detta hjälper oss att följa sin febernivå bättre.",
+    "last_submission": "Senaste registrering",
+    "submission_period_disclaimer": "För att undvika onödiga data, så begränsas registreringar till var 12:e timme.",
+    "queued_entries": "Du has %{queuedEntries} registreringar som ännu inte har skickats in till servern.",
+    "sync_now": "Synkronisera nu",
+    "questions": {
+      "do_you_have_fever": "Har du feber just nu?",
+      "yes": "Ja",
+      "no": "Nej",
+      "how_much": "Hur hög?",
+      "degrees_of_fever": "%{degrees} grader feber",
+      "not_measured": "Vet inte, har inte mätt.",
+      "birth_year": "Födelseår",
+      "birth_year_placeholder": "Födelseår (från 1900 - 2020)",
+      "gender_in_passport": "Kön, som angivet i ditt pass eller annat officiellt dokument",
+      "male": "Man",
+      "female": "Kvinna",
+      "location_information": "Plats",
+      "city": "Stad",
+      "country": "Land",
+      "postal_code": "Postnummer",
+      "location_determination_subtitle": "Din plats hämtas genom plats-APIn, vänligen tillåt platsbestämning.",
+      "location_change_subtitle": "För att uppdatera platsinformation, välj land och skriv in ditt postnummer, eller tryck på knappen undertill.",
+      "update_location": "Uppdatera plats",
+      "use_gps": "Uppdatera plats genom GPS"
+    },
+    "previous_submissions": "Tidigare registreringar",
+    "submit": "Skicka in"
+  },
+
+  "stats": {
+    "stats": "Statistik"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Platsen uppdaterades",
+      "data_entry": "Registreringen lyckades",
+      "offline_entry_queued": "Det verkar som du är offline, registreringen är satt i kö.",
+      "sync_finished": "Synkroniseringen lyckades."
+    },
+    "error": {
+      "age_not_in_range": "Ditt födelseår är inte i det tillåtna intervallet (1900 - 2020).",
+      "fever_temp_value_invalid": "Din febertemperatur är inte giltig.",
+      "location_data_invalid": "Den givna platset är inte giltig.",
+      "api_data_invalid": "Data som skickades var inte giltiga.",
+      "gender_not_set": "Du har inte valt kön."
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Installera Fevermap",
+      "content": "Fevermap kan installeras som en Progressive Web App. Om du gör det fungerar appen smidigare, och vi kan ge tilläggstjänster som push-notifikationer (på kommande).",
+      "approve_text": "Installera",
+      "decline_text": "Kanske senare"
+    }
+  }
+}

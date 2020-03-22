@@ -1,7 +1,10 @@
 import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 
-const apiSubmitUrl = 'https://dev.fevermap.net/api/v0/submit';
-const apiDataUrl = 'https://dev.fevermap.net//api/v0/stats';
+/* @TODO: The apiBaseUrl should be derived from environment variable $URL */
+const apiBaseUrl = 'https://dev.fevermap.net';
+
+const apiSubmitUrl = apiBaseUrl + '/api/v0/submit';
+const apiDataUrl = apiBaseUrl + '/api/v0/stats';
 
 export default class DataEntryService {
     static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {

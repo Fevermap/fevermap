@@ -1,0 +1,82 @@
+{
+  "lang_name": "Suomi",
+  "language": "Kieli",
+  "fevermap_title": "Fevermap",
+
+  "landing": {
+    "about": "Tietoa",
+    "about_title": "Mikä on Fevermap?",
+    "about_content_explanation": " on verkko- ja mobiiliapplikaatio, joka on luotu helppoa ja reaaliaikaista datakeruuta varten koskien koronavirus COVID-19-pandemian levinneisyyttä.",
+    "about_current_methods": "Nykyiset seurantamenetelmät koronaviruksen levinneisyydestä eivät tarjoa kokonaiskuvaa. Laajat ihmisjoukot jäävät testauksen ulkopuolelle, jotta ajan ja resurssien saatavuus pystytään takaamaan niitä tarvitseville.",
+    "about_solution": "Fevermap on ratkaisu ongelmaan. Fevermapin avulla, tavalliset ihmiset ympäri maailmaa voivat anonyymisti raportoida itse kuumeesta ja muista oireista. Tämä tarkoittaa sitä, että voimme arvioida COVID-19 -infektioiden todellisen laajuuden reaaliaikaisesti ja tarjota auktoriteeteille dataa, joka auttaa heitä tekemään tietoon perustuvia, oikeellisia ja hyvin ajoitettuja päätöksiä suojautumiseen liittyvistä asioista.",
+    "about_data_collection": "Fevermapin keräämä data on anonymisoity ja sitä käytetään tietoisuuden lisäämiseen globaalista tilanteesta.",
+    "about_current_participant_count": "Tähän päivään mennessä, %{participantCount} käyttäjää ovat käyttäneet Fevermapia raportoidakseen oireistaan",
+
+    "how_to_participate": "Miten osallistun?",
+    "participation_info": "Se on helppoa. Mittaat vain lämpösi ja syötät mittarin antaman vastauksen – sekä joitain statistisia tietoja, kuten syntymävuotesi ja aluekoodisi – datan syöttönäkymään.",
+    "info_disclaimer": "Emme kysy kysymyksiä jotka johtaisivat siihen, että sinut tunnistettaisiin. Arvostamme yksityisyyttäsi ja anonymiteettiäsi.",
+
+    "how_will_my_data_be_used": "Miten dataani tullaan käyttämään?",
+    "data_use_explanation": "Data anonymisoidaan, jonka jälkeen se jaetaan avoimena datana API-rajapinnan kautta."
+  },
+  "entry": {
+    "data_entry": "Datan syöttö",
+    "first_entry_disclaimer": "Kirjaukset merkitään tietokantaan laitteen mukaan, jonka vuoksi toivomme, että syötät tietosi aina samalta laitteelta. Tällöin voimme seurata kuumetilasi kehittymistä paremmin.",
+    "last_submission": "Viimeisin kirjaus",
+    "submission_period_disclaimer": "Välttyäksemme turhalta datalta, kirjaukset on rajoitettu tehtäväksi kerran joka 12. tunti.",
+    "queued_entries": "Sinulla on %{queuedEntries} kirjausta, joita ei ole vielä synkronoitu serverin kanssa.",
+    "sync_now": "Synkronoi nyt",
+    "questions": {
+      "do_you_have_fever": "Onko sinulla kuumetta tällä hetkellä?",
+      "yes": "Kyllä",
+      "no": "Ei",
+      "how_much": "Paljonko?",
+      "degrees_of_fever": "%{degrees} astetta kuumetta",
+      "not_measured": "En tiedä tarkalleen, en ole mitannut.",
+      "birth_year": "Syntymävuosi",
+      "birth_year_placeholder": "Syntymävuosi (vuodet 1900 - 2020)",
+      "gender_in_passport": "Passissa tai muussa virallisessa dokumentissa merkitty sukupuoli.",
+      "male": "Mies",
+      "female": "Nainen",
+      "location_information": "Sijaintitiedot",
+      "city": "Kaupunki",
+      "country": "Maa",
+      "postal_code": "Postinumero",
+      "location_determination_subtitle": "Sijainti määritellään sijaintirajapintaa käyttäen. Sallithan sijaintitunnistimien käytön.",
+      "location_change_subtitle": "Päivittääksesi sijaintitiedot, päivitä tiedot maa- ja postinumerokentissä ja paina alla olevaa painiketta.",
+      "update_location": "Päivitä sijainti",
+      "use_gps": "Hae sijainti GPS avulla"
+    },
+    "previous_submissions": "Viimeisimmät kirjaukset",
+    "submit": "Lähetä"
+  },
+
+  "stats": {
+    "stats": "Tilastot"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Sijainti päivitetty onnistuneesti",
+      "data_entry": "Kirjaus lisätty onnistuneesti",
+      "offline_entry_queued": "Olet offline tilassa. Kirjaus lisätään jonoon.",
+      "sync_finished": "Onnistuneesti synkronoitu kirjaukset."
+    },
+    "error": {
+      "age_not_in_range": "Syntymävuosi ei ole sallitussa haarukassa (1900 - 2020).",
+      "fever_temp_value_invalid": "Kuumeen määrä ei ole sallittu luku.",
+      "location_data_invalid": "Syötetty sijaintidata ei ole sallittu.",
+      "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa.",
+      "gender_not_set": "Sukupuolta ei ole valittu."
+    }
+  },
+
+  "dialog": {
+    "pwa_installer": {
+      "title": "Asenna Fevermap",
+      "content": "Fevermap on mahdollista asentaa progressiivisen verkkosovelluksena. Asennettuna sovellus tarjoaa lisätoimintoja kuten parempaa suorituskykyä ja push notifikaatioita (tulossa pian).",
+      "approve_text": "Asenna",
+      "decline_text": "Ehkä myöhemmin"
+    }
+  }
+}

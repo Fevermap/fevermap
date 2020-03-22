@@ -1,5 +1,15 @@
 import polyglot from 'node-polyglot';
-import translations from 'assets/language/translations';
+
+/* Split each translation into a separate file for easier source code management */
+import translation_en from 'assets/language/en';
+import translation_fi from 'assets/language/fi';
+import translation_sv from 'assets/language/sv';
+
+const translations = {
+  en: translation_en,
+  fi: translation_fi,
+  sv: translation_sv,
+}
 
 export default class Translator {
     static getLang() {
@@ -11,9 +21,9 @@ export default class Translator {
     }
 
     static setLang(lang) {
-        Translator.lang = lang ? lang.toLowerCase() : 'fi';
+        Translator.lang = lang ? lang.toLowerCase() : 'en';
         Translator._loadPhrases();
-        document.querySelector('html').setAttribute('lang', lang ? lang.toLowerCase() : 'fi');
+        document.querySelector('html').setAttribute('lang', lang ? lang.toLowerCase() : 'en');
     }
 
     static _loadPhrases() {
@@ -22,7 +32,7 @@ export default class Translator {
 
     static get(word, params) {
         if (!Translator.polyglot) {
-            Translator.setLang('fi');
+            Translator.setLang('en');
         }
         return Translator.polyglot.t(`${this.lang}.${word}`, params);
     }

@@ -1,0 +1,81 @@
+{
+  "lang_name": "English",
+  "language": "Language",
+  "fevermap_title": "Fevermap",
+
+  "landing": {
+    "about": "About",
+    "about_title": "What is Fevermap?",
+    "about_content_explanation": " is a web and mobile application created for simple and real-time data collection of the prevalence of the Coronavirus COVID-19 pandemic.",
+    "about_current_methods": "Current methods of tracking the prevalence of the Corona virus do not yield a complete picture. Large masses remain untested to keep time and resources available for those in need.",
+    "about_solution": "Fevermap is the solution for this problem. With Fevermap, ordinary people around the world can anonymously self-report their fever and other symptoms. This means that we can estimate the true prevalence of COVID-19 infections in real-time and provide authorities with data that helps them make data-based, correct and timely decisions about protective measures.",
+    "about_data_collection": "The data collected by Fevermap is anonymized and will be used to help with raising awareness of the current global situation.",
+    "about_current_participant_count": "To this day, %{participantCount} users have used Fevermap to report their symptoms. ",
+
+    "how_to_participate": "How do I participate?",
+    "participation_info": "It’s easy. You just take your temperature and feed the result – as well as a little statistical information, such as your birth year and area code – into the feed.",
+    "info_disclaimer": "We do not ask questions that could lead to you being recognized. We value your privacy and anonymity.",
+
+    "how_will_my_data_be_used": "How will my data be used?",
+    "data_use_explanation": "The data will be anonymized, after which it will be shared as open data through API interface.."
+  },
+  "entry": {
+    "data_entry": "Data entry",
+    "first_entry_disclaimer": "Entries are submitted into the database based on your device. We would appreciate that you submitted your information from the same device every time. This will allow us to monitor your fever status better.",
+    "last_submission": "Last submission",
+    "submission_period_disclaimer": "To prevent unnecessary data, submissions are restricted to once every 12 hours.",
+    "queued_entries": "You have %{queuedEntries} entries that haven't been yet synced with the server.",
+    "sync_now": "Sync now",
+    "questions": {
+      "do_you_have_fever": "Do you have fever at the moment?",
+      "yes": "Yes",
+      "no": "No",
+      "how_much": "How much?",
+      "degrees_of_fever": "%{degrees} of fever",
+      "not_measured": "Don't know exactly, not measured.",
+      "birth_year": "Birth year",
+      "birth_year_placeholder": "Year of birth (years 1900 - 2020)",
+      "gender_in_passport": "Gender as stated in your passport or other government records",
+      "male": "Male",
+      "female": "Female",
+      "location_information": "Location information",
+      "city": "City",
+      "country": "Country",
+      "postal_code": "Postal code",
+      "location_determination_subtitle": "Location is determined using location API. Make sure to allow location sensors.",
+      "location_change_subtitle": "To update location information, update the value in the country and postal code field or press the button below.",
+      "update_location": "Update location",
+      "use_gps": "Get location from GPS"
+    },
+    "previous_submissions": "Previous submissions",
+    "submit": "Submit"
+  },
+
+  "stats": {
+    "stats": "Stats"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Location updated successfully",
+      "data_entry": "Successfully submitted data entry",
+      "offline_entry_queued": "Seems like you are offline. Entry has been queued.",
+      "sync_finished": "Successfully synced entries."
+    },
+    "error": {
+      "age_not_in_range": "Given birth year is not in the allowed range (1900 - 2020).",
+      "fever_temp_value_invalid": "The fever temperature value is not valid.",
+      "location_data_invalid": "The given location data is invalid.",
+      "api_data_invalid": "Data sent to the API was invalid.",
+      "gender_not_set": "Gender is not set."
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Install Fevermap",
+      "content": "Fevermap can be installed as a Progressive Web Application. If installed, we can provide you with great extra features like faster runtime and push notifications (coming soon).",
+      "approve_text": "Install",
+      "decline_text": "Maybe later"
+    }
+  }
+}
