@@ -7,6 +7,9 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { InjectManifest } = require('workbox-webpack-plugin');
 
 module.exports = env => {
+    console.log('Running Webpack in NODE_ENV mode', env.NODE_ENV); // 'local'
+    console.log('Using API_URL', env.API_URL); // true
+
     return {
         entry: { main: './src/index.js' },
         output: {
@@ -61,9 +64,7 @@ module.exports = env => {
         },
         plugins: [
             new webpack.DefinePlugin({
-                'process.env.URL': JSON.stringify(
-                    env.NODE_ENV === 'production' ? 'https://dev.fevermap.net' : 'http://localhost:9000'
-                ),
+                'process.env.API_URL': JSON.stringify(env.API_URL),
             }),
             require('autoprefixer'),
             new CleanWebpackPlugin({

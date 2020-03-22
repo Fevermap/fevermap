@@ -1,0 +1,57 @@
+---
+# NOTE! This is only for starting a development environment easily.
+# Do not run in production with this setup.
+#
+# Launch this with `docker-compose up --build`.
+# The logs will stay visible. Press Ctrl+C to exit.
+#
+# Delete containers and remove the database volume with
+# `docker-compose down --remove-orphans --volumes`.
+
+version: "2"
+
+services:
+
+  app:
+    image: "fevermap/app:latest"
+    build: app
+    # Mount source inside the container, so whatever changes you make to the
+    # code while developing are immediately visible in running code. The app
+    # server 'webpack watch' to automatically reload on code changes.
+    #
+    # Note that this has the drawback that there will be two root owned folders
+    # in the local mount (directories dist/ and node_modules/).
+    volumes:
+      - "./app:/app:rw"
+    ports:
+      - 6006:6006
+
+  api:
+    image: "fevermap/api:latest"
+    build: api
+    links:
+      - database
+    # Mount source inside the container, so whatever changes you make to the
+    # code while developing are immediately visible in running code. The API
+    # server uses 'entr' to automatically restart itself on code changes.
+    volumes:
+      - "./api:/app:rw"
+    command: "'nc -vz database 3306'\n"
+    ports:
+      - 9000:9000
+
+  # Database container is for development only, thus default credentials are ok
+  # Access MariaDB console with:
+  #   docker exec -it fevermap_database_1 mysql -prootpass fevermap
+  database:
+    image: "ypcs/mariadb:latest"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+      - MYSQL_DATABASE=fevermap
+      - MYSQL_USER=fevermap
+      - MYSQL_PASSWORD=feverpass
+    volumes:
+      - "database:/var/lib/mysql:rw"
+
+volumes:
+  database: ~

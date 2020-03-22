@@ -12,6 +12,7 @@ pages:
 
 stages:
   - test
+  - build
   - deploy
 
 test:
@@ -19,6 +20,16 @@ test:
   script:
     - apt-get update -qq && apt-get install -qq --no-install-recommends flake8 shellcheck
     - make test
+
+build-app:
+  stage: build
+  script:
+    - apt-get update -qq && apt-get install -qq --no-install-recommends nodejs npm webpack
+    - npm install -g npm@latest
+    - cd app
+    - npm install
+    - npm run build
+    - find dist -ls
 
 staging:
   stage: deploy
