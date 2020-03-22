@@ -5,12 +5,13 @@
     "fevermap_title": "Fever Map",
 
     "landing": {
-      "about": "Mikä on Fevermap?",
-      "about_content_explanation": "Fevermap on verkko- ja mobiiliapplikaatio, joka on luotu helppoa ja reaaliaikaista datakeruuta varten koskien koronavirus COVID-19-pandemian levinneisyyttä.",
+      "about": "Tietoa",
+      "about_title": "Mikä on Fevermap?",
+      "about_content_explanation": " on verkko- ja mobiiliapplikaatio, joka on luotu helppoa ja reaaliaikaista datakeruuta varten koskien koronavirus COVID-19-pandemian levinneisyyttä.",
       "about_current_methods": "Nykyiset seurantamenetelmät koronaviruksen levinneisyydestä eivät tarjoa kokonaiskuvaa. Laajat ihmisjoukot jäävät testauksen ulkopuolelle, jotta ajan ja resurssien saatavuus pystytään takaamaan niitä tarvitseville.",
-      "about_motivation": "Fevermap on ratkaisu ongelmaan. Fevermapin avulla, tavalliset ihmiset ympäri maailmaa voivat anonyymisti raportoida itse kuumeesta ja muista oireista. Tämä tarkoittaa sitä, että voimme arvioida COVID-19 -infektioiden todellisen laajuuden reaaliaikaisesti ja tarjota auktoriteeteille dataa, joka auttaa heitä tekemään tietoon perustuvia, oikeellisia ja hyvin ajoitettuja päätöksiä suojautumiseen liittyvistä asioista.",
+      "about_solution": "Fevermap on ratkaisu ongelmaan. Fevermapin avulla, tavalliset ihmiset ympäri maailmaa voivat anonyymisti raportoida itse kuumeesta ja muista oireista. Tämä tarkoittaa sitä, että voimme arvioida COVID-19 -infektioiden todellisen laajuuden reaaliaikaisesti ja tarjota auktoriteeteille dataa, joka auttaa heitä tekemään tietoon perustuvia, oikeellisia ja hyvin ajoitettuja päätöksiä suojautumiseen liittyvistä asioista.",
       "about_data_collection": "Fevermapin keräämä data on anonymisoity ja sitä käytetään tietoisuuden lisäämiseen globaalista tilanteesta.",
-      "about_current_participant_count": "Tähän päivään mennessä, %{participantCount} käyttäjää ovat käyttäneet Fevermapia raportoidakseen oireistaan.",
+      "about_current_participant_count": "Tähän päivään mennessä, %{participantCount} käyttäjää ovat käyttäneet Fevermapia raportoidakseen oireistaan",
 
       "how_to_participate": "Miten osallistun?",
       "participation_info": "Se on helppoa. Mittaat vain lämpösi ja syötät mittarin antaman vastauksen – sekä joitain statistisia tietoja, kuten syntymävuotesi ja aluekoodisi – datan syöttönäkymään.",
@@ -87,19 +88,20 @@
     "fevermap_title": "Fever Map",
 
     "landing": {
-      "about": "What is Fevermap?",
-      "about_content_explanation": "Fevermap is a a web and mobile application created for simple and real-time data collection of the prevalence of the Coronavirus COVID-19 pandemic.",
+      "about": "About",
+      "about_title": "What is Fevermap?",
+      "about_content_explanation": " is a web and mobile application created for simple and real-time data collection of the prevalence of the Coronavirus COVID-19 pandemic.",
       "about_current_methods": "Current methods of tracking the prevalence of the Corona virus do not yield a complete picture. Large masses remain untested to keep time and resources available for those in need.",
-      "about_motivation": "Fevermap is the solution for this problem. With Fevermap, ordinary people around the world can anonymously self-report their fever and other symptoms. This means that we can estimate the true prevalence of COVID-19 infections in real-time and provide authorities with data that helps them make data-based, correct and timely decisions about protective measures..",
+      "about_solution": "Fevermap is the solution for this problem. With Fevermap, ordinary people around the world can anonymously self-report their fever and other symptoms. This means that we can estimate the true prevalence of COVID-19 infections in real-time and provide authorities with data that helps them make data-based, correct and timely decisions about protective measures.",
       "about_data_collection": "The data collected by Fevermap is anonymized and will be used to help with raising awareness of the current global situation.",
-      "about_current_participant_count": "To this day, %{participantCount} users have used Fevermap to report their symptoms.",
+      "about_current_participant_count": "To this day, %{participantCount} users have used Fevermap to report their symptoms. ",
 
       "how_to_participate": "How do I participate?",
       "participation_info": "It’s easy. You just take your temperature and feed the result – as well as a little statistical information, such as your birth year and area code – into the feed.",
       "info_disclaimer": "We do not ask questions that could lead to you being recognized. We value your privacy and anonymity.",
 
       "how_will_my_data_be_used": "How will my data be used?",
-      "data_use_explanation": "The data will be anonymized, after which it will be shared as open data through API interface."
+      "data_use_explanation": "The data will be anonymized, after which it will be shared as open data through API interface.."
     },
     "entry": {
       "data_entry": "Data entry",
@@ -170,9 +172,10 @@
 
     "landing": {
       "about": "Om Fever Map",
+      "about_title": "Vad är Fever Map?",
       "about_content_explanation": "är en webbapplikation skapad för att samla in data om Covid-19 epidemin.",
       "about_current_methods": "Nuvarande metoder för att följa med Coronavirusets spridning ger inte en fullständig bild. Det tar för länge att testa alla, och det finns hur som helst inte testutrustning för det.",
-      "about_motivation": "Fever Map är en strävan att förbättra situationen genom att ge möjligheten åt var och en att rapportera om sin egen febersituation. Genom detta kan vi uppskatta antalet COVID-19 -infektioner och ge myndigheter data som kan hjälpa i bekämpningen av pandemin.",
+      "about_solution": "Fevermap is the solution for this problem. With Fevermap, ordinary people around the world can anonymously self-report their fever and other symptoms. This means that we can estimate the true prevalence of COVID-19 infections in real-time and provide authorities with data that helps them make data-based, correct and timely decisions about protective measures.",
       "about_data_collection": "Data som insamlas av Fever Map är anonyma och kommer att användas för att öka medvetenheten om den globala situationen.",
       "about_current_participant_count": "Hittills har Fever Map samlat in rapporter från %{participantCount} personer.",
 
