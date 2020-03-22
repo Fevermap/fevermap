@@ -1,4 +1,4 @@
-import { LitElement, html, css } from 'lit-element';
+import { LitElement, html, css, unsafeCSS } from 'lit-element';
 import { MDCSlider } from '@material/slider';
 import { MDCCheckbox } from '@material/checkbox/component';
 import maleIcon from 'src/assets/images/male.svg';
@@ -35,11 +35,13 @@ class FevermapDataEntry extends LitElement {
             selectedCountryIndex: { type: Number },
 
             errorMessage: { type: String },
-        };
-    }
 
-    static get styles() {
-        return [];
+            currentQuestion: { type: Number },
+            questionCount: { type: Number },
+
+            yearOfBirth: { type: Number },
+            symptoms: { type: Array },
+        };
     }
 
     constructor() {
@@ -83,13 +85,18 @@ class FevermapDataEntry extends LitElement {
         this.previousSubmissions = [];
         this.hasQueuedEntries = false;
         this.queuedEntries = [];
+
+        this.currentQuestion = 1;
+        this.questionCount = this.firstTimeSubmitting ? 4 : 3;
+        this.symptoms = [];
     }
 
     firstUpdated(_changedProperties) {
-        this.initializeComponents();
-        this.getGeoLocationInfo();
+        /*this.initializeComponents();
         this.getPreviousSubmissionsFromIndexedDb();
-        this.getQueuedEntriesFromIndexedDb();
+        this.getQueuedEntriesFromIndexedDb();*/
+        this.initSlider();
+        this.getGeoLocationInfo();
     }
 
     createCountrySelectOptions() {
@@ -195,11 +202,10 @@ class FevermapDataEntry extends LitElement {
     }
 
     initSlider() {
-        const slider = new MDCSlider(this.querySelector('.mdc-slider'));
-        slider.listen('MDCSlider:input', () => {
-            this.feverAmount = slider.value.toFixed(1);
+        this.querySelector('#temperature-meter').addEventListener('input', e => {
+            console.log(e);
+            this.feverAmount = e.target.value;
         });
-        return slider;
     }
 
     async handleSubmit() {
@@ -351,7 +357,156 @@ class FevermapDataEntry extends LitElement {
         SnackBar.success(Translator.get('system_messages.success.location_update'));
     }
 
+    moveToFeverQuestions() {
+        let carouselWrapper = this.querySelector('.fevermap-data-entry-content');
+        let targetElem = this.querySelector('.fevermap-fever-questions');
+        let target = targetElem.offsetLeft * 0.925;
+
+        this.yearOfBirth = this.querySelector('#birth-year').getValue();
+        this.smoothScroll(carouselWrapper, target);
+    }
+
+    moveToOtherSymptomps(tempNotKnown) {
+        let carouselWrapper = this.querySelector('.fevermap-data-entry-content');
+        let targetElem = this.querySelector('.fevermap-other-symptoms-questions');
+        let target = targetElem.offsetLeft * 0.96;
+
+        this.smoothScroll(carouselWrapper, target);
+    }
+
+    moveToLocation() {
+        let carouselWrapper = this.querySelector('.fevermap-data-entry-content');
+        let targetElem = this.querySelector('.fevermap-location-questions');
+        let target = targetElem.offsetLeft * 0.975;
+
+        this.smoothScroll(carouselWrapper, target);
+    }
+
+    smoothScroll(div, target) {
+        (function smoothScroll() {
+            if (div.scrollLeft >= target) return;
+            div.scrollLeft += 10;
+            setTimeout(smoothScroll, 10);
+        })();
+    }
+
+    handleSymptomAdd(e) {
+        let target = e.target;
+        if (e.target.nodeName === 'P') {
+            target = target.parentNode;
+        }
+        if (this.symptoms.includes(e.target.id)) {
+            this.symptoms.splice(this.symptoms.indexOf(e.target.id), 1);
+            target.classList.remove('symptom--selected');
+        } else {
+            this.symptoms.push(e.target.id);
+            target.classList.add('symptom--selected');
+        }
+    }
+
     render() {
+        return html`
+            <div class="container view-wrapper">
+                <div class="fevermap-data-entry-content">
+                    <div
+                        class="fevermap-entry-carousel${this.questionCount === 4
+                            ? ' fevermap-entry-carousel--full-width'
+                            : ' fevermap-entry-carousel--smaller-width'}"
+                    >
+                        ${this.renderQuestions()}
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    renderQuestions() {
+        return html`
+            ${this.questionCount === 4
+                ? html`
+                      <div class="fevermap-entry-window mdc-elevation--z9">
+                          <h2>New Entry</h2>
+                          <p class="subtitle">As this is your first time, we'll ask you a few questions first.</p>
+                          ${this.getYearOfBirthInput()} ${this.getGenderInput()}
+                          <div class="proceed-button">
+                              <button class="mdc-button mdc-button--raised" @click="${this.moveToFeverQuestions}">
+                                  <div class="mdc-button__ripple"></div>
+
+                                  <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
+                                  <span class="mdc-button__label">${'Save'}</span>
+                              </button>
+                          </div>
+                      </div>
+                  `
+                : ''}
+            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-fever-questions">
+                <h2>New Entry</h2>
+                <p class="temperature-title">What's your temperature?</p>
+                ${this.getFeverMeter()}
+
+                <div class="proceed-button">
+                    <button class="mdc-button mdc-button--raised" @click="${this.moveToOtherSymptomps}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                        <span class="mdc-button__label">${'Set temperature'}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-other-symptoms-questions">
+                <h2>New Entry</h2>
+                <p class="symptoms-title">Other symptoms?</p>
+                <p class="subtitle">Choose all that apply</p>
+                <div class="symptom-holder">
+                    <div class="symptom" id="breathing-difficulty" @click="${this.handleSymptomAdd}">
+                        <p>Difficulty to breathe</p>
+                    </div>
+                    <div class="symptom" id="cough" @click="${this.handleSymptomAdd}">
+                        <p>Cough</p>
+                    </div>
+                    <div class="symptom" id="sore-throat" @click="${this.handleSymptomAdd}">
+                        <p>Sore throat</p>
+                    </div>
+                    <div class="symptom" id="muscular-pain" @click="${this.handleSymptomAdd}">
+                        <p>Muscular pain</p>
+                    </div>
+                </div>
+
+                <div class="mdc-form-field">
+                    <div class="mdc-checkbox">
+                        <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" />
+                        <div class="mdc-checkbox__background">
+                            <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                <path
+                                    class="mdc-checkbox__checkmark-path"
+                                    fill="none"
+                                    d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                                />
+                            </svg>
+                            <div class="mdc-checkbox__mixedmark"></div>
+                        </div>
+                        <div class="mdc-checkbox__ripple"></div>
+                    </div>
+                    <label for="checkbox-1">I have a positive diagnosis of COVID-19</label>
+                </div>
+                <div class="proceed-button">
+                    <button class="mdc-button mdc-button--raised" @click="${this.moveToLocation}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                        <span class="mdc-button__label">${'Set symptoms'}</span>
+                    </button>
+                </div>
+            </div>
+            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-location-questions">
+                <h2>New Entry</h2>
+                <p>What's your location?</p>
+                ${this.getGeoLocationInput()}
+            </div>
+        `;
+    }
+
+    /*render() {
         return html`
             <div class="container view-wrapper">
                 <div class="fevermap-data-entry-content">
@@ -406,90 +561,32 @@ class FevermapDataEntry extends LitElement {
                   `
                 : ''}
         `;
-    }
+    }*/
 
     getFeverMeter() {
         return html`
             <div class="entry-field">
-                <p>${Translator.get('entry.questions.do_you_have_fever')}</p>
-                <div
-                    class="fever-answer-button mdc-elevation--z3${
-                        this.hasFever ? ' fever-answer-button--has-fever' : ' fever-answer-button--no-fever'
-                    }
-                    ${this.hasFever === null ? ' fever-answer-button--not-set' : ''}"
-                >
-                    <div class="no-button fever-button${this.hasFever === false ? ' fever-button--selected' : ''}"
-                    @click="${() => this.handleFeverButton(false)}">
-                        <p>${Translator.get('entry.questions.no')}</p>
-                    </div>
-                    <div class="yes-button fever-button${this.hasFever ? ' fever-button--selected' : ''}"
-                    @click="${() => this.handleFeverButton(true)}">
-                        <p>${Translator.get('entry.questions.yes')}</p>
-                    </div>
-                </div>
-                    ${
-                        this.hasFever
-                            ? html`
                                   <div class="fever-meters ${this.feverAmountNotKnown ? ' fever-meters--hidden' : ''}">
-                                      <p>${Translator.get('entry.questions.how_much')}</p>
-
                                       <div class="fever-slider">
-                                          <div
-                                              class="mdc-slider"
-                                              tabindex="0"
-                                              role="slider"
-                                              aria-valuemin="37"
-                                              aria-valuemax="44"
-                                              aria-valuenow="37"
-                                              aria-label="Select Value"
-                                              data-step="0.1"
-                                          >
-                                              <div class="mdc-slider__track-container">
-                                                  <div class="mdc-slider__track"></div>
-                                              </div>
-                                              <div class="mdc-slider__thumb-container">
-                                                  <div class="mdc-slider__pin">
-                                                      <span class="mdc-slider__pin-value-marker"></span>
-                                                  </div>
-                                                  <svg class="mdc-slider__thumb" width="21" height="21">
-                                                      <circle cx="10.5" cy="10.5" r="7.875"></circle>
-                                                  </svg>
-                                                  <div class="mdc-slider__focus-ring"></div>
-                                              </div>
+                                          <div class="fever-slider-element">
+                                            <input type="range" id="temperature-meter" min="35" max="45" step="0.1" value="36">
                                           </div>
                                       </div>
-                                      <p class="fever-amount-display">
-                                          ${Translator.get('entry.questions.degrees_of_fever', {
-                                              degrees: this.getFeverWithUnit(),
-                                          })}
-                                          (${this.getFeverWithUnit(true)})
-                                      </p>
+                                      <div class="fever-amount-display">
+                                          <p class="celcius mdc-elevation--z3">${this.getFeverWithUnit()}</p>
+                                          <p class="fahrenheit mdc-elevation--z3">${this.getFeverWithUnit(true)}</p>
+                                      </div>
                                   </div>
                                   <div
-                                      class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
-                                          ? ' fever-not-measured-field--checked'
-                                          : ''}"
+                                      class="mdc-form-field fever-not-measured-field ${
+                                          this.feverAmountNotKnown ? ' fever-not-measured-field--checked' : ''
+                                      }"
                                   >
-                                      <div class="mdc-checkbox">
-                                          <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" />
-                                          <div class="mdc-checkbox__background">
-                                              <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                                  <path
-                                                      class="mdc-checkbox__checkmark-path"
-                                                      fill="none"
-                                                      d="M1.73,12.91 8.1,19.28 22.79,4.59"
-                                                  />
-                                              </svg>
-                                              <div class="mdc-checkbox__mixedmark"></div>
-                                          </div>
-                                          <div class="mdc-checkbox__ripple"></div>
-                                      </div>
-
-                                      <label for="checkbox-1">${Translator.get('entry.questions.not_measured')}</label>
+                                      <p id="dont-know-temperature" @click="${() =>
+                                          this.moveToOtherSymptomps(true)}">${Translator.get(
+            'entry.questions.not_measured'
+        )}</p>
                                   </div>
-                              `
-                            : ''
-                    }
                 </div>
             </div>
         `;
@@ -500,7 +597,7 @@ class FevermapDataEntry extends LitElement {
             <div class="entry-field">
                 <p>${Translator.get('entry.questions.birth_year')}</p>
                 <input-field
-                    placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
+                    placeHolder=${'Years 1900 - 2020'}
                     fieldId="year-of-birth-input"
                     id="birth-year"
                     value="${this.latestEntry ? this.latestEntry.birth_year : ''}"
@@ -541,14 +638,6 @@ class FevermapDataEntry extends LitElement {
     getGeoLocationInput() {
         return html`
             <div class="entry-field">
-                <p>${Translator.get('entry.questions.location_information')}</p>
-                <input-field
-                    placeHolder="${Translator.get('entry.questions.city')}"
-                    fieldId="location-city-input"
-                    id="location-city"
-                    value="${this.geoCodingInfo ? this.geoCodingInfo.city : ''}"
-                    ?disabled=${true}
-                ></input-field>
                 <select-field
                     id="location-country"
                     label="${Translator.get('entry.questions.country')}"
@@ -563,9 +652,6 @@ class FevermapDataEntry extends LitElement {
                         ? this.geoCodingInfo.postal_code
                         : ''}"
                 ></input-field>
-                <p class="subtitle">
-                    ${Translator.get('entry.questions.location_determination_subtitle')}
-                </p>
                 <p class="subtitle">
                     ${Translator.get('entry.questions.location_change_subtitle')}
                 </p>
@@ -583,6 +669,15 @@ class FevermapDataEntry extends LitElement {
 
                         <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
                         <span class="mdc-button__label">${Translator.get('entry.questions.use_gps')}</span>
+                    </button>
+                </div>
+
+                <div class="proceed-button">
+                    <button class="mdc-button mdc-button--raised" @click="${this.moveToLocation}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                        <span class="mdc-button__label">${'Set location and submit'}</span>
                     </button>
                 </div>
             </div>
@@ -608,7 +703,7 @@ class FevermapDataEntry extends LitElement {
             </div>
         `;
     }
-
+    /*
     getPreviousSubmissionsSummary() {
         return html`
             <div class="submission-summary">
@@ -634,6 +729,8 @@ class FevermapDataEntry extends LitElement {
             </div>
         `;
     }
+    
+ */
 
     createRenderRoot() {
         return this;
