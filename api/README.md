@@ -1,14 +1,18 @@
-# Fever Map API
+# Fevermap back-end (API)
+
+The back-end server is a simple Python Flask app with MariaDB database for storage. The back-end exposes an API at `https://fevermap.net/api/` which the front-end communicates with JSON calls.
 
 ## Development
 
-The API is a simple Python Flask server with MariaDB backend. To spin up a local
-development environment, simply run `docker-compose up --build`. The window will
-keep displaying the logs from the environments. To abort, press Ctrl+C. If you
-want to clear away the whole database volume before a fresh start, run
-`docker-compose down --remove-orphans --volumes`.
+To participate in the back-end development, you need Python skills and basic understanding of HTTP and JSON.
 
-Then the development server is running, you can browse it at
+To spin up a local development environment, simply run `docker-compose up
+--build`. The window will keep displaying the logs from the environments.
+
+To abort, press Ctrl+C. If you want to clear away the whole database volume
+before a fresh start, run `docker-compose down --remove-orphans --volumes`.
+
+When the development server is running, you can browse it at
 http://localhost:9000 or more importantly, run `curl` or other requests against
 the API.
 

@@ -1,6 +1,6 @@
 {
-  "name": "Fever Map",
-  "short_name": "Fever Map",
+  "name": "Fevermap",
+  "short_name": "Fevermap",
   "theme_color": "#2196f3",
   "background_color": "#2196f3",
   "display": "standalone",
