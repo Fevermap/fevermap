@@ -2,6 +2,7 @@ import { LitElement, html, css } from 'lit-element';
 import Translator from '../util/translator';
 import logoImg from 'src/assets/images/logo.png';
 import Dialog from '../components/dialog';
+import DataEntryService from '../services/data-entry-service';
 
 class FevermapLanding extends LitElement {
     static get properties() {
@@ -19,7 +20,16 @@ class FevermapLanding extends LitElement {
         this.currentParticipantCount = 0;
     }
 
-    firstUpdated(_changedProperties) {}
+    firstUpdated(_changedProperties) {
+        this.getCurrentStats();
+    }
+
+    async getCurrentStats() {
+        let stats = await DataEntryService.getStats();
+        this.currentParticipantCount = stats ? stats.data.submitters.total : 0;
+
+        console.log(stats);
+    }
 
     render() {
         return html`
@@ -27,7 +37,7 @@ class FevermapLanding extends LitElement {
                 <div class="fevermap-landing-content">
                     <img src="${logoImg}" />
                     <div class="about mb-4">
-                        <h2>${Translator.get('landing.about')}</h2>
+                        <h2>${Translator.get('landing.about_title')}</h2>
                         <p>
                             <b>${Translator.get('fevermap_title')}</b> ${Translator.get(
                                 'landing.about_content_explanation'
@@ -36,7 +46,7 @@ class FevermapLanding extends LitElement {
                         <p>
                             ${Translator.get('landing.about_current_methods')}
                         </p>
-                        <p>${Translator.get('landing.about_motivation')}</p>
+                        <p>${Translator.get('landing.about_solution')}</p>
                         <p>
                             ${Translator.get('landing.about_data_collection')}
                         </p>

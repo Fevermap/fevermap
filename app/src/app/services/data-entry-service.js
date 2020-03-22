@@ -1,6 +1,7 @@
 import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 
 const apiSubmitUrl = 'https://dev.fevermap.net/api/v0/submit';
+const apiDataUrl = 'https://dev.fevermap.net//api/v0/stats';
 
 export default class DataEntryService {
     static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
@@ -23,5 +24,10 @@ export default class DataEntryService {
             }
             return { success: false, reason: 'NETWORK_STATUS_OFFLINE' };
         }
+    }
+
+    static async getStats() {
+        let response = await fetch(apiDataUrl).then(res => res.json());
+        return response;
     }
 }
