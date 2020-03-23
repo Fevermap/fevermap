@@ -22,14 +22,19 @@ class SubmissionResource(Resource):
     def _fever_status_history(self, submitter=None):
         history = []
         for s in submitter.submissions:
-            history += [(
+            history += [{
                 # Time format example: "2020-03-19T22:59:31"
-                s.timestamp_modified.isoformat(timespec='seconds'),
+                'timestamp': s.timestamp_modified.isoformat(timespec='seconds'),
                 # true/false
-                s.fever_status,
+                'fever_status': s.fever_status,
                 # E.g. 37.5
-                s.fever_temp
-            )]
+                'fever_temp': s.fever_temp,
+                'symptom_difficult_to_breath': s.symptom_difficult_to_breath,
+                'symptom_cough': s.symptom_cough,
+                'symptom_sore_throat': s.symptom_sore_throat,
+                'symptom_muscle_pain': s.symptom_muscle_pain,
+                'diagnosed_covid19': s.diagnosed_covid19,
+            }]
         return history
 
     def options(self, **kwargs):
@@ -66,9 +71,34 @@ class SubmissionResource(Resource):
         if not re.fullmatch(r'[0-9]{13}', data['device_id']):
             errors += ('device_id', 'Incorrect form for device identifier')
 
-        if not isinstance(data['fever_status'], bool) and \
-           not re.fullmatch(r'true|false|1|0', data['fever_status']):
-            errors += ('fever_status', 'Value not true/false')
+        # Check boolean values from multiple fields
+        boolean_fields = [
+            'fever_status',
+            'symptom_difficult_to_breath',
+            'symptom_cough',
+            'symptom_sore_throat',
+            'symptom_muscle_pain',
+            'diagnosed_covid19',
+        ]
+        for f in boolean_fields:
+            if f not in data:
+                # If not set, make it False
+                data[f] = False
+            elif data[f] is None:
+                # If set but None, make False
+                data[f] = False
+            elif isinstance(data[f], bool):
+                # Already True/False, all good
+                pass
+            elif re.fullmatch(r'true|True|1', data[f]):
+                # Convert string to bool
+                data[f] = True
+            elif re.fullmatch(r'false|False|0', data[f]):
+                # Convert string to bool
+                data[f] = False
+            else:
+                # Field was none of the above
+                errors += (f, 'Value not true/false')
 
         if not re.fullmatch(r'[12][90][0-9][0-9]', data['birth_year']):
             errors += ('birth_year', 'Value not a year between 1900 and 2020')
@@ -114,24 +144,22 @@ class SubmissionResource(Resource):
         if not 1900 <= birth_year <= 2020:
             errors += ('birth_year', 'Value not in range')
 
-        # String true/false requires sepecial treatment bool() can't do
-        # Check the string values and then set propet Python data types
-        if data['fever_status'] in [False, '0', 'false', 'False']:
-            fever_status = False
-            # Override any fever_temp value with None (Null in database)
-            fever_temp = None
-        else:
-            fever_status = True
+        # Convert namespace and ensure boolean
+        fever_status = bool(data['fever_status'])
+        symptom_difficult_to_breath = bool(data['symptom_difficult_to_breath'])
+        symptom_cough = bool(data['symptom_cough'])
+        symptom_sore_throat = bool(data['symptom_sore_throat'])
+        symptom_muscle_pain = bool(data['symptom_muscle_pain'])
+        diagnosed_covid19 = bool(data['diagnosed_covid19'])
 
-            if data['fever_status'] in [None, False, 0, '0', 'false', 'False']:
-                fever_temp = None
-            else:
-                # Validate fever_temp only is submitter has fever
-                fever_temp = float(data['fever_temp'])
-                if not re.fullmatch(r'[34][0-9]\.[0-9]', data['fever_temp']):
-                    errors += ('fever_temp', 'Value between 37.0–44.0')
-                if not 37.0 <= fever_temp <= 44.0:
-                    errors += ('fever_temp', 'Value not in range')
+        if 'fever_temp' in data and data['fever_temp']:
+            fever_temp = float(data['fever_temp'])
+            if not re.fullmatch(r'[34][0-9]\.[0-9]', data['fever_temp']):
+                errors += ('fever_temp', 'Value between 35.0–42.0')
+            if not 35.0 <= fever_temp <= 42.0:
+                errors += ('fever_temp', 'Value not in range')
+        else:
+            fever_temp = None
 
         # Abort if validation failed
         if errors:
@@ -152,7 +180,7 @@ class SubmissionResource(Resource):
                 device_id=device_id,
                 birth_year=birth_year,
                 gender=gender)
-        else:
+        elif len(submitter.submissions) > 0:
             # For existing submitter, check when was the last data received
             last_submission = submitter.submissions[-1]
 
@@ -183,10 +211,20 @@ class SubmissionResource(Resource):
                     f'Submitter {device_id} changed gender from '
                     f'{submitter.gender} to {gender}')
 
+        else:
+            app.logger.warning(
+                f'Submitter {device_id} existed but had no previous '
+                f'submissions.')
+
         # Create new submission
         submission = Submission(
             fever_status=fever_status,
             fever_temp=fever_temp,
+            symptom_difficult_to_breath=symptom_difficult_to_breath,
+            symptom_cough=symptom_cough,
+            symptom_sore_throat=symptom_sore_throat,
+            symptom_muscle_pain=symptom_muscle_pain,
+            diagnosed_covid19=diagnosed_covid19,
             location_country_code=location_country_code,
             location_postal_code=location_postal_code,
             location_lng=location_lng,
@@ -211,6 +249,11 @@ class SubmissionResource(Resource):
             'device_id': device_id,
             'fever_status': fever_status,
             'fever_temp': fever_temp,
+            'symptom_difficult_to_breath': symptom_difficult_to_breath,
+            'symptom_cough': symptom_cough,
+            'symptom_sore_throat': symptom_sore_throat,
+            'symptom_muscle_pain': symptom_muscle_pain,
+            'diagnosed_covid19': diagnosed_covid19,
             'birth_year': birth_year,
             'location_country_code': location_country_code,
             'location_postal_code': location_postal_code,
