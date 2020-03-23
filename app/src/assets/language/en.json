@@ -2,6 +2,7 @@
   "lang_name": "English",
   "language": "Language",
   "fevermap_title": "Fevermap",
+  "back": "Back",
 
   "landing": {
     "about": "About",
@@ -26,29 +27,49 @@
     "submission_period_disclaimer": "To prevent unnecessary data, submissions are restricted to once every 12 hours.",
     "queued_entries": "You have %{queuedEntries} entries that haven't been yet synced with the server.",
     "sync_now": "Sync now",
+    "new_entry": "New entry",
+    "first_time_disclaimer": "As this is your first time using Fevermap, we will ask you a few questions first.",
+    "these_questions_wont_be_repeated": "These questions won't be repeated on future submissions.",
     "questions": {
-      "do_you_have_fever": "Do you have fever at the moment?",
-      "yes": "Yes",
-      "no": "No",
+      "what_is_your_temperature": "What's your temperature?",
+      "temperature": "Temperature",
       "how_much": "How much?",
       "degrees_of_fever": "%{degrees} of fever",
       "not_measured": "Don't know exactly, not measured.",
+      "set_temperature": "Set temperature",
+      "other_symptoms": "Other symptoms?",
+      "choose_all_that_apply": "Choose all that apply",
+      "difficulty_to_breathe": "Difficulty to breathe",
+      "cough": "Cough",
+      "sore_throat": "Sore throat",
+      "muscular_pain": "Muscular pain",
+      "positive_covid_diagnosis": "I have a positive diagnosis of COVID-19.",
+      "set_symptoms": "Set symptoms",
       "birth_year": "Birth year",
       "birth_year_placeholder": "Year of birth (years 1900 - 2020)",
       "gender_in_passport": "Gender as stated in your passport or other government records",
       "male": "Male",
       "female": "Female",
       "location_information": "Location information",
+      "whats_your_location": "What's your location?",
       "city": "City",
       "country": "Country",
       "postal_code": "Postal code",
       "location_determination_subtitle": "Location is determined using location API. Make sure to allow location sensors.",
       "location_change_subtitle": "To update location information, update the value in the country and postal code field or press the button below.",
       "update_location": "Update location",
-      "use_gps": "Get location from GPS"
+      "use_gps": "Get location from GPS",
+      "set_location_and_submit": "Set location and submit"
     },
     "previous_submissions": "Previous submissions",
-    "submit": "Submit"
+    "submit": "Submit",
+    "save": "Save",
+
+    "last_submission_was_done": "You last submission was made at %{date}",
+    "submission_count_text": "You have entered you fever information ",
+    "submission_count_times": "times",
+    "currently_holding_a_streak_of": "Your current concurrent days streak is: ",
+    "streak_days": "days"
   },
 
   "stats": {
