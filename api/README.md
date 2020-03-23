@@ -2,7 +2,7 @@
 
 The back-end server is a simple Python Flask app with MariaDB database for storage. The back-end exposes an API at `https://fevermap.net/api/` which the front-end communicates with JSON calls.
 
-## Development
+## Development with Docker
 
 To participate in the back-end development, you need Python skills and basic understanding of HTTP and JSON.
 
@@ -22,6 +22,46 @@ To access the MariaDB shell, simply run
 If you during testing want to empty either of the database tables, then run
 `TRUNCATE submissions;`. To completely wipe out existing database, run the above
 cycle to remove Docker volumes and restart everything.
+
+## Development wih Podman
+
+In case you use [podman](https://podman.io/getting-started/) instead of docker,
+here are the steps to get similar environment running with podman as an admin
+user (sudo/root needed only for the time to install the tools):
+
+```
+sudo dnf install -y podman buildah
+buildah bud -t fevermap/api .
+mkdir database
+podman pod create -n fevermap -p 9000:9000
+podman run --pod fevermap -d \
+  --name fevermap_db \
+  -e "MYSQL_ROOT_PASSWORD=rootpass" \
+  -e "MYSQL_DATABASE=fevermap" \
+  -e "MYSQL_USER=fevermap" \
+  -e "MYSQL_PASSWORD=feverpass" \
+  -v "database:/var/lib/mysql:z" \
+  ypcs/mariadb:latest
+podman run --pod fevermap -d \
+  --name fevermap_api \
+  -v ".:/app:z" \
+  -e "FEVERMAP_API_DATABASE_URI=mysql://fevermap:feverpass@127.0.0.1/fevermap?charset=utf8mb4" \
+  fevermap/api:latest
+```
+
+At the time (2020-03-22) the Debian based api container won't get built on
+RHEL/CentOS likely due kernel vs. userland mismatch. The build will fail with
+addgroup lock problem. I verified this works on Fedora 31 and 32 beta.
+
+For the rest of the guides, you can pretty much just replace docker command
+with podman.
+
+If you further want to take this to kubernetes, you get the kube yaml file
+by the following command:
+
+```
+podman generate kube fevermap > fevermap.yml
+```
 
 ## Production
 
