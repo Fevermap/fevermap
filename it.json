@@ -1,0 +1,81 @@
+{
+  "lang_name": "Italian",
+  "language": "Lingua",
+  "fevermap_title": "Fevermap",
+
+  "landing": {
+    "about": "Informazioni",
+    "about_title": "Cosa è Fevermap?",
+    "about_content_explanation": " È una applicazione per dispositivi cellulari e web creata per raccogliere in modo semplice e in tempo reale dati sulla diffusione della pandemia di COVID-19.",
+    "about_current_methods": "I metodi attuali per tracciare la diffusione del Corona Virus non offrono una visione completa. Grandi masse di persone non sono ancora state testate per riservare le risorse avviabili a chi ne ha più bisogno al momento .",
+    "about_solution": "Fevermap è la soluzione per questo problema. Con Fevermap, qualunque persona in giro nel pianeta può riportare anonimamente sintomi collegati al virus per se, o i suoi cari. Ciò permetterà di poter estimare più accuratamente la diffusione di COVID-19 in tempo reale, e di fornire alle autorità dati aggiuntivi che li aiuteranno a prendere decisioni più precise e tempestive.",
+    "about_data_collection": "I dati raccolti da Fevermap sono anonimi e saranno usati per aumentare la consapevolezza sulla attuale situazione mondiale.",
+    "about_current_participant_count": "Fino ad oggi, %{participantCount} utenti hanno utilizzato Fevermap per riportare i loro sintomi. ",
+
+    "how_to_participate": "Come si partecipa?",
+    "participation_info": "È facile. Devi rilevare la tua temperatura corporea e inserire il risultato, insieme a qualche piccola informazione statistica, tipo la tua data di nascita e il tuo CAP.",
+    "info_disclaimer": "Non chiederemo mai alcun tipo di domanda che potrebbe facilitare in alcun modo il riconoscimento dell'utente. Avremo il massimo riguardo per la privacy e l'anonimato.",
+
+    "how_will_my_data_be_used": "Come saranno utilizzati i miei dati?",
+    "data_use_explanation": "I dati sarranno resi anonimi, dopo che verranno condivisi attraverso l'interfaccia API..."
+  },
+  "entry": {
+    "data_entry": "Immissione dati",
+    "first_entry_disclaimer": "I valori verranno catalogati nel database in base al tuo dispositivo. Si raccomanda l'utilizzo dello stesso dispositivo ogni qualvolta nuovi dati verranno immessi nel sistema. Questo procedimento consente al sistema di monitorare in maniera più efficace.",
+    "last_submission": "Ultimo Rilevamento",
+    "submission_period_disclaimer": "Affinché non vengano raccolti dati superflui, è permesso il caricamento di un nuovo rilevamento ogni 12 ore.",
+    "queued_entries": "Ci sono %{queuedEntries} rilevamenti che non sono stati ancora sincronizzati con il server.",
+    "sync_now": "Sincronizza ora",
+    "questions": {
+      "do_you_have_fever": " Hai la febbre al momento ?",
+      "yes": "Sì",
+      "no": "No",
+      "how_much": "A che temperatura ?",
+      "degrees_of_fever": "%{degrees} di febbre",
+      "not_measured": "Non lo so di preciso, non ho misurato.",
+      "birth_year": "Anno di nascita",
+      "birth_year_placeholder": "Anno di nascita (anni 1900 - 2020)",
+      "gender_in_passport": "Sesso come riportato nel tuo passaporto o altri documenti d'identità.",
+      "male": "Uomo",
+      "female": "Donna",
+      "location_information": "Informazioni Geografiche",
+      "city": "Città",
+      "country": "Paese",
+      "postal_code": "Codice di Avviamento Postale",
+      "location_determination_subtitle": "La posizione verrà determinata usando l'API. Assicurati di attivare il posizionamento dalle impostazioni del tuo dispositivo.",
+      "location_change_subtitle": "Per cambiare la posizione, modifica il paese e il CAP nelle rispettive caselle o premi il pulsante sottostante.",
+      "update_location": "Cambia Posizione",
+      "use_gps": "Ottieni Posizione tramite GPS"
+    },
+    "previous_submissions": "Rilevamenti passati",
+    "submit": "Invia"
+},
+ 
+ "stats" : {
+    "stats": "Statistiche"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Posizione aggiornata con successo",
+      "data_entry": "I valori sono stati inviati correttamente.",
+      "offline_entry_queued": "Sembra che la connessione di rete sia non attiva. Il valore è stato inserito in coda.",
+      "sync_finished": "I valori sono stati sincronizzati con successo. "
+    },
+    "error": {
+      "age_not_in_range": "La data di nascita non rientra nei valori consentiti. (1900 - 2020).",
+      "fever_temp_value_invalid": "La temperatura corporea non è valida.",
+      "location_data_invalid": "I dati relativi alla posizione non sono validi.",
+      "api_data_invalid": "I dati inviati all API non sono validi.",
+      "gender_not_set": "Il Sesso non è stato selezionato."
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Installa Fevermap",
+      "content": "Fevermap può essere installato come una 'Progressive Web Application'. Se installato in questa modalità, si potrà riscontrare un aumento nelle funzionalità e prestazioni, e notificazioni push (in un futuro prossimo...) ",
+      "approve_text": "Installa",
+      "decline_text": "Forse più tardi"
+    }
+  }
+}
