@@ -453,26 +453,31 @@ input[type="range"]::-webkit-slider-runnable-track {
     margin-bottom: 0 !important;
   }
 
-  .entry-field {
-    width: 100%;
-    p {
-      margin: 0 0 0.5rem;
-    }
-  }
-
-  .gender-input-holder {
-    .gender-input {
-      img {
-        width: 20%;
-        max-width: 250px;
-      }
-      &--female {
-        img {
-          width: 25%;
+  .fevermap-entry-carousel  {
+    .fevermap-entry-window {
+      .entry-field {
+        width: 100%;
+        p {
+          margin: 0 0 0.5rem;
         }
-      }
-      p {
-        margin: 1rem 0;
+
+        .gender-input-holder {
+          .gender-input {
+            padding: 0.5rem 0 0;
+            img {
+              width: 20%;
+              max-width: 250px;
+            }
+            &--female {
+              img {
+                width: 25%;
+              }
+            }
+            p {
+              margin: 0.5rem 0;
+            }
+          }
+        }
       }
     }
   }
@@ -494,5 +499,9 @@ input[type="range"]::-webkit-slider-runnable-track {
 @media only screen and (max-width: 400px) {
   .fevermap-entry-view {
     margin-bottom: 3rem !important;
+  }
+
+  p.subtitle {
+    margin: 0 0 0.5rem;
   }
 }
