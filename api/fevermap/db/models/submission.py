@@ -20,6 +20,11 @@ class Submission(Base):
 
     fever_status = Column(Boolean)
     fever_temp = Column(Float(precision=1))
+    symptom_difficult_to_breath = Column(Boolean)
+    symptom_cough = Column(Boolean)
+    symptom_sore_throat = Column(Boolean)
+    symptom_muscle_pain = Column(Boolean)
+    diagnosed_covid19 = Column(Boolean)
 
     location_country_code = Column(String(2))
     location_postal_code = Column(String(10))

@@ -19,6 +19,10 @@ the API.
 To access the MariaDB shell, simply run
 `docker exec -it api_database_1 mysql -prootpass fevermap`.
 
+If you during testing want to empty either of the database tables, then run
+`TRUNCATE submissions;`. To completely wipe out existing database, run the above
+cycle to remove Docker volumes and restart everything.
+
 ## Production
 
 1. Install and start a MariaDB server, with a custom user for the app and a
