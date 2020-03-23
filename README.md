@@ -1,4 +1,4 @@
-![Fevermap.net](https://gitlab.com/fevermap/fevermap/-/raw/master/app/src/assets/images/logo-slogan-large.png)
+![Fevermap.net](app/src/assets/images/logo-slogan-large.png)
 
 # Fevermap
 
@@ -31,6 +31,7 @@ Following our social media accounts and share our announcements:
 * Twitter: https://twitter.com/fevermap
 * Instagram: https://www.instagram.com/fevermap/
 * Facebook: https://www.facebook.com/Fevermap-106608140981693/
+* Youtube: https://www.youtube.com/channel/UCSGgeNTHswP5alT1NXu-SfA
 
 ### 2. Translate the app into your own language
 
@@ -53,3 +54,11 @@ If you have HTML/CSS/JS skills, you can participate in front-end development. Se
 If you have Python/Flask skills, you can participate in back-end development. See `api/README.md` for details.
 
 This is an open source project, so feel free to review the code, fix things you think are important and open a merge request for others to review.
+
+## Video and sides
+
+[![Fevermap video](images/vimeo.png)](https://vimeo.com/399851161)
+
+[![Fevermap presentation](images/slideshare.png)](https://www.slideshare.net/ottokekalainen/fevermap-track-covid19-pandemic-in-realtime)
+
+<!--- NOTE: iframe embeds don't work in Markdown (at least on on Gitlab), so use screenshots instead to mimick embeds and attract users to click on it -->
