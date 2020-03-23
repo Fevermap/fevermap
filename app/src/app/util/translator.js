@@ -5,12 +5,14 @@ import translation_en from 'assets/language/en';
 import translation_fi from 'assets/language/fi';
 import translation_sv from 'assets/language/sv';
 import translation_it from 'assets/language/it';
+import translation_de from 'assets/language/de';
 
 const translations = {
     en: translation_en,
     fi: translation_fi,
     sv: translation_sv,
     it: translation_it,
+    de: translation_de,
 };
 
 export default class Translator {

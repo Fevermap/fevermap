@@ -1,0 +1,101 @@
+{
+  "lang_name": "Deutsch",
+  "language": "Sprache",
+  "fevermap_title": "Fieberkarte",
+  "back": "Zurück",
+
+  "landing": {
+    "about": "Über",
+    "about_title": "Was ist die Fieberkarte?",
+    "about_content_explanation": " ist eine Web- und Mobilapplikation zur einfachen Datensammlung zur Ausbreitung der Coronavirus-COVID-19-Pandemie in Echtzeit.",
+    "about_current_methods": "Aktuelle Methoden zur Verfolgung der Ausbreitung des Corona-Virus zeigen nicht das vollständige Bild.  Große Massen werden nicht getestet, um Zeit und Ressourcen für die, die sie brauchen, verfügbar zu halten.",
+    "about_solution": "Die Fieberkarte ist eine Lösung für dieses Problem. Mit der Fieberkarte können normale Menschen weltweit anonym ihr Fieber und andere Symptome melden. Dies bedeutet, dass wir die wahre Ausbreitung der COVID-19-Infektionen in Echtzeit abschätzen können und die Behörden mit Daten versorgen können, die ihnen dabei helfen datenbasierende, korrekte und rechtzeitige Entscheidungen über Schutzmaßnahmen zu treffen.",
+    "about_data_collection": "Die mit Fieberkarte gesammelten Informationen sind anonymisiert und werden verwendet, um das Bewusstsein über die aktuelle globale Situation zu erhöhen.",
+    "about_current_participant_count": "Bis heute haben %{participantCount} Benutzer die Fieberkarte verwendet, um ihre Symptome zu melden. ",
+
+    "how_to_participate": "Wie nimmt man teil?",
+    "participation_info": "Es ist einfach. Man misst nur seine Temperatur und gibt das Ergebnis mit ein bischen statistischer Information, wie das Geburtsjahr und die Postleitzahl, ein.",
+    "info_disclaimer": "Wir stellen keine Fragen durch man erkannt wird.  Wir wahren Privatsphäre und Anonymität.",
+    "how_will_my_data_be_used": "Wir werden die Daten verwendet?",
+    "data_use_explanation": "Nachdem die Daten anonymisiert sind, werden sie über eine offene Datenschnittstelle geteilt."
+  },
+  "entry": {
+    "data_entry": "Dateneingabe",
+    "first_entry_disclaimer": "Einträge werden in eine Datenbank auf dem Gerät eingegeben. Wir würden es begrüßen, wenn die Informationen immer vom gleichen Gerät eingegeben werden. Dies erlaubt uns das Fieber besser zu verfolgen.",
+    "last_submission": "Letzte Übermittlung",
+    "submission_period_disclaimer": "Um unnötige Daten zu vermeiden, werden die Übermittlungen auf eine in 12 Stunden beschränkt.",
+    "queued_entries": "%{queuedEntries} Einträge wurde noch nicht mit dem Server abgeglichen.",
+    "sync_now": "Jetzt abgleichen",
+    "new_entry": "Neuer Eintrag",
+    "first_time_disclaimer": "Bei der ersten Verwendung der Fieberkarte stellen wir einige Fragen.",
+    "these_questions_wont_be_repeated": "Diese Fragen werden bei zukünftigen Übertragungen nicht wiederholt.",
+    "questions": {
+      "what_is_your_temperature": "Wie ist die Temperatur?",
+      "temperature": "Temperatur",
+      "how_much": "Wieviel?",
+      "degrees_of_fever": "%{degrees} Fieber",
+      "not_measured": "Ungenau, nicht gemessen.",
+      "set_temperature": "Temperatur setzen",
+      "other_symptoms": "Andere Symptome?",
+      "choose_all_that_apply": "Alle wählen und anwenden",
+      "difficulty_to_breathe": "Atemprobleme",
+      "cough": "Husten",
+      "sore_throat": "Halsschmerzen",
+      "muscular_pain": "Muskelschmerzen",
+      "positive_covid_diagnosis": "Bei mir wurde COVID-19 festgestellt.",
+      "set_symptoms": "Symptome setzen",
+      "birth_year": "Geburtsjahr",
+      "birth_year_placeholder": "Geburtsjahr (zwischen 1900-2020)",
+      "gender_in_passport": "Geschlecht wie im Ausweis angegeben",
+      "male": "Männlich",
+      "female": "Weiblich",
+      "location_information": "Ortsinformation",
+      "whats_your_location": "Wo sind Sie gerade?",
+      "city": "Ort",
+      "country": "Land",
+      "postal_code": "Postleitzahl",
+      "location_determination_subtitle": "Ort wird durch Ortungs-API bestimmt. Bitte Ortserkennung erlauben.",
+      "location_change_subtitle": "Um die Ortsinformation zu aktualisieren, den Wert im Land und Postleitzahlfeld anpassen und den unteren Knopf drücken.",
+      "update_location": "Ort aktualisieren",
+      "use_gps": "Ort durch GPS bestimmen",
+      "set_location_and_submit": "Ort setzen und abschicken"
+    },
+    "previous_submissions": "Vorherige Übertragungen",
+    "submit": "Abschicken",
+    "save": "Speichern",
+
+    "last_submission_was_done": "Die letzte Übertragung war um %{date}",
+    "submission_count_text": "Fieberinformation wurde ",
+    "submission_count_times": " Mal eingegeben",
+    "currently_holding_a_streak_of": "Ihre aktuelle fortlaufende Meldezeitspanne ist: ",
+    "streak_days": "Tage"
+  },
+
+  "stats": {
+    "stats": "Stat."
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Ort erfolgreich aktualisiert",
+      "data_entry": "Eintrag erfolgreich abgeschickt",
+      "offline_entry_queued": "Offenbar sind Sie offline. Eintrag wartet.",
+      "sync_finished": "Einträge erfolgreich abgeglichen."
+    },
+    "error": {
+      "age_not_in_range": "Angegebenes Geburtsjahr ist nicht im erlaubten Bereich (1900-2020).",
+      "fever_temp_value_invalid": "Die Fiebertemperatur ist ungültig.",
+      "location_data_invalid": "Der angegebene Ort ist ungültig.",
+      "api_data_invalid": "Die zur API geschickten Daten waren ungültig.",
+      "gender_not_set": "Geschlecht ist nicht gesetzt."
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Fieberkarte installieren",
+      "content": "Fieberkarte kann als progressive Webapplikation installiert werden. Bei Installation können wir Sie mit tollen neuen Extrafunktionen wie schnellerer Laufzeit und Push-Benachrichtigungen versorgen (kommt bald).",
+      "approve_text": "Installieren",
+      "decline_text": "Vielleicht später"
+    }
+  }
+}
