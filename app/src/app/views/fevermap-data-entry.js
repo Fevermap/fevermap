@@ -1,9 +1,7 @@
-import { LitElement, html, css, unsafeCSS } from 'lit-element';
-import { MDCSlider } from '@material/slider';
+import { LitElement, html } from 'lit-element';
 import { MDCCheckbox } from '@material/checkbox/component';
 import maleIcon from 'src/assets/images/male.svg';
 import femaleIcon from 'src/assets/images/female.svg';
-import { MDCRipple } from '@material/ripple/component';
 import GeolocatorService from '../services/geolocator-service';
 import 'src/app/components/input-field';
 import 'src/app/components/select-field';
@@ -29,6 +27,7 @@ class FevermapDataEntry extends LitElement {
             feverAmount: { type: Number },
             feverAmountNowKnown: { type: Boolean },
             gender: { type: String },
+            birthYear: { type: String },
 
             geoCodingInfo: { type: Object },
             countrySelectionOptions: { type: Array },
@@ -36,11 +35,15 @@ class FevermapDataEntry extends LitElement {
 
             errorMessage: { type: String },
 
+            carouselWrapper: { type: Object },
             currentQuestion: { type: Number },
             questionCount: { type: Number },
 
-            yearOfBirth: { type: Number },
             symptoms: { type: Array },
+            covidDiagnosed: { type: Boolean },
+
+            submissionCount: { type: Number },
+            submissionStreak: { type: Number },
         };
     }
 
@@ -56,8 +59,9 @@ class FevermapDataEntry extends LitElement {
         this.firstTimeSubmitting = latestEntry == null;
         this.errorMessage = null;
         this.hasFever = null;
-        this.feverAmount = 37;
+        this.feverAmount = 35;
         this.feverAmountNotKnown = false;
+        this.birthYear = latestEntry ? latestEntry.birth_year : null;
         this.gender = latestEntry ? latestEntry.gender : null;
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
@@ -87,16 +91,26 @@ class FevermapDataEntry extends LitElement {
         this.queuedEntries = [];
 
         this.currentQuestion = 1;
-        this.questionCount = this.firstTimeSubmitting ? 4 : 3;
+        this.questionCount = 4;
         this.symptoms = [];
+
+        let subCount = localStorage.getItem('SUBMISSION_COUNT');
+        let subStreak = localStorage.getItem('SUBMISSION_STREAK');
+        this.submissionCount = subCount ? subCount : 0;
+        this.submissionStreak = subStreak ? subStreak : 0;
     }
 
     firstUpdated(_changedProperties) {
-        /*this.initializeComponents();
         this.getPreviousSubmissionsFromIndexedDb();
-        this.getQueuedEntriesFromIndexedDb();*/
+        /*this.getQueuedEntriesFromIndexedDb();*/
         this.initSlider();
         this.getGeoLocationInfo();
+        this.carouselWrapper = this.querySelector('.fevermap-data-entry-content');
+        if (!this.firstTimeSubmitting) {
+            setTimeout(() => {
+                this.nextQuestion();
+            });
+        }
     }
 
     createCountrySelectOptions() {
@@ -112,8 +126,9 @@ class FevermapDataEntry extends LitElement {
     async getPreviousSubmissionsFromIndexedDb() {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
+        console.log(previousSubmissions);
         if (previousSubmissions && previousSubmissions.length > 0) {
-            this.previousSubmissions = previousSubmissions;
+            this.previousSubmissions = previousSubmissions.sort((a, b) => b.submission_time - a.submission_time);
         }
     }
 
@@ -125,11 +140,6 @@ class FevermapDataEntry extends LitElement {
             this.queuedEntries = queuedSubmissions;
         }
     }
-
-    initializeComponents() {
-        const buttonRipple = new MDCRipple(document.querySelector('.mdc-button'));
-    }
-
     async getGeoLocationInfo(forceUpdate) {
         if (!this.geoCodingInfo || forceUpdate) {
             navigator.geolocation.getCurrentPosition(async success => {
@@ -198,18 +208,28 @@ class FevermapDataEntry extends LitElement {
      */
     getFeverWithUnit(reverse, value) {
         let feverValue = arguments.length >= 2 ? value : this.feverAmount;
-        return !!reverse ^ this.useFahrenheit() ? this.celsiusToFahrenheit(feverValue) + ' °F' : feverValue + ' °C';
+        return !!reverse ^ this.useFahrenheit()
+            ? this.celsiusToFahrenheit(feverValue) + ' °F'
+            : Number(feverValue).toFixed(1) + ' °C';
     }
 
     initSlider() {
-        this.querySelector('#temperature-meter').addEventListener('input', e => {
-            console.log(e);
+        let tempMeter = this.querySelector('#temperature-meter');
+        if (!tempMeter) {
+            return;
+        }
+        tempMeter.addEventListener('input', e => {
             this.feverAmount = e.target.value;
         });
+        // Programmatically set height of the temp meter
+        setTimeout(() => {
+            tempMeter.style.width = tempMeter.parentNode.clientHeight + 'px';
+        }, 0);
     }
 
-    async handleSubmit() {
+    async buildFeverData() {
         let feverData = {};
+        let geoCodingInfo = await this.getGeoCodingInputInfo();
         let device_id = localStorage.getItem('DEVICE_ID');
         if (!device_id) {
             device_id = Date.now();
@@ -218,44 +238,81 @@ class FevermapDataEntry extends LitElement {
 
         feverData.device_id = device_id;
         feverData.fever_status = this.hasFever;
+        feverData.fever_temp = this.feverAmount;
         if (this.hasFever) {
             feverData.fever_temp = !this.feverAmountNotKnown && this.hasFever ? this.feverAmount : null;
         }
-        feverData.birth_year = this.querySelector('#birth-year').getValue();
+        feverData.birth_year = this.birthYear;
         feverData.gender = this.gender;
-        const geoCodingInfo = await this.getGeoCodingInputInfo();
+
         feverData.location_country_code = geoCodingInfo.country_code;
         feverData.location_postal_code = geoCodingInfo.postal_code;
         feverData.location_lng = geoCodingInfo.location_lng.toFixed(7);
         feverData.location_lat = geoCodingInfo.location_lat.toFixed(7);
 
+        const possibleSymptoms = [
+            'symptom_difficult_to_breathe',
+            'symptom_cough',
+            'symptom_sore_throat',
+            'symptom_muscle_pain',
+        ];
+        possibleSymptoms.forEach(symp => {
+            feverData[symp] = this.symptoms.includes(symp);
+        });
+
+        feverData.diagnosed_covid19 = this.covidDiagnosed;
+
+        return feverData;
+    }
+
+    validateFeverData(feverData) {
         if (feverData.birth_year > 2020 || feverData.birth_year < 1900) {
             this.errorMessage = Translator.get('system_messages.error.age_not_in_range');
-            return;
+            SnackBar.error(this.errorMessage);
+            return false;
         }
 
         if (feverData.gender === null) {
             this.errorMessage = Translator.get('system_messages.error.gender_not_set');
-            return;
+            SnackBar.error(this.errorMessage);
+            return false;
         }
 
-        if (
-            feverData.fever_status === null ||
-            (feverData.fever_status && (feverData.fever_temp < 37 || feverData.fever_temp > 44))
-        ) {
+        if (feverData.fever_temp != null && (feverData.fever_temp < 35 || feverData.fever_temp > 44)) {
             this.errorMessage = Translator.get('system_messages.error.fever_temp_value_invalid');
-            return;
+            SnackBar.error(this.errorMessage);
+            return false;
         }
-        if (this.locationDataIsInvalid(geoCodingInfo)) {
+        if (this.locationDataIsInvalid(feverData)) {
             this.errorMessage = Translator.get('system_messages.error.location_data_invalid');
+            SnackBar.error(this.errorMessage);
+            return false;
+        }
+        return true;
+    }
+
+    locationDataIsInvalid(feverData) {
+        return (
+            !feverData.location_country_code ||
+            !feverData.location_postal_code ||
+            !feverData.location_lng ||
+            !feverData.location_lat
+        );
+    }
+
+    async handleSubmit() {
+        let feverData = await this.buildFeverData();
+        let valid = this.validateFeverData(feverData);
+        if (!valid) {
             return;
         }
         this.errorMessage = null;
 
         const submissionResponse = await DataEntryService.handleDataEntrySubmission(feverData);
 
-        if (submissionResponse.success) {
-            this.handlePostSubmissionActions(feverData, Date.now());
+        if (submissionResponse.success || true) {
+            this.handlePostSubmissionActions(feverData, Date.now(), false, submissionResponse);
+            this.currentQuestion = 1;
         } else {
             switch (submissionResponse.reason) {
                 case 'INVALID_DATA':
@@ -270,7 +327,7 @@ class FevermapDataEntry extends LitElement {
         }
     }
 
-    async handlePostSubmissionActions(feverData, submissionTime, entryGotQueued) {
+    async handlePostSubmissionActions(feverData, submissionTime, entryGotQueued, submissionResponse) {
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
         localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
 
@@ -279,7 +336,16 @@ class FevermapDataEntry extends LitElement {
 
         if (!entryGotQueued) {
             const db = await DBUtil.getInstance();
+            feverData.submission_time = submissionTime;
             const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
+
+            if (submissionResponse && submissionResponse.history != null) {
+                localStorage.setItem('SUBMISSION_COUNT', submissionResponse.history.length);
+                localStorage.setItem('SUBMISSION_STREAK', submissionResponse.history.length);
+            }
+
+            this.getPreviousSubmissionsFromIndexedDb();
+
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
         } else {
             SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
@@ -310,84 +376,91 @@ class FevermapDataEntry extends LitElement {
         });
     }
 
-    locationDataIsInvalid(locationData) {
-        return !locationData || !locationData.country_code || !locationData.location_lat || !locationData.location_lng;
-    }
-
     async getGeoCodingInputInfo() {
-        const postal_code = this.querySelector('#location-postal-code').getValue();
-        const country = this.querySelector('#location-country').getValue();
+        let postal_code = this.querySelector('#location-postal-code').getValue();
+        let country = this.querySelector('#location-country').getValue();
 
-        const coords = this.geoCodingInfo.coords;
-
-        const geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
+        let geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
             postal_code,
             country.value.id
         );
         localStorage.setItem('LAST_LOCATION', JSON.stringify(geoCodingInfo));
 
+        if (!geoCodingInfo.countryShort || !geoCodingInfo.coords || !geoCodingInfo.postal_code) {
+            SnackBar.error(Translator.get('system_messages.error.location_data_invalid'));
+            return null;
+        }
+
         return {
             country_code: geoCodingInfo.countryShort,
-            location_lat: coords.lat,
-            location_lng: coords.lng,
+            location_lat: geoCodingInfo.coords.lat,
+            location_lng: geoCodingInfo.coords.lng,
             postal_code: geoCodingInfo.postal_code,
         };
     }
 
-    async handleLocationUpdate() {
-        const postal_code = this.querySelector('#location-postal-code').getValue();
-        const country = this.querySelector('#location-country').getValue();
+    handlePersonalInfoSubmit() {
+        this.birthYear = this.querySelector('#birth-year').getValue();
+        this.nextQuestion();
+    }
 
-        if (!postal_code || !country) {
+    handleFeverInfoSubmit(noMeasurement = false) {
+        if (noMeasurement) {
+            this.feverAmount = null;
+        }
+        this.nextQuestion();
+    }
+
+    handleSymptomSubmit() {
+        this.covidDiagnosed = this.querySelector('#covid-diagnosed').checked;
+        this.nextQuestion();
+    }
+
+    previousQuestion() {
+        if (this.currentQuestion === 1) {
             return;
         }
-        const geoCodingInfo = await GeolocatorService.getGeoCodingInfoByPostalCodeAndCountry(
-            postal_code,
-            country.value.id
-        );
-        if (!geoCodingInfo.success) {
-            console.error(geoCodingInfo);
-            SnackBar.error(Translator.get('system_messages.error.location_data_invalid'));
-            this.errorMessage = Translator.get('system_messages.error.location_data_invalid');
+        this.currentQuestion--;
+        this.scrollToCurrentQuestion(false);
+    }
+
+    nextQuestion() {
+        if (this.currentQuestion === this.questionCount) {
             return;
         }
-        this.errorMessage = null;
-        delete geoCodingInfo.success;
-        this.geoCodingInfo = geoCodingInfo;
-        SnackBar.success(Translator.get('system_messages.success.location_update'));
+        this.currentQuestion++;
+        this.scrollToCurrentQuestion();
     }
 
-    moveToFeverQuestions() {
-        let carouselWrapper = this.querySelector('.fevermap-data-entry-content');
-        let targetElem = this.querySelector('.fevermap-fever-questions');
-        let target = targetElem.offsetLeft * 0.925;
-
-        this.yearOfBirth = this.querySelector('#birth-year').getValue();
-        this.smoothScroll(carouselWrapper, target);
+    scrollToCurrentQuestion(forwards = true) {
+        let targetElem = this.querySelector(`#question-${this.currentQuestion}`);
+        if (!targetElem) {
+            return;
+        }
+        let target = targetElem.offsetLeft - (window.innerWidth - targetElem.clientWidth) / 2;
+        this.smoothScroll(this.carouselWrapper, target, forwards);
     }
 
-    moveToOtherSymptomps(tempNotKnown) {
-        let carouselWrapper = this.querySelector('.fevermap-data-entry-content');
-        let targetElem = this.querySelector('.fevermap-other-symptoms-questions');
-        let target = targetElem.offsetLeft * 0.96;
-
-        this.smoothScroll(carouselWrapper, target);
-    }
-
-    moveToLocation() {
-        let carouselWrapper = this.querySelector('.fevermap-data-entry-content');
-        let targetElem = this.querySelector('.fevermap-location-questions');
-        let target = targetElem.offsetLeft * 0.975;
-
-        this.smoothScroll(carouselWrapper, target);
-    }
-
-    smoothScroll(div, target) {
-        (function smoothScroll() {
-            if (div.scrollLeft >= target) return;
-            div.scrollLeft += 10;
-            setTimeout(smoothScroll, 10);
-        })();
+    smoothScroll(div, target, forwards = true) {
+        // Tickrate will determine the amount of iterations + 1 that the scrolling will do
+        // To speed things up, change the division value. Smaller is faster.
+        let tickRate = Math.abs(target - div.scrollLeft) / 30;
+        if (forwards) {
+            (function smoothScroll() {
+                if (div.scrollLeft >= target) return;
+                div.scrollLeft += tickRate;
+                setTimeout(smoothScroll, 10);
+            })();
+        } else {
+            if (target < 0) {
+                target = 0;
+            }
+            (function smoothScrollBackwards() {
+                if (div.scrollLeft <= target) return;
+                div.scrollLeft -= tickRate;
+                setTimeout(smoothScrollBackwards, 10);
+            })();
+        }
     }
 
     handleSymptomAdd(e) {
@@ -406,15 +479,82 @@ class FevermapDataEntry extends LitElement {
 
     render() {
         return html`
-            <div class="container view-wrapper">
+            <div class="container view-wrapper fevermap-entry-view">
                 <div class="fevermap-data-entry-content">
-                    <div
-                        class="fevermap-entry-carousel${this.questionCount === 4
-                            ? ' fevermap-entry-carousel--full-width'
-                            : ' fevermap-entry-carousel--smaller-width'}"
-                    >
-                        ${this.renderQuestions()}
-                    </div>
+                    ${this.lastSubmissionIsTooCloseToNow
+                        ? html`
+                              ${this.renderInfoView()}
+                          `
+                        : html`
+                              <div
+                                  class="fevermap-entry-carousel${this.questionCount === 4
+                                      ? ' fevermap-entry-carousel--full-width'
+                                      : ' fevermap-entry-carousel--smaller-width'}"
+                              >
+                                  ${this.renderQuestions()}
+                              </div>
+                          `}
+                </div>
+            </div>
+        `;
+    }
+
+    renderInfoView() {
+        return html`
+            <div class="entry-info-view-wrapper">
+                <h2>
+                    Your last submission was done at ${this.lastSubmissionTime}
+                </h2>
+                <p id="submission-count-disclaimer">
+                    ${Translator.get('entry.submission_count_text')}
+                    <span class="green-text">${this.submissionCount}</span> ${Translator.get(
+                        'entry.submission_count_times'
+                    )}.
+                    ${Translator.get('entry.currently_holding_a_streak_of')}
+                    <span class="green-text">${this.submissionStreak}</span> ${Translator.get('entry.streak_days')}
+                </p>
+                <div class="previous-submissions-list">
+                    <p>Previous submissions:</p>
+                    ${this.previousSubmissions.map(sub => {
+                        return html`
+                            <div class="previous-submission">
+                                <p>${dayjs(Number(sub.submission_time)).format('DD-MM-YYYY : HH:mm')}</p>
+                                <p>
+                                    <b>${Translator.get('entry.questions.temperature')}:</b>
+                                    ${sub.fever_temp
+                                        ? `${this.getFeverWithUnit()} (${this.getFeverWithUnit(true)})`
+                                        : Translator.get('entry.questions.not_measured')}
+                                </p>
+                                <div class="previous-submission--symptoms">
+                                    <p class="${sub.symptom_difficult_to_breathe ? 'symptom-true' : 'symptom-false'}">
+                                        ${Translator.get('entry.questions.difficulty_to_breathe')}
+                                        <material-icon
+                                            icon="${sub.symptom_difficult_to_breathe ? 'done' : 'close'}"
+                                        ></material-icon>
+                                    </p>
+
+                                    <p class="${sub.symptom_cough ? 'symptom-true' : 'symptom-false'}">
+                                        ${Translator.get('entry.questions.cough')}
+                                        <material-icon icon="${sub.symptom_cough ? 'done' : 'close'}"></material-icon>
+                                    </p>
+
+                                    <p class="${sub.symptom_sore_throat ? 'symptom-true' : 'symptom-false'}">
+                                        ${Translator.get('entry.questions.sore_throat')}
+                                        <material-icon
+                                            icon="${sub.symptom_sore_throat ? 'done' : 'close'}"
+                                        ></material-icon>
+                                    </p>
+
+                                    <p class="${sub.symptom_muscle_pain ? 'symptom-true' : 'symptom-false'}">
+                                        ${Translator.get('entry.questions.muscular_pain')}
+                                        <material-icon
+                                            icon="${sub.symptom_muscle_pain ? 'done' : 'close'}"
+                                        ></material-icon>
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                    })}
                 </div>
             </div>
         `;
@@ -422,172 +562,192 @@ class FevermapDataEntry extends LitElement {
 
     renderQuestions() {
         return html`
-            ${this.questionCount === 4
-                ? html`
-                      <div class="fevermap-entry-window mdc-elevation--z9">
-                          <h2>New Entry</h2>
-                          <p class="subtitle">As this is your first time, we'll ask you a few questions first.</p>
-                          ${this.getYearOfBirthInput()} ${this.getGenderInput()}
-                          <div class="proceed-button">
-                              <button class="mdc-button mdc-button--raised" @click="${this.moveToFeverQuestions}">
-                                  <div class="mdc-button__ripple"></div>
-
-                                  <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
-                                  <span class="mdc-button__label">${'Save'}</span>
-                              </button>
-                          </div>
-                      </div>
-                  `
-                : ''}
-            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-fever-questions">
-                <h2>New Entry</h2>
-                <p class="temperature-title">What's your temperature?</p>
+            <div class="fevermap-entry-window mdc-elevation--z9" id="question-1">
+                ${this.getPersonalQuestions()}
+            </div>
+            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-fever-questions" id="question-2">
                 ${this.getFeverMeter()}
-
-                <div class="proceed-button">
-                    <button class="mdc-button mdc-button--raised" @click="${this.moveToOtherSymptomps}">
-                        <div class="mdc-button__ripple"></div>
-
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
-                        <span class="mdc-button__label">${'Set temperature'}</span>
-                    </button>
-                </div>
             </div>
-            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-other-symptoms-questions">
-                <h2>New Entry</h2>
-                <p class="symptoms-title">Other symptoms?</p>
-                <p class="subtitle">Choose all that apply</p>
-                <div class="symptom-holder">
-                    <div class="symptom" id="breathing-difficulty" @click="${this.handleSymptomAdd}">
-                        <p>Difficulty to breathe</p>
-                    </div>
-                    <div class="symptom" id="cough" @click="${this.handleSymptomAdd}">
-                        <p>Cough</p>
-                    </div>
-                    <div class="symptom" id="sore-throat" @click="${this.handleSymptomAdd}">
-                        <p>Sore throat</p>
-                    </div>
-                    <div class="symptom" id="muscular-pain" @click="${this.handleSymptomAdd}">
-                        <p>Muscular pain</p>
-                    </div>
-                </div>
-
-                <div class="mdc-form-field">
-                    <div class="mdc-checkbox">
-                        <input type="checkbox" class="mdc-checkbox__native-control" id="checkbox-1" />
-                        <div class="mdc-checkbox__background">
-                            <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
-                                <path
-                                    class="mdc-checkbox__checkmark-path"
-                                    fill="none"
-                                    d="M1.73,12.91 8.1,19.28 22.79,4.59"
-                                />
-                            </svg>
-                            <div class="mdc-checkbox__mixedmark"></div>
-                        </div>
-                        <div class="mdc-checkbox__ripple"></div>
-                    </div>
-                    <label for="checkbox-1">I have a positive diagnosis of COVID-19</label>
-                </div>
-                <div class="proceed-button">
-                    <button class="mdc-button mdc-button--raised" @click="${this.moveToLocation}">
-                        <div class="mdc-button__ripple"></div>
-
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
-                        <span class="mdc-button__label">${'Set symptoms'}</span>
-                    </button>
-                </div>
+            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-other-symptoms-questions" id="question-3">
+                ${this.getSymptomsFields()}
             </div>
-            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-location-questions">
-                <h2>New Entry</h2>
-                <p>What's your location?</p>
+            <div class="fevermap-entry-window mdc-elevation--z9 fevermap-location-questions" id="question-4">
                 ${this.getGeoLocationInput()}
             </div>
         `;
     }
 
-    /*render() {
+    getPersonalQuestions() {
         return html`
-            <div class="container view-wrapper">
-                <div class="fevermap-data-entry-content">
-                    <h1>${Translator.get('entry.data_entry')}</h1>
-                    ${this.firstTimeSubmitting
-                        ? html`
-                              <p class="first-entry-disclaimer">${Translator.get('entry.first_entry_disclaimer')}</p>
-                          `
-                        : ''}
-                    ${this.lastSubmissionTime
-                        ? html`
-                              <div class="entry-disclaimer">
-                                  <p>${Translator.get('entry.last_submission')}: ${this.lastSubmissionTime}</p>
-                                  ${this.lastSubmissionIsTooCloseToNow
-                                      ? html`
-                                            <p>
-                                                ${Translator.get('entry.submission_period_disclaimer')}
-                                            </p>
-                                        `
-                                      : ''}
-                              </div>
-                          `
-                        : ''}
-                    ${this.getQueuedEntriesField()}
-                    <div class="entry-fields${this.lastSubmissionIsTooCloseToNow ? ' entry-fields--disabled' : ''}">
-                        ${this.getFeverMeter()} ${this.getYearOfBirthInput()} ${this.getGenderInput()}
-                        ${this.getGeoLocationInput()} ${this.getSubmitButton()}
-                    </div>
-                    ${this.getPreviousSubmissionsSummary()}
-                </div>
+            <div class="title-holder">
+                <h2>${Translator.get('entry.new_entry')}</h2>
+                <p class="subtitle">${Translator.get('entry.first_time_disclaimer')}</p>
+                <p class="subtitle">${Translator.get('entry.these_questions_wont_be_repeated')}</p>
+            </div>
+            <div class="question-number-holder">
+                1/${this.questionCount}
+            </div>
+            ${this.getYearOfBirthInput()} ${this.getGenderInput()}
+            <div class="proceed-button">
+                <button class="mdc-button mdc-button--raised" @click="${this.handlePersonalInfoSubmit}">
+                    <div class="mdc-button__ripple"></div>
+
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">save</i>
+                    <span class="mdc-button__label">${Translator.get('entry.save')}</span>
+                </button>
             </div>
         `;
     }
 
-    getQueuedEntriesField() {
-        return html`
-            ${this.hasQueuedEntries
-                ? html`
-                      <div class="queued-entries-field">
-                          <p>
-                              ${Translator.get('entry.queued_entries', { queuedEntries: this.queuedEntries.length })}
-                          </p>
-                          <div class="submit-queued-button">
-                              <button class="mdc-button mdc-button--outlined" @click="${this.submitQueuedEntries}">
-                                  <div class="mdc-button__ripple"></div>
-
-                                  <i class="material-icons mdc-button__icon" aria-hidden="true">sync</i>
-                                  <span class="mdc-button__label">${Translator.get('entry.sync_now')}</span>
-                              </button>
-                          </div>
-                      </div>
-                  `
-                : ''}
-        `;
-    }*/
-
     getFeverMeter() {
         return html`
-            <div class="entry-field">
-                                  <div class="fever-meters ${this.feverAmountNotKnown ? ' fever-meters--hidden' : ''}">
-                                      <div class="fever-slider">
-                                          <div class="fever-slider-element">
-                                            <input type="range" id="temperature-meter" min="35" max="45" step="0.1" value="36">
-                                          </div>
-                                      </div>
-                                      <div class="fever-amount-display">
-                                          <p class="celcius mdc-elevation--z3">${this.getFeverWithUnit()}</p>
-                                          <p class="fahrenheit mdc-elevation--z3">${this.getFeverWithUnit(true)}</p>
-                                      </div>
-                                  </div>
-                                  <div
-                                      class="mdc-form-field fever-not-measured-field ${
-                                          this.feverAmountNotKnown ? ' fever-not-measured-field--checked' : ''
-                                      }"
-                                  >
-                                      <p id="dont-know-temperature" @click="${() =>
-                                          this.moveToOtherSymptomps(true)}">${Translator.get(
-            'entry.questions.not_measured'
-        )}</p>
-                                  </div>
+            <div class="back-button" @click="${this.previousQuestion}">
+                <material-icon icon="keyboard_arrow_left"></material-icon>${Translator.get('back')}
+            </div>
+            <div class="question-number-holder">
+                2/${this.questionCount}
+            </div>
+            <div class="title-holder">
+                <h2>${Translator.get('entry.new_entry')}</h2>
+                <p class="temperature-title">${Translator.get('entry.questions.what_is_your_temperature')}</p>
+            </div>
+            <div class="entry-field fever-meter-field">
+                <div class="fever-meters ${this.feverAmountNotKnown ? ' fever-meters--hidden' : ''}">
+                    <div class="fever-slider">
+                        <div class="fever-slider-element">
+                            <input type="range" id="temperature-meter" min="35" max="42" step="0.1" value="35" />
+                        </div>
+                    </div>
+                    <div class="fever-amount-display">
+                        <p class="celcius mdc-elevation--z3">${this.getFeverWithUnit()}</p>
+                        <p class="fahrenheit mdc-elevation--z3">${this.getFeverWithUnit(true)}</p>
+                    </div>
                 </div>
+                <div
+                    class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
+                        ? ' fever-not-measured-field--checked'
+                        : ''}"
+                >
+                    <p id="dont-know-temperature" @click="${() => this.handleFeverInfoSubmit(true)}">
+                        ${Translator.get('entry.questions.not_measured')}
+                    </p>
+                </div>
+            </div>
+
+            <div class="proceed-button">
+                <button class="mdc-button mdc-button--raised" @click="${() => this.handleFeverInfoSubmit()}">
+                    <div class="mdc-button__ripple"></div>
+
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                    <span class="mdc-button__label">${Translator.get('entry.questions.set_temperature')}</span>
+                </button>
+            </div>
+        `;
+    }
+
+    getSymptomsFields() {
+        return html`
+            <div class="back-button" @click="${this.previousQuestion}">
+                <material-icon icon="keyboard_arrow_left"></material-icon>${Translator.get('back')}
+            </div>
+            <div class="question-number-holder">
+                3/${this.questionCount}
+            </div>
+            <div class="title-holder">
+                <h2>${Translator.get('entry.new_entry')}</h2>
+                <p class="symptoms-title">${Translator.get('entry.questions.other_symptoms')}</p>
+            </div>
+            <p class="subtitle">${Translator.get('entry.questions.choose_all_that_apply')}</p>
+            <div class="symptom-holder">
+                <div class="symptom" id="symptom_difficult_to_breathe" @click="${this.handleSymptomAdd}">
+                    <p>${Translator.get('entry.questions.difficulty_to_breathe')}</p>
+                </div>
+                <div class="symptom" id="symptom_cough" @click="${this.handleSymptomAdd}">
+                    <p>${Translator.get('entry.questions.cough')}</p>
+                </div>
+                <div class="symptom" id="symptom_sore_throat" @click="${this.handleSymptomAdd}">
+                    <p>${Translator.get('entry.questions.sore_throat')}</p>
+                </div>
+                <div class="symptom" id="symptom_muscle_pain" @click="${this.handleSymptomAdd}">
+                    <p>${Translator.get('entry.questions.muscular_pain')}</p>
+                </div>
+            </div>
+
+            <div class="mdc-form-field">
+                <div class="mdc-checkbox">
+                    <input type="checkbox" class="mdc-checkbox__native-control" id="covid-diagnosed" />
+                    <div class="mdc-checkbox__background">
+                        <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                            <path
+                                class="mdc-checkbox__checkmark-path"
+                                fill="none"
+                                d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                            />
+                        </svg>
+                        <div class="mdc-checkbox__mixedmark"></div>
+                    </div>
+                    <div class="mdc-checkbox__ripple"></div>
+                </div>
+                <label for="checkbox-1">${Translator.get('entry.questions.positive_covid_diagnosis')}</label>
+            </div>
+            <div class="proceed-button">
+                <button class="mdc-button mdc-button--raised" @click="${this.handleSymptomSubmit}">
+                    <div class="mdc-button__ripple"></div>
+
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                    <span class="mdc-button__label">${Translator.get('entry.questions.set_symptoms')}</span>
+                </button>
+            </div>
+        `;
+    }
+
+    getGeoLocationInput() {
+        return html`
+            <div class="back-button" @click="${this.previousQuestion}">
+                <material-icon icon="keyboard_arrow_left"></material-icon>${Translator.get('back')}
+            </div>
+            <div class="question-number-holder">
+                4/${this.questionCount}
+            </div>
+            <div class="title-holder">
+                <h2>${Translator.get('entry.new_entry')}</h2>
+                <p>${Translator.get('entry.questions.whats_your_location')}</p>
+            </div>
+            <div class="entry-field">
+                <div class="location-select-fields">
+                    <select-field
+                        id="location-country"
+                        label="${Translator.get('entry.questions.country')}"
+                        .options="${this.countrySelectionOptions}"
+                        selectedValueIndex="${this.selectedCountryIndex}"
+                    ></select-field>
+                    <input-field
+                        placeHolder="${Translator.get('entry.questions.postal_code')}"
+                        fieldId="location-postal-code"
+                        id="location-postal-code"
+                        value="${this.geoCodingInfo && this.geoCodingInfo.postal_code
+                            ? this.geoCodingInfo.postal_code
+                            : ''}"
+                    ></input-field>
+                </div>
+                <p class="subtitle">
+                    ${Translator.get('entry.questions.location_change_subtitle')}
+                </p>
+                <div class="geolocation-button">
+                    <button class="mdc-button mdc-button--outlined" @click="${() => this.getGeoLocationInfo(true)}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
+                        <span class="mdc-button__label">${Translator.get('entry.questions.use_gps')}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="proceed-button">
+                <button class="mdc-button mdc-button--raised" @click="${this.handleSubmit}">
+                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                    <span class="mdc-button__label">${Translator.get('entry.questions.set_location_and_submit')}</span>
+                </button>
             </div>
         `;
     }
@@ -597,7 +757,7 @@ class FevermapDataEntry extends LitElement {
             <div class="entry-field">
                 <p>${Translator.get('entry.questions.birth_year')}</p>
                 <input-field
-                    placeHolder=${'Years 1900 - 2020'}
+                    placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
                     fieldId="year-of-birth-input"
                     id="birth-year"
                     value="${this.latestEntry ? this.latestEntry.birth_year : ''}"
@@ -635,55 +795,6 @@ class FevermapDataEntry extends LitElement {
         `;
     }
 
-    getGeoLocationInput() {
-        return html`
-            <div class="entry-field">
-                <select-field
-                    id="location-country"
-                    label="${Translator.get('entry.questions.country')}"
-                    .options="${this.countrySelectionOptions}"
-                    selectedValueIndex="${this.selectedCountryIndex}"
-                ></select-field>
-                <input-field
-                    placeHolder="${Translator.get('entry.questions.postal_code')}"
-                    fieldId="location-postal-code"
-                    id="location-postal-code"
-                    value="${this.geoCodingInfo && this.geoCodingInfo.postal_code
-                        ? this.geoCodingInfo.postal_code
-                        : ''}"
-                ></input-field>
-                <p class="subtitle">
-                    ${Translator.get('entry.questions.location_change_subtitle')}
-                </p>
-                <div class="geolocation-button">
-                    <button class="mdc-button mdc-button--outlined" @click="${() => this.handleLocationUpdate()}">
-                        <div class="mdc-button__ripple"></div>
-
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
-                        <span class="mdc-button__label">${Translator.get('entry.questions.update_location')}</span>
-                    </button>
-                </div>
-                <div class="geolocation-button">
-                    <button class="mdc-button mdc-button--outlined" @click="${() => this.getGeoLocationInfo(true)}">
-                        <div class="mdc-button__ripple"></div>
-
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
-                        <span class="mdc-button__label">${Translator.get('entry.questions.use_gps')}</span>
-                    </button>
-                </div>
-
-                <div class="proceed-button">
-                    <button class="mdc-button mdc-button--raised" @click="${this.moveToLocation}">
-                        <div class="mdc-button__ripple"></div>
-
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
-                        <span class="mdc-button__label">${'Set location and submit'}</span>
-                    </button>
-                </div>
-            </div>
-        `;
-    }
-
     getSubmitButton() {
         return html`
             <div class="entry-field">
@@ -703,34 +814,6 @@ class FevermapDataEntry extends LitElement {
             </div>
         `;
     }
-    /*
-    getPreviousSubmissionsSummary() {
-        return html`
-            <div class="submission-summary">
-                <p>${Translator.get('entry.previous_submissions')}</p>
-                ${this.previousSubmissions.map(submission => {
-                    return html`
-                        <div
-                            class="submission${submission.fever_status
-                                ? ' submission--has-fever'
-                                : ' submission--no-fever'}"
-                        >
-                            <p>
-                                ${dayjs(submission.submission_time).format('DD-MM-YYYY:HH:mm')} - Fever:
-                                ${submission.fever_status
-                                    ? Translator.get('entry.questions.yes')
-                                    : Translator.get('entry.questions.no')}${submission.fever_status
-                                    ? `, ${this.getFeverWithUnit(false, submission.fever_temp)}`
-                                    : ''}
-                            </p>
-                        </div>
-                    `;
-                })}
-            </div>
-        `;
-    }
-    
- */
 
     createRenderRoot() {
         return this;

@@ -4,9 +4,25 @@
   margin-bottom: 1rem;
 }
 
+.entry-info-view-wrapper {
+  padding: 0 2rem;
+}
+
+.green-text {
+  color: #32cd32;
+}
+
 .fevermap-data-entry-content {
   margin: 3rem 30% 10%;
   height: 100%;
+}
+
+.question-number-holder {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 0.9rem;
+  color: #8e8e8e;
 }
 
 .entry-fields {
@@ -22,87 +38,6 @@
 
   p {
     font-size: 1.2rem;
-  }
-  .fever-answer-button {
-    transition: 0.2s linear;
-    display: flex;
-    flex-direction: row;
-    width: 75%;
-    border-radius: 5px;
-    margin: 2rem auto 0;
-    height: 65px;
-    color: #FFF;
-    cursor: pointer;
-
-    .fever-button {
-      width: 50%;
-      border-radius: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: inherit;
-
-      &--selected {
-        background: #FFF;
-        margin: 3px;
-      }
-      p {
-        color: inherit;
-        font-size: 1.8rem;
-      }
-    }
-
-
-    &--has-fever {
-      background: #ed143d;
-
-      .fever-button {
-        color: #FFF;
-
-        &--selected {
-          color: #ed143d;
-        }
-      }
-    }
-
-    &--no-fever {
-      background: #32cd32;
-      .fever-button {
-        color: #FFF;
-
-        &--selected {
-          color: #32cd32;
-        }
-      }
-    }
-
-
-    &--not-set {
-      background: lightgray;
-
-      .fever-button {
-        color: #000;
-      }
-
-      .fever-button:first-child {
-        border-right: 2px solid #000;
-      }
-    }
-  }
-}
-
-.fever-meters {
-  opacity: 1;
-  transition: 0.1s linear;
-  &--hidden {
-    pointer-events: none;
-    opacity: 0;
-  }
-}
-
-.fever-not-measured-field {
-  &--checked {
-    /*margin-top: 3rem;*/
   }
 }
 
@@ -121,7 +56,7 @@
   border-radius: 5px;
 
   &--none-selected {
-    background: lightgray;
+    background: ghostwhite;
 
     .gender-input:first-child {
       border-right: 2px solid;
@@ -150,8 +85,17 @@
       }
     }
 
+    &:hover {
+      background: #32cd3222;
+    }
+
     &--selected {
       background: #32cd32;
+
+      &:hover {
+        background: #32cd32;
+
+      }
 
       img {
         filter: invert(1);
@@ -162,10 +106,6 @@
       }
     }
   }
-}
-
-.mdc-slider {
-  color: #FFF;
 }
 
 .submit-button {
@@ -193,6 +133,44 @@ p.subtitle {
 
 p.mdc-theme--error {
   font-size: 1rem;
+}
+
+.previous-submission {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-top: 2px solid;
+  padding: 0.5rem 0;
+  p {
+    margin: 0.25rem 0;
+    flex-basis: 15%;
+  }
+
+  &--symptoms {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-basis: 60%;
+    p {
+      flex-basis: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      material-icon {
+        display: flex;
+      }
+    }
+
+    .symptom-true {
+      color: #ed143d;
+    }
+
+    .symptom-false {
+      color: #4caf50;
+
+    }
+  }
 }
 
 .geolocation-button {
@@ -250,7 +228,7 @@ p.mdc-theme--error {
   min-height: 75vh;
   max-width: 100%;
   overflow-x: hidden;
-  padding: 4rem 2rem 2rem;
+  padding: 4rem 0 2rem;
   margin: 0;
 }
 
@@ -258,16 +236,19 @@ p.mdc-theme--error {
   color: #ed143d;
 }
 
+.title-holder {
+  text-align: center;
+}
 
 .fevermap-entry-carousel {
   min-height: inherit;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   padding-right: 4rem;
 
   &--full-width {
-    width: calc(100vw * 4.15);
+    width: calc(100vw * 3.75);
   }
 
   &--smaller-width {
@@ -281,9 +262,24 @@ p.mdc-theme--error {
     align-items: center;
     flex-direction: column;
     padding: 1rem 2rem 0;
+    justify-content: space-between;
+    position: relative;
+
+    .back-button {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      material-icon {
+        display: flex;
+      }
+    }
 
     .entry-field {
-      width: 100%;
+      width: 60%;
     }
 
     .subtitle {
@@ -294,9 +290,13 @@ p.mdc-theme--error {
       font-weight: 400;
     }
 
+    p {
+      font-size: 0.9rem;
+    }
+
     .proceed-button {
       text-align:center;
-      margin-top: 2rem;
+      margin-bottom: 1rem;
       .mdc-button {
         background: cornflowerblue;
       }
@@ -304,20 +304,6 @@ p.mdc-theme--error {
   }
 }
 
-.fever-slider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  .fever-slider-element {
-    input {
-      writing-mode: bt-lr; /* IE */
-      -webkit-appearance: slider-vertical; /* WebKit */
-      width: 8px;
-      height: 175px;
-      padding: 0 5px;
-    }
-  }
-}
 
 .temperature-title {
   font-size: 1.2rem;
@@ -327,6 +313,10 @@ p.mdc-theme--error {
 .symptoms-title {
   margin: 0 0 1rem 0;
   font-size: 1.2rem;
+}
+
+#dont-know-temperature {
+  cursor: pointer;
 }
 
 .fever-amount-display {
@@ -355,21 +345,27 @@ p.mdc-theme--error {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 100%;
-  margin-top: 2rem;
+  width: 60%;
+  align-items: center;
   .symptom {
+    cursor: pointer;
     width: 90%;
     display: flex;
     align-items: center;
     border-radius: 10px;
-    border: 2px solid #25a2b1;
+    border: 2px solid #0898ad;
     padding: 0.5rem;
     margin-bottom: 1rem;
+    transition: 0.1s linear;
 
     &--selected {
-      background: #25a2b166;
+      background: #0898ad;
+      p {
+        color: #FFF;
+      }
     }
     p {
+      font-weight: 500;
       margin: 0;
     }
   }
@@ -379,60 +375,124 @@ label {
   font-size: 0.9rem;
 }
 
+.fever-meter-field {
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  .fever-meters {
+    height: 80%;
+    .fever-slider {
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      .fever-slider-element {
+        display: flex;
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+      }
+    }
+  }
+}
 
-input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
-  height: 8.4px;
+#temperature-meter {
+  -webkit-appearance: none;
+  appearance: none;
+  -moz-appearance: none;
+
+  height: 12px;
+  width: 50%;
+  background: linear-gradient(45deg, #F44336, #03A9F4);
+  border-radius: 20px;
+
+  -webkit-transform:rotate(-90deg);
+  -moz-transform:rotate(-90deg);
+  -o-transform:rotate(-90deg);
+  -ms-transform:rotate(-90deg);
+  transform:rotate(-90deg);
+  outline: none;
   cursor: pointer;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: linear-gradient(45deg, #03A9F4, #F44336);
-  border-radius: 10px;
-  border: 0.2px solid #010101;
+
 }
 
-input[type=range]:focus::-webkit-slider-runnable-track {
-  background: linear-gradient(45deg, #03A9F4, #F44336);
+input[type="range"]::-webkit-slider-thumb
+{
+  -webkit-appearance: none;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  background: #FFF;
+  border: 1px solid;
 }
 
-input[type=range]::-moz-range-track {
-  width: 100%;
-  height: 8.4px;
-  cursor: pointer;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-  background: linear-gradient(45deg, #03A9F4, #F44336);
-  border-radius: 10px;
-  border: 0.2px solid #010101;
+input[type="range"]::-moz-range-thumb {
+
+  -webkit-appearance: none;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.14), 0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+  background: #FFF;
+  border: 1px solid;
 }
 
-input[type=range]::-ms-track {
-  width: 100%;
-  height: 8.4px;
-  cursor: pointer;
-  background: transparent;
-  border-color: transparent;
-  border-width: 16px 0;
-  color: transparent;
+input[type="range"]::-webkit-slider-container {
+
 }
-input[type=range]::-ms-fill-lower {
-  background: linear-gradient(45deg, #03A9F4, #F44336);
-  border: 0.2px solid #010101;
-  border-radius: 10px;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+input[type="range"]::-webkit-slider-runnable-track {
+
 }
-input[type=range]:focus::-ms-fill-lower {
-  background: linear-gradient(45deg, #03A9F4, #F44336);
-}
-input[type=range]::-ms-fill-upper {
-  background: linear-gradient(45deg, #03A9F4, #F44336);
-  border: 0.2px solid #010101;
-  border-radius: 10px;
-  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-}
-input[type=range]:focus::-ms-fill-upper {
-  background: linear-gradient(45deg, #03A9F4, #F44336);
-}
+
 @media only screen and (max-width: 780px) {
 
-  .fevermap-data-entry-content {
+  .fevermap-entry-view {
+    margin-bottom: 0 !important;
+  }
+
+  .entry-field {
+    width: 100%;
+    p {
+      margin: 0 0 0.5rem;
+    }
+  }
+
+  .gender-input-holder {
+    .gender-input {
+      img {
+        width: 20%;
+        max-width: 250px;
+      }
+      &--female {
+        img {
+          width: 25%;
+        }
+      }
+      p {
+        margin: 1rem 0;
+      }
+    }
+  }
+
+  .previous-submission {
+    flex-direction: column;
+    &--symptoms {
+      flex-direction: column;
+      p {
+        justify-content: flex-start;
+      }
+    }
+  }
+  .symptom-holder {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .fevermap-entry-view {
+    margin-bottom: 3rem !important;
   }
 }

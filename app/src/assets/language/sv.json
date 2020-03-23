@@ -2,6 +2,7 @@
   "lang_name": "Svenska",
   "language": "Språk",
   "fevermap_title": "Fevermap",
+  "back": "Back",
 
   "landing": {
     "about": "Om Fevermap",
@@ -26,29 +27,49 @@
     "submission_period_disclaimer": "För att undvika onödiga data, så begränsas registreringar till var 12:e timme.",
     "queued_entries": "Du has %{queuedEntries} registreringar som ännu inte har skickats in till servern.",
     "sync_now": "Synkronisera nu",
+    "new_entry": "New entry",
+    "first_time_disclaimer": "As this is your first time using Fevermap, we will ask you a few questions first.",
+    "these_questions_wont_be_repeated": "These questions won't be repeated on future submissions.",
     "questions": {
-      "do_you_have_fever": "Har du feber just nu?",
-      "yes": "Ja",
-      "no": "Nej",
+      "what_is_your_temperature": "What's your temperature?",
+      "temperature": "Temperature",
       "how_much": "Hur hög?",
       "degrees_of_fever": "%{degrees} grader feber",
       "not_measured": "Vet inte, har inte mätt.",
+      "set_temperature": "Set temperature",
+      "other_symptoms": "Other symptoms?",
+      "choose_all_that_apply": "Choose all that apply",
+      "difficulty_to_breathe": "Difficulty to breathe",
+      "cough": "Cough",
+      "sore_throat": "Sore throat",
+      "muscular_pain": "Muscular pain",
+      "positive_covid_diagnosis": "I have a positive diagnosis of COVID-19.",
+      "set_symptoms": "Set symptoms",
       "birth_year": "Födelseår",
       "birth_year_placeholder": "Födelseår (från 1900 - 2020)",
       "gender_in_passport": "Kön, som angivet i ditt pass eller annat officiellt dokument",
       "male": "Man",
       "female": "Kvinna",
       "location_information": "Plats",
+      "whats_your_location": "What's your location?",
       "city": "Stad",
       "country": "Land",
       "postal_code": "Postnummer",
       "location_determination_subtitle": "Din plats hämtas genom plats-APIn, vänligen tillåt platsbestämning.",
       "location_change_subtitle": "För att uppdatera platsinformation, välj land och skriv in ditt postnummer, eller tryck på knappen undertill.",
       "update_location": "Uppdatera plats",
-      "use_gps": "Uppdatera plats genom GPS"
+      "use_gps": "Uppdatera plats genom GPS",
+      "set_location_and_submit": "Set location and submit"
     },
     "previous_submissions": "Tidigare registreringar",
-    "submit": "Skicka in"
+    "submit": "Skicka in",
+    "save": "Save",
+
+    "last_submission_was_done": "You last submission was made at %{date}",
+    "submission_count_text": "You have entered you fever information ",
+    "submission_count_times": "times",
+    "currently_holding_a_streak_of": "Your current concurrent days streak is: ",
+    "streak_days": "days"
   },
 
   "stats": {

@@ -6,10 +6,10 @@ import translation_fi from 'assets/language/fi';
 import translation_sv from 'assets/language/sv';
 
 const translations = {
-  en: translation_en,
-  fi: translation_fi,
-  sv: translation_sv,
-}
+    en: translation_en,
+    fi: translation_fi,
+    sv: translation_sv,
+};
 
 export default class Translator {
     static getLang() {
