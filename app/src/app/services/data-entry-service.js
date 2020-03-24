@@ -1,7 +1,6 @@
 import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 
-/* @TODO: The apiBaseUrl should be derived from environment variable $URL */
-const apiBaseUrl = 'https://dev.fevermap.net';
+const apiBaseUrl = process.env.URL;
 
 const apiSubmitUrl = apiBaseUrl + '/api/v0/submit';
 const apiDataUrl = apiBaseUrl + '/api/v0/stats';
