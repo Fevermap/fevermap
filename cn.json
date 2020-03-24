@@ -1,0 +1,102 @@
+{
+  "lang_name": "中文",
+  "language": "语言",
+  "fevermap_title": "Fevermap",
+  "back": "后退",
+
+  "landing": {
+    "about": "关于",
+    "about_title": "什么是Fevermap?",
+    "about_content_explanation": "一个Web和移动应用程序，用于简单，实时地收集冠状病毒COVID-19大流行的流行程度。",
+    "about_current_methods": "当前跟踪冠状病毒流行情况的方法无法获得完整的图像。 大批群众仍未经过测试，以确保有时间和资源可供需要的人使用。",
+    "about_solution": "Fevermap应运而生。 借助Fevermap，世界各地的普通人都可以匿名报告自己的发烧和其他症状。 这意味着我们可以实时估计COVID-19感染的真实发生率，并向当局提供数据，帮助他们制定基于数据的，正确的和及时的保护措施决策。",
+    "about_data_collection": "Fevermap收集的数据将被匿名化，并将用于帮助提高人们对当前全球形势的认识。",
+    "about_current_participant_count": "到目前为止， %{participantCount}名用户已使用Fevermap报告其症状。 ",
+
+    "how_to_participate": "如何参与",
+    "participation_info": "这很简单。 您只需测量温度，然后将结果以及一些统计信息（例如您的出生年份和区号）输入即可。",
+    "info_disclaimer": "我们不会询问可能导致您被认出的问题。 我们重视您的隐私和匿名性。",
+
+    "how_will_my_data_be_used": "我的数据将如何被使用？",
+    "data_use_explanation": "数据将被匿名化，然后将通过API接口作为开放数据共享。"
+  },
+  "entry": {
+    "data_entry": "数据记录",
+    "first_entry_disclaimer": "记录将根据您的设备提交到数据库中。 我们希望您每次都从同一设备提交信息。 这将使我们能够更好地监控您的发烧状况。",
+    "last_submission": "上次提交",
+    "submission_period_disclaimer": "为了防止不必要的数据，每12小时只能提交一次。",
+    "queued_entries": "您有%{queuedEntries}条还没有与服务器进行同步",
+    "sync_now": "现在同步",
+    "new_entry": "新记录",
+    "first_time_disclaimer": "由于这是您第一次使用Fevermap，因此我们将首先询问您几个问题。",
+    "these_questions_wont_be_repeated": "这些问题在以后的提交中将不再重复。",
+    "questions": {
+      "what_is_your_temperature": "您的体温是多少",
+      "temperature": "体温",
+      "how_much": "多少",
+      "degrees_of_fever": "%{degrees}度",
+      "not_measured": "不清楚，没量过",
+      "set_temperature": "设置体温",
+      "other_symptoms": "其他症状？",
+      "choose_all_that_apply": "选择所有适用的",
+      "difficulty_to_breathe": "呼吸困难",
+      "cough": "咳嗽",
+      "sore_throat": "咽喉痛",
+      "muscular_pain": "肌肉疼痛",
+      "positive_covid_diagnosis": "COVID-19检测阳性",
+      "set_symptoms": "设置症状",
+      "birth_year": "出生年份",
+      "birth_year_placeholder": "出生年份(1900 - 2020年)",
+      "gender_in_passport": "护照或其他政府记录中所述的性别",
+      "male": "男性",
+      "female": "女性",
+      "location_information": "位置信息",
+      "whats_your_location": "您的位置？",
+      "city": "城市",
+      "country": "国家",
+      "postal_code": "邮政编码",
+      "location_determination_subtitle": "使用定位。 确保允许使用定位服务。",
+      "location_change_subtitle": "要更新位置信息，请更新国家和邮政编码或者按下面的按钮。",
+      "update_location": "更新位置",
+      "use_gps": "用GPS获取位置",
+      "set_location_and_submit": "设置位置并提交"
+    },
+    "previous_submissions": "以前的提交",
+    "submit": "提交",
+    "save": "保存",
+
+    "last_submission_was_done": "您上一次提交是在%{date}",
+    "submission_count_text": "您已输入发烧信息",
+    "submission_count_times": "次数",
+    "currently_holding_a_streak_of": "您当前的连续打卡数是：",
+    "streak_days": "天数"
+  },
+
+  "stats": {
+    "stats": "统计资料"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "成功更新位置",
+      "data_entry": "成功提交条目",
+      "offline_entry_queued": "处于离线状态，记录已经存入队列",
+      "sync_finished": "成功同步记录"
+    },
+    "error": {
+      "age_not_in_range": "出生年份不在允许范围内（1900 - 2020）。",
+      "fever_temp_value_invalid": "发烧温度值无效。",
+      "location_data_invalid": "位置数据无效。",
+      "api_data_invalid": "发送到API的数据无效。",
+      "gender_not_set": "未设置性别。"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "安装Fevermap",
+      "content": "Fevermap可以作为渐进式Web应用程序安装。 如果已安装，我们可以为您提供更多的附加功能，例如更快的运行时间和推送通知（即将推出）。",
+      "approve_text": "安装",
+      "decline_text": "以后"
+    }
+  }
+}
