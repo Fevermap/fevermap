@@ -102,5 +102,5 @@
       "decline_text": "Forse più tardi"
     }
   },
-  "dev_mode_banner_disclaimer": "Fevermap is in development mode. The data inserted will now be permanent."
+  "dev_mode_banner_disclaimer": "Fevermap is in development mode. The data inserted will not be permanent."
 }
