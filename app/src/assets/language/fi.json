@@ -70,6 +70,14 @@
     "currently_holding_a_streak_of": "Tämän hetken peräkkäisten päiviesti putki on: ",
     "streak_days": "päivää"
   },
+  "history": {
+    "title": "Historia",
+    "your_streak": "Sinun putkesi",
+    "days": "Päivää",
+    "total_entries": "Kirjaukset yhteensä",
+    "measurements": "Mittausta",
+    "add_entry": "Lisää kirjaus"
+  },
 
   "stats": {
     "stats": "Tilastot"

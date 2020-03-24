@@ -30,6 +30,10 @@ export default class SnackBar extends LitElement {
         });
     }
 
+    close() {
+        this.elem.close();
+    }
+
     static success(message, timeOut) {
         let snackbar = document.createElement('snackbar-elem');
         snackbar.setAttribute('message', message);
@@ -57,7 +61,7 @@ export default class SnackBar extends LitElement {
 
     render() {
         return html`
-            <div class="mdc-snackbar">
+            <div class="mdc-snackbar" @click="${this.close}">
                 <div class="mdc-snackbar__surface">
                     <div class="mdc-snackbar__label" role="status" aria-live="polite">
                         ${this.message}

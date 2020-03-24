@@ -56,6 +56,7 @@ fevermap-landing, fevermap-stats, fevermap-data-entry {
   color: #484848;
   height: 100%;
   overflow-y: auto;
+  margin-bottom: 3rem;
 }
 
 .language-switcher {
@@ -96,6 +97,6 @@ fevermap-landing, fevermap-stats, fevermap-data-entry {
 @media only screen and (max-width: 780px) {
 
   .container {
-    margin-bottom: 5rem;
+    margin-bottom: 1rem;
   }
 }

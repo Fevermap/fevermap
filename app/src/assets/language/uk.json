@@ -67,6 +67,15 @@
         "currently_holding_a_streak_of": "Ви реєструєте дані протягом: ",
         "streak_days": "днів"
     },
+
+    "history": {
+        "title": "History",
+        "your_streak": "Your streak",
+        "days": "Days",
+        "total_entries": "Total entries",
+        "measurements": "measurement",
+        "add_entry": "Add entry"
+    },
     "stats": {
         "stats": "Статистика"
     },
