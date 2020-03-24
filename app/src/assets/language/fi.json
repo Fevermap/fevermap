@@ -106,5 +106,6 @@
       "approve_text": "Asenna",
       "decline_text": "Ehkä myöhemmin"
     }
-  }
+  },
+  "dev_mode_banner_disclaimer": "Fevermap on kehitystilassa. Syötetty data ei ole pysyvää."
 }

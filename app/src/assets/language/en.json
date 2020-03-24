@@ -107,5 +107,6 @@
       "approve_text": "Install",
       "decline_text": "Maybe later"
     }
-  }
+  },
+  "dev_mode_banner_disclaimer": "Fevermap is in development mode. The data inserted will now be permanent."
 }

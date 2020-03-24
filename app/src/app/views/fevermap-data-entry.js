@@ -228,7 +228,7 @@ class FevermapDataEntry extends LitElement {
 
         const submissionResponse = await DataEntryService.handleDataEntrySubmission(feverData);
 
-        if (submissionResponse.success || true) {
+        if (submissionResponse.success) {
             this.handlePostSubmissionActions(feverData, Date.now(), false, submissionResponse);
             this.currentQuestion = 1;
         } else {
