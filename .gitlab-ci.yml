@@ -29,9 +29,8 @@ staging:
     # Deploy
     - ssh fevermap@dev.fevermap.net -p 33100 -o StrictHostKeyChecking=no "cd /var/www/fevermap && make update-master && make run"
   rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: never
-    - if: $CI_COMMIT_BRANCH == "master" # && @TODO: If not in our repo, then never
+    # Only run deply on Fevermap master branch when a release is tagged
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
 
 # Production server does not yet exist, this is a placeholder only
 production:
@@ -39,6 +38,5 @@ production:
   script:
     - echo "Not implemented"
   rules:
-    - if: $CI_MERGE_REQUEST_ID
-      when: never
-    - if: $CI_COMMIT_TAG
+    # Only run deply on Fevermap master branch when a release is tagged
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master" && $CI_COMMIT_TAG
