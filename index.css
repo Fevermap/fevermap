@@ -1,0 +1,170 @@
+/* Ensure are fills entire screen */
+html {
+  min-height: 800px;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: #000;
+  background-color: #fff;
+  font-family: Roboto,Arial,sans-serif;
+  text-align: center;
+  font-size: 18px;
+  line-height: 1.4;
+
+  /* Ensure are fills entire screen */
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#hero {
+  width: 100vw;
+  height: auto;
+}
+
+.spacer {
+  height: 4rem;
+}
+
+.flex-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0rem 2rem;
+  justify-content: space-between;
+}
+
+.flex-item {
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  width: 325px;
+  align-items: flex-start;
+  padding: 1rem;
+  margin: 2rem auto;
+}
+
+.flex-item p {
+  padding: 0px;
+  margin: 0px;
+  text-align: left;
+  font-size: 15px;
+}
+
+footer {
+  background-color: #1f262a;
+  color: #eee;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100vw;
+  height: 20rem;
+  align-items: center;
+  padding: 0rem 4rem;
+}
+
+.flex-item .cta {
+  margin: 1.5rem 0rem;
+}
+
+h4 {
+  text-transform: uppercase;
+  margin: 0.75rem 0rem;
+}
+
+.contact-container {
+  flex: 1 0;
+  display: flex;
+  flex-direction: column;
+  align-content: baseline;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.soc-wrapper {
+  display: flex;
+  width: 30%;
+  align-content: center;
+  justify-content: space-around;
+  padding: 0rem 2rem;
+}
+@media(min-width: 420px;) {
+  .soc-wrapper {
+    padding: 0rem;
+    flex-wrap: wrap;
+  }
+  .soc-wrapper a {
+    margin: 0rem 0.5rem;
+  }
+}
+
+main {
+  /* Position content in the middle of screen area */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+section {
+  padding: 0rem 2rem;
+}
+
+.breaker {
+  background-color:#f5f5f5;
+  width: 100%;
+}
+
+.cta {
+  border-radius: 3px;
+  color: #fff;
+  background: #30bfbf;
+  padding: 8px 12px;
+  width: 14rem;
+  display: block;
+  margin: auto;
+}
+
+.cta[type="submit"] {
+  border: none;
+  margin: 0rem 0.5rem;
+  padding: 8px;
+  width: 7rem;
+}
+
+h1 {
+  font-weight: 700;
+  line-height: 1.1;
+  font-size: 32px;
+}
+
+p {
+  padding: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #7bd;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+}
+
+/* Make call-to-action elements stand out */
+input, button {
+  padding: 6px;
+  font-size: 18px;
+  line-height: 1.4
+}
+
+#emailaddress {
+  height: 30px;
+}
