@@ -6,6 +6,8 @@ import translation_fi from 'assets/language/fi';
 import translation_sv from 'assets/language/sv';
 import translation_it from 'assets/language/it';
 import translation_de from 'assets/language/de';
+import translation_cn from 'assets/language/cn';
+import translation_es from 'assets/language/es';
 
 const translations = {
     en: translation_en,
@@ -13,6 +15,8 @@ const translations = {
     sv: translation_sv,
     it: translation_it,
     de: translation_de,
+    cn: translation_cn,
+    es: translation_es,
 };
 
 export default class Translator {
