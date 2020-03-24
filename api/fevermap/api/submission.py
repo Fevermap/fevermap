@@ -55,7 +55,7 @@ class SubmissionResource(Resource):
 
         # Fall back to form data if JSON was None
         if not data:
-            data = kwargs.get('data', request.form)
+            data = request.form.to_dict()
 
         if not data:
             return {
