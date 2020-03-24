@@ -7,19 +7,15 @@ import 'src/app/components/input-field';
 import 'src/app/components/select-field';
 import SnackBar from '../components/snackbar';
 import ScrollService from '../services/scroll-service';
-import dayjs from 'dayjs';
 import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import DataEntryService from '../services/data-entry-service';
 import Translator from '../util/translator';
+import FeverDataUtil from '../util/fever-data-util';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
         return {
             latestEntry: { type: Object },
-            lastSubmissionTime: { type: String },
-            lastSubmissionIsTooCloseToNow: { type: Boolean },
-            previousSubmissions: { type: Array },
-            hasQueuedEntries: { type: Boolean },
             queuedEntries: { type: Array },
             firstTimeSubmitting: { type: Boolean },
 
@@ -41,21 +37,13 @@ class FevermapDataEntry extends LitElement {
 
             symptoms: { type: Array },
             covidDiagnosed: { type: Boolean },
-
-            submissionCount: { type: Number },
-            submissionStreak: { type: Number },
         };
     }
 
     constructor() {
         super();
         let latestEntry = JSON.parse(localStorage.getItem('LATEST_ENTRY'));
-        let lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
         let lastLocation = localStorage.getItem('LAST_LOCATION');
-        if (lastEntryTime && lastEntryTime !== 'undefined') {
-            this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
-            this.lastSubmissionIsTooCloseToNow = Date.now() - Number(lastEntryTime) < 43200000; // 12 hours in milliseconds
-        }
         this.firstTimeSubmitting = latestEntry == null;
         this.errorMessage = null;
         this.hasFever = null;
@@ -67,42 +55,15 @@ class FevermapDataEntry extends LitElement {
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? JSON.parse(lastLocation) : null;
 
-        // Actual usage of F versus C in measuring body temperature is unclear, this mapping largely assumes
-        // weather and body temperature units correlate.
-        this.fahrenheitTerritories = {
-            CA: false, // Canada uses both, and F mostly for cooking
-            US: true,
-            'US-AS': true,
-            'US-GU': true,
-            'US-MP': true,
-            'US-PR': true,
-            'US-UM': true,
-            'US-VI': true,
-            BZ: true, // Belize
-            PW: true, // Palau
-            FM: true, // Micronesia
-            BS: true, // Bahamas
-            MH: true, // Marshall Islands
-            KY: true, // Cayman
-        };
         this.createCountrySelectOptions();
-        this.previousSubmissions = [];
-        this.hasQueuedEntries = false;
         this.queuedEntries = [];
 
         this.currentQuestion = 1;
         this.questionCount = 4;
         this.symptoms = [];
-
-        let subCount = localStorage.getItem('SUBMISSION_COUNT');
-        let subStreak = localStorage.getItem('SUBMISSION_STREAK');
-        this.submissionCount = subCount ? subCount : 0;
-        this.submissionStreak = subStreak ? subStreak : 0;
     }
 
     firstUpdated(_changedProperties) {
-        this.getPreviousSubmissionsFromIndexedDb();
-        /*this.getQueuedEntriesFromIndexedDb();*/
         this.initSlider();
         this.getGeoLocationInfo();
         this.carouselWrapper = this.querySelector('.fevermap-data-entry-content');
@@ -123,23 +84,6 @@ class FevermapDataEntry extends LitElement {
         this.selectedCountryIndex = 0;
     }
 
-    async getPreviousSubmissionsFromIndexedDb() {
-        let db = await DBUtil.getInstance();
-        const previousSubmissions = await db.getAll(FEVER_ENTRIES);
-        console.log(previousSubmissions);
-        if (previousSubmissions && previousSubmissions.length > 0) {
-            this.previousSubmissions = previousSubmissions.sort((a, b) => b.submission_time - a.submission_time);
-        }
-    }
-
-    async getQueuedEntriesFromIndexedDb() {
-        let db = await DBUtil.getInstance();
-        const queuedSubmissions = await db.getAll(QUEUED_ENTRIES);
-        if (queuedSubmissions && queuedSubmissions.length > 0) {
-            this.hasQueuedEntries = true;
-            this.queuedEntries = queuedSubmissions;
-        }
-    }
     async getGeoLocationInfo(forceUpdate) {
         if (!this.geoCodingInfo || forceUpdate) {
             navigator.geolocation.getCurrentPosition(async success => {
@@ -185,32 +129,6 @@ class FevermapDataEntry extends LitElement {
                 });
             });
         }
-    }
-
-    fahrenheitToCelsius(value) {
-        return ((value - 32) / 1.8).toFixed(1);
-    }
-
-    celsiusToFahrenheit(value) {
-        return (value * 1.8 + 32).toFixed(1);
-    }
-
-    useFahrenheit() {
-        return this.geoCodingInfo && this.geoCodingInfo.countryShort
-            ? !!this.fahrenheitTerritories[this.geoCodingInfo.countryShort]
-            : false;
-    }
-
-    /**
-     * @param reverse Use the other unit
-     * @param value Value to stringify, leave undefined to use input value
-     * @returns {string}
-     */
-    getFeverWithUnit(reverse, value) {
-        let feverValue = arguments.length >= 2 ? value : this.feverAmount;
-        return !!reverse ^ this.useFahrenheit()
-            ? this.celsiusToFahrenheit(feverValue) + ' °F'
-            : Number(feverValue).toFixed(1) + ' °C';
     }
 
     initSlider() {
@@ -331,7 +249,6 @@ class FevermapDataEntry extends LitElement {
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
         localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
 
-        this.lastSubmissionTime = dayjs(Number(submissionTime)).format('DD-MM-YYYY : HH:mm');
         this.lastSubmissionIsTooCloseToNow = true;
 
         if (!entryGotQueued) {
@@ -343,14 +260,22 @@ class FevermapDataEntry extends LitElement {
                 localStorage.setItem('SUBMISSION_COUNT', submissionResponse.history.length);
                 localStorage.setItem('SUBMISSION_STREAK', submissionResponse.history.length);
             }
-
-            this.getPreviousSubmissionsFromIndexedDb();
-
+            document.dispatchEvent(new CustomEvent('update-submission-list'));
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
+
+            this.closeView();
         } else {
             SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
         }
         ScrollService.scrollToTop();
+    }
+
+    closeView() {
+        let wrapper = this.querySelector('.view-wrapper');
+        wrapper.classList.add('fevermap-entry-dialog--hidden');
+        wrapper.addEventListener('transitionend', () => {
+            this.remove();
+        });
     }
 
     async submitQueuedEntries() {
@@ -479,82 +404,15 @@ class FevermapDataEntry extends LitElement {
 
     render() {
         return html`
-            <div class="container view-wrapper fevermap-entry-view">
+            <div class="container view-wrapper fevermap-entry-dialog fevermap-entry-dialog--hidden">
                 <div class="fevermap-data-entry-content">
-                    ${this.lastSubmissionIsTooCloseToNow
-                        ? html`
-                              ${this.renderInfoView()}
-                          `
-                        : html`
-                              <div
-                                  class="fevermap-entry-carousel${this.questionCount === 4
-                                      ? ' fevermap-entry-carousel--full-width'
-                                      : ' fevermap-entry-carousel--smaller-width'}"
-                              >
-                                  ${this.renderQuestions()}
-                              </div>
-                          `}
-                </div>
-            </div>
-        `;
-    }
-
-    renderInfoView() {
-        return html`
-            <div class="entry-info-view-wrapper">
-                <h2>
-                    Your last submission was done at ${this.lastSubmissionTime}
-                </h2>
-                <p id="submission-count-disclaimer">
-                    ${Translator.get('entry.submission_count_text')}
-                    <span class="green-text">${this.submissionCount}</span> ${Translator.get(
-                        'entry.submission_count_times'
-                    )}.
-                    ${Translator.get('entry.currently_holding_a_streak_of')}
-                    <span class="green-text">${this.submissionStreak}</span> ${Translator.get('entry.streak_days')}
-                </p>
-                <div class="previous-submissions-list">
-                    <p>Previous submissions:</p>
-                    ${this.previousSubmissions.map(sub => {
-                        return html`
-                            <div class="previous-submission">
-                                <p>${dayjs(Number(sub.submission_time)).format('DD-MM-YYYY : HH:mm')}</p>
-                                <p>
-                                    <b>${Translator.get('entry.questions.temperature')}:</b>
-                                    ${sub.fever_temp
-                                        ? `${this.getFeverWithUnit()} (${this.getFeverWithUnit(true)})`
-                                        : Translator.get('entry.questions.not_measured')}
-                                </p>
-                                <div class="previous-submission--symptoms">
-                                    <p class="${sub.symptom_difficult_to_breathe ? 'symptom-true' : 'symptom-false'}">
-                                        ${Translator.get('entry.questions.difficulty_to_breathe')}
-                                        <material-icon
-                                            icon="${sub.symptom_difficult_to_breathe ? 'done' : 'close'}"
-                                        ></material-icon>
-                                    </p>
-
-                                    <p class="${sub.symptom_cough ? 'symptom-true' : 'symptom-false'}">
-                                        ${Translator.get('entry.questions.cough')}
-                                        <material-icon icon="${sub.symptom_cough ? 'done' : 'close'}"></material-icon>
-                                    </p>
-
-                                    <p class="${sub.symptom_sore_throat ? 'symptom-true' : 'symptom-false'}">
-                                        ${Translator.get('entry.questions.sore_throat')}
-                                        <material-icon
-                                            icon="${sub.symptom_sore_throat ? 'done' : 'close'}"
-                                        ></material-icon>
-                                    </p>
-
-                                    <p class="${sub.symptom_muscle_pain ? 'symptom-true' : 'symptom-false'}">
-                                        ${Translator.get('entry.questions.muscular_pain')}
-                                        <material-icon
-                                            icon="${sub.symptom_muscle_pain ? 'done' : 'close'}"
-                                        ></material-icon>
-                                    </p>
-                                </div>
-                            </div>
-                        `;
-                    })}
+                    <div
+                        class="fevermap-entry-carousel${this.questionCount === 4
+                            ? ' fevermap-entry-carousel--full-width'
+                            : ' fevermap-entry-carousel--smaller-width'}"
+                    >
+                        ${this.renderQuestions()}
+                    </div>
                 </div>
             </div>
         `;
@@ -562,6 +420,9 @@ class FevermapDataEntry extends LitElement {
 
     renderQuestions() {
         return html`
+            <div class="entry-dialog-close-button">
+                <material-icon @click="${this.closeView}" icon="close"></material-icon>
+            </div>
             <div class="fevermap-entry-window mdc-elevation--z9" id="question-1">
                 ${this.getPersonalQuestions()}
             </div>
@@ -619,8 +480,12 @@ class FevermapDataEntry extends LitElement {
                         </div>
                     </div>
                     <div class="fever-amount-display">
-                        <p class="celcius mdc-elevation--z3">${this.getFeverWithUnit()}</p>
-                        <p class="fahrenheit mdc-elevation--z3">${this.getFeverWithUnit(true)}</p>
+                        <p class="celcius mdc-elevation--z3">
+                            ${FeverDataUtil.getFeverWithUnit(false, this.feverAmount, this.geoCodingInfo)}
+                        </p>
+                        <p class="fahrenheit mdc-elevation--z3">
+                            ${FeverDataUtil.getFeverWithUnit(true, this.feverAmount, this.geoCodingInfo)}
+                        </p>
                     </div>
                 </div>
                 <div

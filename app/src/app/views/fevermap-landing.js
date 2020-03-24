@@ -27,8 +27,6 @@ class FevermapLanding extends LitElement {
     async getCurrentStats() {
         let stats = await DataEntryService.getStats();
         this.currentParticipantCount = stats ? stats.data.submitters.total : 0;
-
-        console.log(stats);
     }
 
     render() {

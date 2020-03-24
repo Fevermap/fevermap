@@ -1,13 +1,23 @@
 import './app/fevermap-root';
 import './assets/styles/base.scss';
 import PWAService from './app/services/pwa-service';
+import { Workbox } from 'workbox-window';
+import SnackBar from './app/components/snackbar';
 
 if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(registration => {
-            registration.update();
-        });
+    const wb = new Workbox('service-worker.js');
+
+    wb.addEventListener('installed', event => {
+        if (event.isUpdate) {
+        }
     });
+
+    wb.addEventListener('waiting', () => {
+        console.log('Waiting to be allowed to install');
+        //window.location.reload();
+    });
+
+    wb.register();
 
     window.addEventListener('beforeinstallprompt', e => {
         // Prevent the mini-infobar from appearing on mobile

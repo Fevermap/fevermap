@@ -70,6 +70,15 @@
     "streak_days": "días"
   },
 
+  "history": {
+    "title": "History",
+    "your_streak": "Your streak",
+    "days": "Days",
+    "total_entries": "Total entries",
+    "measurements": "measurement",
+    "add_entry": "Add entry"
+  },
+
   "stats": {
     "stats": "Estadísticas"
   },

@@ -4,17 +4,41 @@
   margin-bottom: 1rem;
 }
 
-.entry-info-view-wrapper {
-  padding: 0 2rem;
-}
-
 .green-text {
   color: #32cd32;
 }
 
 .fevermap-data-entry-content {
-  margin: 3rem 30% 10%;
-  height: 100%;
+  min-height: 85vh;
+  padding: 7.5vh 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.entry-dialog-close-button {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  material-icon {
+    font-size: 2rem;
+    span {
+      cursor: pointer;
+    }
+  }
+}
+
+.fevermap-entry-dialog {
+
+  &--hidden {
+    opacity: 0;
+  }
+  opacity: 1;
+  transition: 0.3s ease-in;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(255,255,255, 0.99);
+  z-index:100;
 }
 
 .question-number-holder {
@@ -135,44 +159,6 @@ p.mdc-theme--error {
   font-size: 1rem;
 }
 
-.previous-submission {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-top: 2px solid;
-  padding: 0.5rem 0;
-  p {
-    margin: 0.25rem 0;
-    flex-basis: 15%;
-  }
-
-  &--symptoms {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-basis: 60%;
-    p {
-      flex-basis: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      material-icon {
-        display: flex;
-      }
-    }
-
-    .symptom-true {
-      color: #ed143d;
-    }
-
-    .symptom-false {
-      color: #4caf50;
-
-    }
-  }
-}
-
 .geolocation-button {
   width: 100%;
   display: flex;
@@ -222,14 +208,6 @@ p.mdc-theme--error {
       color: #32cd32;
     }
   }
-}
-/* new styles */
-.fevermap-data-entry-content {
-  min-height: 75vh;
-  max-width: 100%;
-  overflow-x: hidden;
-  padding: 4rem 0 2rem;
-  margin: 0;
 }
 
 .first-entry-disclaimer {
@@ -449,7 +427,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
 @media only screen and (max-width: 780px) {
 
-  .fevermap-entry-view {
+  .fevermap-entry-dialog {
     margin-bottom: 0 !important;
   }
 
@@ -497,7 +475,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 }
 
 @media only screen and (max-width: 400px) {
-  .fevermap-entry-view {
+  .fevermap-entry-dialog {
     margin-bottom: 3rem !important;
   }
 

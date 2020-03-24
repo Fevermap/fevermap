@@ -2,6 +2,7 @@
   "lang_name": "Français",
   "language": "Language",
   "fevermap_title": "Fevermap",
+  "back": "Back",
 
   "landing": {
     "about": "À propos",
@@ -25,29 +26,58 @@
     "submission_period_disclaimer": "Pour éviter les données inutiles, les saisies sont limitées à une fois toutes les 12 heures.",
     "queued_entries": "Vous avez %{queuedEntries} entrées qui n'ont pas encore été synchronisées avec le serveur.",
     "sync_now": "Synchronisez maintenant",
+    "new_entry": "New entry",
+    "first_time_disclaimer": "As this is your first time using Fevermap, we will ask you a few questions first.",
+    "these_questions_wont_be_repeated": "These questions won't be repeated on future submissions.",
     "questions": {
-      "do_you_have_fever": "Avez-vous de la fièvre en ce moment?",
-      "yes": "Oui",
-      "no": "Non",
+      "what_is_your_temperature": "What's your temperature?",
+      "temperature": "Temperature",
       "how_much": "Quelle température en °C?",
       "degrees_of_fever": "%{degrees} °C de température",
-      "not_measured": "Je ne sais pas, je n’ai pas mesuré.",
+      "not_measured": "Je ne sais, je n’ai pas mesuré.",
+      "set_temperature": "Set temperature",
+      "other_symptoms": "Other symptoms?",
+      "choose_all_that_apply": "Choose all that apply",
+      "difficulty_to_breathe": "Difficulty to breathe",
+      "cough": "Cough",
+      "sore_throat": "Sore throat",
+      "muscular_pain": "Muscular pain",
+      "positive_covid_diagnosis": "I have a positive diagnosis of COVID-19.",
+      "set_symptoms": "Set symptoms",
       "birth_year": "Année de naissance.",
       "birth_year_placeholder": "Année de naissance ente 1900 et 2020.",
       "gender_in_passport": "Genre enregistré dans la carte d’identité",
       "male": "Homme",
       "female": "Femme",
-      "location_information": "Informations sur la position",
+      "location_information": " Informations sur la position",
+      "whats_your_location": "What's your location?",
       "city": "Ville",
       "country": "Pays",
       "postal_code": "Code postal/ZIP",
       "location_determination_subtitle": "La position est déterminée à l'aide de l'API de géolocalisation. Veuillez autoriser les paramètres de géolocalisation.",
       "location_change_subtitle": "Pour mettre à jour les informations de géolocalisation, actualisez la valeur dans le champ du pays et du code postal/ZIP ou appuyez sur le bouton ci-dessous.",
       "update_location": "Mise à jour de la géolocalisation",
-      "use_gps": "Activer les données de géolocalisation de votre GPS"
+      "use_gps": "Activer les données de géolocalisation de votre GPS",
+      "set_location_and_submit": "Set location and submit"
     },
     "previous_submissions": "Saisie précédente",
-    "submit": "Soumettre"
+    "submit": "Soumettre",
+    "save": "Save",
+
+    "last_submission_was_done": "You last submission was made at %{date}",
+    "submission_count_text": "You have entered you fever information ",
+    "submission_count_times": "times",
+    "currently_holding_a_streak_of": "Your current consecutive days streak is: ",
+    "streak_days": "days"
+  },
+
+  "history": {
+    "title": "History",
+    "your_streak": "Your streak",
+    "days": "Days",
+    "total_entries": "Total entries",
+    "measurements": "measurement",
+    "add_entry": "Add entry"
   },
 
   "stats": {

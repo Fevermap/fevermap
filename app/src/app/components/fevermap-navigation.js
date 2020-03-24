@@ -23,6 +23,9 @@ class FevermapNavigation extends LitElement {
         this.rootElem = document.querySelector('fevermap-root');
         if (!this.currentViewObject) {
             this.currentViewObject = document.querySelector(this.currentView);
+            this.currentViewNavigationOrder = this.querySelector(
+                `[data-navigation-view='${this.currentView}']`
+            ).dataset.navigationOrder;
         }
     }
 
@@ -84,7 +87,7 @@ class FevermapNavigation extends LitElement {
             newViewWrapper.classList.add(transitionClass);
             newView.style.display = 'block';
             this.addSlideInClassRemoveListener(newViewWrapper, transitionClass);
-        }, 0);
+        }, 100);
     }
 
     render() {
@@ -104,14 +107,14 @@ class FevermapNavigation extends LitElement {
                 </div>
                 <div
                     @click="${this.handleNavigationClick}"
-                    class="fevermap-navigation-block${this.currentView === 'fevermap-data-entry'
+                    class="fevermap-navigation-block${this.currentView === 'fevermap-data-view'
                         ? ' fevermap-navigation-block--selected'
                         : ''}"
                     id="data-entry"
-                    data-navigation-view="fevermap-data-entry"
+                    data-navigation-view="fevermap-data-view"
                     data-navigation-order="2"
                 >
-                    <material-icon icon="add_comment"></material-icon>
+                    <material-icon icon="add_circle"></material-icon>
                     <p>${Translator.get('entry.data_entry')}</p>
                 </div>
                 <div

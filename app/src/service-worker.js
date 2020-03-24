@@ -4,11 +4,15 @@ import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
 import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import * as navigationPreload from 'workbox-navigation-preload';
+import { clientsClaim, skipWaiting } from 'workbox-core';
 
 const OFFLINE_CACHE_NAME = 'offline-cache';
 const OFFLINE_FALLBACK_HTML_URL = '/index.html';
 
 self.__WB_DISABLE_DEV_LOGS = true;
+
+skipWaiting();
+clientsClaim();
 
 registerRoute(/\.js$/, new NetworkFirst());
 
@@ -57,5 +61,17 @@ registerRoute(
         ],
     })
 );
+
+addEventListener('message', event => {
+    handleMessages(event);
+});
+
+const handleMessages = event => {
+    if (!event.data) {
+        console.error('Message recieved without data');
+        return;
+    }
+    console.log('SW: Message ', event);
+};
 
 cleanupOutdatedCaches();
