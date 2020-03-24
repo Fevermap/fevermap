@@ -8,6 +8,7 @@ import 'src/app/components/material-icon';
 import 'src/app/components/language-controller';
 import 'src/app/components/dialog';
 import 'src/app/components/button';
+import 'src/app/components/development-mode-banner';
 
 class FevermapRoot extends LitElement {
     static get properties() {
@@ -24,6 +25,11 @@ class FevermapRoot extends LitElement {
 
     render() {
         return html`
+            ${window.location.origin.includes('dev') || window.location.origin.includes('localhost')
+                ? html`
+                      <development-mode-banner></development-mode-banner>
+                  `
+                : ''}
             <language-controller></language-controller>
             ${this.hasSubmittedAtLeastOnce
                 ? html`

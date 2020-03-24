@@ -134,71 +134,72 @@ class FevermapDataView extends LitElement {
                             </div>
                         </div>
                         <div class="previous-submissions-list">
-                            ${this.previousSubmissions.map((sub, i) => {
-                                let previousSubmission = this.previousSubmissions[i + 1]; // +1 because we're going from latest
-                                let symptoms = this.getSymptomsForSubmission(sub);
-                                return html`
-                                    <div class="previous-submission">
-                                        <div class="previous-submission--data-row">
-                                            <p class="previous-submission--data-row__date">
-                                                ${dayjs(Number(sub.submission_time)).format('ddd DD.MM')}
-                                            </p>
-                                            <p class="previous-submission--data-row__fever">
-                                                ${previousSubmission && sub.fever_temp
-                                                    ? html`
-                                                          ${previousSubmission.fever_temp === sub.fever_temp
-                                                              ? html`
-                                                                    <material-icon
-                                                                        class="no-new-trend"
-                                                                        icon="arrow_right_alt"
-                                                                    ></material-icon>
-                                                                `
-                                                              : html`
-                                                                    ${previousSubmission.fever_temp > sub.fever_temp
-                                                                        ? html`
-                                                                              <material-icon
-                                                                                  class="downward-trend"
-                                                                                  icon="call_received"
-                                                                              ></material-icon>
-                                                                          `
-                                                                        : html`
-                                                                              <material-icon
-                                                                                  class="upward-trend"
-                                                                                  icon="call_made"
-                                                                              ></material-icon>
-                                                                          `}
-                                                                `}
-                                                      `
-                                                    : ''}
-                                                ${sub.fever_temp
-                                                    ? `${FeverDataUtil.getFeverWithUnit(
-                                                          false,
-                                                          sub.fever_temp,
-                                                          this.geoCodingInfo
-                                                      )}`
-                                                    : '-'}
-                                            </p>
-                                        </div>
-                                        <div class="previous-submission--symptom-row">
-                                            <div class="previous-submission--symptom-row__symptoms">
-                                                ${symptoms.map((symp, i) => {
-                                                    return html`
-                                                        ${symp.hasSymptom
-                                                            ? html`
-                                                                  <p>
-                                                                      ${symp.translation}${i < symptoms.length - 1
-                                                                          ? ', '
-                                                                          : ''}
-                                                                  </p>
-                                                              `
-                                                            : ''}
-                                                    `;
-                                                })}
+                            ${this.previousSubmissions &&
+                                this.previousSubmissions.map((sub, i) => {
+                                    let previousSubmission = this.previousSubmissions[i + 1]; // +1 because we're going from latest
+                                    let symptoms = this.getSymptomsForSubmission(sub);
+                                    return html`
+                                        <div class="previous-submission">
+                                            <div class="previous-submission--data-row">
+                                                <p class="previous-submission--data-row__date">
+                                                    ${dayjs(Number(sub.submission_time)).format('ddd DD.MM')}
+                                                </p>
+                                                <p class="previous-submission--data-row__fever">
+                                                    ${previousSubmission && sub.fever_temp
+                                                        ? html`
+                                                              ${previousSubmission.fever_temp === sub.fever_temp
+                                                                  ? html`
+                                                                        <material-icon
+                                                                            class="no-new-trend"
+                                                                            icon="arrow_right_alt"
+                                                                        ></material-icon>
+                                                                    `
+                                                                  : html`
+                                                                        ${previousSubmission.fever_temp > sub.fever_temp
+                                                                            ? html`
+                                                                                  <material-icon
+                                                                                      class="downward-trend"
+                                                                                      icon="call_received"
+                                                                                  ></material-icon>
+                                                                              `
+                                                                            : html`
+                                                                                  <material-icon
+                                                                                      class="upward-trend"
+                                                                                      icon="call_made"
+                                                                                  ></material-icon>
+                                                                              `}
+                                                                    `}
+                                                          `
+                                                        : ''}
+                                                    ${sub.fever_temp
+                                                        ? `${FeverDataUtil.getFeverWithUnit(
+                                                              false,
+                                                              sub.fever_temp,
+                                                              this.geoCodingInfo
+                                                          )}`
+                                                        : '-'}
+                                                </p>
+                                            </div>
+                                            <div class="previous-submission--symptom-row">
+                                                <div class="previous-submission--symptom-row__symptoms">
+                                                    ${symptoms.map((symp, i) => {
+                                                        return html`
+                                                            ${symp.hasSymptom
+                                                                ? html`
+                                                                      <p>
+                                                                          ${symp.translation}${i < symptoms.length - 1
+                                                                              ? ', '
+                                                                              : ''}
+                                                                      </p>
+                                                                  `
+                                                                : ''}
+                                                        `;
+                                                    })}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                `;
-                            })}
+                                    `;
+                                })}
                         </div>
                     </div>
                 </div>
