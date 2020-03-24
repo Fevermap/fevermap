@@ -68,7 +68,7 @@
     "last_submission_was_done": "You last submission was made at %{date}",
     "submission_count_text": "You have entered you fever information ",
     "submission_count_times": "times",
-    "currently_holding_a_streak_of": "Your current concurrent days streak is: ",
+    "currently_holding_a_streak_of": "Your current consecutive days streak is: ",
     "streak_days": "days"
   },
 
