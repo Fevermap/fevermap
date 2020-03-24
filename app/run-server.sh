@@ -1,10 +1,18 @@
 #!/bin/bash
 
+environment=NULL
+if [ "$1" == "prod" ] || [ "$1" == "production" ]
+then
+  environment="production"
+else
+  environment="development"
+fi
+
 devserverJobId=NULL
 webpackJobId=NULL
 
 run_webpack () {
-	node node_modules/webpack-cli/bin/cli.js -w --mode development &
+	node node_modules/webpack-cli/bin/cli.js -w --mode $environment --env.NODE_ENV=$environment &
 	webpackJobId=$!
 }
 
