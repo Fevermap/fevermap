@@ -2,6 +2,15 @@
   margin: 3rem 20% 10%;
   height: 100%;
 }
+.stats-placeholder {
+  /* Placeholder div */
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid;
+  padding: 1rem;
+}
 @media only screen and (max-width: 780px) {
 
   .fevermap-stats-content {
