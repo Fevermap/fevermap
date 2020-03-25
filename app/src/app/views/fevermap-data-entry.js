@@ -256,9 +256,9 @@ class FevermapDataEntry extends LitElement {
             feverData.submission_time = submissionTime;
             const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
 
-            if (submissionResponse && submissionResponse.history != null) {
-                localStorage.setItem('SUBMISSION_COUNT', submissionResponse.history.length);
-                localStorage.setItem('SUBMISSION_STREAK', submissionResponse.history.length);
+            if (submissionResponse && submissionResponse.data.history != null) {
+                localStorage.setItem('SUBMISSION_COUNT', submissionResponse.data.history.length);
+                localStorage.setItem('SUBMISSION_STREAK', submissionResponse.data.history.length);
             }
             document.dispatchEvent(new CustomEvent('update-submission-list'));
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
