@@ -97,7 +97,8 @@
       "fever_temp_value_invalid": "The fever temperature value is not valid.",
       "location_data_invalid": "The given location data is invalid.",
       "api_data_invalid": "Data sent to the API was invalid.",
-      "gender_not_set": "Gender is not set."
+      "gender_not_set": "Gender is not set.",
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
     }
   },
   "dialog": {

@@ -34,9 +34,10 @@ export default class DataEntryService {
     static handleAPIErrorMessages(resJson) {
         if (!resJson.success) {
             if (resJson.message.includes('Do not submit new temp')) {
-                let newMessage = Translator.get('system_messages.error.do_not_submit_new_temp_until');
                 let time = resJson.message.split('Do not submit new temp before ').pop();
-                newMessage += ` ${dayjs(time).format('YYYY-MM-DD : HH:mm')}`;
+                let newMessage = Translator.get('system_messages.error.do_not_submit_new_temp_until', {
+                    dateTime: dayjs(time).format('YYYY-MM-DD : HH:mm'),
+                });
                 resJson.message = newMessage;
             }
         }

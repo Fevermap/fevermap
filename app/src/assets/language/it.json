@@ -91,7 +91,8 @@
       "fever_temp_value_invalid": "La temperatura corporea non è valida.",
       "location_data_invalid": "I dati relativi alla posizione non sono validi.",
       "api_data_invalid": "I dati inviati all API non sono validi.",
-      "gender_not_set": "Il Sesso non è stato selezionato."
+      "gender_not_set": "Il Sesso non è stato selezionato.",
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
     }
   },
   "dialog": {

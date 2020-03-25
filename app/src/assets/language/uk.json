@@ -91,7 +91,8 @@
             "fever_temp_value_invalid": "Введено неприпустиме значення температури.",
             "location_data_invalid": "Місцезнаходження некоректно.",
             "api_data_invalid": "Надіслані дані некоректні.",
-            "gender_not_set": "Стать не вказано."
+            "gender_not_set": "Стать не вказано.",
+            "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
         }
     },
     "dialog": {

@@ -97,7 +97,8 @@
       "fever_temp_value_invalid": "发烧温度值无效。",
       "location_data_invalid": "位置数据无效。",
       "api_data_invalid": "发送到API的数据无效。",
-      "gender_not_set": "未设置性别。"
+      "gender_not_set": "未设置性别。",
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
     }
   },
   "dialog": {
