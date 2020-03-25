@@ -1,3 +1,4 @@
+@import "../palette";
 
 .fevermap-data-view-content {
   min-height: 75vh;
@@ -17,7 +18,7 @@
 
   .add-new-entry-button {
     .mdc-button {
-      background: #0898ad;
+      background: $bluegreen;
     }
   }
 }
@@ -43,7 +44,7 @@
   &--splitter {
     height: 3rem;
     width: 2.5px;
-    background: #0898ad;
+    background: $bluegreen;
     border-radius: 25%;
   }
   .statistics-field {
@@ -61,7 +62,7 @@
 
     &--result {
       font-size: 2rem;
-      color: #0898ad;
+      color: $bluegreen;
       margin: 0.5rem 0;
       font-weight: 500;
     }

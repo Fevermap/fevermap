@@ -1,14 +1,19 @@
 @use "imports";
+@import "palette";
 
 
 body, html {
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Nunito', sans-serif;
 
     margin: 0;
     padding: 0;
-    background: #fafafa;
+    background: $white;
     overflow-x: hidden;
     max-height: 100vh;
+}
+
+.mdc-typography {
+  font-family: 'Nunito', sans-serif !important;
 }
 
 html {
@@ -16,7 +21,7 @@ html {
 }
 
 p, h1, h2, h3, h4, label {
-  color: #484848;
+  color: $gunmetal;
 }
 
 fevermap-landing, fevermap-stats, fevermap-data-entry {

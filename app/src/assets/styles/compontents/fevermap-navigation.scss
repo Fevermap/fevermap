@@ -1,3 +1,4 @@
+@import "../palette";
 
 .fevermap-navigation-wrapper {
   width: 100%;
@@ -7,7 +8,7 @@
   left: 0;
   z-index: 10;
 
-  background: #FFF;
+  background: $white;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
