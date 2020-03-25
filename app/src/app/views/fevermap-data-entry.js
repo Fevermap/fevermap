@@ -169,7 +169,7 @@ class FevermapDataEntry extends LitElement {
         feverData.location_lat = geoCodingInfo.location_lat.toFixed(7);
 
         const possibleSymptoms = [
-            'symptom_difficult_to_breathe',
+            'symptom_difficult_to_breath',
             'symptom_cough',
             'symptom_sore_throat',
             'symptom_muscle_pain',
@@ -252,11 +252,17 @@ class FevermapDataEntry extends LitElement {
         this.lastSubmissionIsTooCloseToNow = true;
 
         if (!entryGotQueued) {
-            const db = await DBUtil.getInstance();
-            feverData.submission_time = submissionTime;
-            const insertSuccess = await db.add(FEVER_ENTRIES, feverData);
-
             if (submissionResponse && submissionResponse.data.history != null) {
+                const db = await DBUtil.getInstance();
+                /*const insertSuccess = await db.add(FEVER_ENTRIES, feverData);*/
+                submissionResponse.data.history.map(async submission => {
+                    console.log(submission);
+                    let entryInDb = await db.get(FEVER_ENTRIES, submission.timestamp);
+                    if (!entryInDb) {
+                        db.add(FEVER_ENTRIES, submission);
+                    }
+                });
+
                 localStorage.setItem('SUBMISSION_COUNT', submissionResponse.data.history.length);
                 localStorage.setItem('SUBMISSION_STREAK', submissionResponse.data.history.length);
             }
@@ -278,6 +284,12 @@ class FevermapDataEntry extends LitElement {
         });
     }
 
+    /**
+     * Enable this if we start allowing offline sync.
+     *
+     * Needs changes to the IDB code
+     * @returns {Promise<void>}
+     */
     async submitQueuedEntries() {
         let db = await DBUtil.getInstance();
         let successfulSyncCount = 0;
@@ -524,7 +536,7 @@ class FevermapDataEntry extends LitElement {
             </div>
             <p class="subtitle">${Translator.get('entry.questions.choose_all_that_apply')}</p>
             <div class="symptom-holder">
-                <div class="symptom" id="symptom_difficult_to_breathe" @click="${this.handleSymptomAdd}">
+                <div class="symptom" id="symptom_difficult_to_breath" @click="${this.handleSymptomAdd}">
                     <p>${Translator.get('entry.questions.difficulty_to_breathe')}</p>
                 </div>
                 <div class="symptom" id="symptom_cough" @click="${this.handleSymptomAdd}">

@@ -60,7 +60,9 @@ class FevermapDataView extends LitElement {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
         if (previousSubmissions && previousSubmissions.length > 0) {
-            this.previousSubmissions = previousSubmissions.sort((a, b) => b.submission_time - a.submission_time);
+            this.previousSubmissions = previousSubmissions.sort(
+                (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+            );
         }
     }
 
@@ -85,7 +87,7 @@ class FevermapDataView extends LitElement {
         const symptoms = [
             {
                 translation: Translator.get('entry.questions.difficulty_to_breathe'),
-                hasSymptom: sub.symptom_difficult_to_breathe,
+                hasSymptom: sub.symptom_difficult_to_breath,
             },
             {
                 translation: Translator.get('entry.questions.cough'),
@@ -138,11 +140,12 @@ class FevermapDataView extends LitElement {
                                 this.previousSubmissions.map((sub, i) => {
                                     let previousSubmission = this.previousSubmissions[i + 1]; // +1 because we're going from latest
                                     let symptoms = this.getSymptomsForSubmission(sub);
+                                    console.log(sub);
                                     return html`
                                         <div class="previous-submission">
                                             <div class="previous-submission--data-row">
                                                 <p class="previous-submission--data-row__date">
-                                                    ${dayjs(Number(sub.submission_time)).format('ddd DD.MM')}
+                                                    ${dayjs(sub.timestamp).format('ddd DD.MM')}
                                                 </p>
                                                 <p class="previous-submission--data-row__fever">
                                                     ${previousSubmission && sub.fever_temp

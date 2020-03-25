@@ -1,5 +1,5 @@
 const dbName = 'FeverMapDB';
-const versionNum = 1;
+const versionNum = 2;
 
 export const FEVER_ENTRIES = 'feverEntries';
 export const QUEUED_ENTRIES = 'queuedEntries';
@@ -7,7 +7,7 @@ export const QUEUED_ENTRIES = 'queuedEntries';
 const objectStores = [
     {
         name: FEVER_ENTRIES,
-        options: { keyPath: 'id', autoIncrement: true },
+        options: { keyPath: 'timestamp', autoIncrement: true },
     },
     {
         name: QUEUED_ENTRIES,
