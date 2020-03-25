@@ -11,6 +11,8 @@ import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import DataEntryService from '../services/data-entry-service';
 import Translator from '../util/translator';
 import FeverDataUtil from '../util/fever-data-util';
+import dayjs from 'dayjs';
+import dayOfYear from 'dayjs/plugin/dayOfYear';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -255,18 +257,20 @@ class FevermapDataEntry extends LitElement {
             if (submissionResponse && submissionResponse.data.history != null) {
                 const db = await DBUtil.getInstance();
                 /*const insertSuccess = await db.add(FEVER_ENTRIES, feverData);*/
-                submissionResponse.data.history.map(async submission => {
-                    console.log(submission);
+                const submissionHistoryLength = submissionResponse.data.history.length - 1;
+                submissionResponse.data.history.map(async (submission, i) => {
                     let entryInDb = await db.get(FEVER_ENTRIES, submission.timestamp);
                     if (!entryInDb) {
-                        db.add(FEVER_ENTRIES, submission);
+                        await db.add(FEVER_ENTRIES, submission);
+                    }
+                    if (i >= submissionHistoryLength) {
+                        document.dispatchEvent(new CustomEvent('update-submission-list'));
                     }
                 });
 
-                localStorage.setItem('SUBMISSION_COUNT', submissionResponse.data.history.length);
-                localStorage.setItem('SUBMISSION_STREAK', submissionResponse.data.history.length);
+                localStorage.setItem('SUBMISSION_COUNT', submissionHistoryLength + 1);
+                localStorage.setItem('SUBMISSION_STREAK', this.determineStreak(submissionResponse.data.history));
             }
-            document.dispatchEvent(new CustomEvent('update-submission-list'));
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
 
             this.closeView();
@@ -274,6 +278,27 @@ class FevermapDataEntry extends LitElement {
             SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
         }
         ScrollService.scrollToTop();
+    }
+
+    determineStreak(history) {
+        let dates = history.map(entry => dayjs(entry.timestamp));
+        let latest = dates.sort((a, b) => b.unix() - a.unix())[0];
+
+        let streak = 1;
+        let streakWasBroken = false;
+        let dateToFind = latest;
+        dayjs.extend(dayOfYear);
+
+        while (!streakWasBroken) {
+            dateToFind = dateToFind.subtract(1, 'day');
+            let entriesOnDate = dates.find(date => date.dayOfYear() === dateToFind.dayOfYear());
+            if (entriesOnDate > 0) {
+                streak++;
+            } else {
+                streakWasBroken = true;
+            }
+        }
+        return streak;
     }
 
     closeView() {

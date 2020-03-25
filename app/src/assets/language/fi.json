@@ -21,7 +21,7 @@
     "data_use_explanation": "Data anonymisoidaan, jonka jälkeen se jaetaan avoimena datana API-rajapinnan kautta."
   },
   "entry": {
-    "data_entry": "Datan syöttö",
+    "data_entry": "Sinun tietosi",
     "first_entry_disclaimer": "Kirjaukset merkitään tietokantaan laitteen mukaan, jonka vuoksi toivomme, että syötät tietosi aina samalta laitteelta. Tällöin voimme seurata kuumetilasi kehittymistä paremmin.",
     "last_submission": "Viimeisin kirjaus",
     "submission_period_disclaimer": "Välttyäksemme turhalta datalta, kirjaukset on rajoitettu tehtäväksi kerran joka 12. tunti.",
@@ -72,7 +72,7 @@
   },
   "history": {
     "title": "Historia",
-    "your_streak": "Sinun putkesi",
+    "your_streak": "Peräkkäisiä päiviä",
     "days": "Päivää",
     "total_entries": "Kirjaukset yhteensä",
     "measurements": "Mittausta",
