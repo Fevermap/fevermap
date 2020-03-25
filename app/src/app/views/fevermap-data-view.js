@@ -28,6 +28,7 @@ class FevermapDataView extends LitElement {
         if (lastEntryTime && lastEntryTime !== 'undefined') {
             this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
         }
+        console.log(window.URLS);
 
         this.getPreviousSubmissionsFromIndexedDb();
     }
@@ -140,7 +141,6 @@ class FevermapDataView extends LitElement {
                                 this.previousSubmissions.map((sub, i) => {
                                     let previousSubmission = this.previousSubmissions[i + 1]; // +1 because we're going from latest
                                     let symptoms = this.getSymptomsForSubmission(sub);
-                                    console.log(sub);
                                     return html`
                                         <div class="previous-submission">
                                             <div class="previous-submission--data-row">

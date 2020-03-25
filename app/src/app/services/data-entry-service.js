@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 
 /*  Get API server address from environment variable stored in the webpack build
 /* during build time */
-const apiBaseUrl = process.env.API_URL;
+const apiBaseUrl = process.env.API_URL || window.URLS.API_URL;
 
 const apiSubmitUrl = apiBaseUrl + '/api/v0/submit';
 const apiDataUrl = apiBaseUrl + '/api/v0/stats';
