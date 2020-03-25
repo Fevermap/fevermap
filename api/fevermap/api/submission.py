@@ -69,7 +69,8 @@ class SubmissionResource(Resource):
         # Validate submission
         errors = []
 
-        if not re.fullmatch(r'[0-9]{13}', data['device_id']):
+        if not isinstance(data['device_id'], int) and \
+           not re.fullmatch(r'[0-9]{13}', data['device_id']):
             errors += ('device_id', 'Incorrect form for device identifier')
 
         # Check boolean values from multiple fields
@@ -156,11 +157,14 @@ class SubmissionResource(Resource):
         diagnosed_covid19 = bool(data['diagnosed_covid19'])
 
         if 'fever_temp' in data and data['fever_temp']:
-            fever_temp = float(data['fever_temp'])
-            if not re.fullmatch(r'[34][0-9]\.[0-9]', data['fever_temp']):
-                errors += ('fever_temp', 'Value between 35.0–42.0')
-            if not 35.0 <= fever_temp <= 42.0:
-                errors += ('fever_temp', 'Value not in range')
+            # Always convert to float if value exists
+            try:
+                fever_temp = float(data['fever_temp'])
+            except ValueError:
+                errors += ('fever_temp', 'Form of number incorrect')
+            else:
+                if not 35.0 <= fever_temp <= 42.0:
+                    errors += ('fever_temp', 'Value not in range')
         else:
             fever_temp = None
 

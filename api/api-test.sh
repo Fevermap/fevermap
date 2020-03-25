@@ -104,6 +104,49 @@ api_test '{
   "location_lat":"53.3867155"
 }'
 
+# Yet another variation of the JSON payload general format
+api_test '{
+  "device_id": "1584694478666",
+  "fever_status": null,
+  "fever_temp": "37.3",
+  "birth_year": "1983",
+  "gender": "M",
+  "location_country_code": "FI",
+  "location_postal_code": "33100",
+  "location_lng": "23.7835170",
+  "location_lat": "61.4916230",
+  "symptom_difficult_to_breathe": false,
+  "symptom_cough": false,
+  "symptom_sore_throat": false,
+  "symptom_muscle_pain": false,
+  "diagnosed_covid19": false
+}'
+
+# Different headers et al
+curl "$API_URL/api/v0/submit" \
+  -H 'x-real-IP: 123.123.123.123' -H 'X-Forwarded-For: 123.123.123.123' \
+  -H 'Connection: keep-alive' -H 'Pragma: no-cache' -H 'Cache-Control: no-cache' \
+  -H 'Sec-Fetch-Dest: empty' -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36' \
+  -H 'DNT: 1' -H 'Content-Type: application/json' -H 'Accept: */*' \
+  -H "Origin: $API_URL" -H 'Sec-Fetch-Site: same-origin' -H 'Sec-Fetch-Mode: cors' \
+  -H "Referer: $API_URL" -H 'Accept-Language: en-GB,en;q=0.9,sv;q=0.8,fi;q=0.7,en-US;q=0.6' \
+  --data-binary '{
+    "device_id":1584694478666,
+    "fever_status":null,
+    "fever_temp":"39.3",
+    "birth_year":"1983",
+    "gender":"M",
+    "location_country_code":"FI",
+    "location_postal_code":"02700",
+    "location_lng":"24.7187657",
+    "location_lat":"60.2152143",
+    "symptom_difficult_to_breathe":true,
+    "symptom_cough":true,
+    "symptom_sore_throat":false,
+    "symptom_muscle_pain":false,
+    "diagnosed_covid19":false
+  }' --compressed
+
 # Ensure one submission is always a new device
 NEW_DEVICE_ID="$(date +%s)$(shuf -i 100-999 -n 1)"
 api_test '{
