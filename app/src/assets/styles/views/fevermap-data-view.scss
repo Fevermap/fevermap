@@ -33,6 +33,12 @@
     align-items: center;
     justify-content: center;
     border: 1px solid;
+    background: linear-gradient(
+      rgba(255,195,191,1) 0%,
+      rgba(255,195,191,1) 40%,
+      rgba(220,244,255,1) 70%,
+      rgba(220,244,255,1) 95%
+    );
   }
 }
 
