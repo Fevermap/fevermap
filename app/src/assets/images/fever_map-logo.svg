@@ -1,1 +1,26 @@
-<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 200"><defs><style>.cls-1{fill:url(#linear-gradient);}.cls-2{fill:url(#linear-gradient-2);}</style><linearGradient id="linear-gradient" x1="54.87" y1="158.12" x2="152.51" y2="60.48" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9e1f63"/><stop offset="0.11" stop-color="#8c3a75"/><stop offset="0.31" stop-color="#6f6491"/><stop offset="0.5" stop-color="#5885a7"/><stop offset="0.68" stop-color="#489db6"/><stop offset="0.85" stop-color="#3eabc0"/><stop offset="1" stop-color="#3bb0c3"/></linearGradient><linearGradient id="linear-gradient-2" x1="42.98" y1="133.51" x2="127.13" y2="49.36" gradientTransform="matrix(0.99, -0.13, 0.13, 0.99, 11.53, 9.22)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#9e1f63"/><stop offset="0.15" stop-color="#86467a"/><stop offset="0.34" stop-color="#6c7093"/><stop offset="0.52" stop-color="#5791a6"/><stop offset="0.7" stop-color="#49a9b4"/><stop offset="0.86" stop-color="#40b7bc"/><stop offset="1" stop-color="#3dbcbf"/></linearGradient></defs><title>fever_map-logo</title><path class="cls-1" d="M72,154c-17,0-35-4.56-35-13,0-7.49,13.91-11.45,25.81-12.58a2,2,0,0,1,.38,4C49.48,133.7,41,137.87,41,141c0,3.76,11.79,9,31,9s31-5.24,31-9c0-2.09-4.2-5.26-13.42-7.27a2,2,0,0,1,.84-3.91C101.11,132.15,107,136.12,107,141,107,149.44,89,154,72,154Z"/><path class="cls-2" d="M143.79,41.3A12.26,12.26,0,0,0,126.91,44L81.64,103.24a12,12,0,0,0-2.29,9.27,10.62,10.62,0,0,1-2.18,8.11l-6.14,8A5.18,5.18,0,0,0,72,136a5,5,0,0,0,3.55.87,5,5,0,0,0,3.31-1.92l6.59-8.62a9.8,9.8,0,0,1,6.88-3.82l.46,0a11.94,11.94,0,0,0,7.95-4.61l45.51-59.55A12,12,0,0,0,143.79,41.3ZM140.66,54,107.17,97.83a5,5,0,1,1-8-6.07l33.49-43.83A5,5,0,0,1,140.66,54Z"/></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg data-name="Layer 1" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <style>.cls-1{fill:url(#linear-gradient);}.cls-2{fill:url(#linear-gradient-2);}</style>
+  <linearGradient id="linear-gradient" x1="54.87" x2="152.51" y1="158.12" y2="60.48" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#9e1f63" offset="0"/>
+   <stop stop-color="#8c3a75" offset=".11"/>
+   <stop stop-color="#6f6491" offset=".31"/>
+   <stop stop-color="#5885a7" offset=".5"/>
+   <stop stop-color="#489db6" offset=".68"/>
+   <stop stop-color="#3eabc0" offset=".85"/>
+   <stop stop-color="#3bb0c3" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linear-gradient-2" x1="42.98" x2="127.13" y1="133.51" y2="49.36" gradientTransform="matrix(.99 -.13 .13 .99 11.53 9.22)" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#9e1f63" offset="0"/>
+   <stop stop-color="#86467a" offset=".15"/>
+   <stop stop-color="#6c7093" offset=".34"/>
+   <stop stop-color="#5791a6" offset=".52"/>
+   <stop stop-color="#49a9b4" offset=".7"/>
+   <stop stop-color="#40b7bc" offset=".86"/>
+   <stop stop-color="#3dbcbf" offset="1"/>
+  </linearGradient>
+ </defs>
+ <path class="cls-1" d="M72,154c-17,0-35-4.56-35-13,0-7.49,13.91-11.45,25.81-12.58a2,2,0,0,1,.38,4C49.48,133.7,41,137.87,41,141c0,3.76,11.79,9,31,9s31-5.24,31-9c0-2.09-4.2-5.26-13.42-7.27a2,2,0,0,1,.84-3.91C101.11,132.15,107,136.12,107,141,107,149.44,89,154,72,154Z"/>
+ <path class="cls-2" d="m143.79 41.3a12.26 12.26 0 0 0-16.88 2.7l-45.27 59.24a12 12 0 0 0-2.29 9.27 10.62 10.62 0 0 1-2.18 8.11l-6.14 8a5.18 5.18 0 0 0 0.97 7.38 5 5 0 0 0 3.55 0.87 5 5 0 0 0 3.31-1.92l6.59-8.62a9.8 9.8 0 0 1 6.88-3.82h0.46a11.94 11.94 0 0 0 7.95-4.61l45.51-59.55a12 12 0 0 0-2.46-17.05zm-3.13 12.7-33.49 43.83a5 5 0 1 1-8-6.07l33.49-43.83a5 5 0 0 1 8 6.07z"/>
+</svg>
