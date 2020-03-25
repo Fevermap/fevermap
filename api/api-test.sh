@@ -86,6 +86,24 @@ api_test '{
   "location_lat":"60.45388459999"
 }'
 
+# Location Ireland, different coordinates and postal code
+api_test '{
+  "device_id":"1584694478555",
+  "fever_status":false,
+  "fever_temp":"37.0",
+  "birth_year":"1982",
+  "gender":"M",
+  "symptom_difficult_to_breath":false,
+  "symptom_cough":true,
+  "symptom_sore_throat":false,
+  "symptom_muscle_pain":true,
+  "diagnosed_covid19":true,
+  "location_country_code":"IE",
+  "location_postal_code":"H91 E2K3",
+  "location_lng":"-9.2363393",
+  "location_lat":"53.3867155"
+}'
+
 # Ensure one submission is always a new device
 NEW_DEVICE_ID="$(date +%s)$(shuf -i 100-999 -n 1)"
 api_test '{

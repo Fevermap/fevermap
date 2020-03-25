@@ -110,13 +110,15 @@ class SubmissionResource(Resource):
         if not re.fullmatch(r'[A-Z]{2}', data['location_country_code']):
             errors += ('location_country_code', 'Value not two capitals')
 
-        if not re.fullmatch(r'[0-9a-z-A-Z-\.]{5,10}', data['location_postal_code']):
+        if not re.fullmatch(r'[0-9a-z-A-Z-\. ]{5,10}', data['location_postal_code']):
             errors += ('location_postal_code', 'Incorrect characters or length')
 
-        if not re.fullmatch(r'[0-9]{2}\.[0-9]{5,}', data['location_lng']):
+        # Allowed values from -180 to 180
+        if not re.fullmatch(r'(-)?[0-9]{1,3}\.[0-9]{5,}', data['location_lng']):
             errors += ('location_lng', 'Incorrect form or length')
 
-        if not re.fullmatch(r'[0-9]{2}\.[0-9]{5,}', data['location_lat']):
+        # Allowed values from -90 to 90
+        if not re.fullmatch(r'(-)?[0-9]{1,2}\.[0-9]{5,}', data['location_lat']):
             errors += ('location_lat', 'Incorrect form or length')
 
         # Abort if validation failed
