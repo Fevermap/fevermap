@@ -1,4 +1,4 @@
-![Fevermap.net](app/src/assets/images/logo-slogan-large.png)
+![Fevermap.net](hero.png)
 
 # Fevermap
 
