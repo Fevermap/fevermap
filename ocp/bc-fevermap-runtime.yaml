@@ -1,0 +1,42 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  creationTimestamp: null
+  labels:
+    app: fevermap
+  name: fevermap-runtime
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: fevermap:latest
+  runPolicy: Serial
+  source:
+    images:
+    - as: null
+      from:
+        kind: ImageStreamTag
+        name: fevermap-build:latest
+      paths:
+      - destinationDir: .
+        sourcePath: /opt/app-root/output/.
+    type: Image
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nginx-runtime:latest
+      incremental: true
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - type: ConfigChange
+  - imageChange:
+    type: ImageChange
+  - imageChange:
+      from:
+        kind: ImageStreamTag
+        name: fevermap-build:latest
+    type: ImageChange

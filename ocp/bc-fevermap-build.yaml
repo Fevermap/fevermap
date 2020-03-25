@@ -1,0 +1,39 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: fevermap
+  name: fevermap-build
+spec:
+  failedBuildsHistoryLimit: 5
+  output:
+    to:
+      kind: ImageStreamTag
+      name: fevermap-build:latest
+  runPolicy: Serial
+  source:
+    contextDir: app
+    git:
+      uri: https://gitlab.com/fevermap/fevermap.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      env:
+      - name: NPM_BUILD
+        value: webpack --mode production --env.NODE_ENV=production --env.API_URL=https://fevermap.apps.ocp4.ocp.ninja
+      - name: OUTPUT_DIR
+        value: dist
+      from:
+        kind: ImageStreamTag
+        name: ubi8-s2i-web-app:latest
+        namespace: fevermap
+    type: Source
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - gitlab:
+      secretReference:
+        name: gitlab-pull
+    type: GitLab
+  - type: ConfigChange
+  - imageChange:
+    type: ImageChange
