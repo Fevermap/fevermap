@@ -46,6 +46,18 @@ def create_app():
     app.register_blueprint(v0_blueprint, url_prefix='/api/v0')
     app.register_blueprint(ping_blueprint)
 
+    if environment == 'development':
+        @app.after_request
+        def allow_cors_in_dev(resp):
+            """Allow full CORS access in development environment.
+
+            Without this, the browser would deny the front-end JavaScript code
+            running on localhost:6006 from doing API requests to localhost:9000.
+            """
+            resp.headers['Access-Control-Allow-Origin'] = '*'
+            resp.headers['Access-Control-Allow-Headers'] = '*'
+            return resp
+
     @app.context_processor
     def inject_app_details():
         details = {

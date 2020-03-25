@@ -61,14 +61,23 @@ class SubmissionResource(Resource):
             return {
                 'success': False,
                 'message': 'Empty payload in POST request.'
-            }
+            }, 400
+
+        # Include external IP in log if exists
+        # No need to care about header name case as Flask always normalizes
+        # them to the same camel-case forma
+        if 'X-Real-Ip' in request.headers:
+            data['X-Real-Ip'] = request.headers['X-Real-Ip']
+        if 'X-Forwarded-For' in request.headers:
+            data['X-Forwarded-For'] = request.headers['X-Forwarded-For']
 
         app.logger.info('Processing: {}'.format(data))
 
         # Validate submission
         errors = []
 
-        if not re.fullmatch(r'[0-9]{13}', data['device_id']):
+        if not isinstance(data['device_id'], int) and \
+           not re.fullmatch(r'[0-9]{13}', data['device_id']):
             errors += ('device_id', 'Incorrect form for device identifier')
 
         # Check boolean values from multiple fields
@@ -109,13 +118,15 @@ class SubmissionResource(Resource):
         if not re.fullmatch(r'[A-Z]{2}', data['location_country_code']):
             errors += ('location_country_code', 'Value not two capitals')
 
-        if not re.fullmatch(r'[0-9a-z-A-Z-\.]{5,10}', data['location_postal_code']):
+        if not re.fullmatch(r'[0-9a-z-A-Z-\. ]{5,10}', data['location_postal_code']):
             errors += ('location_postal_code', 'Incorrect characters or length')
 
-        if not re.fullmatch(r'[0-9]{2}\.[0-9]{5,}', data['location_lng']):
+        # Allowed values from -180 to 180
+        if not re.fullmatch(r'(-)?[0-9]{1,3}\.[0-9]{5,}', data['location_lng']):
             errors += ('location_lng', 'Incorrect form or length')
 
-        if not re.fullmatch(r'[0-9]{2}\.[0-9]{5,}', data['location_lat']):
+        # Allowed values from -90 to 90
+        if not re.fullmatch(r'(-)?[0-9]{1,2}\.[0-9]{5,}', data['location_lat']):
             errors += ('location_lat', 'Incorrect form or length')
 
         # Abort if validation failed
@@ -125,7 +136,7 @@ class SubmissionResource(Resource):
                 'success': False,
                 'message': 'Invalid payload rejected.',
                 'data': errors
-            }
+            }, 400
 
         # Convert strings into correct Python data types for processing
         device_id = int(data['device_id'])
@@ -153,11 +164,14 @@ class SubmissionResource(Resource):
         diagnosed_covid19 = bool(data['diagnosed_covid19'])
 
         if 'fever_temp' in data and data['fever_temp']:
-            fever_temp = float(data['fever_temp'])
-            if not re.fullmatch(r'[34][0-9]\.[0-9]', data['fever_temp']):
-                errors += ('fever_temp', 'Value between 35.0–42.0')
-            if not 35.0 <= fever_temp <= 42.0:
-                errors += ('fever_temp', 'Value not in range')
+            # Always convert to float if value exists
+            try:
+                fever_temp = float(data['fever_temp'])
+            except ValueError:
+                errors += ('fever_temp', 'Form of number incorrect')
+            else:
+                if not 35.0 <= fever_temp <= 42.0:
+                    errors += ('fever_temp', 'Value not in range')
         else:
             fever_temp = None
 
@@ -168,7 +182,7 @@ class SubmissionResource(Resource):
                 'success': False,
                 'message': 'Invalid values rejected.',
                 'data': errors
-            }
+            }, 400
 
         # Get submitter if device_id already exists
         submitter = db_session.query(Submitter).filter(
@@ -185,7 +199,7 @@ class SubmissionResource(Resource):
             last_submission = submitter.submissions[-1]
 
             earliest_next_submission_time = \
-                last_submission.timestamp_modified + datetime.timedelta(hours=12)
+                last_submission.timestamp_modified + datetime.timedelta(hours=1)
 
             if earliest_next_submission_time > datetime.datetime.now():
                 app.logger.warning(
