@@ -1,4 +1,6 @@
 import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
+import Translator from '../util/translator';
+import dayjs from 'dayjs';
 
 const apiBaseUrl = process.env.URL;
 
@@ -17,7 +19,8 @@ export default class DataEntryService {
                 return { success: false, reason: 'INVALID_DATA' };
             }
             const resJson = await response.json(); // Change to json on real one
-            return { success: true, data: resJson };
+            DataEntryService.handleAPIErrorMessages(resJson);
+            return resJson;
         } catch (err) {
             console.error('Error: ', err);
             if (addToDbOnFail) {
@@ -25,6 +28,17 @@ export default class DataEntryService {
                 db.add(QUEUED_ENTRIES, feverData);
             }
             return { success: false, reason: 'NETWORK_STATUS_OFFLINE' };
+        }
+    }
+
+    static handleAPIErrorMessages(resJson) {
+        if (!resJson.success) {
+            if (resJson.message.includes('Do not submit new temp')) {
+                let newMessage = Translator.get('system_messages.error.do_not_submit_new_temp_until');
+                let time = resJson.message.split('Do not submit new temp before ').pop();
+                newMessage += ` ${dayjs(time).format('YYYY-MM-DD : HH:mm')}`;
+                resJson.message = newMessage;
+            }
         }
     }
 
