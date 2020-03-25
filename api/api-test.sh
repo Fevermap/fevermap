@@ -8,7 +8,13 @@ function api_test(){
   echo "==> Request:"
   echo "$1"
   echo "<== Response:"
-  curl -iLsS -X POST -H "Content-Type: application/json" -d "$1" "$API_URL/api/v0/submit"
+  curl -iLsS -X POST -H "Content-Type: application/json" -d "$1" "$API_URL/api/v0/submit" > /tmp/response
+  cat /tmp/response
+  if ! grep --quiet "200 OK" /tmp/response
+  then
+    echo "^ Error, fix it!"
+    exit 1
+  fi
 }
 
 # No fever and fever_temp null
@@ -18,7 +24,7 @@ api_test '{
   "fever_status":false,
   "fever_temp":null,
   "birth_year":"1996",
-  "gender":"M",
+  "gender":"F",
   "location_country_code":"FI",
   "location_postal_code":"20100",
   "location_lng":"22.2833007",
@@ -97,3 +103,6 @@ api_test '{
   "location_lng":"22.2833007",
   "location_lat":"60.45388459999"
 }'
+
+# Also test the stats API
+curl -iLsS "$API_URL/api/v0/stats"

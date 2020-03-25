@@ -61,7 +61,8 @@ class SubmissionResource(Resource):
             return {
                 'success': False,
                 'message': 'Empty payload in POST request.'
-            }
+            }, 400
+
 
         app.logger.info('Processing: {}'.format(data))
 
@@ -125,7 +126,7 @@ class SubmissionResource(Resource):
                 'success': False,
                 'message': 'Invalid payload rejected.',
                 'data': errors
-            }
+            }, 400
 
         # Convert strings into correct Python data types for processing
         device_id = int(data['device_id'])
@@ -168,7 +169,7 @@ class SubmissionResource(Resource):
                 'success': False,
                 'message': 'Invalid values rejected.',
                 'data': errors
-            }
+            }, 400
 
         # Get submitter if device_id already exists
         submitter = db_session.query(Submitter).filter(
