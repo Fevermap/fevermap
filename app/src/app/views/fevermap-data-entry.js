@@ -255,18 +255,20 @@ class FevermapDataEntry extends LitElement {
             if (submissionResponse && submissionResponse.data.history != null) {
                 const db = await DBUtil.getInstance();
                 /*const insertSuccess = await db.add(FEVER_ENTRIES, feverData);*/
-                submissionResponse.data.history.map(async submission => {
-                    console.log(submission);
+                const submissionHistoryLength = submissionResponse.data.history.length - 1;
+                submissionResponse.data.history.map(async (submission, i) => {
                     let entryInDb = await db.get(FEVER_ENTRIES, submission.timestamp);
                     if (!entryInDb) {
-                        db.add(FEVER_ENTRIES, submission);
+                        await db.add(FEVER_ENTRIES, submission);
+                    }
+                    if (i >= submissionHistoryLength) {
+                        document.dispatchEvent(new CustomEvent('update-submission-list'));
                     }
                 });
 
-                localStorage.setItem('SUBMISSION_COUNT', submissionResponse.data.history.length);
-                localStorage.setItem('SUBMISSION_STREAK', submissionResponse.data.history.length);
+                localStorage.setItem('SUBMISSION_COUNT', submissionHistoryLength + 1);
+                localStorage.setItem('SUBMISSION_STREAK', this.determineStreak(submissionResponse.data.history));
             }
-            document.dispatchEvent(new CustomEvent('update-submission-list'));
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
 
             this.closeView();
@@ -274,6 +276,11 @@ class FevermapDataEntry extends LitElement {
             SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
         }
         ScrollService.scrollToTop();
+    }
+
+    determineStreak(history) {
+        console.log(history);
+        return 1;
     }
 
     closeView() {

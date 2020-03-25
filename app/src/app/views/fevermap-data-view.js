@@ -35,6 +35,7 @@ class FevermapDataView extends LitElement {
     firstUpdated(_changedProperties) {
         this.getGeoLocationInfo();
         document.addEventListener('update-submission-list', () => {
+            console.log('Update submission list');
             this.getPreviousSubmissionsFromIndexedDb();
 
             let submissionCount = localStorage.getItem('SUBMISSION_COUNT');
@@ -59,7 +60,9 @@ class FevermapDataView extends LitElement {
     async getPreviousSubmissionsFromIndexedDb() {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
+        console.log('previousSubs', previousSubmissions);
         if (previousSubmissions && previousSubmissions.length > 0) {
+            console.log('Updated previous submissiosn');
             this.previousSubmissions = previousSubmissions.sort(
                 (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
             );
