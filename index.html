@@ -19,7 +19,12 @@
   </head>
 
   <body>
-    <img id="hero" src="hero.png" class="hero" alt="" />
+    <div id="hero">
+      <!-- for semantic purposes have a H1 even though it is not displayed -->
+      <h1>Fevermap – infection tracking</h1>
+      <img src="hero.png" alt="Fevermap">
+    </div>
+
     <main>
       <h1>Mission</h1>
 
@@ -29,7 +34,7 @@
         <p><strong>Sign up to get an announcement when we launch!</strong></p>
         <!-- a class="cta" href="https://dev.fevermap.net">Test our to Fevermap</a -->
       </section>
-      <section style="padding: 0rem 4rem;">
+      <section id="signup">
         <div id="phplistsubscriberesult"></div>
         <form action="https://fevermap.hosted.phplist.com/lists/?p=subscribe&id=1" method="post" id="phplistsubscribeform">
           <input type="text" name="email" value="" id="emailaddress" placeholder="email@example.com" />
@@ -121,8 +126,8 @@
           </a>
         </div>
         <div class="contact-container">
-        <h4 style="color: #30bfbf;">contact</h4>
-        <a style="color: #eee; font-weight: bold;" "href="mailto:contact@fevermap.net">contact@fevermap.net</a>
+        <h4>contact</h4>
+        <a href="mailto:contact@fevermap.net">contact@fevermap.net</a>
         </div>
       </footer>
     </main>

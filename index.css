@@ -25,9 +25,27 @@ body {
 }
 
 #hero {
-  width: 100vw;
-  height: auto;
+  background: linear-gradient(
+    90deg,
+    rgba(153,38,103,1) 25%,
+    rgba(68,165,184,1) 75%
+  );
 }
+
+#hero img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 950px; /* Keep image from growing too high on wide screens */
+}
+
+#hero h1 {
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+
 
 .spacer {
   height: 4rem;
@@ -154,7 +172,7 @@ h2, h3, h4 {
   text-align: center;
   font-family: Nunito;
   font-weight: bold;
-  
+
 }
 
 p {
@@ -189,6 +207,19 @@ section#main {
   max-width: 60rem;
 }
 
+section#signup {
+  padding: 0rem 4rem;
+}
+
 #presentations iframe {
   margin: 1rem;
+}
+
+.contact-container h4 {
+  color: #30bfbf;
+}
+
+.contact-container a {
+  color: #eee;
+  font-weight: bold;
 }
