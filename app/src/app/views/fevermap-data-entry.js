@@ -11,6 +11,8 @@ import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import DataEntryService from '../services/data-entry-service';
 import Translator from '../util/translator';
 import FeverDataUtil from '../util/fever-data-util';
+import dayjs from 'dayjs';
+import dayOfYear from 'dayjs/plugin/dayOfYear';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -279,8 +281,24 @@ class FevermapDataEntry extends LitElement {
     }
 
     determineStreak(history) {
-        console.log(history);
-        return 1;
+        let dates = history.map(entry => dayjs(entry.timestamp));
+        let latest = dates.sort((a, b) => b.unix() - a.unix())[0];
+
+        let streak = 1;
+        let streakWasBroken = false;
+        let dateToFind = latest;
+        dayjs.extend(dayOfYear);
+
+        while (!streakWasBroken) {
+            dateToFind = dateToFind.subtract(1, 'day');
+            let entriesOnDate = dates.find(date => date.dayOfYear() === dateToFind.dayOfYear());
+            if (entriesOnDate > 0) {
+                streak++;
+            } else {
+                streakWasBroken = true;
+            }
+        }
+        return streak;
     }
 
     closeView() {

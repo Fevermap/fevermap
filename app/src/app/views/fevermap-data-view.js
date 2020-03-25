@@ -60,7 +60,6 @@ class FevermapDataView extends LitElement {
     async getPreviousSubmissionsFromIndexedDb() {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
-        console.log('previousSubs', previousSubmissions);
         if (previousSubmissions && previousSubmissions.length > 0) {
             console.log('Updated previous submissiosn');
             this.previousSubmissions = previousSubmissions.sort(
