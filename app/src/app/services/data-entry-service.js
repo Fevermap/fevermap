@@ -2,7 +2,9 @@ import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 import Translator from '../util/translator';
 import dayjs from 'dayjs';
 
-const apiBaseUrl = process.env.URL;
+/*  Get API server address from environment variable stored in the webpack build
+/* during build time */
+const apiBaseUrl = process.env.API_URL;
 
 const apiSubmitUrl = apiBaseUrl + '/api/v0/submit';
 const apiDataUrl = apiBaseUrl + '/api/v0/stats';

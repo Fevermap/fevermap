@@ -17,9 +17,15 @@ export PYTHONPATH="${APPDIR}:${PYTHONPATH}"
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
 
-# Start a secondary process to gracefully reload uswgi if any of it's files get
-# modified. Needs Debian packages procps and entr installed on system.
-(find /app | entr -p -s "echo 'Entr: reloading...' && pkill --signal SIGHUP uwsgi" &)
+
+if [ "$FLASK_ENV" == "development" ]
+then
+  # Start a secondary process to gracefully reload uswgi if any of it's files get
+  # modified. Needs Debian packages procps and entr installed on system.
+  echo "Starting entr to watch for source code changes..."
+  (find /app | entr -p -s "echo 'Entr: reloading...' && pkill --signal SIGHUP uwsgi" &)
+  # This is only indented for development use, don't run production with this entrypoint.
+fi
 
 uwsgi \
     --plugins=python37 \
@@ -29,7 +35,6 @@ uwsgi \
     --threads=2 \
     --set-placeholder="base=/app" \
     --chdir="%(base)" \
-    --touch-reload="%(base)/fevermap/__init__.py" \
     --http-socket="0.0.0.0:9000" \
     --uid="fevermap" \
     --gid="fevermap" \

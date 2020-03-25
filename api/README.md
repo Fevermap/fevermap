@@ -1,10 +1,13 @@
 # Fevermap back-end (API)
 
-The back-end server is a simple Python Flask app with MariaDB database for storage. The back-end exposes an API at `https://fevermap.net/api/` which the front-end communicates with JSON calls.
+The back-end server is a simple Python Flask app with MariaDB database for
+storage. The back-end exposes an API at `https://fevermap.net/api/` which the
+front-end communicates with JSON calls.
 
 ## Development with Docker
 
-To participate in the back-end development, you need Python skills and basic understanding of HTTP and JSON.
+To participate in the back-end development, you need Python skills and basic
+understanding of HTTP and JSON.
 
 To spin up a local development environment, simply run `docker-compose up
 --build`. The window will keep displaying the logs from the environments.
@@ -17,7 +20,7 @@ http://localhost:9000 or more importantly, run `curl` or other requests against
 the API.
 
 To access the MariaDB shell, simply run
-`docker exec -it api_database_1 mysql -prootpass fevermap`.
+`docker exec -it api_database_1 mariadb -prootpass fevermap`.
 
 If you during testing want to empty either of the database tables, then run
 `TRUNCATE submissions;`. To completely wipe out existing database, run the above
@@ -76,9 +79,12 @@ podman generate kube fevermap > fevermap.yml
         docker build -t fevermap/api .
         docker run -d --name fevermap_api --restart always -v "${PWD}:/app" -e FEVERMAP_API_DATABASE_URI="mysql://<user>:<password>@<database ip>/fevermap?charset=utf8mb4" -e ENV=production --expose 9000 fevermap/api
 
-The `docker` commands can be invoked by a regular user (e.g via CI system). Setting up MariaDB and Nginx requires root.
+The `docker` commands can be invoked by a regular user (e.g via CI system).
+Setting up MariaDB and Nginx requires root.
 
-See status with `docker logs --follow fevermap_api` and stop with `docker rm fevermap_api`. Modify at run time via `docker exec -it --user root fevermap_api bash`
+See status with `docker logs --follow fevermap_api` and stop with `docker rm
+fevermap_api`. Modify at run time via `docker exec -it --user root fevermap_api
+bash`
 
 ## API endpoints and sample requests
 

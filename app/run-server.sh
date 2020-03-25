@@ -1,18 +1,15 @@
 #!/bin/bash
 
-environment=NULL
-if [ "$1" == "prod" ] || [ "$1" == "production" ]
-then
-  environment="production"
-else
-  environment="development"
-fi
+# This helper script is only run in development. I production we just ship the
+# static dist/ produced by the build. Therevore the local developemnt environment
+# and API_URL are hard-coded in this script.
+export API_URL="http://localhost:9000"
 
 devserverJobId=NULL
 webpackJobId=NULL
 
 run_webpack () {
-	node node_modules/webpack-cli/bin/cli.js -w --mode $environment --env.NODE_ENV=$environment &
+	node node_modules/webpack-cli/bin/cli.js -w --mode development --env.NODE_ENV=development &
 	webpackJobId=$!
 }
 
@@ -51,5 +48,3 @@ listen_for_reset_inputs () {
 run_dev_server
 run_webpack
 listen_for_reset_inputs
-
-

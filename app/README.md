@@ -16,6 +16,10 @@ To start the development environment, run `./run-server.sh` in the app directory
 
 The software will run on http://localhost:6006/.
 
+#### Development with Docker
+
+If you don't want to install NodeJs et al on your own environment, you can alternatively also run the development environment in Docker. To spin up a local development environment, simply run `docker-compose up --build`. The window will keep displaying the logs from the environments.
+
 #### Creating a new Component
 
 To create a new component, create a new Java Script file in the folder `src/app/components`. You need to import components so that the `customElement` gets defined, so make sure to import the component to at least the view it's used in.
@@ -55,3 +59,10 @@ To build the project, run `npm run build`
 
 - [Polymer Project](https://lit-element.polymer-project.org/guide) has great resources about Lit Elements.
 - [Open WC](https://open-wc.org/) has great info about Web Components
+
+
+## Production
+
+1. Run `npm run build` in directory `app` so that the static files are generated in subdirectory `dist`.
+
+2. Copy `dist` to a web server (e.g. Nginx) and let it serve.

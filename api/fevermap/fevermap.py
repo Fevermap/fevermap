@@ -21,10 +21,8 @@ def create_app():
     # Accept both '/abc' and '/abc/'
     app.url_map.strict_slashes = False
 
-    environment = os.environ.get('ENV', 'development')
-
     app.logger.info("Running app '{}' in mode '{}'".format(
-        __appname__, environment))
+        __appname__, app.env))
 
     # Get database credentials from env or use default values
     engine = init_engine(
@@ -46,7 +44,7 @@ def create_app():
     app.register_blueprint(v0_blueprint, url_prefix='/api/v0')
     app.register_blueprint(ping_blueprint)
 
-    if environment == 'development':
+    if app.env == 'development':
         @app.after_request
         def allow_cors_in_dev(resp):
             """Allow full CORS access in development environment.
