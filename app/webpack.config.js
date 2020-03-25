@@ -69,7 +69,14 @@ module.exports = env => {
             require('autoprefixer'),
             new CleanWebpackPlugin({
                 verbose: true,
-                cleanAfterEveryBuildPatterns: ['!*.png', '!*.json', '!*.svg', '!*.ico', '!*.txt'],
+                cleanAfterEveryBuildPatterns: [
+                    '!*.png',
+                    '!*.json',
+                    '!*.svg',
+                    '!*.ico',
+                    '!*.txt',
+                    '!window-settings.js',
+                ],
             }),
             new HtmlWebPackPlugin({
                 template: './src/index.html',
@@ -100,6 +107,11 @@ module.exports = env => {
                 {
                     context: './src',
                     from: 'manifest.json',
+                    to: '.',
+                },
+                {
+                    context: './src',
+                    from: 'window-settings.js',
                     to: '.',
                 },
             ]),
