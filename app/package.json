@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --mode production --env.NODE_ENV=production",
+    "build": "webpack --mode production --env.NODE_ENV=production --env.API_URL=https://dev.fevermap.net",
     "dev": "webpack --mode development"
   },
   "author": "",

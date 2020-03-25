@@ -9,7 +9,7 @@ devserverJobId=NULL
 webpackJobId=NULL
 
 run_webpack () {
-	node node_modules/webpack-cli/bin/cli.js -w --mode development --env.NODE_ENV=development &
+	node node_modules/webpack-cli/bin/cli.js -w --mode development --env.NODE_ENV=development --env.API_URL=$API_URL &
 	webpackJobId=$!
 }
 
