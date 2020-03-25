@@ -22,7 +22,10 @@ class FevermapStats extends LitElement {
                 <div class="fevermap-stats-content">
                     <h1>${Translator.get('stats.stats')}</h1>
                     <div class="stats-placeholder">
-                        <p>Please visit <a href="https://gitlab.com/fevermap/fevermap">gitlab.com/fevermap</a> if you want to contribute in developing the analytics and statistics view.</p>
+                        <p>
+                            Please visit <a href="https://gitlab.com/fevermap/fevermap">gitlab.com/fevermap</a> if you
+                            want to contribute in developing the analytics and statistics view.
+                        </p>
                     </div>
                 </div>
             </div>

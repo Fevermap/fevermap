@@ -97,7 +97,8 @@
       "fever_temp_value_invalid": "Введено недопустимое значение температуры.",
       "location_data_invalid": "Местонахождение некорректно.",
       "api_data_invalid": "Отправленные данные некорректны.",
-      "gender_not_set": "Пол не задан."
+      "gender_not_set": "Пол не задан.",
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
     }
   },
   "dialog": {

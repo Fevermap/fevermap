@@ -95,7 +95,8 @@
       "fever_temp_value_invalid": "Kuumeen määrä ei ole sallittu luku.",
       "location_data_invalid": "Syötetty sijaintidata ei ole sallittu.",
       "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa.",
-      "gender_not_set": "Sukupuolta ei ole valittu."
+      "gender_not_set": "Sukupuolta ei ole valittu.",
+      "do_not_submit_new_temp_until": "Älä syötä uutta kirjausta ennen %{dateTime}"
     }
   },
 

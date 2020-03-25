@@ -96,7 +96,8 @@
       "fever_temp_value_invalid": "Die Fiebertemperatur ist ungültig.",
       "location_data_invalid": "Der angegebene Ort ist ungültig.",
       "api_data_invalid": "Die zur API geschickten Daten waren ungültig.",
-      "gender_not_set": "Geschlecht ist nicht gesetzt."
+      "gender_not_set": "Geschlecht ist nicht gesetzt.",
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
     }
   },
   "dialog": {
