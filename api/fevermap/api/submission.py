@@ -63,6 +63,13 @@ class SubmissionResource(Resource):
                 'message': 'Empty payload in POST request.'
             }, 400
 
+        # Include external IP in log if exists
+        # No need to care about header name case as Flask always normalizes
+        # them to the same camel-case forma
+        if 'X-Real-Ip' in request.headers:
+            data['X-Real-Ip'] = request.headers['X-Real-Ip']
+        if 'X-Forwarded-For' in request.headers:
+            data['X-Forwarded-For'] = request.headers['X-Forwarded-For']
 
         app.logger.info('Processing: {}'.format(data))
 
@@ -192,7 +199,7 @@ class SubmissionResource(Resource):
             last_submission = submitter.submissions[-1]
 
             earliest_next_submission_time = \
-                last_submission.timestamp_modified + datetime.timedelta(hours=12)
+                last_submission.timestamp_modified + datetime.timedelta(hours=1)
 
             if earliest_next_submission_time > datetime.datetime.now():
                 app.logger.warning(

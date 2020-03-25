@@ -22,6 +22,7 @@ class StatsResource(Resource):
         app.logger.info('Serving stats')
 
         data = {
+            'generated': datetime.now().isoformat(timespec='seconds'),
             'submitters': {
                 'since': None,
                 'total': 0,
