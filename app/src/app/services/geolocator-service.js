@@ -65,7 +65,17 @@ export default class GeolocatorService {
      * Country data from http://vocab.nic.in/rest.php/country/json
      */
     static getCountryList() {
-        return countryList.countries;
+        return countryList.countries.sort((a, b) => {
+            let aCountryName = a.country.country_name;
+            let bCountryName = b.country.country_name;
+            if (aCountryName > bCountryName) {
+                return 1;
+            }
+            if (bCountryName > aCountryName) {
+                return -1;
+            }
+            return 0;
+        });
     }
 
     static returnErrorMessage() {
