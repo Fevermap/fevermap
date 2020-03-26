@@ -639,7 +639,7 @@ class FevermapDataEntry extends LitElement {
                     <button class="mdc-button mdc-button--outlined" @click="${() => this.getGeoLocationInfo(true)}">
                         <div class="mdc-button__ripple"></div>
 
-                        <i class="material-icons mdc-button__icon" aria-hidden="true">maps</i>
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">my_location</i>
                         <span class="mdc-button__label">${Translator.get('entry.questions.use_gps')}</span>
                     </button>
                 </div>
