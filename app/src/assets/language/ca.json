@@ -1,0 +1,111 @@
+{
+  "lang_name": "Català",
+  "language": "Llengua",
+  "fevermap_title": "Fevermap",
+  "back": "Enrere",
+
+  "landing": {
+    "about": "Sobre",
+    "about_title": "Què és Fevermap?",
+    "about_content_explanation": " és una aplicació mobil i web creada per la recolecció de dades d'una manera senzilla i en temps real de la prevalença de la pandemia del Coronavirus COVID-19.",
+    "about_current_methods": "Els mètodes actuals de seguiment de la prevalença del Conoravirus no dónen una visió global. Existix una gran quantitat de gent que encara no ha estat diagnosticada perquè els recursos disponibles s'han enviat a aquells que més els necessiten.",
+    "about_solution": "Fevermap presenta una solució per aquest problema. Amb Fevermap, qualsevol persona en qualsevol part del món pot informar anònimament de la seva febre o altres símptomes. Així és possible estimar la veritable prevalença de les infeccions de COVID-19 en temps real, i proporcionar als governs dades que els ajudin a prendre decisions més acertades i amb terminis en base a les dades recolectades.",
+    "about_data_collection": "Les dades recolectades per Fevermap són anonimitzades i es faran servir per ajudar-nos a tenir una visió més realista de la situació global actual.",
+    "about_current_participant_count": "Actualment, %{participantCount} usuaris han usat Fevermap per informar sobre els seus símptomes. ",
+    "how_to_participate": "Com puc participar?",
+    "participation_info": "Fàcil. Simplement posa't el termòmetre i envia la mesura de temperatura - així com alguna informació més per finalitats estadístiques, com l'any que vas néixer i el teu codi postal.",
+    "info_disclaimer": "En cap moment et demanarem informació que permeti identificar-te públicament. Respectem la teva privacitat i anonimat.",
+    "how_will_my_data_be_used": "Com es faràn servir les meves dades?",
+    "data_use_explanation": "Les dades s'anonimitzaràn, i posteriorment es compartiràn com a dades obertes mitjançant una API."
+  },
+
+  "entry": {
+    "data_entry": "Introducció de dades",
+    "first_entry_disclaimer": "Els registres s'envien a la base de dadades en funció del teu dispositiu. Per això és millor si envies la teva informació sempre des del mateix dispositiu. Això ens permetrà monitoritzar millor l'estat de la teva febre.",
+    "last_submission": "Últimes dadades enviades",
+    "submission_period_disclaimer": "Per evitar dades innecessàries, només es podràn enviar dades una vegada cada dotze hores.",
+    "queued_entries": "Tens %{queuedEntries} registres que encara no s'han sincronitzat amb el servidor.",
+    "sync_now": "Sincronitzar ara",
+    "new_entry": "Nou registre",
+    "first_time_disclaimer": "Com és la primera vegada que fas servir Fevermap, et farem unes preguntes.",
+    "these_questions_wont_be_repeated": "Aquestes preguntes no es repetiràn per registres futurs.",
+    "questions": {
+      "what_is_your_temperature": "Quina és la teva temperatura?",
+      "temperature": "Temperatura",
+      "how_much": "Quant?",
+      "degrees_of_fever": "%{degrees} de febre",
+      "not_measured": "No ho sé exactament, no l'he mesurada.",
+      "set_temperature": "Guardar temperatura",
+      "other_symptoms": "Algun altre símptoma?",
+      "choose_all_that_apply": "Marca els que corresponquin",
+      "difficulty_to_breathe": "Dificultat respiratòria",
+      "cough": "Tos",
+      "sore_throat": "Mal de gola",
+      "muscular_pain": "Mal muscular",
+      "positive_covid_diagnosis": "He sigut diagnosticat com positiu de COVID-19.",
+      "set_symptoms": "Guardar símptomes",
+      "birth_year": "Any de naixement",
+      "birth_year_placeholder": "Any de naixement (anys 1900 - 2020)",
+      "gender_in_passport": "Gènere que figura al teu passaport o altre registre civil",
+      "male": "Home",
+      "female": "Dona",
+      "location_information": "Informació de localització",
+      "whats_your_location": "On et trobes?",
+      "city": "Ciutat",
+      "country": "País",
+      "postal_code": "Codi postal",
+      "location_determination_subtitle": "L'ubicació es determina fent servir una API de localització. Siusplau permet l'accés als sensors de localització.",
+      "location_change_subtitle": "Per actualitzar la teva localització, actualitza els valors de país i codi postal i fés clic al botó més avall.",
+      "update_location": "Actualitzar ubicació",
+      "use_gps": "Obtenir ubicació mitjançant GPS",
+      "set_location_and_submit": "Guardar ubicació i enviar"
+    },
+    "previous_submissions": "Dades enviades anteriorment",
+    "submit": "Enviar",
+    "save": "Guardar",
+    "last_submission_was_done": "El teu últim enviament va ser el %{date}",
+    "submission_count_text": "Has introduit la teva temperatura ",
+    "submission_count_times": "vegades",
+    "currently_holding_a_streak_of": "Portes una ratxa seguida de: ",
+    "streak_days": "dies"
+  },
+
+  "history": {
+    "title": "Historial",
+    "your_streak": "La teva ratxa",
+    "days": "Dies",
+    "total_entries": "Entrades totals",
+    "measurements": "mesures",
+    "add_entry": "Afegeix entrada"
+  },
+
+  "stats": {
+    "stats": "Estadístiques"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Ubicació actualiztada satisfactòriament",
+      "data_entry": "Entrada de registre enviada satisfactòriament",
+      "offline_entry_queued": "Sembla que t'has quedat sense xarxa. L'entrada s'ha posat a la cua.",
+      "sync_finished": "Entrades sincronitzades satisfactòriament."
+    },
+    "error": {
+      "age_not_in_range": "L'any de naixement proporcionat no està inclòs dintre del rang permès (1900 - 2020).",
+      "fever_temp_value_invalid": "El valor de temperatura no és válid.",
+      "location_data_invalid": "L'ubicació no és vàlida.",
+      "api_data_invalid": "Les dades enviades a l'API no són vàlids.",
+      "gender_not_set": "El gènere no s'ha configurat.",
+      "do_not_submit_new_temp_until": "No enviar nova temperatura fins %{dateTime}"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Instal.la Fevermap",
+      "content": "Fevermap es pot instal.lar com una aplicació web progressiva. Una vegada instal.lada disposaràs de funcionalitats extra, com una execució més ràpida i notificacions directes (disponibles properament).",
+      "approve_text": "Instal.lar",
+      "decline_text": "Ara no"
+    }
+  },
+  "dev_mode_banner_disclaimer": "Fevermap està en mode desenvolupament. Les dades introduïdes no són persistents."
+}
