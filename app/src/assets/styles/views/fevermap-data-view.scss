@@ -40,6 +40,25 @@
   }
 }
 
+.persistent-info-fields {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 0.9rem;
+  justify-content: space-between;
+  material-icon {
+    display: flex;
+    border-radius: 50%;
+    padding: 3px;
+    background: $bluegreen;
+    color: #FFF;
+  }
+  p {
+    margin: 0.5rem 0;
+    color: #a9a9a9;
+  }
+}
+
 .statistics-fields {
   display: flex;
   flex-direction: row;

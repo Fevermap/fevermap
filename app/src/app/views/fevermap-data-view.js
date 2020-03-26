@@ -140,6 +140,10 @@ class FevermapDataView extends LitElement {
                                 <p class="statistics-field--subtitle">${Translator.get('history.measurements')}</p>
                             </div>
                         </div>
+                        <div class="persistent-info-fields">
+                            <p>You are a 23 year-old male, with no corona diagnosis.</p>
+                            <material-icon icon="edit"></material-icon>
+                        </div>
                         <div class="previous-submissions-list">
                             ${this.previousSubmissions &&
                                 this.previousSubmissions.map((sub, i) => {

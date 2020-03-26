@@ -27,7 +27,21 @@ class FeverChart extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
-        this.initChart();
+        // ChartJS has a bug (?) that causes other animations (navigation slide in this case)
+        // to instantly finish. here we wait for the transition to start, and check if the view is
+        // transitioning or if the page was defaulted to the entry view.
+        // If the View is transitioned to from another view, we wait for the animation to end before initializing the chart
+        // If the view is already static, just init the chart
+        setTimeout(() => {
+            const transitionWrapper = document.querySelector('fevermap-data-view > .view-wrapper');
+            if (transitionWrapper.className.split(' ').some(c => /view-wrapper-.*/.test(c))) {
+                transitionWrapper.addEventListener('animationend', () => {
+                    this.initChart();
+                });
+            } else {
+                this.initChart();
+            }
+        }, 200);
     }
 
     initChart() {
@@ -43,7 +57,7 @@ class FeverChart extends LitElement {
     updated(_changedProperties) {
         if (_changedProperties.has('data')) {
             if (!this.chart) {
-                this.initChart();
+                // this.initChart();
             } else {
                 this.chart.data = this.parseData();
                 this.chart.update();
