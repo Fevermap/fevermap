@@ -4,6 +4,7 @@ import Translator from '../util/translator';
 import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import GeolocatorService from '../services/geolocator-service';
 import FeverDataUtil from '../util/fever-data-util';
+import 'src/app/components/fever-chart';
 
 class FevermapDataView extends LitElement {
     static get properties() {
@@ -61,7 +62,6 @@ class FevermapDataView extends LitElement {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
         if (previousSubmissions && previousSubmissions.length > 0) {
-            console.log('Updated previous submissiosn');
             this.previousSubmissions = previousSubmissions.sort(
                 (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
             );
@@ -122,7 +122,10 @@ class FevermapDataView extends LitElement {
                     </div>
                     <div class="entry-info-view-wrapper">
                         <div class="progression-chart">
-                            <p>It is working</p>
+                            <fever-chart
+                                .data="${this.previousSubmissions}"
+                                chartId="fever-history-chart"
+                            ></fever-chart>
                         </div>
                         <div class="statistics-fields">
                             <div class="statistics-field statistics-field--streak-statistics">
