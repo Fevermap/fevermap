@@ -34,7 +34,7 @@ user (sudo/root needed only for the time to install the tools):
 
 ```
 sudo dnf install -y podman buildah
-buildah bud -t fevermap/api .
+buildah bud -t fevermap/api Dockerfile.openshift
 mkdir database
 podman pod create -n fevermap -p 9000:9000
 podman run --pod fevermap -d \
@@ -54,7 +54,8 @@ podman run --pod fevermap -d \
 
 At the time (2020-03-22) the Debian based api container won't get built on
 RHEL/CentOS likely due kernel vs. userland mismatch. The build will fail with
-addgroup lock problem. I verified this works on Fedora 31 and 32 beta.
+addgroup lock problem. I verified this works on Fedora 31 and 32 beta. The
+Dockerfile.openshift is fixed to work both older and newer kernels.
 
 For the rest of the guides, you can pretty much just replace docker command
 with podman.

@@ -18,7 +18,6 @@ RUN /usr/lib/docker-helpers/apt-setup && \
         uwsgi-plugin-python3 && \
     /usr/lib/docker-helpers/apt-cleanup
 
-ENV USER fevermap
 ENV APPDIR /app
 
 ADD ./ "${APPDIR}"
@@ -27,5 +26,4 @@ RUN chgrp -R 0 "${APPDIR}" && \
 
 # Environment to start with
 WORKDIR $APPDIR
-USER $USER
 ENTRYPOINT ["/app/entrypoint.sh"]
