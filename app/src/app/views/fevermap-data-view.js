@@ -122,7 +122,7 @@ class FevermapDataView extends LitElement {
                     </div>
                     <div class="entry-info-view-wrapper">
                         <div class="progression-chart">
-                            <p>Progression chart will come here</p>
+                            <p>It is working</p>
                         </div>
                         <div class="statistics-fields">
                             <div class="statistics-field statistics-field--streak-statistics">
