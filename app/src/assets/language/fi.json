@@ -4,6 +4,9 @@
   "fevermap_title": "Fevermap",
   "back": "Takaisin",
   "today": "Tänään",
+  "user_description": "Olet %{age} -vuotias %{gender}, jolla %{diagnosis}",
+  "a_covid_diagnosis": "on COVID-19 diagnoosi",
+  "no_covid_diagnosis": "ei ole COVID-19 diagnoosia",
 
   "landing": {
     "about": "Tietoa",

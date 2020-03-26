@@ -259,12 +259,25 @@ class FevermapDataView extends LitElement {
         `;
     }
 
+    getGenderTranslated() {
+        return this.setGender === 'M'
+            ? Translator.get('entry.questions.male').toLowerCase()
+            : Translator.get('entry.questions.female').toLowerCase();
+    }
+
+    getCovidStatusTranslated() {
+        return this.setCovidDiagnosis ? Translator.get('a_covid_diagnosis') : Translator.get('no_covid_diagnosis');
+    }
+
     createPersistentDataFields() {
         return html`
             <div class="persistent-info-fields">
                 <p>
-                    You are a ${this.getAge()} year-old ${this.setGender === 'M' ? 'Male' : 'Female'}, with
-                    ${this.setCovidDiagnosis ? ' a COVID-19 diagnosis' : ' no COVID-19 diagnosis'}.
+                ${Translator.get('user_description', {
+                    age: this.getAge(),
+                    gender: this.getGenderTranslated(),
+                    diagnosis: this.getCovidStatusTranslated(),
+                })}.
                 </p>
                 <material-icon icon="edit" @click="${() =>
                     (this.showEditFields = !this.showEditFields)}"></material-icon>

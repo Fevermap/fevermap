@@ -4,6 +4,9 @@
     "fevermap_title": "Fevermap",
     "back": "Тому",
     "today": "Today",
+    "user_description": "You are a %{age} -year-old %{gender}, with %{diagnosis}",
+    "a_covid_diagnosis": "a COVID-19 diagnosis",
+    "no_covid_diagnosis": "no COVID-19 diagnosis",
 
     "landing": {
         "about": "Про Fevermap",
