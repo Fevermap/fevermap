@@ -22,7 +22,8 @@ class SelectField extends LitElement {
     }
 
     firstUpdated(_changedProperties) {
-        this.elem = new MDCSelect(this.querySelector('.mdc-select'));
+        const selectElem = this.querySelector('.mdc-select');
+        this.elem = new MDCSelect(selectElem);
 
         this.elem.listen('MDCSelect:change', () => {
             this.dispatchEvent(
