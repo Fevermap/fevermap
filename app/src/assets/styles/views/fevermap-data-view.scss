@@ -179,6 +179,10 @@
     pointer-events: none;
     cursor: default;
     margin-bottom: 0;
+
+    div {
+      display: none;
+    }
   }
   &--age-input {
 
