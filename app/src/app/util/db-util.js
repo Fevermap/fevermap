@@ -1,5 +1,5 @@
 const dbName = 'FeverMapDB';
-const versionNum = 2;
+const versionNum = 3;
 
 export const FEVER_ENTRIES = 'feverEntries';
 export const QUEUED_ENTRIES = 'queuedEntries';
@@ -31,7 +31,7 @@ export default class DBUtil {
     constructor(resolve, reject) {
         this.db = null;
 
-        let request = indexedDB.open(dbName);
+        let request = indexedDB.open(dbName, versionNum);
         request.onerror = () => {
             reject(request.error);
         };
@@ -47,6 +47,14 @@ export default class DBUtil {
 
     _handleUpgradeNeed(e, resolve) {
         this.db = e.target.result;
+        if (versionNum === 3) {
+            if (this.db.objectStoreNames.contains(FEVER_ENTRIES)) {
+                this.db.deleteObjectStore(FEVER_ENTRIES);
+            }
+            if (this.db.objectStoreNames.contains(QUEUED_ENTRIES)) {
+                this.db.deleteObjectStore(QUEUED_ENTRIES);
+            }
+        }
         objectStores.map(os => {
             if (!this.db.objectStoreNames.contains(os.name)) {
                 this.db.createObjectStore(os.name, os.options);

@@ -40,8 +40,19 @@ export default class FeverDataUtil {
      */
     static getFeverWithUnit(reverse, value, geoCodingInfo) {
         let feverValue = value;
-        return !!reverse ^ FeverDataUtil.useFahrenheit()
+        return !!reverse ^ FeverDataUtil.useFahrenheit(geoCodingInfo)
             ? FeverDataUtil.celsiusToFahrenheit(feverValue) + ' °F'
             : Number(feverValue).toFixed(1) + ' °C';
+    }
+
+    static getFeverWithUnitWithoutSuffix(reverse, value, geoCodingInfo) {
+        let feverValue = value;
+        return !!reverse ^ FeverDataUtil.useFahrenheit(geoCodingInfo)
+            ? FeverDataUtil.celsiusToFahrenheit(feverValue)
+            : Number(feverValue).toFixed(1);
+    }
+
+    static getFeverUnitSuffix(reverse, geoCodingInfo) {
+        return !!reverse ^ FeverDataUtil.useFahrenheit(geoCodingInfo) ? '°F' : '°C';
     }
 }
