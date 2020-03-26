@@ -15,6 +15,6 @@ oc get svc -o yaml --export fevermap-db > svc-fevermap-db.yaml
 oc get dc -o yaml --export fevermap > dc-fevermap.yaml
 oc get dc -o yaml --export fevermap-api > dc-fevermap-api.yaml
 oc get dc -o yaml --export fevermap-db > dc-fevermap-db.yaml
-oc get route -o yaml --export fevermap-api-short > fevermap-api-short.yaml
-oc get route -o yaml --export fevermap-short > fevermap-short.yaml
+oc get route -o yaml --export fevermap-api > route-fevermap-api.yaml
+oc get route -o yaml --export fevermap > route-fevermap.yaml
 
