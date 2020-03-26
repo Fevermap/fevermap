@@ -16,6 +16,10 @@ body, html {
   font-family: 'Nunito', sans-serif !important;
 }
 
+input {
+  font-family: 'Nunito', sans-serif !important;
+}
+
 html {
   overflow-y: hidden;
 }
@@ -119,5 +123,11 @@ fevermap-landing, fevermap-stats, fevermap-data-entry {
 
   .container {
     margin-bottom: 1rem;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .dev-mode-banner {
+    max-width: 60%;
   }
 }

@@ -49,7 +49,6 @@ class FevermapDataEntry extends LitElement {
         let birthYear = localStorage.getItem('BIRTH_YEAR');
         let covidDiagnosed = localStorage.getItem('COVID_DIAGNOSIS');
 
-        this.firstTimeSubmitting = latestEntry == null;
         this.errorMessage = null;
         this.hasFever = null;
         this.feverAmount = 35;
@@ -60,6 +59,8 @@ class FevermapDataEntry extends LitElement {
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? JSON.parse(lastLocation) : null;
         this.covidDiagnosed = covidDiagnosed === 'true';
+
+        this.firstTimeSubmitting = this.gender == null || this.birthYear == null;
 
         this.createCountrySelectOptions();
         this.queuedEntries = [];
@@ -142,8 +143,23 @@ class FevermapDataEntry extends LitElement {
         if (!tempMeter) {
             return;
         }
+        let celcius = this.querySelector('.celcius');
+        let fahrenheit = this.querySelector('.fahrenheit');
+        // This is extremely hacky but it works rn so
         tempMeter.addEventListener('input', e => {
             this.feverAmount = e.target.value;
+            celcius.value = this.feverAmount;
+            fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
+        });
+        celcius.addEventListener('keyup', e => {
+            this.feverAmount = e.target.value;
+            fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(e.target.value);
+            tempMeter.value = this.feverAmount;
+        });
+        fahrenheit.addEventListener('keyup', e => {
+            this.feverAmount = FeverDataUtil.fahrenheitToCelsius(e.target.value);
+            celcius.value = this.feverAmount;
+            tempMeter.value = this.feverAmount;
         });
         // Programmatically set height of the temp meter
         setTimeout(() => {
@@ -524,32 +540,52 @@ class FevermapDataEntry extends LitElement {
                         </div>
                     </div>
                     <div class="fever-amount-display">
-                        <p class="celcius mdc-elevation--z3">
-                            ${FeverDataUtil.getFeverWithUnit(false, this.feverAmount, this.geoCodingInfo)}
-                        </p>
-                        <p class="fahrenheit mdc-elevation--z3">
-                            ${FeverDataUtil.getFeverWithUnit(true, this.feverAmount, this.geoCodingInfo)}
+                        <div class="fever-amount-field  mdc-elevation--z3">
+                            <input
+                                class="celcius"
+                                type="number"
+                                step="0.1"
+                                value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
+                                    false,
+                                    this.feverAmount,
+                                    this.geoCodingInfo
+                                )}"
+                            />
+                            <p>${FeverDataUtil.getFeverUnitSuffix(false, this.geoCodingInfo)}</p>
+                        </div>
+                        <div class="fever-amount-field  mdc-elevation--z3">
+                            <input
+                                type="number"
+                                step="0.1"
+                                class="fahrenheit"
+                                value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
+                                    true,
+                                    this.feverAmount,
+                                    this.geoCodingInfo
+                                )}"
+                            />
+                            <p>${FeverDataUtil.getFeverUnitSuffix(true, this.geoCodingInfo)}</p>
+                        </div>
+                    </div>
+                    <div
+                        class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
+                            ? ' fever-not-measured-field--checked'
+                            : ''}"
+                    >
+                        <p id="dont-know-temperature" @click="${() => this.handleFeverInfoSubmit(true)}">
+                            ${Translator.get('entry.questions.not_measured')}
                         </p>
                     </div>
                 </div>
-                <div
-                    class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
-                        ? ' fever-not-measured-field--checked'
-                        : ''}"
-                >
-                    <p id="dont-know-temperature" @click="${() => this.handleFeverInfoSubmit(true)}">
-                        ${Translator.get('entry.questions.not_measured')}
-                    </p>
+
+                <div class="proceed-button">
+                    <button class="mdc-button mdc-button--raised" @click="${() => this.handleFeverInfoSubmit()}">
+                        <div class="mdc-button__ripple"></div>
+
+                        <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+                        <span class="mdc-button__label">${Translator.get('entry.questions.set_temperature')}</span>
+                    </button>
                 </div>
-            </div>
-
-            <div class="proceed-button">
-                <button class="mdc-button mdc-button--raised" @click="${() => this.handleFeverInfoSubmit()}">
-                    <div class="mdc-button__ripple"></div>
-
-                    <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
-                    <span class="mdc-button__label">${Translator.get('entry.questions.set_temperature')}</span>
-                </button>
             </div>
         `;
     }

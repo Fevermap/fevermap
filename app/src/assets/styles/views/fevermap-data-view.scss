@@ -2,7 +2,6 @@
 
 .fevermap-data-view-content {
   min-height: 75vh;
-  overflow-x: hidden;
   padding: 3rem 0 2rem;
 
   max-width: 60%;
@@ -47,6 +46,7 @@
   font-size: 0.9rem;
   justify-content: space-between;
   material-icon {
+    cursor:pointer;
     display: flex;
     border-radius: 50%;
     padding: 3px;
@@ -176,6 +176,8 @@
   &--hidden {
     opacity: 0;
     height: 0;
+    pointer-events: none;
+    cursor: default;
     margin-bottom: 0;
   }
   &--age-input {

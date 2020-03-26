@@ -74,10 +74,6 @@
   width: 100%;
 }
 
-.fever-amount-display {
-  margin: 0 0.5rem 1rem;
-}
-
 .gender-input-holder {
   display: flex;
   flex-direction: row;
@@ -307,10 +303,25 @@ p.mdc-theme--error {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  p {
+  margin-bottom: 2rem;
+  .fever-amount-field {
+    width: 4.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     padding: 0.5rem;
     font-size: 1.4rem;
     border-radius: 5px;
+    input {
+      width: 100%;
+      font-size: 0.9rem;
+      border: none;
+    }
+
+    p {
+      margin: 0
+    }
   }
 }
 
@@ -360,7 +371,7 @@ label {
 }
 
 .fever-meter-field {
-  height: 65%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -482,6 +493,20 @@ input[type="range"]::-webkit-slider-runnable-track {
   .symptom-holder {
     width: 100%;
   }
+
+  .fever-meter-field {
+    height: 100%;
+    .fever-meters {
+      .fever-slider {
+        height: 70%;
+      }
+      .fever-amount-display {
+        p {
+          margin: 0;
+        }
+      }
+    }
+  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -490,14 +515,25 @@ input[type="range"]::-webkit-slider-runnable-track {
   }
 
   .fevermap-data-entry-content {
-    min-height: 85vh;
-    padding: 5vh 0;
+    min-height: 80vh;
+    padding: 0;
   }
 
   .fevermap-entry-carousel {
     .fevermap-entry-window {
       p {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .fever-meter-field {
+    .fever-meters {
+      .fever-slider {
+        height: 60%;
+      }
+      .fever-amount-display {
+        margin: 1rem 0;
       }
     }
   }

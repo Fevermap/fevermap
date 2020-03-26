@@ -3,7 +3,6 @@ import Chart from 'chart.js';
 import dayjs from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import Translator from '../util/translator';
-import { parse } from '@webcomponents/shadycss/src/css-parse';
 
 class FeverChart extends LitElement {
     static get properties() {
@@ -14,6 +13,8 @@ class FeverChart extends LitElement {
             howManyDaysToShow: { type: Number },
             dataToShow: { type: Object },
             colorGradient: { type: Object },
+            initialized: { type: Boolean },
+            chartInitializerInterval: { type: Object },
         };
     }
 
@@ -25,24 +26,12 @@ class FeverChart extends LitElement {
         this.howManyDaysToShow = 5;
         this.dataToShow = null;
         this.colorGradient = '';
+        this.initialized = false;
     }
 
     firstUpdated(_changedProperties) {
-        // ChartJS has a bug (?) that causes other animations (navigation slide in this case)
-        // to instantly finish. here we wait for the transition to start, and check if the view is
-        // transitioning or if the page was defaulted to the entry view.
-        // If the View is transitioned to from another view, we wait for the animation to end before initializing the chart
-        // If the view is already static, just init the chart
-        setTimeout(() => {
-            const transitionWrapper = document.querySelector('fevermap-data-view > .view-wrapper');
-            if (transitionWrapper.className.split(' ').some(c => /view-wrapper-.*/.test(c))) {
-                transitionWrapper.addEventListener('animationend', () => {
-                    this.initChart();
-                });
-            } else {
-                this.initChart();
-            }
-        }, 200);
+        // Hacky solution to make sure the chart actually gets initialized
+        this.chartInitializerInterval = setInterval(() => this.initChart(), 500);
     }
 
     initChart() {
@@ -53,14 +42,16 @@ class FeverChart extends LitElement {
             data: this.parseData(),
             options: this.getOptions(),
         });
+        if (this.chart != null) {
+            clearInterval(this.chartInitializerInterval);
+        }
     }
 
     updated(_changedProperties) {
         if (_changedProperties.has('data')) {
-            if (!this.chart) {
-                // this.initChart();
-            } else {
+            if (this.chart && this.data) {
                 this.chart.data = this.parseData();
+                console.log(this.chart);
                 this.chart.update();
             }
         }
@@ -85,7 +76,10 @@ class FeverChart extends LitElement {
         let today = dayjs(new Date());
         for (let j = this.howManyDaysToShow - 1; j >= 0; j--) {
             let date = today.subtract(j, 'day').dayOfYear();
-            let entryOnDate = parsedData.find(entry => dayjs(entry.timestamp).dayOfYear() === date);
+            let entryOnDate = parsedData
+                .slice()
+                .reverse()
+                .find(entry => dayjs(entry.timestamp).dayOfYear() === date);
             if (entryOnDate) {
                 dataValues.push(entryOnDate.fever_temp);
             } else {
@@ -128,6 +122,7 @@ class FeverChart extends LitElement {
         let minVal = Math.floor(Math.min(...this.dataToShow) - 1);
         minVal = minVal > 35 ? minVal : 35;
         let maxVal = Math.ceil(Math.max(...this.dataToShow) + 1);
+        maxVal = isNaN(maxVal) ? 43 : maxVal;
         return {
             legend: {
                 display: false,

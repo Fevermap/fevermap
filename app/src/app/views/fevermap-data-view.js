@@ -41,6 +41,7 @@ class FevermapDataView extends LitElement {
         this.setGender = gender ? gender : null;
         this.setBirthYear = birthYear ? birthYear : '';
         this.setCovidDiagnosis = covidDiagnosis === 'true';
+        this.previousSubmissions = null;
         this.showEditFields = false;
 
         this.getPreviousSubmissionsFromIndexedDb();
@@ -53,6 +54,11 @@ class FevermapDataView extends LitElement {
 
             let submissionCount = localStorage.getItem('SUBMISSION_COUNT');
             let submissionStreak = localStorage.getItem('SUBMISSION_STREAK');
+
+            this.setGender = localStorage.getItem('GENDER');
+            this.setBirthYear = localStorage.getItem('BIRTH_YEAR');
+            this.setCovidDiagnosis = localStorage.getItem('COVID_DIAGNOSIS');
+
             this.submissionCount = submissionCount ? submissionCount : 0;
             this.submissionStreak = submissionStreak ? submissionStreak : 0;
         });
@@ -73,10 +79,14 @@ class FevermapDataView extends LitElement {
     async getPreviousSubmissionsFromIndexedDb() {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
+        console.log('Previous submissions', previousSubmissions);
         if (previousSubmissions && previousSubmissions.length > 0) {
+            console.log('Updating');
             this.previousSubmissions = previousSubmissions.sort(
                 (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
             );
+        } else {
+            this.previousSubmissions = [];
         }
     }
 
@@ -270,6 +280,9 @@ class FevermapDataView extends LitElement {
     }
 
     createPersistentDataFields() {
+        if (!this.setBirthYear && !this.setGender) {
+            return html``;
+        }
         return html`
             <div class="persistent-info-fields">
                 <p>
