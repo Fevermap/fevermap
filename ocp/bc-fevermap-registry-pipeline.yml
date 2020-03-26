@@ -1,0 +1,40 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    pipeline.alpha.openshift.io/uses: '[{"name": "fevermap", "namespace": "fevermap-staging",
+      "kind": "DeploymentConfig"}]'
+  creationTimestamp: null
+  labels:
+    app: fevermap
+  name: fevermap-registry-pipeline
+spec:
+  failedBuildsHistoryLimit: 5
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: "import groovy.json.JsonOutput\n\npodTemplate(\n  label: \"scopeo\",\n
+        \ cloud: \"openshift\",\n  inheritFrom: \"maven\",\n  containers: [\n    containerTemplate(\n
+        \     name: \"jnlp\",\n      image: \"quay.io/redhat-emea-ssa-team/jenkins-slave-skopeo:master\",\n
+        \     resourceRequestMemory: \"512Mi\",\n      resourceLimitMemory: \"1Gi\"\n
+        \   )\n  ]\n) {\n  node('scopeo') {\n    stage('Push to quay.io'){\n      script
+        {\n        openshift.withCluster() {\n          withCredentials([usernamePassword(credentialsId:
+        \"fevermap-staging-quay-push-secret\", usernameVariable: \"QUAY_USER\", passwordVariable:
+        \"QUAY_PWD\")]) {\n            def srcCatalogRef = openshift.selector(\"istag\",
+        \"fevermap:latest\").object().image.dockerImageReference\n            def
+        srcToken = readFile \"/run/secrets/kubernetes.io/serviceaccount/token\"\n
+        \           sh \"skopeo copy docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap:latest
+        --src-creds openshift:${srcToken} --dest-creds \\\"$QUAY_USER:$QUAY_PWD\\\"
+        --src-tls-verify=false --dest-tls-verify=false\"\n          }\n                      \n
+        \       }\n      }\n    }\n  }\n}"
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - imageChange:
+      from:
+        kind: ImageStreamTag
+        name: fevermap:latest
+        namespace: fevermap-staging
+    type: ImageChange
