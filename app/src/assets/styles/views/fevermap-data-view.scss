@@ -54,6 +54,7 @@
     color: #FFF;
   }
   p {
+    flex-basis: 80%;
     margin: 0.5rem 0;
     color: #a9a9a9;
   }
@@ -160,6 +161,39 @@
         font-size: 0.85rem;
         color: #a9a9a9;
         margin: 0.5rem 4px 0 0;
+      }
+    }
+  }
+}
+
+.persistent-info-editing-fields {
+
+  opacity: 1;
+  height: auto;
+  transition: 0.2s ease-in;
+  margin-bottom: 2rem;
+
+  &--hidden {
+    opacity: 0;
+    height: 0;
+    margin-bottom: 0;
+  }
+  &--age-input {
+
+  }
+
+  &--gender-input {
+
+  }
+
+  &--submit-button {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    material-button {
+      .mdc-button {
+        background: $bluegreen;
       }
     }
   }

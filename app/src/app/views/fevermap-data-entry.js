@@ -1,7 +1,5 @@
 import { LitElement, html } from 'lit-element';
 import { MDCCheckbox } from '@material/checkbox/component';
-import maleIcon from 'src/assets/images/male.svg';
-import femaleIcon from 'src/assets/images/female.svg';
 import GeolocatorService from '../services/geolocator-service';
 import 'src/app/components/input-field';
 import 'src/app/components/select-field';
@@ -13,6 +11,7 @@ import Translator from '../util/translator';
 import FeverDataUtil from '../util/fever-data-util';
 import dayjs from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
+import 'src/app/components/gender-input';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -46,16 +45,21 @@ class FevermapDataEntry extends LitElement {
         super();
         let latestEntry = JSON.parse(localStorage.getItem('LATEST_ENTRY'));
         let lastLocation = localStorage.getItem('LAST_LOCATION');
+        let gender = localStorage.getItem('GENDER');
+        let birthYear = localStorage.getItem('BIRTH_YEAR');
+        let covidDiagnosed = localStorage.getItem('COVID_DIAGNOSIS');
+
         this.firstTimeSubmitting = latestEntry == null;
         this.errorMessage = null;
         this.hasFever = null;
         this.feverAmount = 35;
         this.feverAmountNotKnown = false;
-        this.birthYear = latestEntry ? latestEntry.birth_year : null;
-        this.gender = latestEntry ? latestEntry.gender : null;
+        this.birthYear = birthYear ? birthYear : null;
+        this.gender = gender ? gender : null;
         this.location = latestEntry ? latestEntry.location : null;
         this.latestEntry = latestEntry ? latestEntry : null;
         this.geoCodingInfo = latestEntry ? JSON.parse(lastLocation) : null;
+        this.covidDiagnosed = covidDiagnosed === 'true';
 
         this.createCountrySelectOptions();
         this.queuedEntries = [];
@@ -249,6 +253,9 @@ class FevermapDataEntry extends LitElement {
 
     async handlePostSubmissionActions(feverData, submissionTime, entryGotQueued, submissionResponse) {
         localStorage.setItem('LATEST_ENTRY', JSON.stringify(feverData));
+        localStorage.setItem('GENDER', feverData.gender);
+        localStorage.setItem('BIRTH_YEAR', feverData.birth_year);
+        localStorage.setItem('COVID_DIAGNOSIS', feverData.diagnosed_covid19);
         localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
 
         this.lastSubmissionIsTooCloseToNow = true;
@@ -577,7 +584,12 @@ class FevermapDataEntry extends LitElement {
 
             <div class="mdc-form-field">
                 <div class="mdc-checkbox">
-                    <input type="checkbox" class="mdc-checkbox__native-control" id="covid-diagnosed" />
+                    <input
+                        type="checkbox"
+                        class="mdc-checkbox__native-control"
+                        id="covid-diagnosed"
+                        ?checked="${this.covidDiagnosed}"
+                    />
                     <div class="mdc-checkbox__background">
                         <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
                             <path
@@ -662,7 +674,7 @@ class FevermapDataEntry extends LitElement {
                     placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
                     fieldId="year-of-birth-input"
                     id="birth-year"
-                    value="${this.latestEntry ? this.latestEntry.birth_year : ''}"
+                    value="${this.birthYear ? this.birthYear : ''}"
                     type="number"
                 ></input-field>
             </div>
@@ -673,26 +685,12 @@ class FevermapDataEntry extends LitElement {
         return html`
             <div class="entry-field">
                 <p>${Translator.get('entry.questions.gender_in_passport')}</p>
-                <div
-                    class="gender-input-holder mdc-elevation--z3${this.gender == null
-                        ? ' gender-input-holder--none-selected'
-                        : ''}"
-                >
-                    <div
-                        @click="${() => (this.gender = 'M')}"
-                        class="gender-input gender-input--male${this.gender === 'M' ? ' gender-input--selected' : ''}"
-                    >
-                        <img src="${maleIcon}" />
-                        <p>${Translator.get('entry.questions.male')}</p>
-                    </div>
-                    <div
-                        @click="${() => (this.gender = 'F')}"
-                        class="gender-input gender-input--female${this.gender === 'F' ? ' gender-input--selected' : ''}"
-                    >
-                        <img src="${femaleIcon}" />
-                        <p>${Translator.get('entry.questions.female')}</p>
-                    </div>
-                </div>
+                <gender-input
+                    gender="${this.gender}"
+                    @gender-changed="${e => {
+                        this.gender = e.detail.gender;
+                    }})}"
+                ></gender-input>
             </div>
         `;
     }

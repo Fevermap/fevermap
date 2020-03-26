@@ -3,6 +3,7 @@ import Chart from 'chart.js';
 import dayjs from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import Translator from '../util/translator';
+import { parse } from '@webcomponents/shadycss/src/css-parse';
 
 class FeverChart extends LitElement {
     static get properties() {
@@ -95,7 +96,7 @@ class FeverChart extends LitElement {
         // Fill undefined values
         let lastPresentValue = null;
         for (let d = this.howManyDaysToShow - 1; d >= 0; d--) {
-            if (typeof dataValues[d] === 'undefined') {
+            if (typeof dataValues[d] === 'undefined' || dataValues[d] == null) {
                 if (d === this.howManyDaysToShow - 1) {
                     dataValues[d] = dataValues
                         .slice()
@@ -167,8 +168,8 @@ class FeverChart extends LitElement {
                         ticks: {
                             min: minVal,
                             max: maxVal,
-                            maxTicksLimit: 10,
-                            stepSize: 5,
+                            maxTicksLimit: 4,
+                            stepSize: 3,
                             suggestedMin: minVal,
                             suggestedMax: maxVal,
                             fontFamily: 'Nunito',

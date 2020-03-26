@@ -14,6 +14,11 @@ class FevermapDataView extends LitElement {
             submissionStreak: { type: Number },
             previousSubmissions: { type: Array },
             geoCodingInfo: { type: Object },
+
+            setGender: { type: String },
+            setBirthYear: { type: String },
+            setCovidDiagnosis: { type: Boolean },
+            showEditFields: { type: Boolean },
         };
     }
 
@@ -30,13 +35,20 @@ class FevermapDataView extends LitElement {
             this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
         }
 
+        const gender = localStorage.getItem('GENDER');
+        const birthYear = localStorage.getItem('BIRTH_YEAR');
+        const covidDiagnosis = localStorage.getItem('COVID_DIAGNOSIS');
+        this.setGender = gender ? gender : null;
+        this.setBirthYear = birthYear ? birthYear : '';
+        this.setCovidDiagnosis = covidDiagnosis === 'true';
+        this.showEditFields = false;
+
         this.getPreviousSubmissionsFromIndexedDb();
     }
 
     firstUpdated(_changedProperties) {
         this.getGeoLocationInfo();
         document.addEventListener('update-submission-list', () => {
-            console.log('Update submission list');
             this.getPreviousSubmissionsFromIndexedDb();
 
             let submissionCount = localStorage.getItem('SUBMISSION_COUNT');
@@ -107,6 +119,38 @@ class FevermapDataView extends LitElement {
         return symptoms.filter(symp => symp.hasSymptom);
     }
 
+    handleGenderChange(newGender) {
+        this.setGender = newGender;
+        localStorage.setItem('GENDER', newGender);
+    }
+
+    getAge() {
+        let age = dayjs(new Date()).year() - this.setBirthYear;
+        return `${age - 1}-${age}`;
+    }
+
+    handleAgeChange(newAge) {
+        if (newAge < 1900 || newAge > 2020) {
+            return;
+        }
+        this.setBirthYear = newAge;
+        localStorage.setItem('BIRTH_YEAR', newAge);
+    }
+
+    handleCovidDiagnosisChange() {
+        this.setCovidDiagnosis = this.querySelector('#covid-diagnosed').checked;
+        localStorage.setItem('COVID_DIAGNOSIS', this.setCovidDiagnosis);
+    }
+
+    smoothScrollToTop() {
+        (function scrollToTop() {
+            if (document.body.scrollTop > 0) {
+                document.body.scrollTop -= 10;
+                setTimeout(scrollToTop, 5);
+            }
+        })();
+    }
+
     render() {
         return html`
             <div class="container view-wrapper fevermap-entry-view">
@@ -140,10 +184,7 @@ class FevermapDataView extends LitElement {
                                 <p class="statistics-field--subtitle">${Translator.get('history.measurements')}</p>
                             </div>
                         </div>
-                        <div class="persistent-info-fields">
-                            <p>You are a 23 year-old male, with no corona diagnosis.</p>
-                            <material-icon icon="edit"></material-icon>
-                        </div>
+                        ${this.createPersistentDataFields()}
                         <div class="previous-submissions-list">
                             ${this.previousSubmissions &&
                                 this.previousSubmissions.map((sub, i) => {
@@ -214,6 +255,78 @@ class FevermapDataView extends LitElement {
                         </div>
                     </div>
                 </div>
+            </div>
+        `;
+    }
+
+    createPersistentDataFields() {
+        return html`
+            <div class="persistent-info-fields">
+                <p>
+                    You are a ${this.getAge()} year-old ${this.setGender === 'M' ? 'Male' : 'Female'}, with
+                    ${this.setCovidDiagnosis ? ' a COVID-19 diagnosis' : ' no COVID-19 diagnosis'}.
+                </p>
+                <material-icon icon="edit" @click="${() =>
+                    (this.showEditFields = !this.showEditFields)}"></material-icon>
+            </div>
+            <div class="persistent-info-editing-fields ${
+                this.showEditFields ? '' : ' persistent-info-editing-fields--hidden'
+            }"">
+                <div class="persistent-info-editing-fields--age-input">
+                    <p>${Translator.get('entry.questions.birth_year')}</p>
+                    <input-field
+                        @input-blur="${e => this.handleAgeChange(e.detail.age)}"
+                        placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
+                        fieldId="year-of-birth-input"
+                        id="birth-year"
+                        value="${this.setBirthYear}"
+                        type="number"
+                    ></input-field>
+                </div>
+
+                <div class="persistent-info-editing-fields--gender-input">
+                    <p>${Translator.get('entry.questions.gender_in_passport')}</p>
+                    <gender-input
+                        gender="${this.setGender}"
+                        @gender-changed="${e => this.handleGenderChange(e.detail.gender)}"
+                    ></gender-input>
+                </div>
+                <p>${Translator.get('entry.questions.positive_covid_diagnosis')}</p>
+                <div
+                    class="persistent-info-editing-fields--covid-input"
+                    @click="${() => this.handleCovidDiagnosisChange()}"
+                >
+                    <div class="mdc-form-field">
+                        <div class="mdc-checkbox">
+                            <input
+                                type="checkbox"
+                                class="mdc-checkbox__native-control"
+                                id="covid-diagnosed"
+                                ?checked="${this.covidDiagnosed}"
+                            />
+                            <div class="mdc-checkbox__background">
+                                <svg class="mdc-checkbox__checkmark" viewBox="0 0 24 24">
+                                    <path
+                                        class="mdc-checkbox__checkmark-path"
+                                        fill="none"
+                                        d="M1.73,12.91 8.1,19.28 22.79,4.59"
+                                    />
+                                </svg>
+                                <div class="mdc-checkbox__mixedmark"></div>
+                            </div>
+                            <div class="mdc-checkbox__ripple"></div>
+                        </div>
+                        <label for="checkbox-1">${Translator.get('entry.questions.positive_covid_diagnosis')}</label>
+                    </div>
+                </div>
+                <div class="persistent-info-editing-fields--submit-button">
+                <material-button 
+                @click="${() => {
+                    this.showEditFields = false;
+                    this.smoothScrollToTop();
+                }}"
+                icon="save"
+                label="${Translator.get('entry.save')}"></material-button></div>
             </div>
         `;
     }

@@ -47,7 +47,9 @@ class InputField extends LitElement {
     }
 
     handleBlur(e) {
-        this.dispatchEvent(new CustomEvent('input-blur', e));
+        this.dispatchEvent(
+            new CustomEvent('input-blur', { detail: { age: this.elem.getDefaultFoundation().getValue() } })
+        );
     }
 
     render() {
