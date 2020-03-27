@@ -1,6 +1,7 @@
 import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 import Translator from '../util/translator';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 
 /*  Get API server address from environment variable stored in the webpack build
 /* during build time */
@@ -37,10 +38,13 @@ export default class DataEntryService {
         if (!resJson.success) {
             if (resJson.message.includes('Do not submit new temp')) {
                 let time = resJson.message.split('Do not submit new temp before ').pop();
-                let newMessage = Translator.get('system_messages.error.do_not_submit_new_temp_until', {
-                    dateTime: dayjs(time).format('YYYY-MM-DD : HH:mm'),
+                dayjs.extend(utc);
+                resJson.message = Translator.get('system_messages.error.do_not_submit_new_temp_until', {
+                    dateTime: dayjs
+                        .utc(time)
+                        .local()
+                        .format('YYYY-MM-DD : HH:mm'),
                 });
-                resJson.message = newMessage;
             }
         }
     }

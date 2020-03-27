@@ -51,7 +51,6 @@ class FeverChart extends LitElement {
         if (_changedProperties.has('data')) {
             if (this.chart && this.data) {
                 this.chart.data = this.parseData();
-                console.log(this.chart);
                 this.chart.update();
             }
         }

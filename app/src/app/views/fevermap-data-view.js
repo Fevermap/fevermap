@@ -1,5 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
 import Translator from '../util/translator';
 import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import GeolocatorService from '../services/geolocator-service';
@@ -29,6 +30,7 @@ class FevermapDataView extends LitElement {
         let submissionStreak = localStorage.getItem('SUBMISSION_STREAK');
         this.submissionCount = submissionCount ? submissionCount : 0;
         this.submissionStreak = submissionStreak ? submissionStreak : 0;
+        dayjs.extend(utc);
 
         let lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
         if (lastEntryTime && lastEntryTime !== 'undefined') {
@@ -79,9 +81,7 @@ class FevermapDataView extends LitElement {
     async getPreviousSubmissionsFromIndexedDb() {
         let db = await DBUtil.getInstance();
         const previousSubmissions = await db.getAll(FEVER_ENTRIES);
-        console.log('Previous submissions', previousSubmissions);
         if (previousSubmissions && previousSubmissions.length > 0) {
-            console.log('Updating');
             this.previousSubmissions = previousSubmissions.sort(
                 (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
             );
@@ -204,7 +204,10 @@ class FevermapDataView extends LitElement {
                                         <div class="previous-submission">
                                             <div class="previous-submission--data-row">
                                                 <p class="previous-submission--data-row__date">
-                                                    ${dayjs(sub.timestamp).format('ddd DD.MM')}
+                                                    ${dayjs
+                                                        .utc(sub.timestamp)
+                                                        .local()
+                                                        .format('ddd DD.MM')}
                                                 </p>
                                                 <p class="previous-submission--data-row__fever">
                                                     ${previousSubmission && sub.fever_temp
