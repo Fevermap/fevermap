@@ -38,7 +38,7 @@ spec:
   triggers:
     - gitlab:
         secretReference:
-          name: gitlab-pull
+          name: gitlab-webhook
       type: GitLab
     - type: ImageChange
       imageChange:

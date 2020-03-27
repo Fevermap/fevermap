@@ -8,7 +8,7 @@ oc get is -o yaml --export fevermap-build > is-fevermap-build.yaml
 oc get is -o yaml --export nginx-runtime > is-nginx-runtime.yaml
 oc get is -o yaml --export ubi8-s2i-web-app > is-ubi8-s2i-web-app.yaml
 oc get secret -o yaml --export fevermap-db > secret-fevermap-db.yaml
-oc get secret -o yaml --export gitlab-pull > secret-gitlab-pull.yaml
+oc get secret -o yaml --export gitlab-webhook > secret-gitlab-webhook.yaml
 oc get svc -o yaml --export fevermap > svc-fevermap.yaml
 oc get svc -o yaml --export fevermap-api > svc-fevermap-api.yaml
 oc get svc -o yaml --export fevermap-db > svc-fevermap-db.yaml

@@ -13,7 +13,7 @@ oc create -f is-ubi8-s2i-web-app.yaml
 # create secrets
 
 oc create -f secret-fevermap-db.yaml
-oc create -f secret-gitlab-pull.yaml
+oc create -f secret-gitlab-webhook.yaml
 oc create -f secret-registry-redhat-io-secret.yaml
 
 # create builds
