@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/part-of: fevermap
   name: fevermap
 spec:
-  replicas: 1
+  replicas: 2
   revisionHistoryLimit: 10
   selector:
     deploymentconfig: fevermap
@@ -23,12 +23,11 @@ spec:
     type: Rolling
   template:
     metadata:
-      creationTimestamp: null
       labels:
         deploymentconfig: fevermap
     spec:
       containers:
-      - image: fevermap@latest
+      - image: fevermap:latest
         imagePullPolicy: Always
         name: fevermap
         ports:
@@ -36,12 +35,25 @@ spec:
           protocol: TCP
         - containerPort: 8443
           protocol: TCP
+        resources:
+          limits:
+            memory: 1Gi
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/app-root/src/window-settings.js
+          name: window-settings
+          readOnly: true
+          subPath: window-settings.js
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: window-settings
+        name: window-settings
   test: false
   triggers:
   - type: ConfigChange
@@ -52,5 +64,4 @@ spec:
       from:
         kind: ImageStreamTag
         name: fevermap:latest
-        namespace: fevermap-3
     type: ImageChange

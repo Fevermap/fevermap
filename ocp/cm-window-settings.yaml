@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  window-settings.js: |+
+    window.URLS = {
+        API_URL: 'https://staging.fevermap.net',
+        APP_URL: 'https://staging.fevermap.net',
+    };
+
+kind: ConfigMap
+metadata:
+  name: window-settings
