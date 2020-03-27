@@ -1,0 +1,117 @@
+{
+  "lang_name": "Arabic",
+  "language": "اللغة",
+  "fevermap_title": "Fevermap",
+  "back": "رجوع",
+  "today": "اليوم",
+  "user_description": "عمرك %{age} سنة (سنوات) %{gender}، مع %{diagnosis}",
+  "a_covid_diagnosis": "مع تشخيص COVID-19",
+  "no_covid_diagnosis": "دون تشخيص COVID-19",
+
+  "landing": {
+    "about": "عنا",
+    "about_title": "ما هو Ferermap؟",
+    "about_content_explanation": "هو تطبيق ويب وجوال تم إنشاؤه لجمع بيانات بسيطة وفي الوقت الحقيقي لانتشار جائحة فيروس كورونا COVID-19.",
+    "about_current_methods": "لا تعطي الأساليب الحالية لتتبع انتشار فيروس كورونا صورة كاملة. تبقى الجماهير الكبيرة غير مختبرة للحفاظ على الوقت والموارد المتاحة للمحتاجين.",
+    "about_solution": "Fevermap هو الحل لهذه المشكلة. مع Fevermap ،يمكن للأشخاص العاديين في جميع أنحاء العالم الإبلاغ عن الحمى والأعراض الأخرى بشكل مجهول. هذا يعني أنه يمكننا تقدير الإنتشار الحقيقي لعدوى COVID-19 في الوقت الحقيقي وتزويد السلطات بالبيانات التي تساعدها على اتخاذ قرارات بشأن تدابير الحماية بالإستناد إلى بيانات صحيحة وفي الوقت المناسب.",
+    "about_data_collection": "البيانات التي تم جمعها بواسطة Fevermap مجهولة الهوية وسيتم استخدامها للمساعدة في زيادة الوعي بالوضع العالمي الحالي.",
+    "about_current_participant_count": "حتى اليوم، %{participantCount} مستخدم استخدموا Fevermap للإبلاغ عن أعراضهم. ",
+
+    "how_to_participate": "كيف أشارك؟",
+    "participation_info": "ذلك سهل. ما عليك سوى قياس درجة الحرارة وادخال النتيجة - بالإضافة إلى القليل من المعلومات الإحصائية، مثل سنة الميلاد ورمز المنطقة - في الخلاصة.",
+    "info_disclaimer": "نحن لا نطرح أسئلة قد تؤدي إلى التعرف عليك. نحن نقدر خصوصيتك وإخفاء هويتك.",
+
+    "how_will_my_data_be_used": "كيف سيتم استخدام بياناتي؟",
+    "data_use_explanation": "سيتم إخفاء هوية البيانات، ثم سيتم مشاركتها كبيانات مفتوحة من خلال واجهة API.."
+  },
+  "entry": {
+    "data_entry": "ادخال البيانات",
+    "first_entry_disclaimer": "يتم إرسال المدخلات إلى قاعدة البيانات بالإعتماد على جهازك. نحن نقدر أنك قدمت معلوماتك من نفس الجهاز في كل مرة. سيسمح لنا هذا بمراقبة حالة الحمى بشكل أفضل.",
+    "last_submission": "آخر تقديم",
+    "submission_period_disclaimer": "لمنع البيانات غير الضرورية، يتم تقييد عمليات الإرسال مرة واحدة كل 12 ساعة.",
+    "queued_entries": "لديك %{queuedEntries} مدخلات لم يتم مزامنتها بعد مع الخادم.",
+    "sync_now": "زامن الآن",
+    "new_entry": "إدخال جديد",
+    "first_time_disclaimer": "نظراً لأنك تستخدم Fevermap لأول مرة، فسنطرح عليك بعض الأسئلة أولاً.",
+    "these_questions_wont_be_repeated": "لن يتم تكرار هذه الأسئلة في التقارير المقبلة.",
+    "questions": {
+      "what_is_your_temperature": "ما هي درجة حرارتك؟",
+      "temperature": "درجة الحرارة",
+      "how_much": "كم؟",
+      "degrees_of_fever": "%{degrees} من الحمى",
+      "not_measured": "لا أعرف بالضبط، لا تقاس.",
+      "set_temperature": "حدد درجة الحرارة",
+      "other_symptoms": "أعراض أخرى؟",
+      "choose_all_that_apply": "اختر كل ما ينطبق",
+      "difficulty_to_breathe": "صعوبة في التنفس",
+      "cough": "سعال",
+      "sore_throat": "إلتهاب في الحلق",
+      "muscular_pain": "ألم عضلي",
+      "positive_covid_diagnosis": "لدي تشخيص إيجابي لـ COVID-19.",
+      "set_symptoms": "حدد الأعراض",
+      "birth_year": "سنة الميلاد",
+      "birth_year_placeholder": "سنة الميلاد (السنوات 1900-2020)",
+      "gender_in_passport": "الجنس كما هو مذكور في جواز سفرك أو في السجلات الحكومية الأخرى",
+      "male": "ذكر",
+      "female": "أنثى",
+      "location_information": "معلومات الموقع",
+      "whats_your_location": "ما هو موقعك؟",
+      "city": "المدينة",
+      "country": "البلد",
+      "postal_code": "الرمز البريدي",
+      "location_determination_subtitle": "يتم تحديد الموقع باستخدام API الموقع. تأكد من السماح باستشعار الموقع.",
+      "location_change_subtitle": "لتحديث معلومات الموقع، قم بتحديث القيمة في حقل البلد والرمز البريدي أو اضغط على الزر أدناه.",
+      "update_location": "تحديث الموقع",
+      "use_gps": "احصل على الموقع من الـ GPS",
+      "set_location_and_submit": "حدد الموقع وأرسل"
+    },
+    "previous_submissions": "التقارير السابقة",
+    "submit": "أرسل",
+    "save": "حفظ",
+
+    "last_submission_was_done": "تم تقديم آخر تقرير على %{date}",
+    "submission_count_text": "قمت بإدخال معلومات الحمى ",
+    "submission_count_times": "مرة (مرات)",
+    "currently_holding_a_streak_of": "الشريط الحالي للأيام المتتالية الخاص بك هو: ",
+    "streak_days": "يوم (أيام)"
+  },
+
+  "history": {
+    "title": "السجل",
+    "your_streak": "شريطك",
+    "days": "يوم (أيام)",
+    "total_entries": "إجمالي المدخلات",
+    "measurements": "قياس",
+    "add_entry": "إضافة إدخال"
+  },
+
+  "stats": {
+    "stats": "احصائيات"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "تم تحديث الموقع بنجاح",
+      "data_entry": "تم إرسال البيانات المدخلة بنجاح",
+      "offline_entry_queued": "يبدو أنك غير متصل بالإنترنت. تم وضع الإدخال في قائمة الإنتظار.",
+      "sync_finished": "تمت مزامنة المدخلات بنجاح."
+    },
+    "error": {
+      "age_not_in_range": "سنة الميلاد المحددة ليست في النطاق المسموح به (1900-2020).",
+      "fever_temp_value_invalid": "قيمة درجة الحرارة غير صحيحة.",
+      "location_data_invalid": "بيانات الموقع المعطاة غير صحيحة.",
+      "api_data_invalid": "البيانات المرسلة إلى الـ API كانت غير صحيحة.",
+      "gender_not_set": "لم يتم تحديد الجنس.",
+      "do_not_submit_new_temp_until": "لا ترسل درجة حرارة جديدة حتى %{dateTime}"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "قم بتثبيت Fevermap",
+      "content": "يمكن تثبيت Fevermap كتطبيق ويب متقدم. في حالة التثبيت، يمكننا تزويدك بميزات إضافية رائعة مثل وقت تشغيل أسرع والإشعارات الفورية (ستتوفر قريباً).",
+      "approve_text": "تثبيت",
+      "decline_text": "في وقت لاحق"
+    }
+  },
+  "dev_mode_banner_disclaimer": "Fevermap قيد التطوير. البيانات المدرجة لن تكون دائمة."
+}
