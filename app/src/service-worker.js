@@ -5,6 +5,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import * as navigationPreload from 'workbox-navigation-preload';
 import { clientsClaim, skipWaiting } from 'workbox-core';
+import * as googleAnalytics from 'workbox-google-analytics';
 
 const OFFLINE_CACHE_NAME = 'offline-cache';
 const OFFLINE_FALLBACK_HTML_URL = '/index.html';
@@ -13,6 +14,8 @@ self.__WB_DISABLE_DEV_LOGS = true;
 
 skipWaiting();
 clientsClaim();
+
+googleAnalytics.initialize();
 
 registerRoute(/\.js$/, new NetworkFirst());
 

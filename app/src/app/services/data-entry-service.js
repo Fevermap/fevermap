@@ -2,6 +2,7 @@ import DBUtil, { QUEUED_ENTRIES } from '../util/db-util';
 import Translator from '../util/translator';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import GoogleAnalyticsService from './google-analytics-service';
 
 /*  Get API server address from environment variable stored in the webpack build
 /* during build time */
@@ -45,6 +46,7 @@ export default class DataEntryService {
                         .local()
                         .format('YYYY-MM-DD : HH:mm'),
                 });
+                GoogleAnalyticsService.reportTooEarlySubmission();
             }
         }
     }

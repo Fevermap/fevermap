@@ -3,6 +3,7 @@ import Translator from '../util/translator';
 import logoImg from 'src/assets/images/logo.png';
 import Dialog from '../components/dialog';
 import DataEntryService from '../services/data-entry-service';
+import GoogleAnalyticsService from '../services/google-analytics-service';
 
 class FevermapLanding extends LitElement {
     static get properties() {
@@ -22,6 +23,7 @@ class FevermapLanding extends LitElement {
 
     firstUpdated(_changedProperties) {
         this.getCurrentStats();
+        GoogleAnalyticsService.reportNavigationAction('About View');
     }
 
     async getCurrentStats() {

@@ -2,7 +2,6 @@ import './app/fevermap-root';
 import './assets/styles/base.scss';
 import PWAService from './app/services/pwa-service';
 import { Workbox } from 'workbox-window';
-import SnackBar from './app/components/snackbar';
 
 if ('serviceWorker' in navigator) {
     const wb = new Workbox('service-worker.js');
@@ -27,3 +26,5 @@ if ('serviceWorker' in navigator) {
         PWAService.init(deferredPrompt);
     });
 }
+
+//Init google analytics

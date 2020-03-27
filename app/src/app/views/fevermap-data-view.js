@@ -6,6 +6,7 @@ import DBUtil, { FEVER_ENTRIES, QUEUED_ENTRIES } from '../util/db-util';
 import GeolocatorService from '../services/geolocator-service';
 import FeverDataUtil from '../util/fever-data-util';
 import 'src/app/components/fever-chart';
+import GoogleAnalyticsService from '../services/google-analytics-service';
 
 class FevermapDataView extends LitElement {
     static get properties() {
@@ -70,6 +71,7 @@ class FevermapDataView extends LitElement {
         if (this.firstTimeSubmitting) {
             this.showEntryDialog();
         }
+        GoogleAnalyticsService.reportNavigationAction('Your Data View');
     }
 
     async getGeoLocationInfo(forceUpdate) {
