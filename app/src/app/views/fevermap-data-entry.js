@@ -152,11 +152,13 @@ class FevermapDataEntry extends LitElement {
             fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
         });
         celcius.addEventListener('keyup', e => {
+            this.handleCommaInput(e);
             this.feverAmount = e.target.value;
             fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(e.target.value);
             tempMeter.value = this.feverAmount;
         });
         fahrenheit.addEventListener('keyup', e => {
+            this.handleCommaInput(e);
             this.feverAmount = FeverDataUtil.fahrenheitToCelsius(e.target.value);
             celcius.value = this.feverAmount;
             tempMeter.value = this.feverAmount;
@@ -185,6 +187,23 @@ class FevermapDataEntry extends LitElement {
         setTimeout(() => {
             tempMeter.style.width = tempMeter.parentNode.clientHeight + 'px';
         }, 0);
+    }
+
+    // Quite hacky but should work
+    handleCommaInput(e) {
+        if (e.key === ',') {
+            e.target.setAttribute('comma-was-input', true);
+            e.target.value += '.0';
+        } else {
+            if (e.target.getAttribute('comma-was-input')) {
+                e.target.removeAttribute('comma-was-input');
+                if (!isNaN(e.key)) {
+                    // is number
+                    let oldVal = e.target.value;
+                    e.target.value = `${oldVal.split('.')[0]}.${e.key}`;
+                }
+            }
+        }
     }
 
     async buildFeverData() {
