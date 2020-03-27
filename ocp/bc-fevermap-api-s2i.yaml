@@ -29,7 +29,7 @@ spec:
         name: registry.redhat.io/ubi8/python-36
       pullSecret:
         name: registry-redhat-io-secret
- source:
+  source:
     type: Git
     git:
       uri: 'https://gitlab.com/fevermap/fevermap.git'
