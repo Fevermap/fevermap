@@ -15,6 +15,7 @@ class FevermapDataView extends LitElement {
             submissionStreak: { type: Number },
             previousSubmissions: { type: Array },
             geoCodingInfo: { type: Object },
+            firstTimeSubmitting: { type: Boolean },
 
             setGender: { type: String },
             setBirthYear: { type: String },
@@ -46,6 +47,8 @@ class FevermapDataView extends LitElement {
         this.previousSubmissions = null;
         this.showEditFields = false;
 
+        this.firstTimeSubmitting = this.setGender == null || this.setBirthYear == null;
+
         this.getPreviousSubmissionsFromIndexedDb();
     }
 
@@ -64,6 +67,9 @@ class FevermapDataView extends LitElement {
             this.submissionCount = submissionCount ? submissionCount : 0;
             this.submissionStreak = submissionStreak ? submissionStreak : 0;
         });
+        if (this.firstTimeSubmitting) {
+            this.showEntryDialog();
+        }
     }
 
     async getGeoLocationInfo(forceUpdate) {
@@ -207,7 +213,7 @@ class FevermapDataView extends LitElement {
                                                     ${dayjs
                                                         .utc(sub.timestamp)
                                                         .local()
-                                                        .format('ddd DD.MM')}
+                                                        .format('ddd DD.MM HH:mm')}
                                                 </p>
                                                 <p class="previous-submission--data-row__fever">
                                                     ${previousSubmission && sub.fever_temp

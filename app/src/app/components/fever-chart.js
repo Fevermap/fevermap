@@ -75,12 +75,9 @@ class FeverChart extends LitElement {
         let today = dayjs(new Date());
         for (let j = this.howManyDaysToShow - 1; j >= 0; j--) {
             let date = today.subtract(j, 'day').dayOfYear();
-            let entryOnDate = parsedData
-                .slice()
-                .reverse()
-                .find(entry => dayjs(entry.timestamp).dayOfYear() === date);
-            if (entryOnDate) {
-                dataValues.push(entryOnDate.fever_temp);
+            let entriesOnDate = parsedData.filter(entry => dayjs(entry.timestamp).dayOfYear() === date);
+            if (entriesOnDate.length > 0) {
+                dataValues.push(Math.max(...entriesOnDate.map(entry => entry.fever_temp)));
             } else {
                 dataValues.push(dataValues[j - 1]);
             }
