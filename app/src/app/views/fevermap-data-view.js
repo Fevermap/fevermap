@@ -37,6 +37,7 @@ class FevermapDataView extends LitElement {
         if (lastEntryTime && lastEntryTime !== 'undefined') {
             this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
         }
+        console.log(window.URLS);
 
         const gender = localStorage.getItem('GENDER');
         const birthYear = localStorage.getItem('BIRTH_YEAR');
