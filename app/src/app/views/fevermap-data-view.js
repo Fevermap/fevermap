@@ -62,7 +62,7 @@ class FevermapDataView extends LitElement {
 
             this.setGender = localStorage.getItem('GENDER');
             this.setBirthYear = localStorage.getItem('BIRTH_YEAR');
-            this.setCovidDiagnosis = localStorage.getItem('COVID_DIAGNOSIS');
+            this.setCovidDiagnosis = localStorage.getItem('COVID_DIAGNOSIS') === 'true';
 
             this.submissionCount = submissionCount ? submissionCount : 0;
             this.submissionStreak = submissionStreak ? submissionStreak : 0;

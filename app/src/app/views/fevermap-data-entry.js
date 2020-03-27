@@ -161,6 +161,26 @@ class FevermapDataEntry extends LitElement {
             celcius.value = this.feverAmount;
             tempMeter.value = this.feverAmount;
         });
+
+        celcius.addEventListener('focus', e => {
+            e.target.value = '';
+        });
+
+        celcius.addEventListener('blur', e => {
+            if (e.target.value.length < 1) {
+                e.target.value = this.feverAmount;
+            }
+        });
+
+        fahrenheit.addEventListener('blur', e => {
+            if (e.target.value.length < 1) {
+                e.target.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
+            }
+        });
+
+        fahrenheit.addEventListener('focus', e => {
+            e.target.value = '';
+        });
         // Programmatically set height of the temp meter
         setTimeout(() => {
             tempMeter.style.width = tempMeter.parentNode.clientHeight + 'px';
