@@ -1,6 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
 import Translator from '../util/translator';
-import logoImg from 'src/assets/images/logo.png';
+import logoImg from 'src/assets/images/landing-logo.png';
 import Dialog from '../components/dialog';
 import DataEntryService from '../services/data-entry-service';
 import GoogleAnalyticsService from '../services/google-analytics-service';
