@@ -1,0 +1,117 @@
+{
+  "lang_name": "Polish",
+  "language": "Język",
+  "fevermap_title": "Fevermap",
+  "back": "Wróć",
+  "today": "Dzisiaj",
+  "user_description": "Twoje dane: %{gender}, %{age} lat, %{diagnosis}",
+  "a_covid_diagnosis": "zdiagnozowano COVID-19",
+  "no_covid_diagnosis": "nie zdiagnozowano COVID-19",
+
+  "landing": {
+    "about": "O aplikacji",
+    "about_title": "Czym jest Fevermap?",
+    "about_content_explanation": " jest aplikacją stworzoną do prostego zbierania, w czasie rzeczywistym, danych nt. powszechności pandemii Koronawirusa COVID-19.",
+    "about_current_methods": "Obecne metody śledzenia powszechności COVID-19 nie dają pełnego obrazu sytuacji. Rzesze ludzi pozostają bez testów na wirusa, aby oszczędzać czas i zasoby dla najbardziej potrzebujących.",
+    "about_solution": "Fevermap chce rozwiązać ten problem. Dzięki Fevermap, zwykli ludzie na całym świecie mogą anonimowo zgłaszać swoją gorączkę i inne objawy. Dzięki temu możemy oszacować pradziwą częstość występowania infekcji COVID-19 w czasie rzeczywistym, oraz pomagać organom władzy, dostarczając im informacje pomagające podejmować dobrze poinformowane, poprawne oraz szybkie decyzje nt. aktualnej sytuacji.",
+    "about_data_collection": "Dane zbierane przez Fevermap są anonimizowane i będą używane do podnoszenia świadomości nt. aktualnej sytuacji na całym globie.",
+    "about_current_participant_count": "Jak dotąd, %{participantCount} użytkowników zgłosiło swoje objawy za pomocą Fevermap.",
+
+    "how_to_participate": "Jak mogę się dołączyć?",
+    "participation_info": "To łatwizna! Po prostu zmierz swoją temperaturę ciała i przekaż swój odczyt – wraz z odrobiną danych statystycznych, takich jak data urodzin i przybliżona lokacja – do proramu.",
+    "info_disclaimer": "Nie zadajemy pytań, które stwarzałyby ryzyko, że zostaniesz rozpoznany(a). Twoja prywatność i anonimowość jest dla nas priorytetem.",
+
+    "how_will_my_data_be_used": "Jak będą użytkowane moje dane?",
+    "data_use_explanation": "Dane zostnaą zanonimizowane, a następnie dołączone do zbioru powszechnie dostępnych danych, które można odczytać poprzez API."
+  },
+  "entry": {
+    "data_entry": "Dodanie wpisu",
+    "first_entry_disclaimer": "Wpisy są wysyłane do bazy danych w oparciu o twoje urządzenie. Prosimy, abyś wysyłał informacje o swoim stanie, za każdym razem korzystając z tego samego urządzenia. Pozwoli nam to lepiej monitorować twój stan.",
+    "last_submission": "Najnowszy wpis",
+    "submission_period_disclaimer": "Aby uniknąć przechowywania nadmiarowych danych, wpisy można dodawać nie częściej, niż co 12 godzin.",
+    "queued_entries": "Masz %{queuedEntries} zakolejkowanych wpisow, które nie zostały jeszcze przesłane do serwisu.",
+    "sync_now": "Synchronizuj teraz",
+    "new_entry": "Nowy wpis",
+    "first_time_disclaimer": "Ponieważ używasz Fevermap poraz pierwszy, musimy zadać Ci kilka dodatkowych pytań.",
+    "these_questions_wont_be_repeated": "Te pytania nie będą już zadawane przy kolejnych wpisach.",
+    "questions": {
+      "what_is_your_temperature": "Jaka jest twoja temperatura ciała?",
+      "temperature": "Temperatura",
+      "how_much": "Jak bardzo?",
+      "degrees_of_fever": "%{degrees} gorączki",
+      "not_measured": "Nie wiem dokładnie, nie robiłem(am) pomiaru.",
+      "set_temperature": "Ustaw temperaturę",
+      "other_symptoms": "Inne objawy?",
+      "choose_all_that_apply": "Zaznacz wszystkie, które obserwujesz.",
+      "difficulty_to_breathe": "Trudności w oddychaniu",
+      "cough": "Kaszel",
+      "sore_throat": "Ból gardła",
+      "muscular_pain": "Bóle mięśniowe",
+      "positive_covid_diagnosis": "Uzyskałem(am) pozytywny wynik badania na COVID-19.",
+      "set_symptoms": "Ustaw objawy",
+      "birth_year": "Rok urodzin",
+      "birth_year_placeholder": "(1900 - 2020)",
+      "gender_in_passport": "Płeć, zgodnie z wpisem w oficjalnych dokumentach",
+      "male": "Mężczyzna",
+      "female": "Kobieta",
+      "location_information": "Informacje o położeniu",
+      "whats_your_location": "Gdzie się znajdujesz?",
+      "city": "Miasto",
+      "country": "Kraj",
+      "postal_code": "Kod pocztowy",
+      "location_determination_subtitle": "Lokacja jest ustalana na podstawie czujników lokacji twojego urządzenia – upewnij się, że są one włączone.",
+      "location_change_subtitle": "Aby zaktualizować informacje o swoim położeniu, wprowadź nowe dane w pola albo użyj przycisku poniżej.",
+      "update_location": "Zaktualizuj położenie",
+      "use_gps": "Ustaw lokację na postawie GPS",
+      "set_location_and_submit": "Ustaw lokację i wyślij"
+    },
+    "previous_submissions": "Poprzednie wpisy",
+    "submit": "Wyślij",
+    "save": "Zapisz",
+
+    "last_submission_was_done": "Twój ostatni wpis został dodany %{date}",
+    "submission_count_text": "Twoja liczba wpisów to ",
+    "submission_count_times": "",
+    "currently_holding_a_streak_of": "Dodajesz wpisy już ",
+    "streak_days": "dni z rzędu"
+  },
+
+  "history": {
+    "title": "Historia",
+    "your_streak": "Twój ciąg",
+    "days": "Dni",
+    "total_entries": "Liczba wpisów",
+    "measurements": "pomiar",
+    "add_entry": "Dodaj wpis"
+  },
+
+  "stats": {
+    "stats": "Statystyki"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Lokacja zmieniona pomyślnie",
+      "data_entry": "Wysłanie wpisu powiodło się",
+      "offline_entry_queued": "Wygląda na to, że jesteś off-line. Wpisy zostały zakolejkowane.",
+      "sync_finished": "Pomyślnie zsynchronizowano wpisy."
+    },
+    "error": {
+      "age_not_in_range": "Data urodzin nie mieści się w oczekiwanym zakresie (1900 - 2020).",
+      "fever_temp_value_invalid": "Podana temperatura gorączki jest nieprawidłowa.",
+      "location_data_invalid": "Podana lokacja jest nieprawidłowa.",
+      "api_data_invalid": "Dane wysłane do API były nieprawidłowe.",
+      "gender_not_set": "Nie ustawiono płci.",
+      "do_not_submit_new_temp_until": "Nie wysyłaj nowych temperatur do %{dateTime}"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Zainstaluj Fevermap",
+      "content": "Fevermap może zostać zainstalowane jako Progressive Web Application. Po zainstalowaniu, uzyskasz dodatkowe funkcje, takie jak szybsze działanie oraz powiadomienia.",
+      "approve_text": "Zainstaluj",
+      "decline_text": "Może później"
+    }
+  },
+  "dev_mode_banner_disclaimer": "Fevermap jest w trybie developerskim. Wprowadzone dane nie zostaną przechowane na stale."
+}

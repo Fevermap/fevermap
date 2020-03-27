@@ -13,6 +13,7 @@ import translation_ru from 'assets/language/ru';
 import translation_uk from 'assets/language/uk';
 import translation_be from 'assets/language/be';
 import translation_ar from 'assets/language/ar';
+import translation_pl from 'assets/language/pl';
 
 const translations = {
     en: translation_en,
@@ -27,6 +28,7 @@ const translations = {
     uk: translation_uk,
     be: translation_be,
     ar: translation_ar,
+    pl: translation_pl,
 };
 
 export default class Translator {
