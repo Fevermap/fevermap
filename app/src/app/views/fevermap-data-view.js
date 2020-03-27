@@ -207,7 +207,7 @@ class FevermapDataView extends LitElement {
                                                     ${dayjs
                                                         .utc(sub.timestamp)
                                                         .local()
-                                                        .format('ddd DD.MM')}
+                                                        .format('ddd DD.MM HH:mm')}
                                                 </p>
                                                 <p class="previous-submission--data-row__fever">
                                                     ${previousSubmission && sub.fever_temp
