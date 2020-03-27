@@ -1,0 +1,20 @@
+oc get bc -o yaml --export fevermap-api > bc-fevermap-api.yaml
+oc get bc -o yaml --export fevermap-build > bc-fevermap-build.yaml
+oc get bc -o yaml --export fevermap-runtime > bc-fevermap-runtime.yaml
+oc get is -o yaml --export debian > is-debian.yaml
+oc get is -o yaml --export fevermap > is-fevermap.yaml
+oc get is -o yaml --export fevermap-api > is-fevermap-api.yaml
+oc get is -o yaml --export fevermap-build > is-fevermap-build.yaml
+oc get is -o yaml --export nginx-runtime > is-nginx-runtime.yaml
+oc get is -o yaml --export ubi8-s2i-web-app > is-ubi8-s2i-web-app.yaml
+oc get secret -o yaml --export fevermap-db > secret-fevermap-db.yaml
+oc get secret -o yaml --export gitlab-webhook > secret-gitlab-webhook.yaml
+oc get svc -o yaml --export fevermap > svc-fevermap.yaml
+oc get svc -o yaml --export fevermap-api > svc-fevermap-api.yaml
+oc get svc -o yaml --export fevermap-db > svc-fevermap-db.yaml
+oc get dc -o yaml --export fevermap > dc-fevermap.yaml
+oc get dc -o yaml --export fevermap-api > dc-fevermap-api.yaml
+oc get dc -o yaml --export fevermap-db > dc-fevermap-db.yaml
+oc get route -o yaml --export fevermap-api > route-fevermap-api.yaml
+oc get route -o yaml --export fevermap > route-fevermap.yaml
+
