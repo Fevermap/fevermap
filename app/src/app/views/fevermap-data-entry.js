@@ -277,23 +277,7 @@ class FevermapDataEntry extends LitElement {
         this.lastSubmissionIsTooCloseToNow = true;
 
         if (!entryGotQueued) {
-            if (submissionResponse && submissionResponse.data.history != null) {
-                const db = await DBUtil.getInstance();
-                /*const insertSuccess = await db.add(FEVER_ENTRIES, feverData);*/
-                const submissionHistoryLength = submissionResponse.data.history.length - 1;
-                submissionResponse.data.history.map(async (submission, i) => {
-                    let entryInDb = await db.get(FEVER_ENTRIES, submission.timestamp);
-                    if (!entryInDb) {
-                        await db.add(FEVER_ENTRIES, submission);
-                    }
-                    if (i >= submissionHistoryLength) {
-                        document.dispatchEvent(new CustomEvent('update-submission-list'));
-                    }
-                });
-
-                localStorage.setItem('SUBMISSION_COUNT', submissionHistoryLength + 1);
-                localStorage.setItem('SUBMISSION_STREAK', this.determineStreak(submissionResponse.data.history));
-            }
+            this.addEntriesToIndexedDb(submissionResponse);
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
 
             this.closeView();
@@ -301,6 +285,40 @@ class FevermapDataEntry extends LitElement {
             SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
         }
         ScrollService.scrollToTop();
+    }
+
+    async addEntriesToIndexedDb(submissionResponse) {
+        let submissionHistory = submissionResponse.data.history;
+
+        if (submissionResponse && submissionHistory != null) {
+            const db = await DBUtil.getInstance();
+
+            // Check entries returned as history from API, and see if there are values that don't match
+            // the values in IDB. if yes, delete those values to make room for new ones.
+
+            // Example is if you've prodded with the DB and changed the timestamp_modified for example.
+            let allEntries = await db.getAll(FEVER_ENTRIES);
+            let submissionHistoryTimeStamps = submissionHistory.map(entry => entry.timestamp);
+            allEntries.map(async entry => {
+                if (!submissionHistoryTimeStamps.includes(entry.timestamp)) {
+                    await db.delete(FEVER_ENTRIES, entry.timestamp);
+                }
+            });
+
+            const submissionHistoryLength = submissionHistory.length - 1;
+            submissionHistory.map(async (submission, i) => {
+                let entryInDb = await db.get(FEVER_ENTRIES, submission.timestamp);
+                if (!entryInDb) {
+                    await db.add(FEVER_ENTRIES, submission);
+                }
+                if (i >= submissionHistoryLength) {
+                    document.dispatchEvent(new CustomEvent('update-submission-list'));
+                }
+            });
+
+            localStorage.setItem('SUBMISSION_COUNT', submissionHistoryLength + 1);
+            localStorage.setItem('SUBMISSION_STREAK', this.determineStreak(submissionHistory));
+        }
     }
 
     determineStreak(history) {
