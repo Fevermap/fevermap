@@ -12,6 +12,7 @@ import FeverDataUtil from '../util/fever-data-util';
 import dayjs from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import 'src/app/components/gender-input';
+import GoogleAnalyticsService from '../services/google-analytics-service';
 
 class FevermapDataEntry extends LitElement {
     static get properties() {
@@ -300,6 +301,7 @@ class FevermapDataEntry extends LitElement {
             this.addEntriesToIndexedDb(submissionResponse);
             SnackBar.success(Translator.get('system_messages.success.data_entry'));
 
+            GoogleAnalyticsService.reportSubmission();
             this.closeView();
         } else {
             SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));

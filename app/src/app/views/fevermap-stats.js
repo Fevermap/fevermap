@@ -1,5 +1,6 @@
 import { LitElement, html, css } from 'lit-element';
 import Translator from '../util/translator';
+import GoogleAnalyticsService from '../services/google-analytics-service';
 
 class FevermapStats extends LitElement {
     static get properties() {
@@ -14,7 +15,9 @@ class FevermapStats extends LitElement {
         super();
     }
 
-    firstUpdated(_changedProperties) {}
+    firstUpdated(_changedProperties) {
+        GoogleAnalyticsService.reportNavigationAction('Stats View');
+    }
 
     render() {
         return html`
