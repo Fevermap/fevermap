@@ -67,6 +67,12 @@ body {
   padding: 1rem;
   margin: 2rem auto;
 }
+@media screen and (max-width: 800px) {
+    .flex-item {
+        height: unset;
+        max-height: 300px;
+    }
+}
 
 .flex-item p {
   padding: 0px;
@@ -112,7 +118,7 @@ h4 {
   justify-content: space-around;
   padding: 0rem 2rem;
 }
-@media(min-width: 420px;) {
+@media screen and (max-width: 800px) {
   .soc-wrapper {
     padding: 0rem;
     flex-wrap: wrap;
@@ -130,6 +136,7 @@ main {
   justify-content: center;
   width: 100vw;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 section {
@@ -191,6 +198,15 @@ form {
   display: flex;
   justify-content: center;
 }
+@media screen and (max-width: 800px) {
+    form {
+        flex-direction: column;
+        align-items: center;
+    }
+    input {
+        margin-bottom: 10px;
+    }
+}
 
 /* Make call-to-action elements stand out */
 input, button {
@@ -213,6 +229,7 @@ section#signup {
 
 #presentations iframe {
   margin: 1rem;
+  max-width: 100%;
 }
 
 footer h4 {
