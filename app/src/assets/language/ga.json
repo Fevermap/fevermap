@@ -1,0 +1,121 @@
+{
+  "lang_name": "Gaeilge",
+  "language": "Teanga",
+  "fevermap_title": "Fevermap",
+  "back": "Siar",
+  "today": "Inniu",
+  "user_description": "Tá tú %{age} -bliain d'aois %{gender}, le %{diagnosis}",
+  "a_covid_diagnosis": "diagnóis de COVID-19",
+  "no_covid_diagnosis": "Níl diagnóis de COVID-19",
+  
+  "landing": {
+    "about": "Faoi",
+    "about_title": "Cad é Fevermap?",
+    "about_content_explanation": " Is feidhm don ghréasán agus móibíleach é cruthaite chun sonraí simplí agus fíor-am a chur ar fáil mar gheall ar an paindéím de COVID 19",
+    "about_current_methods": "Ní thugann na modhanna atá ann faoi láthair léargas iomlán de cé chomh coitianta is atá an Córónvírús. Tá méid mór daoine nach ndearna tástáil orthu mar gheall ar easpa ama agus áiseanna.",
+    "about_solution": "S'éárd atá i gceist le Fevermap ná réiteach ar an bhfadhb seo. Le Fevermap, is féidir le gnáth daoine mórthimpeall an domhain a cuid fiabhras agus stiomptoim a thuairisciú. Ciallaíonn sé sin gur féidir linn a thomhas cé chomh coitianta is atá an galar in fíor am agus tugann sé sonraí do na húdaráis chun cinnithe cruinn, bunaithe ar sonraí agus ag am cuí faoi beartaí cosanta.",
+    "about_data_collection": "Tá na sonraí a bhailíonn Fevermap anaithnidithe agus úsáidfear é chun aird a tharraingt ar an staid reatha domhanda.",
+    "about_current_participant_count": "Go dtí an lá seo, bhain %{participantCount} úsáideoirí  leas as Fevermap chun a siomptióim a thuairisciú.",
+
+    "how_to_participate": "Conas ar féidir liom páirt a ghlacadh?",
+    "participation_info": "Tá sé éasca. Ní gá duit ach do theocht a thógáil agus cuir an tortha chomh maith le roinnt eolais staitistiúi, ar nós do dáta breithe agus area code - isteach sa fotha.",
+    "info_disclaimer": "Ní chuireann muid ceisteanna ina mbeadh tú aitheanta. Tá do phríobháideachas agus neamhainmníocht tábhachtach.",
+
+    "how_will_my_data_be_used": "Conas a úsáidfear mo chuid sonraí?", 
+    "data_use_explanation": "Déanfar na sonraí anaithnid, ina dhiaidh sin, déanfar é a roinnt mar sonraí oscailte tríd idirfhásáil APIni"
+  },
+
+  "entry": {
+    "data_entry": "Iontráil Sonraí", 
+    "first_entry_disclaimer": "Cuirfear na sonraí sa bhunachar sonraí bunaithe ar do ghléas. Bheadh muid faoi chomaoin dá bhféadfá d'eolas a chuir isteach sa ghléas céanna gach uair. Cabhróidh sé seo linn monatóireacht níos fearr a dhéanamh ar do fhiabhras.",
+    "last_submission": "An iontráil is déanaí.", 
+    "submission_period_disclaimer": "Chun sonraí neamhriachtanach a sheachaint, tá iontrálacha srianta d'uair amháin i rith tréimhse 12 uair a chloig.",
+    "queued_entries": "Tá %{queuedEntries} iontrálacha déanta agat nach bhfuil sioncronú déanta leis an bhfreastalaí.",
+    "sync_now": "Déan sioncronú anois", 
+    "new_entry": "Iontrá‎il nua", 
+    "first_time_disclaimer": "De bharr gurb é seo do chéad uair, ba mhaith linn roinnt ceisteanna a chur ort ar dtús.",
+    "these_questions_wont_be_repeated": "Ní cuirfear na ceisteanna seo ort arís.",
+    "questions": {
+      "what_is_your_temperature": "Cad é do theocht?",
+      "temperature": "Teocht",
+      "how_much": "Cé mhéid?",
+      "degrees_of_fever": "%{degrees} de fhiabhras",
+      "not_measured": "Níl a fhios agam go cruinn, níl sé tomhaiste",
+      "set_temperature": "Teocht socraithe",
+      "other_symptoms": "Siomptóim eile?",
+      "choose_all_that_apply": "Roghnaigh gach ceann a bhaineann leat.", 
+      "difficulty_to_breathe": "Deachtaireachtaí análú",
+      "cough": "Casacht",
+
+      "sore_throat": "Scornach Thinn",
+      "muscular_pain": "Pian Mhatanánach",
+      "positive_covid_diagnosis": "Tá diagnóis dearfach agam de COVID-19.",
+      "set_symptoms": "Siomptóim socraithe",
+      "birth_year": "Bliain Bhréithe",
+      "birth_year_placeholder": "Bliain breithe (blianta 1900 - 2020)",
+      "gender_in_passport": "Inscne mar atá sonraithe ar do phas nó taifead rialtais eile.",
+      "male": "Fireann",
+      "female": "Baineann",
+      "location_information": "Eolas Láthair",
+      "whats_your_location": "Cá bhfuil tú?",
+      "city": "Cathair",
+      "country": "Tír",
+
+      "postal_code": "Cód Poist",
+      "location_determination_subtitle": "Tá an láthair aimsithe ag úsáid an Láthair API> Déan cinnte go bhfuil cead tugtha do bhraitheoirí Láthair. ",
+      "location_change_subtitle": "Chun uasdátú a dhéanamh ar an eolas láthair, déan uasdátú ar an luach sa tír agus cód poist nó brú an cnaipe thíos.",
+      "update_location": "Déan uasdátú ar an láthair",
+      "use_gps": "Faigh láthair ón GPS",
+      "set_location_and_submit": "Socraigh Láthair agus déan iontráil "
+    },
+    "previous_submissions": "Iontrálacha atá déanta roimhe",
+    "submit": "Déan iontráil",
+    "save": "Sábháil",
+
+    "last_submission_was_done": "Rinne tú d'iontráil deireach ag %{date}",
+    "submission_count_text": "Tá d'eolas fiabhrach curtha isteach agat.",
+    "submission_count_times": "Amanta",
+    "currently_holding_a_streak_of": "Tá do stríoc de laethanta comhleanúnach ag seasamh ag : ",
+    "streak_days": "laethanta"
+  },
+
+  "history": {
+    "title": "Stair",
+    "your_streak": "Do Stríoc",
+    "days": "Laethanta",
+    "total_entries": "Líon na n-Iontrálacha",
+    "measurements": "Tomhais",
+    "add_entry": "Cuir iontráil"
+
+  },
+
+  "stats": {
+    "stats": "Staitisticí"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Láthair nuashonraithe go rathúil",
+      "data_entry": "Iontráil sonraí déanta go rathúil ",
+      "offline_entry_queued": "Is cosúil go bhfuil tú as líne. Tá an iontráil sa scuaine. ",
+      "sync_finished": "Iontrálacha sioncronaithe go rathúil."
+    },
+    "error": {
+      "age_not_in_range": " Níl an Bhliain breithe tugtha sa réimse ceadaithe  (1900 - 2020).",
+      "fever_temp_value_invalid": "Níl an luach den fhiabhras bailí ",
+      "location_data_invalid": "Tá an láthair tugtha neamhbhailí.",
+      "api_data_invalid": "Tá na sonraí tugtha go dtí an API neamhbhailí ",
+      "gender_not_set": "Níl an Inscne socraithe.",
+      "do_not_submit_new_temp_until": "Ná déan iontráil ar theocht nua go dtí %{dateTime}"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Suiteáil Fevermap",
+      "content": "Is féidir Fevermap a suiteáil mar Fheidhmiú Forásach Gréasáin. Má dhéantar é a shuiteáil, is féidir linn áiseanna breise ar nós am rite níos tapúla agus fógraí brú (ag teacht go luath) .",
+      "approve_text": "Suiteáil",
+      "decline_text": "B'fhéidir ar ball"
+    }
+  },
+  "dev_mode_banner_disclaimer": "Tá Fevermap ag forbairt faoi láthair. Ní bheidh na sonraí go gcuirtear isteach ann buan. Fevermap is in development mode."
+}
