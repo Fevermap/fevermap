@@ -29,8 +29,8 @@ api_test '{
   "gender":"F",
   "location_country_code":"FI",
   "location_postal_code":"20100",
-  "location_lng":"22.2833007",
-  "location_lat":"60.4538845"
+  "location_lng":"22.28",
+  "location_lat":"60.45"
 }'
 
 # No fever and fever_temp missing
@@ -66,8 +66,8 @@ api_test '{
   "gender":"M",
   "location_country_code":"FI",
   "location_postal_code":"20100",
-  "location_lng":"22.2833007",
-  "location_lat":"60.4538845"
+  "location_lng":"22.123",
+  "location_lat":"60.123"
 }'
 
 # Location is float with extra decimals
@@ -84,8 +84,8 @@ api_test '{
   "gender":"M",
   "location_country_code":"US",
   "location_postal_code":"70-17710",
-  "location_lng":"22.2833007",
-  "location_lat":"60.45388459999"
+  "location_lng":"22.11",
+  "location_lat":"60.00"
 }'
 
 # Location Ireland, different coordinates and postal code
@@ -102,8 +102,8 @@ api_test '{
   "diagnosed_covid19":true,
   "location_country_code":"IE",
   "location_postal_code":"H91 E2K3",
-  "location_lng":"-9.2363393",
-  "location_lat":"53.3867155"
+  "location_lng":"-9.23",
+  "location_lat":"53.38"
 }'
 
 # Yet another variation of the JSON payload general format
@@ -115,8 +115,8 @@ api_test '{
   "gender": "M",
   "location_country_code": "FI",
   "location_postal_code": "33100",
-  "location_lng": "23.7835170",
-  "location_lat": "61.4916230",
+  "location_lng": "23.7800000",
+  "location_lat": "61.4900000",
   "symptom_difficult_to_breath": false,
   "symptom_cough": false,
   "symptom_sore_throat": false,
@@ -140,8 +140,8 @@ curl "$API_URL/api/v0/submit" \
     "gender":"M",
     "location_country_code":"FI",
     "location_postal_code":"02700",
-    "location_lng":"24.7187657",
-    "location_lat":"60.2152143",
+    "location_lng":"24.71",
+    "location_lat":"60.21",
     "symptom_difficult_to_breath":true,
     "symptom_cough":true,
     "symptom_sore_throat":false,
@@ -163,8 +163,8 @@ api_test '{
   "gender":"M",
   "location_country_code":"US",
   "location_postal_code":"70-17710",
-  "location_lng":"22.2833007",
-  "location_lat":"60.45388459999"
+  "location_lng":"22.28",
+  "location_lat":"60.45"
 }'
 
 # Also test the stats API

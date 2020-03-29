@@ -124,12 +124,12 @@ class SubmissionResource(Resource):
         if not re.fullmatch(r'[0-9a-z-A-Z-\. ]{5,10}', data['location_postal_code']):
             errors += ('location_postal_code', 'Incorrect characters or length')
 
-        # Allowed values from -180 to 180
-        if not re.fullmatch(r'(-)?[0-9]{1,3}\.[0-9]{5,}', data['location_lng']):
+        # Allowed values from -180 to 180 with 2 decimals
+        if not re.fullmatch(r'(-)?[0-9]{1,3}\.[0-9]{2,}', data['location_lng']):
             errors += ('location_lng', 'Incorrect form or length')
 
-        # Allowed values from -90 to 90
-        if not re.fullmatch(r'(-)?[0-9]{1,2}\.[0-9]{5,}', data['location_lat']):
+        # Allowed values from -90 to 90 with 2 decimals
+        if not re.fullmatch(r'(-)?[0-9]{1,2}\.[0-9]{2,}', data['location_lat']):
             errors += ('location_lat', 'Incorrect form or length')
 
         # Abort if validation failed
@@ -143,13 +143,14 @@ class SubmissionResource(Resource):
 
         # Convert strings into correct Python data types for processing
         device_id = int(data['device_id'])
-        birth_year = int(data['birth_year'])
+        # Cut precision to neares decade
+        birth_year = round(int(data['birth_year']), -1)
         gender = str(data['gender'])
         location_country_code = str(data['location_country_code'])
         location_postal_code = str(data['location_postal_code'])
-        # Cut to have 2.7 decimals, not more
-        location_lng = float(data['location_lng'][0:10])
-        location_lat = float(data['location_lat'][0:10])
+        # Cut precision to have 3 decimals, not more
+        location_lng = round(float(data['location_lng']), 3)
+        location_lat = round(float(data['location_lat']), 3)
 
         # Time 1584649859812 when this was written
         if not 1584000000000 < device_id:
