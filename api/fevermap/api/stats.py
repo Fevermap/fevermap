@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from datetime import date, datetime, timedelta
+from datetime import datetime, timedelta
 
 from flask_restful import Resource
 
@@ -11,8 +11,8 @@ from fevermap.db.models.submitter import Submitter
 from flask import Flask
 app = Flask('fevermap')
 
-class StatsResource(Resource):
 
+class StatsResource(Resource):
     def get(self, **kwargs):
         """Get stats."""
 
@@ -58,10 +58,10 @@ class StatsResource(Resource):
         }
 
         data['submissions'] = {
-                'since': db_session.query(Submission).order_by(Submission.timestamp_created).limit(1).one().timestamp_created.isoformat(timespec='seconds'),
-                'total': db_session.query(Submission).count(),
-                'today': db_session.query(Submission).filter(Submission.timestamp_modified > midnight).count(),
-                'past_7_days': db_session.query(Submission).filter(Submission.timestamp_modified > midnight_7_days_ago).count(),
+            'since': db_session.query(Submission).order_by(Submission.timestamp_created).limit(1).one().timestamp_created.isoformat(timespec='seconds'),
+            'total': db_session.query(Submission).count(),
+            'today': db_session.query(Submission).filter(Submission.timestamp_modified > midnight).count(),
+            'past_7_days': db_session.query(Submission).filter(Submission.timestamp_modified > midnight_7_days_ago).count(),
         }
 
         return {

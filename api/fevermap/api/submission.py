@@ -17,6 +17,7 @@ app = Flask('fevermap')
 # For debugging:
 # from pprint import pprint
 
+
 class SubmissionResource(Resource):
 
     def _fever_status_history(self, submitter=None):
@@ -38,15 +39,17 @@ class SubmissionResource(Resource):
         return history
 
     def options(self, **kwargs):
-        """Basic options response."""
+        """Serve basic options response."""
         return {
             'success': True,
             'message': 'This endpoint is input only',
         }
 
     def post(self, **kwargs):
-        """Save new submission."""
+        """Save new submission.
 
+        Run all validation and checks, and save submission in database.
+        """
         # @TODO: Add general POST protection early in the processing to compare
         # IP addresses of submitters and block too frequent use of same IP.
 
@@ -186,7 +189,7 @@ class SubmissionResource(Resource):
 
         # Get submitter if device_id already exists
         submitter = db_session.query(Submitter).filter(
-                        Submitter.device_id == device_id).one_or_none()
+            Submitter.device_id == device_id).one_or_none()
 
         # Create a new submitter if device_id is new
         if submitter is None:
