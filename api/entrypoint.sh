@@ -16,8 +16,6 @@ fi
 export PYTHONPATH="${APPDIR}:${PYTHONPATH}"
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
-# plugins are not needed with pip install, one can define empty variable
-export UWSGIPLUGINLINE=${1:-"--plugins=python37"}
 
 if [ "$FLASK_ENV" == "development" ]
 then
@@ -29,7 +27,7 @@ then
 fi
 
 uwsgi \
-    ${UWSGIPLUGINLINE} \
+    --plugins=python37 \
     --module=fevermap.wsgi:application \
     --master \
     --processes=5 \
