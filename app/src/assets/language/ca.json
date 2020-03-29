@@ -106,6 +106,5 @@
       "approve_text": "Instal.lar",
       "decline_text": "Ara no"
     }
-  },
-  "dev_mode_banner_disclaimer": "Fevermap està en mode desenvolupament. Les dades introduïdes no són persistents."
+  }
 }
