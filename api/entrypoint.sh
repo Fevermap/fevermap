@@ -35,9 +35,9 @@ uwsgi \
     --set-placeholder="base=${APPDIR}" \
     --chdir="%(base)" \
     --http-socket="0.0.0.0:9000" \
-    --uid=$(id -un) \
-    --gid=$(id -gn) \
+    --uid="$(id -un)" \
+    --gid="$(id -gn)" \
     --vacuum \
     --die-on-term \
-    --env="LC_ALL=C.UTF-8"
+    --env="LC_ALL=C.UTF-8" \
     --env="LANG=C.UTF-8"
