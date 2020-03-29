@@ -14,11 +14,60 @@ be individually scaled according to load. Each component has service for them
 (kubernetes service discovery/dns). This handles load balancing as well in case
 pods gets scaled up'n down.
 
-![app in ocp](https://gitlab.com/fevermap/fevermap/-/raw/feature-ocp-staging/ocp/ocp-app.png)
+![app in ocp](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-app.png)
 
 Images are built once, and the URLs and some start options may be given them as
 environment variables and config map to make them adapt to different runtime
 locations.
+
+# Setting up test environment
+
+The easiest way is to use the template. It asks you few parameters, and
+lets OpenShift bring up all the components. If you want to use GUI, import the
+template first (need admin for this):
+
+```
+curl https://gitlab.com/fevermap/fevermap/-/blob/feature/ocp-template/ocp/template-fevermap.yaml|oc create -n openshift
+```
+
+After that you'll find it from the OpenShift Catalog. It will ask you with parameters,
+and provides the samples. See partial screenshot:
+
+![app in ocp](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-template.png)
+
+Another way is to provision it from command line. Here are two examples, the second
+one omits some parameters that are not necessary:
+
+```
+curl https://gitlab.com/fevermap/fevermap/-/blob/feature/ocp-template/ocp/template-fevermap-persistent.yaml| \
+  oc new-app \
+  -p NAME=test \
+  -p NAMESPACE=fever-template \
+  -p MEMORY_FRONT_LIMIT=512Mi \
+  -p MEMORY_API_LIMIT=512Mi \
+  -p MEMORY_MYSQL_LIMIT=512Mi \
+  -p VOLUME_CAPACITY=1Gi \
+  -p SOURCE_REPOSITORY_URL=https://gitlab.com/fevermap/fevermap.git \
+  -p SOURCE_REPOSITORY_REF=master \
+  -p APPLICATION_FRONT_DOMAIN=front.apps.ocp4.konttikoulu.fi \
+  -p APPLICATION_API_DOMAIN=api.apps.ocp4.konttikoulu.fi \
+  -p DATABASE_SERVICE_NAME=db \
+  -p DATABASE_NAME=feverdb \
+  -p DATABASE_USER=fever \
+  -p DATABASE_PASSWORD=fever \
+  -p DATABASE_ROOT_PASSWORD=feverr
+```
+
+from local file:
+
+```
+oc new-app \
+  -f template-fevermap-persistent.yaml \
+  -p NAME=fevermap \
+  -p NAMESPACE=fever-template \
+  -p APPLICATION_FRONT_DOMAIN=front.apps.ocp4.konttikoulu.fi \
+  -p APPLICATION_API_DOMAIN=api.apps.ocp4.konttikoulu.fi
+```
 
 # Storage
 
