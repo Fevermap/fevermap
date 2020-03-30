@@ -79,7 +79,7 @@ class FeverChart extends LitElement {
       if (entriesOnDate.length > 0) {
         dataValues.push(Math.max(...entriesOnDate.map(entry => entry.fever_temp)));
       } else {
-        dataValues.push(dataValues[j - 1]);
+        dataValues.push(dataValues[j + 1]);
       }
     }
 
