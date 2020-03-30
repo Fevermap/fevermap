@@ -79,7 +79,7 @@ class FeverChart extends LitElement {
       if (entriesOnDate.length > 0) {
         dataValues.push(Math.max(...entriesOnDate.map(entry => entry.fever_temp)));
       } else {
-        dataValues.push(dataValues[j - 1]);
+        dataValues.push(dataValues[j + 1]);
       }
     }
 
@@ -154,17 +154,17 @@ class FeverChart extends LitElement {
         yAxes: [
           {
             gridLines: {
-              display: false,
+              display: true,
             },
             ticks: {
               min: minVal,
               max: maxVal,
-              maxTicksLimit: 4,
-              stepSize: 3,
+              maxTicksLimit: 15,
+              stepSize: 1,
               suggestedMin: minVal,
               suggestedMax: maxVal,
               fontFamily: 'Nunito',
-              fontSize: 18,
+              fontSize: window.innerWidth < 720 ? 12 : 18,
               callback: label => `${label}°C`,
             },
           },
