@@ -20,6 +20,13 @@ The software will run on http://localhost:6006/.
 
 If you don't want to install NodeJs et al on your own environment, you can alternatively also run the development environment in Docker. To spin up a local development environment, simply run `docker-compose up --build`. The window will keep displaying the logs from the environments.
 
+#### Creating a Merge Request
+
+Before creating a merge request fixing a front-end issue, please run `npm run check` and fix warnings/error accordingly.
+
+The command will run `Prettier` and `ESLint` with the development rules set for Web Components. 
+
+
 #### Creating a new Component
 
 To create a new component, create a new Java Script file in the folder `src/app/components`. You need to import components so that the `customElement` gets defined, so make sure to import the component to at least the view it's used in.
