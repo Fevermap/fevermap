@@ -9,7 +9,7 @@ class DevelopmentModeBanner extends LitElement {
     render() {
         return html`
             <div class="dev-mode-banner">
-              <p>DEV MODE: Data will not be permanent. Reportr bugs at <a href="https://gitlab.com/fevermap/fevermap/-/issues" target="_blank">Gitlab</a>
+              <p>DEV MODE: Data will not be permanent. Report bugs at <a href="https://gitlab.com/fevermap/fevermap/-/issues" target="_blank">Gitlab</a>
               </p>
             </div>
         `;
