@@ -183,6 +183,7 @@ class FevermapDataView extends LitElement {
               <fever-chart
                 .data="${this.previousSubmissions}"
                 chartId="fever-history-chart"
+                .geoCodingInfo="${this.geoCodingInfo}"
               ></fever-chart>
             </div>
             <div class="statistics-fields">
@@ -240,13 +241,7 @@ class FevermapDataView extends LitElement {
                                     `}
                               `
                             : ''}
-                          ${sub.fever_temp
-                            ? `${FeverDataUtil.getFeverWithUnit(
-                                false,
-                                sub.fever_temp,
-                                this.geoCodingInfo,
-                              )}`
-                            : '-'}
+                          ${this.getFeverAmountForSubmission(sub)}
                         </p>
                       </div>
                       <div class="previous-submission--symptom-row">
@@ -284,6 +279,19 @@ class FevermapDataView extends LitElement {
     return this.setCovidDiagnosis
       ? Translator.get('a_covid_diagnosis')
       : Translator.get('no_covid_diagnosis');
+  }
+
+  getFeverAmountForSubmission(sub) {
+    if (sub.fever_status || sub.fever_temp) {
+      return html`
+        ${sub.fever_temp
+          ? `${FeverDataUtil.getFeverWithUnit(false, sub.fever_temp, this.geoCodingInfo)}`
+          : '-'}
+      `;
+    }
+    return html`
+      <material-icon class="green-text" icon="done"></material-icon>
+    `;
   }
 
   createPersistentDataFields() {

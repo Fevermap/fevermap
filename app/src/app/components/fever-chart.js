@@ -3,6 +3,7 @@ import Chart from 'chart.js';
 import dayjs from 'dayjs';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
 import Translator from '../util/translator.js';
+import FeverDataUtil from '../util/fever-data-util.js';
 
 class FeverChart extends LitElement {
   static get properties() {
@@ -15,6 +16,7 @@ class FeverChart extends LitElement {
       colorGradient: { type: Object },
       initialized: { type: Boolean },
       chartInitializerInterval: { type: Object },
+      geoCodingInfo: { type: Object },
     };
   }
 
@@ -27,6 +29,7 @@ class FeverChart extends LitElement {
     this.dataToShow = null;
     this.colorGradient = '';
     this.initialized = false;
+    this.geoCodingInfo = null;
   }
 
   firstUpdated() {
@@ -77,7 +80,12 @@ class FeverChart extends LitElement {
       const date = today.subtract(j, 'day').dayOfYear();
       const entriesOnDate = parsedData.filter(entry => dayjs(entry.timestamp).dayOfYear() === date);
       if (entriesOnDate.length > 0) {
-        dataValues.push(Math.max(...entriesOnDate.map(entry => entry.fever_temp)));
+        const dailyHigh = Math.max(...entriesOnDate.map(entry => entry.fever_temp));
+        dataValues.push(
+          FeverDataUtil.useFahrenheit(this.geoCodingInfo)
+            ? FeverDataUtil.celsiusToFahrenheit(dailyHigh)
+            : dailyHigh,
+        );
       } else {
         dataValues.push(dataValues[j - 1]);
       }
@@ -114,11 +122,25 @@ class FeverChart extends LitElement {
     };
   }
 
+  getMinVal() {
+    const minVal = Math.floor(Math.min(...this.dataToShow) - 1);
+    if (minVal < 35) {
+      return FeverDataUtil.useFahrenheit(this.geoCodingInfo) ? 95 : 35;
+    }
+    return minVal;
+  }
+
+  getMaxVal() {
+    const maxVal = Math.ceil(Math.max(...this.dataToShow) + 1);
+    if (Number.isNaN(maxVal)) {
+      return FeverDataUtil.useFahrenheit(this.geoCodingInfo) ? 107.6 : 43;
+    }
+    return maxVal;
+  }
+
   getOptions() {
-    let minVal = Math.floor(Math.min(...this.dataToShow) - 1);
-    minVal = minVal > 35 ? minVal : 35;
-    let maxVal = Math.ceil(Math.max(...this.dataToShow) + 1);
-    maxVal = Number.isNaN(maxVal) ? 43 : maxVal;
+    const minVal = this.getMinVal();
+    const maxVal = this.getMaxVal();
     return {
       legend: {
         display: false,
