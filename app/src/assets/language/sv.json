@@ -112,6 +112,5 @@
       "approve_text": "Installera",
       "decline_text": "Kanske senare"
     }
-  },
-  "dev_mode_banner_disclaimer": "Fevermap utvecklas ännu. Inskickade data kommer inte att sparas permanent."
+  }
 }

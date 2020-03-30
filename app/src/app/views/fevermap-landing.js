@@ -35,7 +35,7 @@ class FevermapLanding extends LitElement {
         return html`
             <div class="container view-wrapper">
                 <div class="fevermap-landing-content">
-                    <img src="${logoImg}" />
+                    <a href="https://fevermap.net"><img src="${logoImg}"></a>
                     <div class="about mb-4">
                         <h2>${Translator.get('landing.about_title')}</h2>
                         <p>
@@ -69,6 +69,7 @@ class FevermapLanding extends LitElement {
                         <h2>${Translator.get('landing.how_will_my_data_be_used')}</h2>
                         <p>${Translator.get('landing.data_use_explanation')}</p>
                     </div>
+                    <a href="https://fevermap.net">>> Fevermap.net</a>
                 </div>
             </div>
         `;

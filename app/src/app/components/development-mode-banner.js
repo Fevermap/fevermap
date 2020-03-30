@@ -2,9 +2,17 @@ import { LitElement, html } from 'lit-element';
 import Translator from '../util/translator';
 
 class DevelopmentModeBanner extends LitElement {
+    /*
+     * The development mode banner does not need to be translated as it is only
+     * for beta testers, not actual end users.
+     */
     render() {
         return html`
-            <div class="dev-mode-banner"><p>${Translator.get('dev_mode_banner_disclaimer')}</p></div>
+            <div class="dev-mode-banner">
+              <p>This is a development version. The data inserted will not be permanent.
+              Please report bugs at <a href="https://gitlab.com/fevermap/fevermap/-/issues" target="_blank">gitlab.com/fevermap/fevermap/-/issues</a>
+              </p>
+            </div>
         `;
     }
 

@@ -102,8 +102,8 @@ curl -iLsS \
     "gender":"M",
     "location_country_code":"FI",
     "location_postal_code":"20100",
-    "location_lng":"22.2833007",
-    "location_lat":"60.4538845"
+    "location_lng":"22.28",
+    "location_lat":"60.45"
   } ' \
   http://localhost:9000/api/v0/submit
 ```
@@ -120,8 +120,8 @@ $ curl -iLsS \
     --data gender=M \
     --data location_country_code=FI \
     --data location_postal_code=33100 \
-    --data location_lng=61.497753 \
-    --data location_lat=23.760954 \
+    --data location_lng=61.49 \
+    --data location_lat=23.76 \
     http://localhost:9000/api/v0/submit
 ```
 
@@ -137,8 +137,8 @@ Example responses:
         "birth_year": 1983,
         "location_country_code": "FI",
         "location_postal_code": "33100",
-        "location_lng": 61.497753,
-        "location_lat": 23.760954,
+        "location_lng": 61.49,
+        "location_lat": 23.76,
         "history": [
             [
                 "2020-03-19T23:36:03",

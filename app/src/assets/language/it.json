@@ -22,7 +22,7 @@
     "info_disclaimer": "Non chiederemo mai alcun tipo di domanda che potrebbe facilitare in alcun modo il riconoscimento dell'utente. Avremo il massimo riguardo per la privacy e l'anonimato.",
 
     "how_will_my_data_be_used": "Come saranno utilizzati i miei dati?",
-    "data_use_explanation": "I dati sarranno resi anonimi, dopo che verranno condivisi attraverso l'interfaccia API..."
+    "data_use_explanation": "I dati sarranno resi anonimi, dopo che verranno condivisi attraverso l'interfaccia API."
   },
   "entry": {
     "data_entry": "Immissione dati",
@@ -102,10 +102,9 @@
   "dialog": {
     "pwa_installer": {
       "title": "Installa Fevermap",
-      "content": "Fevermap può essere installato come una 'Progressive Web Application'. Se installato in questa modalità, si potrà riscontrare un aumento nelle funzionalità e prestazioni, e notificazioni push (in un futuro prossimo...) ",
+      "content": "Fevermap può essere installato come una 'Progressive Web Application'. Se installato in questa modalità, si potrà riscontrare un aumento nelle funzionalità e prestazioni, e notificazioni push (in un futuro prossimo).",
       "approve_text": "Installa",
       "decline_text": "Forse più tardi"
     }
-  },
-  "dev_mode_banner_disclaimer": "Fevermap is in development mode. The data inserted will not be permanent."
+  }
 }

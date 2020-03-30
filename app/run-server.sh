@@ -16,7 +16,8 @@ run_webpack () {
 run_dev_server () {
 	node node_modules/es-dev-server/dist/cli.js &
 	devserverJobId=$!
-	trap "kill -9 $devserverJobId" EXIT
+	# Use single quotes, otherwise this expands now rather than when signalled.
+	trap 'kill -9 $devserverJobId' EXIT
 }
 
 listen_for_reset_inputs () {
@@ -24,20 +25,20 @@ listen_for_reset_inputs () {
 	do
 		if [ $webpackJobId != NULL ] && [ $devserverJobId != NULL ]
 		then
-			echo -en "\rPress [R] to restart webpack. Press [D] to restart dev server."
+			echo -en "\\nPress [R] to restart webpack. Press [D] to restart dev server."
 		fi
 
-		read -t 1 -n 1 key
+		read -r -t 1 -n 1 key
 		if [[ $key = r ]]
 		then
-			echo -e "\nRESTARTING WEBPACK\n"
+			echo -e "\\nRESTARTING WEBPACK\\n"
 			kill -9 $webpackJobId
 			run_webpack
 		fi
 
 		if [[ $key = d ]]
 		then
-			echo -e "\nRESTARTING DEV SERVER\n"
+			echo -e "\\nRESTARTING DEV SERVER\\n"
 			kill -9 $devserverJobId
 			run_dev_server
 		fi

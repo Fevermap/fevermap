@@ -112,6 +112,5 @@
       "approve_text": "Zainstaluj",
       "decline_text": "Może później"
     }
-  },
-  "dev_mode_banner_disclaimer": "Fevermap jest w trybie developerskim. Wprowadzone dane nie zostaną przechowane na stale."
+  }
 }

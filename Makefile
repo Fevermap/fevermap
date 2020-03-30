@@ -12,8 +12,9 @@ APP_URL ?= "http://localhost:6006"
 test:
 	# Check syntax and code style in Python files and shell scripts
 	# @TODO: Add JavaScript, HTML and CSS linters here as well
-	flake8 $(shell find -name "*.py" -not -path "*/node_modules/*" | xargs) || true # Ignore results for now
-	shellcheck --shell=bash $(shell grep -rnw . -e '^#!.*/bash' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs) || true # Ignore results for now
+	# Ignore lines too long (E501) because in many cases code becomes less readable
+	flake8 --ignore E501 $(shell find -name "*.py" -not -path "*/node_modules/*" | xargs)
+	shellcheck --shell=bash $(shell grep -rnw . -e '^#!.*/bash' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs)
 	@echo "----------- Tests completed successfully -----------"
 
 test-api:
