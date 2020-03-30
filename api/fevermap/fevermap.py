@@ -44,7 +44,8 @@ def create_app():
     app.register_blueprint(v0_blueprint, url_prefix='/api/v0')
     app.register_blueprint(ping_blueprint)
 
-    if app.env == 'development':
+    # Temporairly allow all access also in production
+    if True or app.env == 'development':
         @app.after_request
         def allow_cors_in_dev(resp):
             """Allow full CORS access in development environment.
