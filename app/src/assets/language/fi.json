@@ -14,7 +14,7 @@
     "about_content_explanation": " on verkko- ja mobiiliapplikaatio, joka on luotu helppoa ja reaaliaikaista datakeruuta varten koskien koronavirus COVID-19-pandemian levinneisyyttä.",
     "about_current_methods": "Nykyiset seurantamenetelmät koronaviruksen levinneisyydestä eivät tarjoa kokonaiskuvaa. Laajat ihmisjoukot jäävät testauksen ulkopuolelle, jotta ajan ja resurssien saatavuus pystytään takaamaan niitä tarvitseville.",
     "about_solution": "Fevermap on ratkaisu ongelmaan. Fevermapin avulla, tavalliset ihmiset ympäri maailmaa voivat anonyymisti raportoida itse kuumeesta ja muista oireista. Tämä tarkoittaa sitä, että voimme arvioida COVID-19 -infektioiden todellisen laajuuden reaaliaikaisesti ja tarjota auktoriteeteille dataa, joka auttaa heitä tekemään tietoon perustuvia, oikeellisia ja hyvin ajoitettuja päätöksiä suojautumiseen liittyvistä asioista.",
-    "about_data_collection": "Fevermapin keräämä data on anonymisoity ja sitä käytetään tietoisuuden lisäämiseen globaalista tilanteesta.",
+    "about_data_collection": "Fevermapin keräämä data on anonymisoitu ja sitä käytetään tietoisuuden lisäämiseen globaalista tilanteesta.",
     "about_current_participant_count": "Tähän päivään mennessä, %{participantCount} käyttäjää ovat käyttäneet Fevermapia raportoidakseen oireistaan",
 
     "how_to_participate": "Miten osallistun?",
