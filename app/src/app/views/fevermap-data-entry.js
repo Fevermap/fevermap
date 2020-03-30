@@ -249,23 +249,53 @@ class FevermapDataEntry extends LitElement {
   }
 
   validateFeverData(feverData) {
-    if (feverData.birth_year > 2020 || feverData.birth_year < 1900) {
+    const ageIsValid = this.validateAge(feverData.birth_year);
+    if (!ageIsValid) {
+      return false;
+    }
+    const genderIsValid = this.validateGender(feverData.gender);
+    if (!genderIsValid) {
+      return false;
+    }
+    const feverTempIsValid = this.validateFeverTemp(feverData.fever_temp);
+    if (!feverTempIsValid) {
+      return false;
+    }
+    const locationIsValid = this.validateLocation(feverData);
+    if (!locationIsValid) {
+      return false;
+    }
+    return true;
+  }
+
+  validateAge(birthYear) {
+    if (birthYear > 2020 || birthYear < 1900) {
       this.errorMessage = Translator.get('system_messages.error.age_not_in_range');
       SnackBar.error(this.errorMessage);
       return false;
     }
+    return true;
+  }
 
-    if (feverData.gender === null) {
+  validateGender(gender) {
+    if (gender === null) {
       this.errorMessage = Translator.get('system_messages.error.gender_not_set');
       SnackBar.error(this.errorMessage);
       return false;
     }
+    return true;
+  }
 
-    if (feverData.fever_temp != null && (feverData.fever_temp < 35 || feverData.fever_temp > 44)) {
+  validateFeverTemp(feverTemp) {
+    if (feverTemp != null && (feverTemp < 35 || feverTemp > 44)) {
       this.errorMessage = Translator.get('system_messages.error.fever_temp_value_invalid');
       SnackBar.error(this.errorMessage);
       return false;
     }
+    return true;
+  }
+
+  validateLocation(feverData) {
     if (this.locationDataIsInvalid(feverData)) {
       this.errorMessage = Translator.get('system_messages.error.location_data_invalid');
       SnackBar.error(this.errorMessage);
@@ -449,6 +479,9 @@ class FevermapDataEntry extends LitElement {
 
   handlePersonalInfoSubmit() {
     this.birthYear = this.querySelector('#birth-year').getValue();
+    if (!this.validateAge(this.birthYear) || !this.validateGender(this.gender)) {
+      return;
+    }
     this.nextQuestion();
   }
 
