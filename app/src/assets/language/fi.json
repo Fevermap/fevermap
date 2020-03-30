@@ -107,7 +107,7 @@
   "dialog": {
     "pwa_installer": {
       "title": "Asenna Fevermap",
-      "content": "Fevermap on mahdollista asentaa progressiivisen verkkosovelluksena. Asennettuna sovellus tarjoaa lisätoimintoja kuten parempaa suorituskykyä ja push notifikaatioita (tulossa pian).",
+      "content": "Fevermap on mahdollista asentaa progressiivisena verkkosovelluksena. Asennettuna sovellus tarjoaa lisätoimintoja kuten parempaa suorituskykyä ja push notifikaatioita (tulossa pian).",
       "approve_text": "Asenna",
       "decline_text": "Ehkä myöhemmin"
     }

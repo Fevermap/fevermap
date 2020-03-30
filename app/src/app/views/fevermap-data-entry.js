@@ -15,6 +15,7 @@ import Translator from '../util/translator.js';
 import FeverDataUtil from '../util/fever-data-util.js';
 import '../components/gender-input.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
+import PWAService from '../services/pwa-service.js';
 
 class FevermapDataEntry extends LitElement {
   static get properties() {
@@ -324,6 +325,7 @@ class FevermapDataEntry extends LitElement {
       SnackBar.success(Translator.get('system_messages.success.data_entry'));
 
       GoogleAnalyticsService.reportSubmission();
+      PWAService.launchInstallDialog();
       this.closeView();
     } else {
       SnackBar.success(Translator.get('system_messages.success.offline_entry_queued'));
