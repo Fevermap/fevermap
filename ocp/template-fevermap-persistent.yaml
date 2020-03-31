@@ -79,6 +79,10 @@ parameters:
     if left blank a value will be defaulted.
   displayName: Application API Hostname
   name: APPLICATION_API_DOMAIN
+- description: Google Analytics property ID. Add this to activate Google Analytics,
+    otherwise leave empty to not use GA.
+  displayName: Google analytics property ID
+  name: GOOGLE_ANALYTICS_CODE
 - description: GitLab trigger secret.  A difficult to guess string encoded as part
     of the webhook URL.  Not encrypted.
   displayName: GitLab Webhook Secret
@@ -605,7 +609,7 @@ objects:
           API_URL: '${APPLICATION_FRONT_DOMAIN}',
           APP_URL: '${APPLICATION_API_DOMAIN}',
       };
-      GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
+      window.GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
 
   kind: ConfigMap
   metadata:
