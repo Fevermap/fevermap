@@ -76,7 +76,7 @@ class FevermapDataView extends LitElement {
     document.addEventListener('update-queued-count', () => {
       this.getQueuedEntriesFromIndexedDb();
     });
-    if (this.firstTimeSubmitting) {
+    if (this.firstTimeSubmitting || this.isFromNotification()) {
       this.showEntryDialog();
     }
     this.getQueuedEntriesFromIndexedDb();
@@ -96,6 +96,11 @@ class FevermapDataView extends LitElement {
         .local()
         .format('DD-MM-YYYY : HH:mm');
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  isFromNotification() {
+    return /fromNotification=true/.test(window.location.search.substring(1));
   }
 
   async getGeoLocationInfo(forceUpdate) {

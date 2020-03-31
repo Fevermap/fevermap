@@ -115,6 +115,12 @@
       "content": "Fevermap can be installed as a Progressive Web Application. If installed, we can provide you with great extra features like faster runtime and push notifications (coming soon).",
       "approve_text": "Install",
       "decline_text": "Maybe later"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
   }
 }

@@ -62,4 +62,69 @@ registerRoute(
   }),
 );
 
+self.addEventListener('message', e => {
+  console.log('SW: new message: ', e);
+  switch (e.data.type) {
+    case 'SET_CLIENT_ID':
+      self.CLIENT_ID = e.data.clientId;
+      break;
+    default:
+      break;
+  }
+  console.log(self.CLIENT_ID);
+});
+
+self.addEventListener('push', e => {
+  const options = {
+    body: 'How are you feeling today?',
+    icon: 'app-icon-128x128.png',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: '1',
+    },
+    actions: [
+      { action: 'log-healthy', title: 'Healthy' },
+      { action: 'log-not-healthy', title: 'Sick' },
+    ],
+  };
+  e.waitUntil(self.registration.showNotification('Good morning! :)', options));
+});
+
+const openAppFromNotification = e => {
+  // This looks to see if the current page / app is already open and
+  // focuses if it is
+  e.waitUntil(
+    self.clients.matchAll({ type: 'window' }).then(clientList => {
+      for (let i = 0; i < clientList.length; i += 1) {
+        const client = clientList[i];
+        if (client.url === '/' && 'focus' in client) return client.focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow('/?fromNotification=true');
+      return null;
+    }),
+  );
+};
+
+const handleLoggingHealthy = e => {};
+
+const handleLoggingSick = e => {
+  openAppFromNotification(e);
+};
+
+self.onnotificationclick = e => {
+  switch (e.action) {
+    case 'log-healthy':
+      handleLoggingHealthy(e);
+      break;
+    case 'log-not-healthy':
+      handleLoggingSick(e);
+      break;
+    default:
+      // Open app
+      openAppFromNotification(e);
+      break;
+  }
+};
+
 cleanupOutdatedCaches();
