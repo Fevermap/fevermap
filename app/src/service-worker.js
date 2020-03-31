@@ -6,6 +6,7 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { clientsClaim, skipWaiting } from 'workbox-core';
 import * as googleAnalytics from 'workbox-google-analytics';
+import DataEntryService from './app/services/data-entry-service';
 
 self.__WB_DISABLE_DEV_LOGS = true;
 
@@ -65,13 +66,20 @@ registerRoute(
 self.addEventListener('message', e => {
   console.log('SW: new message: ', e);
   switch (e.data.type) {
-    case 'SET_CLIENT_ID':
+    case 'SET_CLIENT_INFORMATION':
       self.CLIENT_ID = e.data.clientId;
+      self.BIRTH_YEAR = e.data.birthYear;
+      self.GENDER = e.data.gender;
+      self.COVID_DIAGNOSIS = e.data.covidDiagnosis;
+      self.LOCATION_DATA = e.data.locationData;
+      break;
+    case 'SET_APP_URLS':
+      self.API_URL = e.data.API_URL;
+      self.APP_URL = e.data.APP_URL;
       break;
     default:
       break;
   }
-  console.log(self.CLIENT_ID);
 });
 
 self.addEventListener('push', e => {
@@ -106,7 +114,51 @@ const openAppFromNotification = e => {
   );
 };
 
-const handleLoggingHealthy = e => {};
+const generateHealthyFeverDataSubmissionObject = () => ({
+  device_id: self.CLIENT_ID,
+  fever_status: false,
+  fever_temp: null,
+  birth_year: self.BIRTH_YEAR,
+  gender: self.GENDER,
+  location_country_code: self.LOCATION_DATA.location_country_code,
+  location_postal_code: self.LOCATION_DATA.location_postal_code,
+  location_lng: self.LOCATION_DATA.location_lng.toString(),
+  location_lat: self.LOCATION_DATA.location_lat.toString(),
+  symptom_difficult_to_breath: false,
+  symptom_cough: false,
+  symptom_sore_throat: false,
+  symptom_muscle_pain: false,
+  diagnosed_covid19: self.COVID_DIAGNOSIS,
+});
+
+const handleSuccessfulNotificationSubmit = () => {
+  const options = {
+    body: 'Thank you for submitting!',
+    icon: 'app-icon-128x128.png',
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: '1',
+    },
+  };
+  self.registration.showNotification('Successfully submitted data.', options);
+};
+
+const handleLoggingHealthy = () => {
+  const apiSubmitUrl = `${self.API_URL}/api/v0/submit`;
+  fetch(apiSubmitUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(generateHealthyFeverDataSubmissionObject()),
+  })
+    .then(res => res.json())
+    .then(res => {
+      if (res.success) {
+        handleSuccessfulNotificationSubmit(res);
+        DataEntryService.setEntriesToIndexedDb(res);
+      }
+    })
+    .catch(err => console.error(err));
+};
 
 const handleLoggingSick = e => {
   openAppFromNotification(e);

@@ -32,9 +32,24 @@ export class ServiceWorkerService {
    * push notification and offline use.
    */
   sendClientInformationToServiceWorker() {
+    const lastLocation = JSON.parse(localStorage.getItem('LAST_LOCATION'));
     ServiceWorkerService.sendMessage({
-      type: 'SET_CLIENT_ID',
+      type: 'SET_CLIENT_INFORMATION',
       clientId: localStorage.getItem('DEVICE_ID'),
+      birthYear: localStorage.getItem('BIRTH_YEAR'),
+      gender: localStorage.getItem('GENDER'),
+      covidDiagnosis: localStorage.getItem('COVID_DIAGNOSIS'),
+      locationData: {
+        location_country_code: lastLocation.countryShort,
+        location_postal_code: lastLocation.postal_code,
+        location_lng: lastLocation.coords.lng,
+        location_lat: lastLocation.coords.lat,
+      },
+    });
+    ServiceWorkerService.sendMessage({
+      type: 'SET_APP_URLS',
+      API_URL: process.env.API_URL || window.URLS.API_URL,
+      APP_URL: process.env.APP_URL || window.URLS.APP_URL,
     });
   }
 
