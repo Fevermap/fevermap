@@ -16,7 +16,6 @@ class SelectField extends LitElement {
       isOpen: { type: Boolean },
       inputListenerSet: { type: Boolean },
       typedCharacters: { type: String },
-      inputValueIndex: { type: Number },
     };
   }
 
@@ -32,7 +31,6 @@ class SelectField extends LitElement {
 
     this.inputListenerSet = false;
     this.typedCharacters = '';
-    this.inputValueIndex = 0;
   }
 
   firstUpdated() {
@@ -71,25 +69,15 @@ class SelectField extends LitElement {
       this.typedCharacters = this.typedCharacters.substring(0, this.typedCharacters.length - 1);
       return;
     }
-    if (e.key === 'Enter') {
-      this.elem.selectedIndex = this.inputValueIndex;
+    if (!/[a-zöäå]/i.test(e.key) || e.key.length > 1) {
+      return;
     }
     this.typedCharacters += e.key;
     const regex = new RegExp(`^${this.typedCharacters}`, 'i');
     const foundEntry = this.options.find(entry => entry.name.match(regex));
     if (foundEntry) {
       const foundEntryIndex = this.options.indexOf(foundEntry);
-      this.inputValueIndex = foundEntryIndex + 1;
-      const oldSelected = this.querySelector('li[aria-selected]');
-      oldSelected.removeAttribute('aria-selected');
-      oldSelected.classList.remove('mdc-list-item--selected');
-
-      const newSelected = Array.from(this.querySelectorAll('li'))[this.inputValueIndex];
-      newSelected.setAttribute('aria-selected', true);
-      newSelected.classList.add('mdc-list-item--selected');
-
-      this.menuElem.root_.scrollTop = newSelected.offsetTop - newSelected.scrollHeight * 3;
-      this.selectedText.innerText = newSelected.innerText;
+      this.menuElem.list_.getDefaultFoundation().adapter_.focusItemAtIndex(foundEntryIndex + 1);
     }
   }
 
