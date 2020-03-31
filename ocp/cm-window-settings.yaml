@@ -5,7 +5,7 @@ data:
         API_URL: 'https://staging.fevermap.net',
         APP_URL: 'https://staging.fevermap.net',
     };
-    GOOGLE_ANALYTICS_CODE='UA-160636162-2';
+    window.GOOGLE_ANALYTICS_CODE='UA-160636162-2';
 
 kind: ConfigMap
 metadata:
