@@ -81,11 +81,15 @@ class FeverChart extends LitElement {
       const entriesOnDate = parsedData.filter(entry => dayjs(entry.timestamp).dayOfYear() === date);
       if (entriesOnDate.length > 0) {
         const dailyHigh = Math.max(...entriesOnDate.map(entry => entry.fever_temp));
-        dataValues.push(
-          FeverDataUtil.useFahrenheit(this.geoCodingInfo)
-            ? FeverDataUtil.celsiusToFahrenheit(dailyHigh)
-            : dailyHigh,
-        );
+        if (dailyHigh !== 0) {
+          dataValues.push(
+            FeverDataUtil.useFahrenheit(this.geoCodingInfo)
+              ? FeverDataUtil.celsiusToFahrenheit(dailyHigh)
+              : dailyHigh,
+          );
+        } else {
+          dataValues.push(dataValues[j + 1]);
+        }
       } else {
         dataValues.push(dataValues[j + 1]);
       }
