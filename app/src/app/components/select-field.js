@@ -9,7 +9,13 @@ class SelectField extends LitElement {
       selectedValue: { type: Object },
       selectedValueIndex: { type: Number },
       elem: { type: Object },
+      menuElem: { type: Object },
+      selectedText: { type: Object },
       label: { type: String },
+
+      isOpen: { type: Boolean },
+      inputListenerSet: { type: Boolean },
+      typedCharacters: { type: String },
     };
   }
 
@@ -20,12 +26,32 @@ class SelectField extends LitElement {
     this.selectedValue = null;
     this.selectedValueIndex = 0;
     this.elem = null;
+    this.menuElem = null;
+    this.selectedText = null;
+
+    this.inputListenerSet = false;
+    this.typedCharacters = '';
   }
 
   firstUpdated() {
     const selectElem = this.querySelector('.mdc-select');
     this.elem = new MDCSelect(selectElem);
-
+    this.menuElem = this.elem.menu_;
+    this.selectedText = this.querySelector('.mdc-select__selected-text');
+    const handleKeyboardInputEventHandler = e => this.handleKeyboardInput(e);
+    this.menuElem.listen('MDCMenuSurface:opened', () => {
+      if (!this.inputListenerSet) {
+        window.addEventListener('keydown', handleKeyboardInputEventHandler);
+        this.inputListenerSet = true;
+      }
+    });
+    this.elem.menu_.listen('MDCMenuSurface:closed', () => {
+      if (this.inputListenerSet) {
+        window.removeEventListener('keydown', handleKeyboardInputEventHandler);
+        this.inputListenerSet = false;
+        this.typedCharacters = '';
+      }
+    });
     this.elem.listen('MDCSelect:change', () => {
       this.dispatchEvent(
         new CustomEvent('select-change', {
@@ -36,6 +62,23 @@ class SelectField extends LitElement {
         }),
       );
     });
+  }
+
+  handleKeyboardInput(e) {
+    if (e.key === 'Backspace') {
+      this.typedCharacters = this.typedCharacters.substring(0, this.typedCharacters.length - 1);
+      return;
+    }
+    if (!/[a-zöäå]/i.test(e.key) || e.key.length > 1) {
+      return;
+    }
+    this.typedCharacters += e.key;
+    const regex = new RegExp(`^${this.typedCharacters}`, 'i');
+    const foundEntry = this.options.find(entry => entry.name.match(regex));
+    if (foundEntry) {
+      const foundEntryIndex = this.options.indexOf(foundEntry);
+      this.menuElem.list_.getDefaultFoundation().adapter_.focusItemAtIndex(foundEntryIndex + 1);
+    }
   }
 
   updated(_changedProperties) {
