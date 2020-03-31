@@ -2,7 +2,9 @@ import './app/fevermap-root.js';
 import './assets/styles/base.scss';
 import { Workbox } from 'workbox-window';
 import PWAService from './app/services/pwa-service.js';
+import GoogleAnalyticsService from './app/services/google-analytics-service.js';
 
+GoogleAnalyticsService.init();
 if ('serviceWorker' in navigator) {
   const wb = new Workbox('service-worker.js');
 
