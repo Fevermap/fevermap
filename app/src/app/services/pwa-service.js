@@ -9,24 +9,19 @@ export default class PWAService {
     PWAService._instance = new PWAService(deferredPrompt);
   }
 
+  static launchInstallDialog() {
+    if (!PWAService._instance) {
+      return;
+    }
+    PWAService._instance.openInstallDialog();
+  }
+
   constructor(deferredPrompt) {
     this.deferredPrompt = deferredPrompt;
     this.hasPromptedInstallDialog = false;
-    document.addEventListener('mouseup', () => this.openInstallDialog());
-    document.addEventListener('dragend', () => this.openInstallDialog());
   }
 
   openInstallDialog() {
-    document.removeEventListener('mouseup', this.openInstallDialog);
-    document.removeEventListener('dragend', this.openInstallDialog);
-    const lastPromptTime = localStorage.getItem('LAST_PWA_INSTALL_PROMPT_TIME');
-    if (
-      this.hasPromptedInstallDialog ||
-      (lastPromptTime && lastPromptTime - 43200000 < Date.now())
-    ) {
-      return;
-    }
-    localStorage.setItem('LAST_PWA_INSTALL_PROMPT_TIME', Date.now());
     Dialog.open({
       title: Translator.get('dialog.pwa_installer.title'),
       content: Translator.get('dialog.pwa_installer.content'),
