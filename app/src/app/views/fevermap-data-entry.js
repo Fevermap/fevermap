@@ -485,11 +485,18 @@ class FevermapDataEntry extends LitElement {
     this.nextQuestion();
   }
 
-  handleFeverInfoSubmit(noMeasurement = false) {
-    if (noMeasurement) {
-      this.feverAmount = null;
-    }
+  handleFeverInfoSubmit() {
     this.nextQuestion();
+  }
+
+  handleUnmeasuredFeverSubmit(hasFever) {
+    this.hasFever = hasFever;
+    this.feverAmount = null;
+    this.nextQuestion();
+    if (!hasFever) {
+      // Skip symptoms
+      this.nextQuestion();
+    }
   }
 
   handleSymptomSubmit() {
@@ -640,61 +647,75 @@ class FevermapDataEntry extends LitElement {
       <div class="entry-field fever-meter-field">
         <div class="fever-meters">
           <div class="fever-slider">
+            <div class="fever-amount-display">
+              <div class="fever-amount-field  mdc-elevation--z3">
+                <input
+                  class="celcius"
+                  type="number"
+                  step="0.1"
+                  value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
+                    false,
+                    this.feverAmount,
+                    this.geoCodingInfo,
+                  )}"
+                />
+                <p>${FeverDataUtil.getFeverUnitSuffix(false, this.geoCodingInfo)}</p>
+              </div>
+            </div>
             <div class="fever-slider-element">
               <input type="range" id="temperature-meter" min="35" max="42" step="0.1" value="35" />
             </div>
-          </div>
-          <div class="fever-amount-display">
-            <div class="fever-amount-field  mdc-elevation--z3">
-              <input
-                class="celcius"
-                type="number"
-                step="0.1"
-                value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
-                  false,
-                  this.feverAmount,
-                  this.geoCodingInfo,
-                )}"
-              />
-              <p>${FeverDataUtil.getFeverUnitSuffix(false, this.geoCodingInfo)}</p>
-            </div>
-            <div class="fever-amount-field  mdc-elevation--z3">
-              <input
-                type="number"
-                step="0.1"
-                class="fahrenheit"
-                value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
-                  true,
-                  this.feverAmount,
-                  this.geoCodingInfo,
-                )}"
-              />
-              <p>${FeverDataUtil.getFeverUnitSuffix(true, this.geoCodingInfo)}</p>
+            <div class="fever-amount-display">
+              <div class="fever-amount-field  mdc-elevation--z3">
+                <input
+                  type="number"
+                  step="0.1"
+                  class="fahrenheit"
+                  value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
+                    true,
+                    this.feverAmount,
+                    this.geoCodingInfo,
+                  )}"
+                />
+                <p>${FeverDataUtil.getFeverUnitSuffix(true, this.geoCodingInfo)}</p>
+              </div>
             </div>
           </div>
-          <div
-            class="mdc-form-field fever-not-measured-field ${this.feverAmountNotKnown
-              ? ' fever-not-measured-field--checked'
-              : ''}"
-          >
-            <p id="dont-know-temperature" @click="${() => this.handleFeverInfoSubmit(true)}">
-              ${Translator.get('entry.questions.not_measured')}
-            </p>
-          </div>
-        </div>
 
-        <div class="proceed-button">
-          <button
-            class="mdc-button mdc-button--raised"
-            @click="${() => this.handleFeverInfoSubmit()}"
-          >
-            <div class="mdc-button__ripple"></div>
-
-            <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
-            <span class="mdc-button__label"
-              >${Translator.get('entry.questions.set_temperature')}</span
+          <div class="proceed-button">
+            <button
+              class="mdc-button mdc-button--raised"
+              @click="${() => this.handleFeverInfoSubmit()}"
             >
-          </button>
+              <div class="mdc-button__ripple"></div>
+
+              <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
+              <span class="mdc-button__label"
+                >${Translator.get('entry.questions.set_temperature')}</span
+              >
+            </button>
+          </div>
+          <div class="fever-not-measured-prompt">
+            <p>${Translator.get('entry.questions.havent_measured_but')}</p>
+            <div class="fever-not-measured-buttons">
+              <div class="fever-not-measured-buttons--feverish">
+                <material-button
+                  @click="${() => this.handleUnmeasuredFeverSubmit(true)}"
+                  class="mdc-elevation--z3"
+                  icon="sentiment_very_dissatisfied"
+                  label="${Translator.get('entry.questions.feel_feverish')}"
+                ></material-button>
+              </div>
+              <div class="fever-not-measured-buttons--healthy">
+                <material-button
+                  @click="${() => this.handleUnmeasuredFeverSubmit(false)}"
+                  class="mdc-elevation--z3"
+                  icon="sentiment_very_satisfied"
+                  label="${Translator.get('entry.questions.feel_healthy')}"
+                ></material-button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     `;

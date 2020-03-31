@@ -325,6 +325,14 @@ p.mdc-theme--error {
   }
 }
 
+.fever-amount-display:first-child {
+  margin-right: -25%;
+}
+
+.fever-amount-display:last-child {
+  margin-left: -25%;
+}
+
 .fever-not-measured-field {
   width: 100%;
   display: flex;
@@ -334,6 +342,72 @@ p.mdc-theme--error {
     text-decoration: underline;
     margin: 0;
   }
+}
+
+.fever-not-measured-prompt {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  p {
+    margin: 0 0 1rem !important;
+  }
+  .fever-not-measured-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 0 20%;
+    div {
+      flex-basis: 45%;
+      text-align: center;
+      color: #FFF;
+      display: flex;
+      align-items: center;
+      material-button {
+        border-radius: 5px;
+        height: 100%;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        div {
+          height: 100%;
+          flex-basis: 100%;
+        }
+      }
+      p {
+        color: #FFF;
+        font-size: 0.8rem;
+      }
+      button {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem;
+        font-size: 0.7rem;
+
+        i {
+          margin: 0 0 0.2rem;
+        }
+      }
+    }
+
+
+    &--feverish {
+      justify-content: flex-start;
+      button {
+        background: #cd5c5c;
+      }
+    }
+
+    &--healthy {
+      justify-content: flex-end;
+      button {
+        background: #3cb371;
+      }
+    }
+  }
+
 }
 
 .symptom-holder {
@@ -376,7 +450,10 @@ label {
   flex-direction: column;
   justify-content: space-around;
   .fever-meters {
-    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 90%;
     .fever-slider {
       height: 80%;
       display: flex;
@@ -389,6 +466,10 @@ label {
         align-items: center;
         width: 100%;
       }
+    }
+
+    .proceed-button {
+      margin: 2rem 0;
     }
   }
 }
@@ -501,15 +582,27 @@ input[type="range"]::-webkit-slider-runnable-track {
         height: 70%;
       }
       .fever-amount-display {
+        .fever-amount-field {
+          width: 3.25rem;
+        }
         p {
           margin: 0;
         }
       }
     }
   }
+  .fever-not-measured-prompt {
+    .fever-not-measured-buttons {
+      margin: 0;
+    }
+  }
 }
 
 @media only screen and (max-width: 400px) {
+
+  .temperature-title {
+    margin: 0;
+  }
   .fevermap-entry-dialog {
     margin-bottom: 3rem !important;
   }
@@ -529,11 +622,11 @@ input[type="range"]::-webkit-slider-runnable-track {
 
   .fever-meter-field {
     .fever-meters {
+      .proceed-button {
+        margin: 1rem 0;
+      }
       .fever-slider {
         height: 60%;
-      }
-      .fever-amount-display {
-        margin: 1rem 0;
       }
     }
   }
@@ -541,5 +634,19 @@ input[type="range"]::-webkit-slider-runnable-track {
 
   p.subtitle {
     margin: 0 0 0.5rem;
+  }
+
+  .fever-not-measured-prompt {
+    p {
+      margin: 0 0 0.5rem !important;
+    }
+    .fever-not-measured-buttons {
+      div {
+        flex-basis: 50%;
+        button {
+          font-size: 0.5rem;
+        }
+      }
+    }
   }
 }
