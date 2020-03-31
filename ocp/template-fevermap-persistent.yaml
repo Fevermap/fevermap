@@ -605,6 +605,7 @@ objects:
           API_URL: '${APPLICATION_FRONT_DOMAIN}',
           APP_URL: '${APPLICATION_API_DOMAIN}',
       };
+      GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
 
   kind: ConfigMap
   metadata:
