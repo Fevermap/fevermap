@@ -42,7 +42,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: $deeppurple;
+  background: #f7f7f7;
   z-index:100;
 }
 
@@ -355,7 +355,7 @@ p.mdc-theme--error {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin: 0 20%;
+    margin: 0 15%;
     div {
       flex-basis: 45%;
       text-align: center;
@@ -396,14 +396,18 @@ p.mdc-theme--error {
     &--feverish {
       justify-content: flex-start;
       button {
-        background: #cd5c5c;
+        background: #FFF;
+        color: #484848;
+        border: $bluegreen 2px solid;
       }
     }
 
     &--healthy {
       justify-content: flex-end;
       button {
-        background: #3cb371;
+        background: #FFF;
+        color: #484848;
+        border: $bluegreen 2px solid;
       }
     }
   }
