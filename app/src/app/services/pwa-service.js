@@ -9,6 +9,10 @@ export default class PWAService {
     PWAService._instance = new PWAService(deferredPrompt);
   }
 
+  static installable() {
+    return typeof PWAService._instance !== 'undefined';
+  }
+
   static launchInstallDialog() {
     if (!PWAService._instance) {
       return;
