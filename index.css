@@ -254,10 +254,6 @@ section#main {
   max-width: 60rem;
 }
 
-section#signup {
-  padding: 0rem 4rem;
-}
-
 #presentations iframe {
   margin: 1rem;
   max-width: 100%;
