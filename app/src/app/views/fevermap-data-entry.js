@@ -346,8 +346,6 @@ class FevermapDataEntry extends LitElement {
     localStorage.setItem('COVID_DIAGNOSIS', feverData.diagnosed_covid19);
     localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
 
-    this.lastSubmissionIsTooCloseToNow = true;
-
     if (!entryGotQueued) {
       DataEntryService.setEntriesToIndexedDb(submissionResponse);
       SnackBar.success(Translator.get('system_messages.success.data_entry'));

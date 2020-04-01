@@ -20,6 +20,8 @@ class FevermapDataView extends LitElement {
       previousSubmissions: { type: Array },
       geoCodingInfo: { type: Object },
       firstTimeSubmitting: { type: Boolean },
+      lastSubmissionIsTooCloseToNow: { type: Boolean },
+      nextAllowedSubmitTime: { type: String },
 
       setGender: { type: String },
       setBirthYear: { type: String },
@@ -39,10 +41,7 @@ class FevermapDataView extends LitElement {
     this.submissionStreak = submissionStreak || 0;
     dayjs.extend(utc);
 
-    const lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
-    if (lastEntryTime && lastEntryTime !== 'undefined') {
-      this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
-    }
+    this.checkLastSubmissionTime();
 
     const gender = localStorage.getItem('GENDER');
     const birthYear = localStorage.getItem('BIRTH_YEAR');
@@ -72,6 +71,7 @@ class FevermapDataView extends LitElement {
 
       this.submissionCount = submissionCount || 0;
       this.submissionStreak = submissionStreak || 0;
+      this.checkLastSubmissionTime();
     });
     document.addEventListener('update-queued-count', () => {
       this.getQueuedEntriesFromIndexedDb();
@@ -81,6 +81,21 @@ class FevermapDataView extends LitElement {
     }
     this.getQueuedEntriesFromIndexedDb();
     GoogleAnalyticsService.reportNavigationAction('Your Data View');
+  }
+
+  checkLastSubmissionTime() {
+    const lastEntryTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
+    if (lastEntryTime && lastEntryTime !== 'undefined') {
+      this.lastSubmissionTime = dayjs(Number(lastEntryTime)).format('DD-MM-YYYY : HH:mm');
+      this.lastSubmissionIsTooCloseToNow = dayjs(Number(lastEntryTime))
+        .local()
+        .add(1, 'hour')
+        .isAfter(dayjs(Date.now()));
+      this.nextAllowedSubmitTime = dayjs(Number(lastEntryTime))
+        .add(1, 'hour')
+        .local()
+        .format('DD-MM-YYYY : HH:mm');
+    }
   }
 
   async getGeoLocationInfo(forceUpdate) {
@@ -199,6 +214,15 @@ class FevermapDataView extends LitElement {
     });
   }
 
+  // eslint-disable-next-line class-methods-use-this
+  showSubmissionTooCloseSnackbar() {
+    SnackBar.success(
+      Translator.get('system_messages.error.do_not_submit_new_temp_until', {
+        dateTime: this.nextAllowedSubmitTime,
+      }),
+    );
+  }
+
   render() {
     return html`
       <div class="container view-wrapper fevermap-entry-view">
@@ -206,8 +230,12 @@ class FevermapDataView extends LitElement {
           <div class="entry-history-title-area">
             <h2>${Translator.get('history.title')}</h2>
             <material-button
-              @button-clicked="${this.showEntryDialog}"
-              class="add-new-entry-button"
+              @button-clicked="${this.lastSubmissionIsTooCloseToNow
+                ? this.showSubmissionTooCloseSnackbar
+                : this.showEntryDialog}"
+              class="add-new-entry-button${this.lastSubmissionIsTooCloseToNow
+                ? ' add-new-entry-button--disabled'
+                : ''}"
               icon="add_circle"
               label="${Translator.get('history.add_entry')}"
             ></material-button>
