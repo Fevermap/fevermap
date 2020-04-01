@@ -121,7 +121,7 @@ class SubmissionResource(Resource):
         if not re.fullmatch(r'[A-Z]{2}', data['location_country_code']):
             errors += ('location_country_code', 'Value not two capitals')
 
-        if not re.fullmatch(r'[0-9a-z-A-Z-\. ]{5,10}', data['location_postal_code']):
+        if not re.fullmatch(r'[0-9a-z-A-Z-\. ]{4,10}', data['location_postal_code']):
             errors += ('location_postal_code', 'Incorrect characters or length')
 
         # Allowed values from -180 to 180 with 2 decimals
