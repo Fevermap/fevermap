@@ -1,3 +1,4 @@
+@import "../palette";
 
 .fevermap-landing-content {
   margin: 1rem 20% 10%;
@@ -9,9 +10,25 @@
   color: #FF9800;
 }
 
+.install-button {
+  position: absolute;
+  top: 2.5rem;
+  right: 1rem;
+  .mdc-button {
+    height: 30px;
+    font-size: 0.6rem;
+    background-color: $bluegreen !important;
+
+    &--unelevated {
+      padding: 0 8px;
+    }
+  }
+}
+
 @media only screen and (max-width: 780px) {
 
   .fevermap-landing-content {
     margin: 1rem 5% 11vh;
+    padding-top: 3rem;
   }
 }

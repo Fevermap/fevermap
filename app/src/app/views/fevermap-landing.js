@@ -3,6 +3,7 @@ import Translator from '../util/translator.js';
 import logoImg from '../../assets/images/landing-logo.png';
 import DataEntryService from '../services/data-entry-service.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
+import PWAService from '../services/pwa-service.js';
 
 class FevermapLanding extends LitElement {
   static get properties() {
@@ -35,6 +36,18 @@ class FevermapLanding extends LitElement {
       <div class="container view-wrapper">
         <div class="fevermap-landing-content">
           <a href="https://fevermap.net"><img src="${logoImg}"/></a>
+          ${PWAService.installable()
+            ? html`
+                <material-button
+                  class="install-button"
+                  label="Download app"
+                  icon="play_for_work"
+                  @click="${() => {
+                    PWAService.launchInstallDialog();
+                  }}"
+                ></material-button>
+              `
+            : ''}
           <div class="about mb-4">
             <h2>${Translator.get('landing.about_title')}</h2>
             <p>
