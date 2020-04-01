@@ -11,6 +11,29 @@
   border: 1px solid;
   padding: 1rem;
 }
+
+.stats-placeholder-image {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    height: 60vh;
+    filter: blur(1);
+  }
+  .coming-soon-banner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    background: rgba(255,255,255,0.9);
+    height: 100%;
+    width: 100%;
+    top:0;
+    left: 0;
+    font-size: 1.4rem;
+  }
+}
 @media only screen and (max-width: 780px) {
 
   .fevermap-stats-content {
