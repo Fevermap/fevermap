@@ -49,12 +49,24 @@ export default class Translator {
 
   static setLang(lang) {
     Translator.lang = lang ? lang.toLowerCase() : 'en';
+    // Set fallback language based on current language
+    Translator.fallback = Translator.lang === 'en' ? null : 'en';
     Translator._loadPhrases();
     document.querySelector('html').setAttribute('lang', lang ? lang.toLowerCase() : 'en');
   }
 
   static _loadPhrases() {
-    Translator.polyglot = new Polyglot({ phrases: translations });
+    Translator.polyglot = new Polyglot({
+      phrases: translations,
+      onMissingKey: (key, params) => {
+        if (!key || !Translator.fallback || key.startsWith(Translator.fallback)) {
+          // Return key as last resort if there's no fallback or this is the fallback language
+          return key;
+        }
+        const fallbackKey = Translator.fallback + key.substr(key.indexOf('.'));
+        return Translator.polyglot.t(fallbackKey, params);
+      },
+    });
   }
 
   static get(word, params) {
