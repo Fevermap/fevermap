@@ -84,6 +84,7 @@ class FevermapNavigation extends LitElement {
     newView.style.display = 'none';
     // Give it time to hit the DOM
     setTimeout(() => {
+      add_circle;
       const newViewWrapper = newView.querySelector('.view-wrapper');
       newViewWrapper.classList.add(transitionClass);
       newView.style.display = 'block';
