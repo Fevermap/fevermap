@@ -1,5 +1,6 @@
 export default class GoogleAnalyticsService {
-  static reportNavigationAction(view) {
+  static async reportNavigationAction(view) {
+    await GoogleAnalyticsService.waitForInitToFinish();
     window.gtag('event', 'navigation', {
       event_category: 'in-app-navigation',
       event_label: view,
@@ -36,6 +37,7 @@ export default class GoogleAnalyticsService {
     window.gtag('js', new Date());
 
     window.gtag('config', apiKey);
+    GoogleAnalyticsService.initFinished = true;
   }
 
   /**
@@ -56,6 +58,15 @@ export default class GoogleAnalyticsService {
         }
         return setTimeout(() => checkForScript(iteration + 1), 500);
       })(1);
+    });
+  }
+
+  static waitForInitToFinish() {
+    return new Promise(resolve => {
+      (function checkForInitFinish() {
+        if (GoogleAnalyticsService.initFinished) return resolve();
+        return setTimeout(checkForInitFinish, 500);
+      })();
     });
   }
 }

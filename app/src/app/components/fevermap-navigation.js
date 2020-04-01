@@ -115,7 +115,7 @@ class FevermapNavigation extends LitElement {
           data-navigation-view="fevermap-data-view"
           data-navigation-order="2"
         >
-          <material-icon icon="add_circle"></material-icon>
+          <material-icon icon="person"></material-icon>
           <p>${Translator.get('entry.data_entry')}</p>
         </div>
         <div

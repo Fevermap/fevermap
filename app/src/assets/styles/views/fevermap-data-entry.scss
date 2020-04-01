@@ -21,7 +21,7 @@
   top: 1rem;
   right: 1rem;
   z-index: 999;
-  color: $white;
+  color: $gunmetal;
   material-icon {
     font-size: 2rem;
     span {
@@ -305,6 +305,7 @@ p.mdc-theme--error {
   justify-content: space-around;
   margin-bottom: 2rem;
   .fever-amount-field {
+    z-index: 10;
     width: 4.25rem;
     display: flex;
     align-items: center;
@@ -587,7 +588,7 @@ input[type="range"]::-webkit-slider-runnable-track {
       }
       .fever-amount-display {
         .fever-amount-field {
-          width: 3.25rem;
+          width: 3.75rem;
         }
         p {
           margin: 0;
@@ -613,7 +614,7 @@ input[type="range"]::-webkit-slider-runnable-track {
 
   .fevermap-data-entry-content {
     min-height: 80vh;
-    padding: 0;
+    padding: 5vh 0;
   }
 
   .fevermap-entry-carousel {
