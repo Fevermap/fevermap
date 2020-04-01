@@ -19,6 +19,11 @@
     .mdc-button {
       background: $bluegreen;
     }
+    &--disabled {
+      .mdc-button {
+        background: #30bfbf99;
+      }
+    }
   }
 }
 
