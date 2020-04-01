@@ -358,6 +358,7 @@ class FevermapDataEntry extends LitElement {
     } else {
       document.dispatchEvent(new CustomEvent('update-queued-count'));
       SnackBar.success(Translator.get('system_messages.success.entry_send_failed_queued'));
+      this.closeView();
     }
     ScrollService.scrollToTop();
   }
