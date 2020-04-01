@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { Workbox } from 'workbox-window';
 import PWAService from './pwa-service.js';
+import NotificationService from './notification-service.js';
 
 export class ServiceWorkerService {
   constructor() {
@@ -11,7 +12,9 @@ export class ServiceWorkerService {
       // window.location.reload();
     });
 
-    this.wb.register();
+    this.wb.register().then(reg => {
+      NotificationService.getFrontendMessagingObject(reg);
+    });
 
     window.addEventListener('beforeinstallprompt', e => {
       // Prevent the mini-infobar from appearing on mobile

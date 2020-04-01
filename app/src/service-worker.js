@@ -6,7 +6,9 @@ import { ExpirationPlugin } from 'workbox-expiration';
 import { CacheableResponsePlugin } from 'workbox-cacheable-response';
 import { clientsClaim, skipWaiting } from 'workbox-core';
 import * as googleAnalytics from 'workbox-google-analytics';
-import DataEntryService from './app/services/data-entry-service';
+import * as firebase from 'firebase/app';
+import 'firebase/messaging';
+import DataEntryService from './app/services/data-entry-service.js';
 
 self.__WB_DISABLE_DEV_LOGS = true;
 
@@ -82,7 +84,7 @@ self.addEventListener('message', e => {
   }
 });
 
-self.addEventListener('push', e => {
+const createHealthStatusNotification = e => {
   const options = {
     body: 'How are you feeling today?',
     icon: 'app-icon-128x128.png',
@@ -96,7 +98,37 @@ self.addEventListener('push', e => {
       { action: 'log-not-healthy', title: 'Sick' },
     ],
   };
-  e.waitUntil(self.registration.showNotification('Good morning! :)', options));
+  if (e) {
+    e.waitUntil(self.registration.showNotification('Good morning! :)', options));
+  } else {
+    self.registration.showNotification('Good morning! :)', options);
+  }
+};
+
+const initFirebaseMessaging = () => {
+  const firebaseConfig = {
+    apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
+    authDomain: 'fevermap-95d71.firebaseapp.com',
+    databaseURL: 'https://fevermap-95d71.firebaseio.com',
+    projectId: 'fevermap-95d71',
+    storageBucket: 'fevermap-95d71.appspot.com',
+    messagingSenderId: '825429781563',
+    appId: '1:825429781563:web:3ff8c7f6e4bbf23c10c01e',
+    measurementId: 'G-3X5E6RLZBN',
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const messaging = firebase.messaging();
+
+  messaging.setBackgroundMessageHandler(payload => {
+    createHealthStatusNotification();
+  });
+};
+
+self.addEventListener('push', e => {
+  console.log('Received push', e);
+  createHealthStatusNotification(e);
 });
 
 const openAppFromNotification = e => {
@@ -180,3 +212,4 @@ self.onnotificationclick = e => {
 };
 
 cleanupOutdatedCaches();
+initFirebaseMessaging();
