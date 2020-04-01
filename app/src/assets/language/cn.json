@@ -29,11 +29,12 @@
     "first_entry_disclaimer": "记录将根据您的设备提交到数据库中。 我们希望您每次都从同一设备提交信息。 这将使我们能够更好地监控您的发烧状况。",
     "last_submission": "上次提交",
     "submission_period_disclaimer": "为了防止不必要的数据，每12小时只能提交一次。",
-    "queued_entries": "您有%{queuedEntries}条还没有与服务器进行同步",
     "sync_now": "现在同步",
     "new_entry": "新记录",
     "first_time_disclaimer": "由于这是您第一次使用Fevermap，因此我们将首先询问您几个问题。",
     "these_questions_wont_be_repeated": "这些问题在以后的提交中将不再重复。",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "您的体温是多少",
       "temperature": "体温",
@@ -94,6 +95,7 @@
       "location_update": "成功更新位置",
       "data_entry": "成功提交条目",
       "offline_entry_queued": "处于离线状态，记录已经存入队列",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "成功同步记录"
     },
     "error": {

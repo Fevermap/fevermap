@@ -30,11 +30,12 @@
     "first_entry_disclaimer": "Cuirfear na sonraí sa bhunachar sonraí bunaithe ar do ghléas. Bheadh muid faoi chomaoin dá bhféadfá d'eolas a chuir isteach sa ghléas céanna gach uair. Cabhróidh sé seo linn monatóireacht níos fearr a dhéanamh ar do fhiabhras.",
     "last_submission": "An iontráil is déanaí.",
     "submission_period_disclaimer": "Chun sonraí neamhriachtanach a sheachaint, tá iontrálacha srianta d'uair amháin i rith tréimhse 12 uair a chloig.",
-    "queued_entries": "Tá %{queuedEntries} iontrálacha déanta agat nach bhfuil sioncronú déanta leis an bhfreastalaí.",
     "sync_now": "Déan sioncronú anois",
     "new_entry": "Iontrá‎il nua",
     "first_time_disclaimer": "De bharr gurb é seo do chéad uair, ba mhaith linn roinnt ceisteanna a chur ort ar dtús.",
     "these_questions_wont_be_repeated": "Ní cuirfear na ceisteanna seo ort arís.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "Cad é do theocht?",
       "temperature": "Teocht",
@@ -98,6 +99,7 @@
       "location_update": "Láthair nuashonraithe go rathúil",
       "data_entry": "Iontráil sonraí déanta go rathúil ",
       "offline_entry_queued": "Is cosúil go bhfuil tú as líne. Tá an iontráil sa scuaine. ",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Iontrálacha sioncronaithe go rathúil."
     },
     "error": {

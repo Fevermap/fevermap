@@ -28,11 +28,12 @@
     "first_entry_disclaimer": "Einträge werden in eine Datenbank auf dem Gerät eingegeben. Wir würden es begrüßen, wenn die Informationen immer vom gleichen Gerät eingegeben werden. Dies erlaubt uns das Fieber besser zu verfolgen.",
     "last_submission": "Letzte Übermittlung",
     "submission_period_disclaimer": "Um unnötige Daten zu vermeiden, werden die Übermittlungen auf eine in 12 Stunden beschränkt.",
-    "queued_entries": "%{queuedEntries} Einträge wurde noch nicht mit dem Server abgeglichen.",
     "sync_now": "Jetzt abgleichen",
     "new_entry": "Neuer Eintrag",
     "first_time_disclaimer": "Bei der ersten Verwendung der Fieberkarte stellen wir einige Fragen.",
     "these_questions_wont_be_repeated": "Diese Fragen werden bei zukünftigen Übertragungen nicht wiederholt.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "Wie ist die Temperatur?",
       "temperature": "Temperatur",
@@ -93,6 +94,7 @@
       "location_update": "Ort erfolgreich aktualisiert",
       "data_entry": "Eintrag erfolgreich abgeschickt",
       "offline_entry_queued": "Offenbar sind Sie offline. Eintrag wartet.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Einträge erfolgreich abgeglichen."
     },
     "error": {

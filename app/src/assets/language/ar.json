@@ -29,11 +29,12 @@
     "first_entry_disclaimer": "يتم إرسال المدخلات إلى قاعدة البيانات بالإعتماد على جهازك. نحن نقدر أنك قدمت معلوماتك من نفس الجهاز في كل مرة. سيسمح لنا هذا بمراقبة حالة الحمى بشكل أفضل.",
     "last_submission": "آخر تقديم",
     "submission_period_disclaimer": "لمنع البيانات غير الضرورية، يتم تقييد عمليات الإرسال مرة واحدة كل 12 ساعة.",
-    "queued_entries": "لديك %{queuedEntries} مدخلات لم يتم مزامنتها بعد مع الخادم.",
     "sync_now": "زامن الآن",
     "new_entry": "إدخال جديد",
     "first_time_disclaimer": "نظراً لأنك تستخدم Fevermap لأول مرة، فسنطرح عليك بعض الأسئلة أولاً.",
     "these_questions_wont_be_repeated": "لن يتم تكرار هذه الأسئلة في التقارير المقبلة.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "ما هي درجة حرارتك؟",
       "temperature": "درجة الحرارة",
@@ -94,6 +95,7 @@
       "location_update": "تم تحديث الموقع بنجاح",
       "data_entry": "تم إرسال البيانات المدخلة بنجاح",
       "offline_entry_queued": "يبدو أنك غير متصل بالإنترنت. تم وضع الإدخال في قائمة الإنتظار.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "تمت مزامنة المدخلات بنجاح."
     },
     "error": {
