@@ -29,11 +29,12 @@
     "first_entry_disclaimer": "Wpisy są wysyłane do bazy danych w oparciu o twoje urządzenie. Prosimy, abyś wysyłał informacje o swoim stanie, za każdym razem korzystając z tego samego urządzenia. Pozwoli nam to lepiej monitorować twój stan.",
     "last_submission": "Najnowszy wpis",
     "submission_period_disclaimer": "Aby uniknąć przechowywania nadmiarowych danych, wpisy można dodawać nie częściej, niż co 12 godzin.",
-    "queued_entries": "Masz %{queuedEntries} zakolejkowanych wpisow, które nie zostały jeszcze przesłane do serwisu.",
     "sync_now": "Synchronizuj teraz",
     "new_entry": "Nowy wpis",
     "first_time_disclaimer": "Ponieważ używasz Fevermap poraz pierwszy, musimy zadać Ci kilka dodatkowych pytań.",
     "these_questions_wont_be_repeated": "Te pytania nie będą już zadawane przy kolejnych wpisach.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "Jaka jest twoja temperatura ciała?",
       "temperature": "Temperatura",

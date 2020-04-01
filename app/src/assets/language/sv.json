@@ -29,11 +29,12 @@
     "first_entry_disclaimer": "Din data skickas in på basen av den dator eller telefon du använder. Vi skulle uppskatta om du kan använda samma apparat varje gång. Detta hjälper oss att följa din febernivå bättre.",
     "last_submission": "Senaste registrering",
     "submission_period_disclaimer": "För att undvika onödiga data, så begränsas registreringar till var 12:e timme.",
-    "queued_entries": "Du has %{queuedEntries} registreringar som ännu inte har skickats in till servern.",
     "sync_now": "Synkronisera nu",
     "new_entry": "Ny registrering",
     "first_time_disclaimer": "Eftersom detta är första gången du använder Fevermap, frågar vi några frågor först.",
     "these_questions_wont_be_repeated": "Följande gång behöver du inte svara på dessa.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "Vad är din kroppstemperatur?",
       "temperature": "Temperatur",

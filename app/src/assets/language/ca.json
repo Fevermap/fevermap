@@ -24,11 +24,12 @@
     "first_entry_disclaimer": "Els registres s'envien a la base de dadades en funció del teu dispositiu. Per això és millor si envies la teva informació sempre des del mateix dispositiu. Això ens permetrà monitoritzar millor l'estat de la teva febre.",
     "last_submission": "Últimes dadades enviades",
     "submission_period_disclaimer": "Per evitar dades innecessàries, només es podràn enviar dades una vegada cada dotze hores.",
-    "queued_entries": "Tens %{queuedEntries} registres que encara no s'han sincronitzat amb el servidor.",
     "sync_now": "Sincronitzar ara",
     "new_entry": "Nou registre",
     "first_time_disclaimer": "Com és la primera vegada que fas servir Fevermap, et farem unes preguntes.",
     "these_questions_wont_be_repeated": "Aquestes preguntes no es repetiràn per registres futurs.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "Quina és la teva temperatura?",
       "temperature": "Temperatura",

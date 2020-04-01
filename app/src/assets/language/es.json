@@ -28,11 +28,12 @@
     "first_entry_disclaimer": "Los registros son enviados a la base de datos en función de tu dispositivo. Por ello mejor si envías tu información siempre desde el mismo dispositivo. Esto nos permitirá monitorizar mejor el estado de tu fiebre.",
     "last_submission": "Últimos datos enviados",
     "submission_period_disclaimer": "Para evitar datos innecesarios, sólo se podrá enviar datos una vez cada doce horas.",
-    "queued_entries": "Tienes %{queuedEntries} registros que aún no han sido sincronizados con el servidor.",
     "sync_now": "Sincronizar ya",
     "new_entry": "Nuevo registro",
     "first_time_disclaimer": "Como es la primera vez que usas Fevermap, te haremos antes unas preguntas.",
     "these_questions_wont_be_repeated": "Estas preguntas no se repetirán para registros futuros.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "¿Cuál es tu temperatura?",
       "temperature": "Temperatura",

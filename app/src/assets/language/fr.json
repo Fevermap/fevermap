@@ -28,11 +28,12 @@
     "first_entry_disclaimer": "Les entrées sont enregistrées dans la base de données en fonction de votre appareil. Nous vous serions reconnaissants de nous communiquer vos informations à chaque fois à partir du même appareil. Cela nous permettra de mieux surveiller vos symptomes.",
     "last_submission": "Dernière saisie",
     "submission_period_disclaimer": "Pour éviter les données inutiles, les saisies sont limitées à une fois toutes les 12 heures.",
-    "queued_entries": "Vous avez %{queuedEntries} entrées qui n'ont pas encore été synchronisées avec le serveur.",
     "sync_now": "Synchronisez maintenant",
     "new_entry": "New entry",
     "first_time_disclaimer": "As this is your first time using Fevermap, we will ask you a few questions first.",
     "these_questions_wont_be_repeated": "These questions won't be repeated on future submissions.",
+    "queued_entries": "You have queued entries",
+    "send_now": "Send now",
     "questions": {
       "what_is_your_temperature": "What's your temperature?",
       "temperature": "Temperature",

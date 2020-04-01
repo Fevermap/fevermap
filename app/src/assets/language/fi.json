@@ -29,11 +29,12 @@
     "first_entry_disclaimer": "Kirjaukset merkitään tietokantaan laitteen mukaan, jonka vuoksi toivomme, että syötät tietosi aina samalta laitteelta. Tällöin voimme seurata kuumetilasi kehittymistä paremmin.",
     "last_submission": "Viimeisin kirjaus",
     "submission_period_disclaimer": "Välttyäksemme turhalta datalta, kirjaukset on rajoitettu tehtäväksi kerran joka 12. tunti.",
-    "queued_entries": "Sinulla on %{queuedEntries} kirjausta, joita ei ole vielä synkronoitu serverin kanssa.",
     "sync_now": "Synkronoi nyt",
     "new_entry": "Uusi kirjaus",
     "first_time_disclaimer": "Koska tämä on ensimmäinen kertasi Fevermapissa, kysymme sinulta ensin muutaman kysymyksen.",
     "these_questions_wont_be_repeated": "Näitä kysymyksiä ei kysytä enää seuraavilla kerroilla.",
+    "queued_entries": "Sinulla on kirjauksia jonossa",
+    "send_now": "Lähetä nyt",
     "questions": {
       "what_is_your_temperature": "Mikä on lämpötilasi?",
       "temperature": "Lämpötila",

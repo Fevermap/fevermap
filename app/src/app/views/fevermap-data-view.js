@@ -236,9 +236,9 @@ class FevermapDataView extends LitElement {
             ${this.queuedEntries && this.queuedEntries.length > 0
               ? html`
                   <div class="queued-entries">
-                    <p>Sinulla on kirjauksia jonossa</p>
+                    <p>${Translator.get('entry.queued_entries')}</p>
                     <material-button
-                      label="Lähetä nyt"
+                      label="${Translator.get('entry.send_now')}"
                       icon="sync"
                       @click="${() => this.syncQueuedEntries()}"
                     ></material-button>
