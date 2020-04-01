@@ -62,11 +62,15 @@ class FevermapLanding extends LitElement {
             <p>
               ${Translator.get('landing.about_data_collection')}
             </p>
-            <p class="participant-count-subtitle">
-              ${Translator.get('landing.about_current_participant_count', {
-                participantCount: this.currentParticipantCount,
-              })}
-            </p>
+            ${this.currentParticipantCount > 2000
+              ? html`
+                  <p class="participant-count-subtitle">
+                    ${Translator.get('landing.about_current_participant_count', {
+                      participantCount: this.currentParticipantCount,
+                    })}
+                  </p>
+                `
+              : ''}
           </div>
           <div class="participation mb-4">
             <h2>${Translator.get('landing.how_to_participate')}</h2>
