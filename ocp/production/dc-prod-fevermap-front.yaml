@@ -1,0 +1,124 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: fevermap
+    app.kubernetes.io/component: front
+    app.kubernetes.io/instance: fevermap-front
+    app.kubernetes.io/name: nginx
+    app.kubernetes.io/part-of: fevermap
+    app.openshift.io/runtime: nginx
+    app.openshift.io/runtime-version: "1.12"
+    application: fevermap
+  name: fevermap-front
+  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-prod/deploymentconfigs/fevermap-front
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    deploymentconfig: fevermap-front
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deploymentconfig: fevermap-front
+    spec:
+      containers:
+      - image: docker-registry.default.svc:5000/fevermap-staging/fevermap@sha256:75f65757111c352e144bbf0340110f2589e024ee60e84b22e5def698c83d10ed
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /window-settings.js
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        name: fevermap
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /window-settings.js
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        resources:
+          limits:
+            memory: 1Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/app-root/src/window-settings.js
+          name: fevermap-window-settings
+          readOnly: true
+          subPath: window-settings.js
+        - mountPath: /opt/app-root/src/.well-known/acme-challenge/Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
+          name: challenge-api
+          readOnly: true
+          subPath: Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
+        - mountPath: /opt/app-root/src/.well-known/acme-challenge/EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
+          name: challenge-app
+          readOnly: true
+          subPath: EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: fevermap-window-settings
+        name: fevermap-window-settings
+      - configMap:
+          defaultMode: 420
+          name: challenge-api
+        name: challenge-api
+      - configMap:
+          defaultMode: 420
+          name: challenge-api
+        name: challenge-app
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - fevermap
+      from:
+        kind: ImageStreamTag
+        name: fevermap:release
+        namespace: fevermap-staging
+    type: ImageChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0

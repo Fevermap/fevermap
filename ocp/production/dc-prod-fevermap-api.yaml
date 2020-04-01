@@ -1,0 +1,109 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    app.openshift.io/connects-to: fevermap-db
+    openshift.io/generated-by: OpenShiftNewApp
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: fevermap
+    app.kubernetes.io/component: api
+    app.kubernetes.io/instance: fevermap-api
+    app.kubernetes.io/name: python
+    app.kubernetes.io/part-of: fevermap
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: "3.6"
+    application: fevermap
+  name: fevermap-api
+  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-prod/deploymentconfigs/fevermap-api
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    deploymentconfig: fevermap-api
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deploymentconfig: fevermap-api
+      name: ${name}-api
+    spec:
+      containers:
+      - env:
+        - name: FEVERMAP_API_DATABASE_URI
+          value: mysql://fevermap:7jKHCnIb3rvhBWuc@fevermap-db/fevermap?charset=utf8mb4
+        - name: FLASK_ENV
+          value: kube
+        - name: APP_SCRIPT
+          value: entrypoint.sh
+        - name: APPDIR
+          value: /opt/app-root/src
+        - name: UWSGIPLUGINLINE
+        image: docker-registry.default.svc:5000/fevermap-staging/fevermap-api@sha256:638f1429eadcc97576a552969e51637238acf932abb2eb5c846a735b620247ea
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/v0/stats
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 3
+        name: fevermap-api
+        ports:
+        - containerPort: 9000
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /api/v0/stats
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        resources:
+          limits:
+            memory: 1Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - fevermap-api
+      from:
+        kind: ImageStreamTag
+        name: fevermap-api:release
+        namespace: fevermap-staging
+    type: ImageChange
+  - type: ConfigChange
+status:
+  availableReplicas: 0
+  latestVersion: 0
+  observedGeneration: 0
+  replicas: 0
+  unavailableReplicas: 0
+  updatedReplicas: 0
