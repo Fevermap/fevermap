@@ -1,0 +1,26 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  creationTimestamp: null
+  labels:
+    app: fevermap
+    app.kubernetes.io/component: api
+    app.kubernetes.io/instance: fevermap-api
+    app.kubernetes.io/name: python
+    app.kubernetes.io/part-of: fevermap
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: "3.6"
+    application: fevermap
+  name: fevermap-api
+  selfLink: /apis/autoscaling/v1/namespaces/fevermap-prod/horizontalpodautoscalers/fevermap-api
+spec:
+  maxReplicas: 6
+  minReplicas: 2
+  scaleTargetRef:
+    apiVersion: v1
+    kind: DeploymentConfig
+    name: fevermap-api
+  targetCPUUtilizationPercentage: 50
+status:
+  currentReplicas: 0
+  desiredReplicas: 0

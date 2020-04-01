@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftNewApp
+    template.openshift.io/expose-uri: mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mariadb")].port}
+  creationTimestamp: null
+  labels:
+    app: fevermap-mysql-runtime
+    app.kubernetes.io/component: fevermap-db
+    app.kubernetes.io/instance: fevermap-db
+    app.kubernetes.io/name: fevermap-db
+    app.kubernetes.io/part-of: fevermap
+    application: fevermap
+    template: fevermap-mysql-persistent
+  name: fevermap-db
+  selfLink: /api/v1/namespaces/fevermap-prod/services/fevermap-db
+spec:
+  ports:
+  - name: mariadb
+    port: 3306
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    deploymentconfig: fevermap-db
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

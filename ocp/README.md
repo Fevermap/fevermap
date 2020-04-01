@@ -127,6 +127,54 @@ sets the address at boot time of container.
 
 # Self healing
 
-It's still to do that we set up limits and monitors for the components for
-memory/cpu usage. It would then autoscale application according to set rules. At
-any case, if container dies, it will be respawn by kubernetes.
+We have set up limits and monitors for the components for memory/cpu usage. It
+autoscale application according to set rules. If
+container dies, it will be respawn by kubernetes.
+
+# OpenShift settings
+
+All OpenShift settings are stored in /ocp directory of this repository.
+under OCP we have the following directories:
+
+## production
+
+Directory ocp/production contains
+
+* all yamls from production
+* script pull-prod-config.sh to update it from OCP Online
+* utility script to patch the production
+* template for example
+
+## staging
+
+Directory ocp/staging contains
+
+* all yamls from staging
+* script pull-staging-config.sh to update it from OCP Online.
+* utility script to patch the production
+* template for example
+
+## containers
+
+* buildah/docker -files for building the utility containers like the backup one.
+
+## Security
+
+Secrets like quay.io push, web certs, backup bucket key are stored encrypted.
+Encryption is done by using ansible-vault. There are always more than one person
+who holds the ansible vault key. Make sure you **never check in the secrets into
+git as plain text!**. An example to encrypt/decrypt a secret, e.g. when SSL certs
+are changed:
+
+```
+ansible-vault decrypt --vault-password-file .vault-pw secret-prod-aws-db-backup.yaml
+ansible-vault encrypt --vault-password-file .vault-pw secret-prod-aws-db-backup.yaml
+```
+
+The following files are encrypted:
+
+* route-prod-fevermap-api.yaml
+* route-prod-fevermap-front.yaml
+* secret-prod-aws-db-backup.yaml
+* secret-prod-fevermap-db.yaml
+
