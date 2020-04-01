@@ -94,6 +94,7 @@
       "location_update": "تم تحديث الموقع بنجاح",
       "data_entry": "تم إرسال البيانات المدخلة بنجاح",
       "offline_entry_queued": "يبدو أنك غير متصل بالإنترنت. تم وضع الإدخال في قائمة الإنتظار.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "تمت مزامنة المدخلات بنجاح."
     },
     "error": {

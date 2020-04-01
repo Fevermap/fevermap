@@ -96,6 +96,7 @@
       "location_update": "Location updated successfully",
       "data_entry": "Successfully submitted data entry",
       "offline_entry_queued": "Seems like you are offline. Entry has been queued.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Successfully synced entries."
     },
     "error": {

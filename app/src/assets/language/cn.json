@@ -94,6 +94,7 @@
       "location_update": "成功更新位置",
       "data_entry": "成功提交条目",
       "offline_entry_queued": "处于离线状态，记录已经存入队列",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "成功同步记录"
     },
     "error": {

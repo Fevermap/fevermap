@@ -94,6 +94,7 @@
       "location_update": "Lokacja zmieniona pomyślnie",
       "data_entry": "Wysłanie wpisu powiodło się",
       "offline_entry_queued": "Wygląda na to, że jesteś off-line. Wpisy zostały zakolejkowane.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Pomyślnie zsynchronizowano wpisy."
     },
     "error": {

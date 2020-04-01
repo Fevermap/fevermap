@@ -94,6 +94,7 @@
       "location_update": "Platsen uppdaterades",
       "data_entry": "Registreringen lyckades",
       "offline_entry_queued": "Det verkar som du är offline, registreringen är satt i kö.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Synkroniseringen lyckades."
     },
     "error": {

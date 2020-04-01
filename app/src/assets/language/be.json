@@ -94,6 +94,7 @@
       "location_update": "Месцазнаходжанне паспяхова абноўленае ",
       "data_entry": "Змены паспяхова унесеныя ",
       "offline_entry_queued": "Падобныя сетка Internet недаступная. Запіс быў пастаўлены ў чаргу на адпраўку.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Сінхранізацыя паспяхова завершаная."
     },
     "error": {

@@ -94,6 +94,7 @@
       "location_update": "Местонахождение успешно обновлено",
       "data_entry": "Измерение успешно зарегистрировано",
       "offline_entry_queued": "Похоже, сеть Internet недоступна. Запись была поставлена в очередь на отправку.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Синхронизация успешно завершена."
     },
     "error": {

@@ -88,6 +88,7 @@
       "location_update": "Ubicació actualiztada satisfactòriament",
       "data_entry": "Entrada de registre enviada satisfactòriament",
       "offline_entry_queued": "Sembla que t'has quedat sense xarxa. L'entrada s'ha posat a la cua.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Entrades sincronitzades satisfactòriament."
     },
     "error": {

@@ -93,6 +93,7 @@
       "location_update": "La position a été mise à jour",
       "data_entry": "Saisie des données réussie ",
       "offline_entry_queued": "Il semble que vous soyez hors ligne. Votre saisie a été mise en file d'attente.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Les entrées ont été synchronisées avec succès"
     },
     "error": {

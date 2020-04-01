@@ -88,6 +88,7 @@
       "location_update": "Posizione aggiornata con successo",
       "data_entry": "I valori sono stati inviati correttamente.",
       "offline_entry_queued": "Sembra che la connessione di rete sia non attiva. Il valore è stato inserito in coda.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "I valori sono stati sincronizzati con successo. "
     },
     "error": {

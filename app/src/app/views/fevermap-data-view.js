@@ -8,6 +8,8 @@ import FeverDataUtil from '../util/fever-data-util.js';
 import '../components/fever-chart.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import ScrollService from '../services/scroll-service.js';
+import DataEntryService from '../services/data-entry-service.js';
+import SnackBar from '../components/snackbar.js';
 
 class FevermapDataView extends LitElement {
   static get properties() {
@@ -23,6 +25,8 @@ class FevermapDataView extends LitElement {
       setBirthYear: { type: String },
       setCovidDiagnosis: { type: Boolean },
       showEditFields: { type: Boolean },
+
+      queuedEntries: { type: Array },
     };
   }
 
@@ -69,9 +73,13 @@ class FevermapDataView extends LitElement {
       this.submissionCount = submissionCount || 0;
       this.submissionStreak = submissionStreak || 0;
     });
+    document.addEventListener('update-queued-count', () => {
+      this.getQueuedEntriesFromIndexedDb();
+    });
     if (this.firstTimeSubmitting) {
       this.showEntryDialog();
     }
+    this.getQueuedEntriesFromIndexedDb();
     GoogleAnalyticsService.reportNavigationAction('Your Data View');
   }
 
@@ -116,6 +124,8 @@ class FevermapDataView extends LitElement {
     const queuedSubmissions = await db.getAll(QUEUED_ENTRIES);
     if (queuedSubmissions && queuedSubmissions.length > 0) {
       this.queuedEntries = queuedSubmissions;
+    } else {
+      this.queuedEntries = null;
     }
   }
 
@@ -165,6 +175,30 @@ class FevermapDataView extends LitElement {
     localStorage.setItem('COVID_DIAGNOSIS', this.setCovidDiagnosis);
   }
 
+  async syncQueuedEntries() {
+    const db = await DBUtil.getInstance();
+    let successfulSyncCount = 0;
+    await this.queuedEntries.map(async (entry, i) => {
+      const { id } = entry;
+      // delete entry.id;
+      const submissionResponse = await DataEntryService.handleDataEntrySubmission(entry, false);
+      if (submissionResponse.success) {
+        db.delete(QUEUED_ENTRIES, id);
+        DataEntryService.setEntriesToIndexedDb(submissionResponse);
+        successfulSyncCount += 1;
+      } else {
+        SnackBar.success(Translator.get('system_messages.success.entry_send_failed_queued'));
+      }
+      if (i === this.queuedEntries.length - 1) {
+        if (successfulSyncCount > 0) {
+          this.getQueuedEntriesFromIndexedDb();
+          this.getPreviousSubmissionsFromIndexedDb();
+          SnackBar.success(Translator.get('system_messages.success.sync_finished'));
+        }
+      }
+    });
+  }
+
   render() {
     return html`
       <div class="container view-wrapper fevermap-entry-view">
@@ -199,6 +233,18 @@ class FevermapDataView extends LitElement {
                 <p class="statistics-field--subtitle">${Translator.get('history.measurements')}</p>
               </div>
             </div>
+            ${this.queuedEntries && this.queuedEntries.length > 0
+              ? html`
+                  <div class="queued-entries">
+                    <p>Sinulla on kirjauksia jonossa</p>
+                    <material-button
+                      label="Lähetä nyt"
+                      icon="sync"
+                      @click="${() => this.syncQueuedEntries()}"
+                    ></material-button>
+                  </div>
+                `
+              : ''}
             ${this.createPersistentDataFields()}
             <div class="previous-submissions-list">
               ${this.previousSubmissions &&

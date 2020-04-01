@@ -92,6 +92,7 @@
       "location_update": "Ubicación actualizada satisfactoriamente",
       "data_entry": "Entrada de registro enviada satisfactoriamente",
       "offline_entry_queued": "Parece que te has quedado sin red. Tu entrada ha sido puesta en cola.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Entradas sincronizadas satisfactoriamente."
     },
     "error": {

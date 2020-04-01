@@ -93,6 +93,7 @@
       "location_update": "Ort erfolgreich aktualisiert",
       "data_entry": "Eintrag erfolgreich abgeschickt",
       "offline_entry_queued": "Offenbar sind Sie offline. Eintrag wartet.",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Einträge erfolgreich abgeglichen."
     },
     "error": {

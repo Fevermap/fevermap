@@ -89,6 +89,7 @@
             "location_update": "Місцезнаходження успішно оновлено",
             "data_entry": "Вимірювання успішно зареєстровано",
             "offline_entry_queued": "Схоже, мережа Internet недоступна. Запис було поставлено в чергу на відправку.",
+            "entry_send_failed_queued": "Submission failed. Entry has been queued.",
             "sync_finished": "Синхронізація успішно завершена."
         },
         "error": {

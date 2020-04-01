@@ -98,6 +98,7 @@
       "location_update": "Láthair nuashonraithe go rathúil",
       "data_entry": "Iontráil sonraí déanta go rathúil ",
       "offline_entry_queued": "Is cosúil go bhfuil tú as líne. Tá an iontráil sa scuaine. ",
+      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
       "sync_finished": "Iontrálacha sioncronaithe go rathúil."
     },
     "error": {
