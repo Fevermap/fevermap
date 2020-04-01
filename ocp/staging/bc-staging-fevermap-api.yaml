@@ -1,0 +1,43 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: feature-ocp-api-build
+    app.openshift.io/vcs-uri: https://gitlab.com/fevermap/fevermap.git
+  creationTimestamp: null
+  labels:
+    app: fevermap
+    app.kubernetes.io/component: fevermap-api
+    app.kubernetes.io/instance: fevermap-api
+    app.kubernetes.io/name: python
+    app.kubernetes.io/part-of: fevermap
+    app.openshift.io/runtime: python
+    app.openshift.io/runtime-version: "3.6"
+    env: staging
+  name: fevermap-api
+  selfLink: /apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-api
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: fevermap-api:latest
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    contextDir: /api
+    git:
+      ref: master
+      uri: https://gitlab.com/fevermap/fevermap.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: DockerImage
+        name: registry.redhat.io/ubi8/python-36
+      pullSecret:
+        name: registry-redhat-io-secret
+    type: Source
+  successfulBuildsHistoryLimit: 5

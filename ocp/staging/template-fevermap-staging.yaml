@@ -1,32 +1,31 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
-  app: ${NAME}
-  template: fevermap-mysql-runtime
+  app: fevermap-mysql-persistent
+  template: fevermap-mysql-persistent
+  application: ${NAME}
 message: |-
-  The following service(s) have been created in your project: ${NAME}-app ${NAME}-api, ${DATABASE_SERVICE_NAME}.
+  The following service(s) have been created in your project: ${NAME} ${NAME}-api, ${DATABASE_SERVICE_NAME}.
 
-  For more information about using this template, including OpenShift considerations, see
-  https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
+  For more information about using this template, including OpenShift considerations, see https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
 metadata:
   annotations:
     description: An example Fevermap application with a MariaDB database. For more information
-      about using this template, including OpenShift considerations, see
-      https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
+      about using this template, including OpenShift considerations, see https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
     iconClass: icon-python
     openshift.io/display-name: Fevermap
     openshift.io/documentation-url: https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md
-    openshift.io/long-description: This template defines resources needed to run
-      a Fevermap application, application deployment configurations, and database
-      deployment configuration.
+    openshift.io/long-description: This template defines resources needed to develop
+      a Fevermap application, including a build configurations, application deployment
+      configurations, and database deployment configuration.
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/support-url: https://gitlab.com/fevermap/fevermap/-/issues
     samples.operator.openshift.io/version: "0.1"
-    tags: quickstart,fevermap,python,nginx,mariadb
+    tags: quickstart,fevermap,python,nodejs,nginx,mariadb
     template.openshift.io/bindable: "false"
   labels:
     samples.operator.openshift.io/managed: "false"
-  name: fevermap-mysql-runtime
+  name: fevermap-mysql-persistent
 parameters:
 - description: The name prefix assigned to frontend objects defined in this template.
   displayName: Name
@@ -38,26 +37,11 @@ parameters:
   name: NAMESPACE
   required: true
   value: fevermap
-- description: The front-end container image pull URL.
-  displayName: Front Image URL
-  name: FRONT_IMG_URL
-  required: true
-  value: quay.io/fevermap/fevermap
-- description: Version of front image to be used (release-tag or latest).
-  displayName: Front-end image Version
-  name: FRONT_VERSION
+- description: Version of Python image to be used (3.6 or latest).
+  displayName: Python Version
+  name: PYTHON_VERSION
   required: false
-  value: "latest"
-- description: The API container image pull URL.
-  displayName: API Image URL
-  name: API_IMG_URL
-  required: true
-  value: quay.io/fevermap/fevermap-api
-- description: Version of API image to be used (release-tag or latest).
-  displayName: API image Version
-  name: API_VERSION
-  required: false
-  value: "latest"
+  value: "3.6"
 - description: Maximum amount of memory the frontend container can use.
   displayName: Memory Limit Frontned
   name: MEMORY_FRONT_LIMIT
@@ -78,6 +62,15 @@ parameters:
   name: VOLUME_CAPACITY
   required: true
   value: 1Gi
+- description: The URL of the repository with your application source code.
+  displayName: Git Repository URL
+  name: SOURCE_REPOSITORY_URL
+  required: true
+  value: https://gitlab.com/fevermap/fevermap.git
+- description: Set this to a branch name, tag or other ref of your repository if you
+    are not using the default branch.
+  displayName: Git Reference
+  name: SOURCE_REPOSITORY_REF
 - description: The exposed hostname that will route to the Fevermap frontend service,
     if left blank a value will be defaulted.
   displayName: Application Frontend Hostname
@@ -86,10 +79,6 @@ parameters:
     if left blank a value will be defaulted.
   displayName: Application API Hostname
   name: APPLICATION_API_DOMAIN
-- description: The exposed http path part that will route to the Fevermap API service,
-    can be left blank if no path is used. E.g. /api
-  displayName: Application API path
-  name: APPLICATION_API_PATH
 - description: Google Analytics property ID. Add this to activate Google Analytics,
     otherwise leave empty to not use GA.
   displayName: Google analytics property ID
@@ -170,6 +159,7 @@ objects:
     revisionHistoryLimit: 5
     selector:
       deploymentconfig: ${NAME}-db
+      #name: ${NAME}-db
     strategy:
       activeDeadlineSeconds: 21600
       recreateParams:
@@ -291,12 +281,13 @@ objects:
     annotations:
       template.openshift.io/expose-database_name: '{.data[''database-uri'']}'
     name: ${NAME}-api-db
+type: Opaque
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
-    name: ${NAME}-api
+    name: ubi8-python-36
     annotations:
-      description: Runtime image for API
+      description: Base image to build API onto
       template.alpha.openshift.io/wait-for-ready: "true"
   spec:
     lookupPolicy:
@@ -305,10 +296,64 @@ objects:
     - annotations: null
       from:
         kind: DockerImage
-        name: ${API_IMG_URL}:${API_VERSION}
+        name: ubi8/python-36
       name: latest
       referencePolicy:
         type: Source
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-api
+    annotations:
+      description: Defines how to build the application
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: ${NAME}-api
+    labels:
+      app.kubernetes.io/component: api
+      app.kubernetes.io/instance: ${NAME}
+      app.kubernetes.io/name: python
+      app.kubernetes.io/part-of: fevermap
+      app.openshift.io/runtime: python
+      app.openshift.io/runtime-version: ${PYTHON_VERSION}
+    annotations:
+      app.openshift.io/vcs-ref: ${SOURCE_REPOSITORY_REF}
+      app.openshift.io/vcs-uri: ${SOURCE_REPOSITORY_URL}
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: '${NAME}-api:latest'
+    successfulBuildsHistoryLimit: 5
+    failedBuildsHistoryLimit: 5
+    strategy:
+      type: Source
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: registry.redhat.io/ubi8/python-36
+        pullSecret:
+          name: registry-redhat-io-secret
+          ### XXX ^ what about the pull secret ^
+    source:
+      type: Git
+      git:
+        uri: ${SOURCE_REPOSITORY_URL}
+        ref: ${SOURCE_REPOSITORY_REF}
+      contextDir: /api
+    triggers:
+      - gitlab:
+          secret: ${GITLAB_WEBHOOK_SECRET}
+        type: GitLab
+      - type: ImageChange
+        imageChange:
+      - type: ConfigChange
+    runPolicy: Serial
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -320,7 +365,7 @@ objects:
       app.kubernetes.io/name: python
       app.kubernetes.io/part-of: fevermap
       app.openshift.io/runtime: python
-      app.openshift.io/runtime-version: "3.6"
+      app.openshift.io/runtime-version: ${PYTHON_VERSION}
     name: ${NAME}-api
   spec:
     replicas: 2
@@ -361,7 +406,7 @@ objects:
             imagePullPolicy: IfNotPresent
             name: ${NAME}-api
             ports:
-              - containerPort: 9000
+              - containerPort: 8080
                 protocol: TCP
             resources:
               limits:
@@ -408,12 +453,12 @@ objects:
     name: ${NAME}-api
   spec:
     host: ${APPLICATION_API_DOMAIN}
-    path: ${APPLICATION_API_PATH}
+    # path: /api
     port:
       targetPort: 9000-tcp
-    tls:
-      insecureEdgeTerminationPolicy: Allow
-      termination: edge
+    # tls:
+    #  insecureEdgeTerminationPolicy: Allow
+    #  termination: edge
     to:
       kind: Service
       name: ${NAME}-api
@@ -425,9 +470,9 @@ objects:
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
-    name: ${NAME}-app
+    name: ubi8-s2i-web-app
     annotations:
-      description: The final run-time image for frontend
+      description: Base image to build front 1 stage onto
       template.alpha.openshift.io/wait-for-ready: "true"
   spec:
     lookupPolicy:
@@ -436,16 +481,145 @@ objects:
     - annotations: null
       from:
         kind: DockerImage
-        name: ${FRONT_IMG_URL}:${FRONT_VERSION}
+        name: nodeshift/ubi8-s2i-web-app:10.x
       name: latest
       referencePolicy:
         type: Source
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-build
+    annotations:
+      description: 2nd Stage builder image for the front
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-runtime
+    annotations:
+      description: The run-time base image for API (second stage)
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: centos/nginx-112-centos7:latest
+      name: latest
+      referencePolicy:
+        type: Source
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-app
+    annotations:
+      description: The final run-time image for frontend
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    lookupPolicy:
+      local: false
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: ${NAME}-build
+    labels:
+      app.kubernetes.io/component: front
+      app.kubernetes.io/instance: ${NAME}-app
+      app.kubernetes.io/name: nodejs
+      app.kubernetes.io/part-of: fevermap
+      app.openshift.io/runtime: nodejs
+  spec:
+    failedBuildsHistoryLimit: 5
+    output:
+      to:
+        kind: ImageStreamTag
+        name: '${NAME}-build:latest'
+    resources:
+      limits:
+        memory: 2Gi
+    runPolicy: Serial
+    source:
+      contextDir: app
+      git:
+        uri: ${SOURCE_REPOSITORY_URL}
+        ref: ${SOURCE_REPOSITORY_REF}
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+          - name: NPM_BUILD
+            value: >-
+              webpack --mode production --env.NODE_ENV=production
+          - name: OUTPUT_DIR
+            value: dist
+        from:
+          kind: ImageStreamTag
+          name: 'ubi8-s2i-web-app:latest'
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+      - gitlab:
+          secret: ${GITLAB_WEBHOOK_SECRET}
+        type: GitLab
+      - type: ConfigChange
+      - imageChange:
+        type: ImageChange
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: ${NAME}-runtime
+    labels:
+      app.kubernetes.io/component: front
+      app.kubernetes.io/instance: ${NAME}-app
+      app.kubernetes.io/name: nginx
+      app.kubernetes.io/part-of: fevermap
+      app.openshift.io/runtime: nginx
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}-app:latest
+    runPolicy: Serial
+    source:
+      images:
+      - as: null
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-build:latest
+        paths:
+        - destinationDir: .
+          sourcePath: /opt/app-root/output/.
+      type: Image
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-runtime:latest
+        incremental: true
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - type: ConfigChange
+    - imageChange:
+      type: ImageChange
+    - imageChange:
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-build:latest
+      type: ImageChange
 - apiVersion: v1
   data:
     window-settings.js: |+
       window.URLS = {
-          API_URL: 'https://${APPLICATION_API_DOMAIN}',
-          APP_URL: 'https://${APPLICATION_FRONT_DOMAIN}',
+          API_URL: '${APPLICATION_FRONT_DOMAIN}',
+          APP_URL: '${APPLICATION_API_DOMAIN}',
       };
       window.GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
 
@@ -547,9 +721,9 @@ objects:
     host: ${APPLICATION_FRONT_DOMAIN}
     port:
       targetPort: 8080-tcp
-    tls:
-       insecureEdgeTerminationPolicy: Allow
-       termination: edge
+    # tls:
+    #  insecureEdgeTerminationPolicy: Allow
+    #  termination: edge
     to:
       kind: Service
       name: ${NAME}-app

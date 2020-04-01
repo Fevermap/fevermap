@@ -1,0 +1,73 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: fevermap-db-backup
+  selfLink: /apis/batch/v1beta1/namespaces/fevermap-prod/cronjobs/fevermap-db-backup
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            parent: db-backup
+        spec:
+          containers:
+          - env:
+            - name: BACKUP_FILE_SUFFIX
+              value: prod
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: fevermap-db
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: fevermap-db
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: fevermap-db
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_ACCESS_KEY
+                  name: aws-db-backup
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_SECRET
+                  name: aws-db-backup
+            - name: AWS_S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_S3_BUCKET
+                  name: aws-db-backup
+            - name: AWS_S3_REGION
+              valueFrom:
+                secretKeyRef:
+                  key: AWS_S3_REGION
+                  name: aws-db-backup
+            image: quay.io/fevermap/db-backup-job:latest
+            imagePullPolicy: Always
+            name: db-backup
+            resources: {}
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Never
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+  schedule: 0 */1 * * *
+  successfulJobsHistoryLimit: 1
+  suspend: false
+status: {}

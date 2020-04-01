@@ -1,0 +1,96 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  annotations:
+    pipeline.alpha.openshift.io/uses: '[{"name": "fevermap", "namespace": "fevermap-staging",
+      "kind": "DeploymentConfig"}]'
+  creationTimestamp: null
+  labels:
+    app: fevermap
+    env: staging
+  name: fevermap-pipeline
+  selfLink: /apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-pipeline
+spec:
+  failedBuildsHistoryLimit: 5
+  nodeSelector: {}
+  output: {}
+  postCommit: {}
+  resources: {}
+  runPolicy: Serial
+  source:
+    type: None
+  strategy:
+    jenkinsPipelineStrategy:
+      jenkinsfile: "def project = 'fevermap-staging'\npipeline {\n    agent {\n      kubernetes(\n
+        \       label: \"skopeo\",\n        cloud: \"openshift\",\n        inheritFrom:
+        \"maven\",\n        containers: [\n          containerTemplate(\n            name:
+        \"jnlp\",\n            image: \"quay.io/redhat-emea-ssa-team/jenkins-slave-skopeo:master\",\n
+        \           resourceRequestMemory: \"512Mi\",\n            resourceLimitMemory:
+        \"1Gi\"\n          )\n        ]\n      )\n    }\n    stages{\n        stage
+        ('Get commit info') {\n            steps{\n                script{\n                    git
+        branch: 'master', url: 'https://gitlab.com/fevermap/fevermap.git'\n                    sh
+        \"git rev-parse --short HEAD > .git/commit-id\"\n                    env.commit_id
+        = readFile('.git/commit-id')\n                    env.app_changed = sh(returnStdout:
+        true, script:\"/bin/bash -c 'git diff --stat HEAD^|grep -q \\\" app/\\\" &&
+        echo true || echo false'\").trim()\n                    env.api_changed =
+        sh(returnStdout: true, script:\"/bin/bash -c 'git diff --stat HEAD^|grep -q
+        \\\" api/\\\" && echo true || echo false'\").trim()\n                }\n            }\n
+        \       }\n        stage ('Run builds'){\n          parallel {\n            stage
+        ('Build - app') {\n              when {\n                  expression {\n
+        \                     return env.app_changed == 'true';\n                  }\n
+        \             }\n              steps{\n                script {\n                  openshift.withCluster()
+        {\n                    openshift.withProject(\"${project}\") {\n                      openshift.selector(\"bc\",
+        \"fevermap-app-compile\").startBuild(\"--wait=true\")\n                      openshift.selector(\"bc\",
+        \"fevermap-app\").startBuild(\"--wait=true\")\n                    }\n                  }\n
+        \               }\n              }\n            }\n            stage ('Build
+        - api') {\n              when {\n                  expression {\n                      return
+        env.api_changed == 'true';\n                  }\n              }\n              steps
+        {\n                script {\n                  openshift.withCluster() {\n
+        \                   openshift.withProject(\"${project}\") {\n                      openshift.selector(\"bc\",
+        \"fevermap-api\").startBuild(\"--wait=true\")\n                    }\n                  }\n
+        \               }\n              }\n            }\n          }\n        }\n
+        \       stage ('Tag images with commit'){\n          when {\n              expression
+        {\n                  return env.api_changed == 'true' || env.app_changed ==
+        'true';\n              }\n          }\n          steps{\n            script
+        {\n              openshift.withCluster() {\n                openshift.withProject(\"${project}\")
+        {\n                  openshift.tag(\"${project}/fevermap-api:latest\", \"${project}/fevermap-api:${env.commit_id}\")\n
+        \                 openshift.tag(\"${project}/fevermap-app:latest\", \"${project}/fevermap-app:${env.commit_id}\")\n
+        \               }\n              }\n            }\n          }\n        }\n
+        \       stage('Push app images tag to quay.io'){\n          when {\n              expression
+        {\n                  return env.api_changed == 'true' || env.app_changed ==
+        'true';\n              }\n          }\n          steps{\n            script
+        {\n              openshift.withCluster() {\n                withCredentials([usernamePassword(credentialsId:
+        \"fevermap-staging-quay-push-secret\", usernameVariable: \"QUAY_USER\", passwordVariable:
+        \"QUAY_PWD\")]) {\n                  def srcCatalogRef = openshift.selector(\"istag\",
+        \"fevermap-app:latest\").object().image.dockerImageReference\n                  def
+        srcToken = readFile \"/run/secrets/kubernetes.io/serviceaccount/token\"\n
+        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
+        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
+        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:latest \"\n
+        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
+        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
+        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:${env.commit_id}
+        \"\n                  \n                }\n              }\n            }\n
+        \         }\n        }\n        stage('Push api images tag to quay.io'){\n
+        \         when {\n              expression {\n                  return env.api_changed
+        == 'true' || env.app_changed == 'true';\n              }\n          }\n          steps{\n
+        \           script {\n              openshift.withCluster() {\n                withCredentials([usernamePassword(credentialsId:
+        \"fevermap-staging-quay-push-secret\", usernameVariable: \"QUAY_USER\", passwordVariable:
+        \"QUAY_PWD\")]) {\n                  def srcCatalogRef = openshift.selector(\"istag\",
+        \"fevermap-api:latest\").object().image.dockerImageReference\n                  def
+        srcToken = readFile \"/run/secrets/kubernetes.io/serviceaccount/token\"\n
+        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
+        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
+        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-api:latest \"\n
+        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
+        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
+        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-api:${env.commit_id}
+        \"\n                  \n                }\n              }\n            }\n
+        \         }\n        }\n    }\n}"
+    type: JenkinsPipeline
+  successfulBuildsHistoryLimit: 5
+  triggers:
+  - gitlab:
+      secretReference:
+        name: gitlab-webhook
+    type: GitLab

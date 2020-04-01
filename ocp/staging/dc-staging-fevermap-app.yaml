@@ -1,0 +1,74 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  creationTimestamp: null
+  generation: 1
+  labels:
+    app: fevermap
+    env: staging
+  name: fevermap-app
+  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-staging/deploymentconfigs/fevermap-app
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    deploymentconfig: fevermap-app
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      annotations:
+        openshift.io/generated-by: OpenShiftNewApp
+      creationTimestamp: null
+      labels:
+        deploymentconfig: fevermap-app
+    spec:
+      containers:
+      - image: fevermap-staging/fevermap-app:latest
+        imagePullPolicy: Always
+        name: fevermap-app
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        resources:
+          limits:
+            memory: 1Gi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/app-root/src/window-settings.js
+          name: window-settings
+          readOnly: true
+          subPath: window-settings.js
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: window-settings
+        name: window-settings
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - fevermap-app
+      from:
+        kind: ImageStreamTag
+        name: fevermap-app:latest
+        namespace: fevermap-staging
+    type: ImageChange
+  - type: ConfigChange

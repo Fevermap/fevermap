@@ -3,24 +3,21 @@ kind: DeploymentConfig
 metadata:
   annotations:
     app.openshift.io/connects-to: fevermap-db
-    openshift.io/generated-by: OpenShiftNewApp
   creationTimestamp: null
   generation: 1
   labels:
     app: fevermap
-    app.kubernetes.io/component: api
+    app.kubernetes.io/component: fevermap-api
     app.kubernetes.io/instance: fevermap-api
-    app.kubernetes.io/name: python
     app.kubernetes.io/part-of: fevermap
-    app.openshift.io/runtime: python
-    app.openshift.io/runtime-version: "3.6"
-    application: fevermap
+    env: staging
   name: fevermap-api
-  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-prod/deploymentconfigs/fevermap-api
+  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-staging/deploymentconfigs/fevermap-api
 spec:
   replicas: 2
   revisionHistoryLimit: 5
   selector:
+    app: fevermap-api
     deploymentconfig: fevermap-api
   strategy:
     activeDeadlineSeconds: 21600
@@ -34,12 +31,10 @@ spec:
     type: Rolling
   template:
     metadata:
-      annotations:
-        openshift.io/generated-by: OpenShiftNewApp
       creationTimestamp: null
       labels:
+        app: fevermap-api
         deploymentconfig: fevermap-api
-      name: ${name}-api
     spec:
       containers:
       - env:
@@ -55,32 +50,12 @@ spec:
         - name: APPDIR
           value: /opt/app-root/src
         - name: UWSGIPLUGINLINE
-        image: fevermap-staging/fevermap-api:release
+        image: fevermap-staging/fevermap-api:latest
         imagePullPolicy: IfNotPresent
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /api/v0/stats
-            port: 9000
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 3
         name: fevermap-api
         ports:
-        - containerPort: 9000
+        - containerPort: 8080
           protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /api/v0/stats
-            port: 9000
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 2
         resources:
           limits:
             memory: 1Gi
@@ -99,14 +74,7 @@ spec:
       - fevermap-api
       from:
         kind: ImageStreamTag
-        name: fevermap-api:release
+        name: fevermap-api:latest
         namespace: fevermap-staging
     type: ImageChange
   - type: ConfigChange
-status:
-  availableReplicas: 0
-  latestVersion: 0
-  observedGeneration: 0
-  replicas: 0
-  unavailableReplicas: 0
-  updatedReplicas: 0

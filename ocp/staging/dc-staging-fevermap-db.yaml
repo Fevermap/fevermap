@@ -2,26 +2,22 @@ apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
   annotations:
-    openshift.io/generated-by: OpenShiftNewApp
     template.alpha.openshift.io/wait-for-ready: "true"
   creationTimestamp: null
   generation: 1
   labels:
     app: fevermap
-    app.kubernetes.io/component: database
-    app.kubernetes.io/instance: fevermap-db
-    app.kubernetes.io/name: mariadb
+    app.kubernetes.io/component: fevermap-db
     app.kubernetes.io/part-of: fevermap
-    app.openshift.io/runtime: mariadb
-    application: fevermap
-    template: fevermap-mysql-persistent
+    env: staging
+    template: mariadb-ephemeral-template
   name: fevermap-db
-  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-prod/deploymentconfigs/fevermap-db
+  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-staging/deploymentconfigs/fevermap-db
 spec:
   replicas: 1
-  revisionHistoryLimit: 5
+  revisionHistoryLimit: 10
   selector:
-    deploymentconfig: fevermap-db
+    name: fevermap-db
   strategy:
     activeDeadlineSeconds: 21600
     recreateParams:
@@ -30,12 +26,9 @@ spec:
     type: Recreate
   template:
     metadata:
-      annotations:
-        openshift.io/generated-by: OpenShiftNewApp
       creationTimestamp: null
       labels:
-        deploymentconfig: fevermap-db
-      name: fevermap-db
+        name: fevermap-db
     spec:
       containers:
       - env:
@@ -93,16 +86,16 @@ spec:
         terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /var/lib/mysql/data
-          name: fevermap-data
+          name: feverdb-data
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: fevermap-data
+      - name: feverdb-data
         persistentVolumeClaim:
-          claimName: fevermap-mariadb-storage
+          claimName: mariadb-storage
   test: false
   triggers:
   - imageChangeParams:
@@ -115,10 +108,3 @@ spec:
         namespace: openshift
     type: ImageChange
   - type: ConfigChange
-status:
-  availableReplicas: 0
-  latestVersion: 0
-  observedGeneration: 0
-  replicas: 0
-  unavailableReplicas: 0
-  updatedReplicas: 0
