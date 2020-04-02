@@ -40,7 +40,7 @@ spec:
         deploymentconfig: fevermap-front
     spec:
       containers:
-      - image: docker-registry.default.svc:5000/fevermap-staging/fevermap@sha256:75f65757111c352e144bbf0340110f2589e024ee60e84b22e5def698c83d10ed
+      - image: fevermap-staging/fevermap-app:release
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -112,7 +112,7 @@ spec:
       - fevermap
       from:
         kind: ImageStreamTag
-        name: fevermap:release
+        name: fevermap-app:release
         namespace: fevermap-staging
     type: ImageChange
 status:
