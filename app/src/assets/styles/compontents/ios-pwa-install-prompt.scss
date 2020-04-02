@@ -1,0 +1,47 @@
+.ios-pwa-install-prompt {
+  position: fixed;
+  bottom: 5%;
+  left: 2.5%;
+  width: 95%;
+  background: #FFF;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 15px;
+
+  &--wrapper {
+    position: fixed;
+    z-index: 11;
+    transition: 0.5s ease-in;
+    opacity: 1;
+    &__hidden {
+      opacity: 0;
+    }
+  }
+
+  &--arrow {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(5% - 14.5px);
+    margin: auto;
+    background: #FFF;
+    height: 25px;
+    width: 25px;
+    transform: rotate(45deg);
+  }
+
+  img {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  p {
+    font-size: 0.8rem;
+    width: 80%;
+    flex-basis: 80%;
+    padding-right: 0.5rem;
+  }
+}
