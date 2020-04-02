@@ -4,6 +4,7 @@ import logoImg from '../../assets/images/landing-logo.png';
 import DataEntryService from '../services/data-entry-service.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import PWAService from '../services/pwa-service.js';
+import '../components/ios-pwa-install-prompt.js';
 
 class FevermapLanding extends LitElement {
   static get properties() {
