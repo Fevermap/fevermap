@@ -1,30 +1,27 @@
-const admin = require("firebase-admin");
 const express = require("express");
+const cors = require("cors");
 const app = express();
+const SubscriptionService = require("./subscription-service");
+
+const PORT = 9001;
+
+app.use(express.json());
+app.use(cors()); // Change in prod use
 
 // To make initialization work, a Firebase account file needs to be downloaded,
 // and exported with e.g. `export GOOGLE_APPLICATION_CREDENTIALS="/home/matsu/Downloads/fevermap-firebase-account-file.json`
 
-admin.initializeApp({
-  credential: admin.credential.applicationDefault(),
-  databaseURL: "https://fevermap-95d71.firebaseio.com"
+/**
+ * Used for registering a new Firebase token to notifications of certain topic
+ */
+app.post("/register", (req, res) => {
+  const subscriptionObject = req.body;
+  const subscriptionService = SubscriptionService.getInstance();
+  subscriptionService.subscribeUserToTopic(subscriptionObject, res);
 });
 
-const createMessage = topic => {
-  return { topic };
-};
+app.listen(PORT, () => {
+  console.log(`Push service API running at port ${PORT}`);
+});
 
-const subscribeUserToTopic = subscriptionObject => {
-  admin
-    .messaging()
-    .subscribeToTopic(
-      subscriptionObject.registrationToken,
-      subscriptionObject.topic
-    );
-};
-
-const sendMessage = topic => {
-  admin.messaging().send(createMessage("UTF-1"));
-};
-
-sendMessage();
+SubscriptionService.getInstance().sendMessage("UTC-180");

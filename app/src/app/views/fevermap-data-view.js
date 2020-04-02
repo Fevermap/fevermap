@@ -10,6 +10,7 @@ import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import ScrollService from '../services/scroll-service.js';
 import DataEntryService from '../services/data-entry-service.js';
 import SnackBar from '../components/snackbar.js';
+import NotificationService from '../services/notification-service';
 
 class FevermapDataView extends LitElement {
   static get properties() {

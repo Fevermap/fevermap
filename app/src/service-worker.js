@@ -66,7 +66,6 @@ registerRoute(
 );
 
 self.addEventListener('message', e => {
-  console.log('SW: new message: ', e);
   switch (e.data.type) {
     case 'SET_CLIENT_INFORMATION':
       self.CLIENT_ID = e.data.clientId;
@@ -85,6 +84,7 @@ self.addEventListener('message', e => {
 });
 
 const createHealthStatusNotification = e => {
+  console.log('Creating notification', e);
   const options = {
     body: 'How are you feeling today?',
     icon: 'app-icon-128x128.png',
@@ -122,12 +122,19 @@ const initFirebaseMessaging = () => {
   const messaging = firebase.messaging();
 
   messaging.setBackgroundMessageHandler(payload => {
+    self.registration.hideNotification();
     createHealthStatusNotification();
   });
 };
 
 self.addEventListener('push', e => {
   console.log('Received push', e);
+  const messageData = e.data.json().data;
+  // Prevent duplicate messages
+  if (messageData.timestamp === self.LAST_PUSH_NOTIFICATION_TIMESTAMP) {
+    return;
+  }
+  self.LAST_PUSH_NOTIFICATION_TIMESTAMP = e.data.json().data.timestamp;
   createHealthStatusNotification(e);
 });
 
@@ -209,6 +216,7 @@ self.onnotificationclick = e => {
       openAppFromNotification(e);
       break;
   }
+  e.notification.close();
 };
 
 cleanupOutdatedCaches();

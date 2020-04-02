@@ -13,7 +13,7 @@ export class ServiceWorkerService {
     });
 
     this.wb.register().then(reg => {
-      NotificationService.getFrontendMessagingObject(reg);
+      NotificationService.initFirebase(reg);
     });
 
     window.addEventListener('beforeinstallprompt', e => {
@@ -35,10 +35,14 @@ export class ServiceWorkerService {
    * push notification and offline use.
    */
   sendClientInformationToServiceWorker() {
+    const clientId = localStorage.getItem('DEVICE_ID');
     const lastLocation = JSON.parse(localStorage.getItem('LAST_LOCATION'));
+    if (!clientId || !lastLocation) {
+      return;
+    }
     ServiceWorkerService.sendMessage({
       type: 'SET_CLIENT_INFORMATION',
-      clientId: localStorage.getItem('DEVICE_ID'),
+      clientId,
       birthYear: localStorage.getItem('BIRTH_YEAR'),
       gender: localStorage.getItem('GENDER'),
       covidDiagnosis: localStorage.getItem('COVID_DIAGNOSIS'),

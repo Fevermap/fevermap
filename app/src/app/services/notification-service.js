@@ -7,33 +7,15 @@ export default class NotificationService {
   static requestNotificationPermissions() {
     Notification.requestPermission(status => {
       console.log(`Notification status: ${status}`);
+      if (status === 'granted') {
+        NotificationService.subscribeUserToTopic();
+      }
     });
-  }
-
-  static subscribeUser() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.ready.then(reg => {
-        reg.pushManager
-          .subscribe({
-            userVisibleOnly: true,
-          })
-          .then(sub => {
-            console.log('Subscription: ', sub);
-            console.log('Sub endpoint URL: ', sub.endpoint);
-          })
-          .catch(err => {
-            if (Notification.permission === 'denied') {
-              console.warn('Permission for notifications was denied.');
-            } else {
-              console.error('Unable to subscribe to push', err);
-            }
-          });
-      });
-    }
   }
 
   static createNotificationRequestDialog() {
     if (Notification.permission === 'granted') {
+      NotificationService.subscribeUserToTopic();
       return;
     }
     Dialog.open({
@@ -52,7 +34,7 @@ export default class NotificationService {
     });
   }
 
-  static initFirebase() {
+  static initFirebase(reg) {
     // Your web app's Firebase configuration
     const firebaseConfig = {
       apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
@@ -71,16 +53,26 @@ export default class NotificationService {
     messaging.usePublicVapidKey(
       'BPv6qlHh5D9NvPbV6NYE8PyyaxneISngPL6QSGKAvuyuVoPrXx8PMy_zJpXOXCL52VN1iDTlVOdm7jY9ehcfuK8',
     );
+    messaging.useServiceWorker(reg);
 
-    return messaging;
+    NotificationService._messaging = messaging;
   }
 
-  static getFrontendMessagingObject(reg) {
-    const messaging = NotificationService.initFirebase();
-    messaging.useServiceWorker(reg);
+  static async subscribeUserToTopic() {
+    if (Notification.permission === 'denied') {
+      return;
+    }
+    await NotificationService.waitForMessagingInit();
+    const messaging = NotificationService._messaging;
     messaging.getToken().then(currentToken => {
       if (currentToken) {
         console.log('Current token: ', currentToken);
+        const topic = `UTC${new Date().getTimezoneOffset()}`;
+        fetch('http://localhost:9001/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ registrationToken: currentToken, topic }),
+        });
       } else {
         console.log('Ask for permissions');
       }
@@ -91,6 +83,14 @@ export default class NotificationService {
         console.log('Token refreshed', refreshedToken);
       });
     });
-    return messaging;
+  }
+
+  static waitForMessagingInit() {
+    return new Promise(resolve => {
+      (function checkForMessagingInit() {
+        if (NotificationService._messaging) return resolve();
+        return setTimeout(checkForMessagingInit, 100);
+      })();
+    });
   }
 }
