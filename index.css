@@ -188,6 +188,14 @@ section {
   width: 7rem;
 }
 
+img#ui {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  max-width: 950px; /* Keep image from growing too high on wide screens */
+}
+
 h1 {
   font-weight: 700;
   font-family: Karla;
@@ -250,7 +258,7 @@ button {
   font-family: Karla;
 }
 
-section#main {
+section.mission {
   max-width: 60rem;
 }
 
