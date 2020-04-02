@@ -121,5 +121,14 @@
       "approve_text": "Salli ilmoitukset",
       "decline_text": "Ei kiitos"
     }
+  },
+
+  "notification": {
+    "daily_reminder": {
+      "title": "Hyvää huomenta! \uD83D\uDE0A",
+      "content": "Kuinka voit tänään?",
+      "healthy": "Hyvin",
+      "sick": "Huonosti"
+    }
   }
 }

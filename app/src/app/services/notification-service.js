@@ -3,10 +3,21 @@ import 'firebase/messaging';
 import Dialog from '../components/dialog.js';
 import Translator from '../util/translator.js';
 
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
+  authDomain: 'fevermap-95d71.firebaseapp.com',
+  databaseURL: 'https://fevermap-95d71.firebaseio.com',
+  projectId: 'fevermap-95d71',
+  storageBucket: 'fevermap-95d71.appspot.com',
+  messagingSenderId: '825429781563',
+  appId: '1:825429781563:web:3ff8c7f6e4bbf23c10c01e',
+  measurementId: 'G-3X5E6RLZBN',
+};
+
 export default class NotificationService {
   static requestNotificationPermissions() {
     Notification.requestPermission(status => {
-      console.log(`Notification status: ${status}`);
       if (status === 'granted') {
         NotificationService.subscribeUserToTopic();
       }
@@ -35,17 +46,6 @@ export default class NotificationService {
   }
 
   static initFirebase(reg) {
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
-      authDomain: 'fevermap-95d71.firebaseapp.com',
-      databaseURL: 'https://fevermap-95d71.firebaseio.com',
-      projectId: 'fevermap-95d71',
-      storageBucket: 'fevermap-95d71.appspot.com',
-      messagingSenderId: '825429781563',
-      appId: '1:825429781563:web:3ff8c7f6e4bbf23c10c01e',
-      measurementId: 'G-3X5E6RLZBN',
-    };
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
 
@@ -64,24 +64,30 @@ export default class NotificationService {
     }
     await NotificationService.waitForMessagingInit();
     const messaging = NotificationService._messaging;
-    messaging.getToken().then(currentToken => {
-      if (currentToken) {
-        console.log('Current token: ', currentToken);
-        const topic = `UTC${new Date().getTimezoneOffset()}`;
-        fetch('http://localhost:9001/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ registrationToken: currentToken, topic }),
-        });
-      } else {
-        console.log('Ask for permissions');
-      }
-    });
+    messaging
+      .getToken()
+      .then(currentToken => {
+        if (currentToken) {
+          NotificationService.subscribeToTopic(currentToken);
+        }
+      })
+      .catch(() => {
+        // console.error('Error: ', err);
+      });
 
     messaging.onTokenRefresh(() => {
       messaging.getToken().then(refreshedToken => {
-        console.log('Token refreshed', refreshedToken);
+        NotificationService.subscribeToTopic(refreshedToken);
       });
+    });
+  }
+
+  static subscribeToTopic(registrationToken) {
+    const topic = `UTC${new Date().getTimezoneOffset()}`;
+    fetch('http://localhost:9001/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ registrationToken, topic }),
     });
   }
 

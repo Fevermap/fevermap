@@ -15,7 +15,7 @@ import '../components/gender-input.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import PWAService from '../services/pwa-service.js';
 import NotificationService from '../services/notification-service.js';
-import { ServiceWorkerService } from '../services/service-worker-service.js';
+import { syncClientInformation } from '../services/service-worker-service.js';
 
 class FevermapDataEntry extends LitElement {
   static get properties() {
@@ -355,8 +355,8 @@ class FevermapDataEntry extends LitElement {
       GoogleAnalyticsService.reportSubmission();
       PWAService.launchInstallDialog();
       this.closeView();
+      syncClientInformation();
       NotificationService.createNotificationRequestDialog();
-      ServiceWorkerService.sendMessage({ type: 'Test', message: 'Ebin' });
     } else {
       document.dispatchEvent(new CustomEvent('update-queued-count'));
       SnackBar.success(Translator.get('system_messages.success.entry_send_failed_queued'));

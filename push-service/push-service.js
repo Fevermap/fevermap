@@ -16,12 +16,15 @@ app.use(cors()); // Change in prod use
  */
 app.post("/register", (req, res) => {
   const subscriptionObject = req.body;
+  if (!subscriptionObject) {
+    res.json({ success: false });
+  }
   const subscriptionService = SubscriptionService.getInstance();
   subscriptionService.subscribeUserToTopic(subscriptionObject, res);
 });
+// Initialize service & timer
+SubscriptionService.getInstance();
 
 app.listen(PORT, () => {
   console.log(`Push service API running at port ${PORT}`);
 });
-
-SubscriptionService.getInstance().sendMessage("UTC-180");

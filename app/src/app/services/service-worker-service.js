@@ -3,7 +3,7 @@ import { Workbox } from 'workbox-window';
 import PWAService from './pwa-service.js';
 import NotificationService from './notification-service.js';
 
-export class ServiceWorkerService {
+export default class ServiceWorkerService {
   constructor() {
     this.wb = new Workbox('service-worker.js');
 
@@ -65,6 +65,10 @@ export class ServiceWorkerService {
   }
 }
 
-export default function ServiceWorkerServiceInit() {
+export function syncClientInformation() {
+  ServiceWorkerService._instance.sendClientInformationToServiceWorker();
+}
+
+export function ServiceWorkerServiceInit() {
   window.ServiceWorkerService = new ServiceWorkerService();
 }

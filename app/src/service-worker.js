@@ -9,6 +9,18 @@ import * as googleAnalytics from 'workbox-google-analytics';
 import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 import DataEntryService from './app/services/data-entry-service.js';
+import Translator from './app/util/translator.js';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
+  authDomain: 'fevermap-95d71.firebaseapp.com',
+  databaseURL: 'https://fevermap-95d71.firebaseio.com',
+  projectId: 'fevermap-95d71',
+  storageBucket: 'fevermap-95d71.appspot.com',
+  messagingSenderId: '825429781563',
+  appId: '1:825429781563:web:3ff8c7f6e4bbf23c10c01e',
+  measurementId: 'G-3X5E6RLZBN',
+};
 
 self.__WB_DISABLE_DEV_LOGS = true;
 
@@ -78,57 +90,59 @@ self.addEventListener('message', e => {
       self.API_URL = e.data.API_URL;
       self.APP_URL = e.data.APP_URL;
       break;
+    case 'SET_LANGUAGE':
+      self.LANGUAGE = e.data.LANGUAGE;
+      break;
     default:
       break;
   }
 });
 
 const createHealthStatusNotification = e => {
-  console.log('Creating notification', e);
+  Translator.setLang(self.LANGUAGE.key);
   const options = {
-    body: 'How are you feeling today?',
+    body: Translator.get('notification.daily_reminder.content'),
+    badge: 'icon-64x64.png',
     icon: 'app-icon-128x128.png',
     vibrate: [100, 50, 100],
+    timestamp: Date.now(),
     data: {
       dateOfArrival: Date.now(),
       primaryKey: '1',
     },
     actions: [
-      { action: 'log-healthy', title: 'Healthy' },
-      { action: 'log-not-healthy', title: 'Sick' },
+      { action: 'log-healthy', title: Translator.get('notification.daily_reminder.healthy') },
+      { action: 'log-not-healthy', title: Translator.get('notification.daily_reminder.sick') },
     ],
   };
   if (e) {
-    e.waitUntil(self.registration.showNotification('Good morning! :)', options));
+    e.waitUntil(
+      self.registration.showNotification(
+        Translator.get('notification.daily_reminder.title'),
+        options,
+      ),
+    );
   } else {
-    self.registration.showNotification('Good morning! :)', options);
+    self.registration.showNotification(
+      Translator.get('notification.daily_reminder.title'),
+      options,
+    );
   }
 };
 
 const initFirebaseMessaging = () => {
-  const firebaseConfig = {
-    apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
-    authDomain: 'fevermap-95d71.firebaseapp.com',
-    databaseURL: 'https://fevermap-95d71.firebaseio.com',
-    projectId: 'fevermap-95d71',
-    storageBucket: 'fevermap-95d71.appspot.com',
-    messagingSenderId: '825429781563',
-    appId: '1:825429781563:web:3ff8c7f6e4bbf23c10c01e',
-    measurementId: 'G-3X5E6RLZBN',
-  };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 
   const messaging = firebase.messaging();
 
-  messaging.setBackgroundMessageHandler(payload => {
+  messaging.setBackgroundMessageHandler(() => {
     self.registration.hideNotification();
     createHealthStatusNotification();
   });
 };
 
 self.addEventListener('push', e => {
-  console.log('Received push', e);
   const messageData = e.data.json().data;
   // Prevent duplicate messages
   if (messageData.timestamp === self.LAST_PUSH_NOTIFICATION_TIMESTAMP) {
@@ -196,6 +210,7 @@ const handleLoggingHealthy = () => {
         DataEntryService.setEntriesToIndexedDb(res);
       }
     })
+    // eslint-disable-next-line no-console
     .catch(err => console.error(err));
 };
 

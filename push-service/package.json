@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "dayjs": "^1.8.23",
     "express": "^4.17.1",
     "firebase-admin": "^8.10.0"
   }
