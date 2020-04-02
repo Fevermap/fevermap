@@ -87,22 +87,65 @@ Front end and API logs are collect and visible within OpenShift. Cluster might
 be set to provide elastic search and kibana for logs. Monitoring by prometheus
 is not set up yet.
 
-# Image builds.
+# Build and Release Process
 
 Fevermap has been setup with environment in OpenShift Online cloud service for
 automated image builds, and test/stage environment. Environment follows the git
 changes, and rebuilds and deploys the new versions based on code changes in
-GitLab.
+GitLab. Pipelines are in
+[ocp/staging/pipelines](https://gitlab.com/fevermap/fevermap/-/tree/master/ocp/staging/pipelines)
+directory.
 
-After code changes the rebuilt images are shared for further use and security
-scanning. Jenkins job uploads images here:
+Everything start from merge, commit or tag of master branch in gitlab. That will
+send webhook to OCP. OCP will run the following pipelines for image build in
+Jenkins.
 
-* [Frontend container](https://quay.io/repository/fevermap/fevermap) including
-  static frontpage
-* [API container](https://quay.io/repository/fevermap/fevermap-api) including
-  the API code
+## Code change
 
-Quay.io container registry then does security scanning on them.
+First we evaluate which directories the changes are in. If it doesn't consern
+the ```app/``` or ```api/``` dir, we don't care:
+
+![detect change](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-detect-change.png)
+
+If the change is in ```api/``` or ```app/``` dirs, pipeline does the following
+steps:
+
+![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-build.png)
+
+1. Detect change, and accordingly kick OpenShift buildstream to:
+1.1. If API change, get the python container and do API image build with new code. Store the
+   new image locally
+1.2. If APP change, get the code and do nodejs build. Store the artifacts. Start
+   second build step to build NginX image with generated static code.
+2. Tag the built images with git version hash in OpenShift registry.
+3. Push images to Quay.io for further use and security scan.
+4. Tag image in Quay.io with git version hash.
+
+## Release a new SW version
+
+Once the team is ready to publish a new version into production, they create a
+new tag on master branch. The following pipeline get's triggered by webhook from
+gitlab:
+
+![release pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-release.png)
+
+1. Detect release tag
+2. Get commit hash
+3. Tag API image in local registry with release tag
+4. Tag APP image in local registry with release tag
+5. Tag [API image in Quay.io](https://quay.io/repository/fevermap/fevermap-api?tab=tags) with release tag
+6. Tag [APP image in Quay.io](https://quay.io/repository/fevermap/fevermap-app?tab=tags) with release tag
+
+OpenShift is set to trigger on the release tag. New release tag will cause a
+rolling upgrade for production. See
+[OpenShiftdocs](https://docs.openshift.com/container-platform/latest/applications/deployments/managing-deployment-processes.html)
+for options to roll back and forwards.
+
+Images can be used from there for local development too. You can see the info
+about images from Quay.io:
+
+![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-quayio-releases.png)
+
 
 ## Build strategies
 
@@ -164,7 +207,9 @@ Secrets like quay.io push, web certs, backup bucket key are stored encrypted.
 Encryption is done by using ansible-vault. There are always more than one person
 who holds the ansible vault key. Make sure you **never check in the secrets into
 git as plain text!**. An example to encrypt/decrypt a secret, e.g. when SSL certs
-are changed:
+are changed (both staging and production have
+[utility for this](https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/production/ensure-encrypt.sh)):
+
 
 ```
 ansible-vault decrypt --vault-password-file .vault-pw secret-prod-aws-db-backup.yaml
@@ -173,8 +218,6 @@ ansible-vault encrypt --vault-password-file .vault-pw secret-prod-aws-db-backup.
 
 The following files are encrypted:
 
-* route-prod-fevermap-api.yaml
-* route-prod-fevermap-front.yaml
-* secret-prod-aws-db-backup.yaml
-* secret-prod-fevermap-db.yaml
+* Routes with SSL certs and keys
+* Any kubernetes secret
 
