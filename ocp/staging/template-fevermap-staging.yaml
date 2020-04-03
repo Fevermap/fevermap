@@ -1,9 +1,8 @@
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
-  app: fevermap-mysql-persistent
   template: fevermap-mysql-persistent
-  application: ${NAME}
+  app: ${NAME}
 message: |-
   The following service(s) have been created in your project: ${NAME} ${NAME}-api, ${DATABASE_SERVICE_NAME}.
 
@@ -44,7 +43,7 @@ parameters:
   value: "3.6"
 - description: Maximum amount of memory the frontend container can use.
   displayName: Memory Limit Frontned
-  name: MEMORY_FRONT_LIMIT
+  name: MEMORY_APP_LIMIT
   required: true
   value: 512Mi
 - description: Maximum amount of memory the API container can use.
@@ -74,7 +73,7 @@ parameters:
 - description: The exposed hostname that will route to the Fevermap frontend service,
     if left blank a value will be defaulted.
   displayName: Application Frontend Hostname
-  name: APPLICATION_FRONT_DOMAIN
+  name: APPLICATION_APP_DOMAIN
 - description: The exposed hostname that will route to the Fevermap API service,
     if left blank a value will be defaulted.
   displayName: Application API Hostname
@@ -281,7 +280,7 @@ objects:
     annotations:
       template.openshift.io/expose-database_name: '{.data[''database-uri'']}'
     name: ${NAME}-api-db
-type: Opaque
+  type: Opaque
 - apiVersion: image.openshift.io/v1
   kind: ImageStream
   metadata:
@@ -618,8 +617,8 @@ type: Opaque
   data:
     window-settings.js: |+
       window.URLS = {
-          API_URL: '${APPLICATION_FRONT_DOMAIN}',
-          APP_URL: '${APPLICATION_API_DOMAIN}',
+          API_URL: 'http://${APPLICATION_API_DOMAIN}',
+          APP_URL: 'http://${APPLICATION_APP_DOMAIN}',
       };
       window.GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
 
@@ -659,7 +658,7 @@ type: Opaque
         containers:
         - image: ${NAME}-app:latest
           imagePullPolicy: Always
-          name: ${NAME}
+          name: ${NAME}-app
           ports:
           - containerPort: 8080
             protocol: TCP
@@ -690,7 +689,7 @@ type: Opaque
     - imageChangeParams:
         automatic: true
         containerNames:
-        - ${NAME}
+        - ${NAME}-app
         from:
           kind: ImageStreamTag
           name: ${NAME}-app:latest
@@ -716,9 +715,9 @@ type: Opaque
 - apiVersion: route.openshift.io/v1
   kind: Route
   metadata:
-    name: ${NAME}
+    name: ${NAME}-app
   spec:
-    host: ${APPLICATION_FRONT_DOMAIN}
+    host: ${APPLICATION_APP_DOMAIN}
     port:
       targetPort: 8080-tcp
     # tls:
