@@ -10,6 +10,7 @@ import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 import DataEntryService from './app/services/data-entry-service.js';
 import Translator from './app/util/translator.js';
+import dayjs from 'dayjs';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
@@ -93,12 +94,31 @@ self.addEventListener('message', e => {
     case 'SET_LANGUAGE':
       self.LANGUAGE = e.data.LANGUAGE;
       break;
+    case 'SET_LATEST_SUBMISSION_TIME':
+      self.LATEST_SUBMISSION_TIME = e.data.LATEST_SUBMISSION_TIME;
+      break;
     default:
       break;
   }
 });
 
+const hasUserSubmittedToday = () => {
+  if (self.LATEST_SUBMISSION_TIME) {
+    const latestSubmissionTime = dayjs(Number(self.LATEST_SUBMISSION_TIME));
+    const todayMidnight = dayjs(Date.now())
+      .set('hour', 0)
+      .set('minute', 0)
+      .set('second', 0);
+    return latestSubmissionTime.isAfter(todayMidnight);
+  }
+  return false;
+};
+
 const createHealthStatusNotification = e => {
+  const hasSubmittedTodayAlready = hasUserSubmittedToday();
+  if (hasSubmittedTodayAlready) {
+    return;
+  }
   Translator.setLang(self.LANGUAGE.key);
   const options = {
     body: Translator.get('notification.daily_reminder.content'),

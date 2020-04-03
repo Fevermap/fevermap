@@ -58,6 +58,13 @@ export default class ServiceWorkerService {
       API_URL: process.env.API_URL || window.URLS.API_URL,
       APP_URL: process.env.APP_URL || window.URLS.APP_URL,
     });
+    const latestSubmissionTime = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
+    if (latestSubmissionTime) {
+      ServiceWorkerService.sendMessage({
+        type: 'SET_LATEST_SUBMISSION_TIME',
+        LATEST_SUBMISSION_TIME: latestSubmissionTime,
+      });
+    }
   }
 
   static sendMessage(message) {
