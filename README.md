@@ -43,7 +43,7 @@ Please research some good contacts to your own national health authority and mak
 
 ### 4. Help us with design and research
 
-Browse issues at https://gitlab.com/groups/fevermap/-/issues and chip in the discussion!
+Browse issues at https://gitlab.com/groups/fevermap/-/issues and chip in the discussion on our [Slack channel](https://join.slack.com/t/hackthecrisisfinland/shared_invite/zt-cv34hdk4-hI9chEn0cUF~MAQBFqCvhg)!
 
 If you come across similar apps or initiatives, add them to the list in issue #1. If you want to help with the analysis and science, see issue #14. Discussion on what questions to ask is in #15, and UI design in #19 and marketing in #16.
 
@@ -52,6 +52,8 @@ If you come across similar apps or initiatives, add them to the list in issue #1
 If you have HTML/CSS/JS skills, you can participate in front-end development. See `app/README.md` for details.
 
 If you have Python/Flask skills, you can participate in back-end development. See `api/README.md` for details.
+
+If you have checked out a clone of this repository, simply run `docker-compose up --build` to play around with the [local development environment](https://www.youtube.com/watch?v=hsXWF-hpBJM).
 
 This is an open source project, so feel free to review the code, fix things you think are important and open a merge request for others to review.
 
