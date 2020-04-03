@@ -16,9 +16,10 @@ class SubscriptionService {
       credential: admin.credential.applicationDefault(),
       databaseURL: "https://fevermap-95d71.firebaseio.com"
     });
-    //    setInterval(() => this.handleDailyMessages(), 3600000);
     dayjs.extend(utc);
-    setInterval(() => this.handleDailyMessages(), 3000);
+    // Check the time every minute. Operates the messages only 4 times an hour,
+    // but since the server can be restarted, we can't rely on a looser timer.
+    setInterval(() => this.handleDailyMessages(), 60000);
     SubscriptionService._instance = this;
   }
 
@@ -39,22 +40,27 @@ class SubscriptionService {
     // Make sure javascript float parsing doesn't offset the number e.g. 41999 when should be 42000
     const diff = this.roundUp(notificationTime.unix() - time.unix(), 10);
     // Get difference to targeted notificationtime from now. This will act as timezone offset
-    let timeZoneOffset = this.roundUp(diff / 60, 10);
+    // Round to closest five to prevent situations like 614.1999999 from division of seconds
+    let timeZoneOffset = this.roundToFive(diff / 60);
 
     // If timezone Offset is above the maximum (Samoa timezone offset), we circle around
     if (timeZoneOffset > 840) {
-      timeZoneOffset -= 1440;
+      timeZoneOffset -= 1440; // 24 hours in minutes
     }
     const targetTimeZone = `UTC${timeZoneOffset * -1}`;
     console.log(`UTC time: ${time.format("DD-MM-YYYY : HH:mm")}`);
     console.log(
       `Sending a 18:00 notification to timezoneOffset ${targetTimeZone}`
     );
-    //this.sendMessage("UTC-180");
+    this.sendMessage(targetTimeZone);
   }
 
   roundUp(num, precision) {
     return Math.round(num / precision) * precision;
+  }
+
+  roundToFive(num) {
+    return Math.ceil(num / 5) * 5;
   }
 
   createMessage(topic) {
