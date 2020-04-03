@@ -112,6 +112,20 @@
       "content": "Fevermap можна усталяваць як прагрэсіўнае web-прыкладанне (PWA). У гэтым выпадку мы зможам прапанаваць вам дадатковыя функцыі, такія, як хуткае выкананне і push-паведамленні (хутка!).",
       "approve_text": "Усталяваць",
       "decline_text": "Пазней"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
+    }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
     }
   }
 }

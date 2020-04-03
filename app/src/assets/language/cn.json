@@ -113,6 +113,20 @@
       "content": "Fevermap可以作为渐进式Web应用程序安装。 如果已安装，我们可以为您提供更多的附加功能，例如更快的运行时间和推送通知（即将推出）。",
       "approve_text": "安装",
       "decline_text": "以后"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
+    }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
     }
   }
 }

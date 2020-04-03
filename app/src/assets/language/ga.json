@@ -117,6 +117,20 @@
       "content": "Is féidir Fevermap a suiteáil mar Fheidhmiú Forásach Gréasáin. Má dhéantar é a shuiteáil, is féidir linn áiseanna breise ar nós am rite níos tapúla agus fógraí brú (ag teacht go luath) .",
       "approve_text": "Suiteáil",
       "decline_text": "B'fhéidir ar ball"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
+    }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
     }
   }
 }

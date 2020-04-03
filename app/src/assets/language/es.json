@@ -111,6 +111,20 @@
       "content": "Fevermap se puede instalar como una aplicación web progresiva. Una vez instalada dispondrás de funcionalidad extra, como una ejecución más rápida y notificaciones directas (disponibles en breve).",
       "approve_text": "Instalar",
       "decline_text": "Ahora no"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
+    }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
     }
   }
 }

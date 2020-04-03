@@ -112,6 +112,20 @@
       "content": "L’application Fevermap peut être installée en tant qu'application web. Si elle est installée, nous pouvons vous fournir des fonctionnalités supplémentaires comme un temps d'exécution plus rapide et des notifications 'push' (en cours de développement)",
       "approve_text": "Installer",
       "decline_text": " Peut-être plus tard "
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
+    }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
     }
   }
 }
