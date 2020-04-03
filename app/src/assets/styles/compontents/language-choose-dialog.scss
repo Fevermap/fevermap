@@ -1,0 +1,79 @@
+@import "../palette";
+
+.language-choose-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  z-index:100;
+  background: rgba(255,255,255,0.99);
+
+  opacity: 1;
+  transition: 0.5s ease-in;
+  &--hidden {
+    opacity: 0;
+  }
+
+  &--window {
+    margin: 2.5rem auto 2.5rem;
+    min-height: 70%;
+    width: 50%;
+    top: 5vh;
+    left: 5vw;
+    background: #FFF;
+    border-radius: 15px;
+    z-index: 101;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10% 20%;
+    text-align: center;
+
+    p {
+      color: #8e8e8e;
+    }
+  }
+
+  &--button {
+    padding: 0.125rem 1rem;
+    border-radius: 10px;
+    border: 2px solid $bluegreen;
+    cursor: pointer;
+    background: #FFF;
+    transition: 0.2s linear;
+    color: #8e8e8e;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+
+    &:hover {
+      background: #fcfcfc;
+      color: $bluegreen;
+    }
+    p {
+      color: inherit;
+    }
+  }
+
+  &--options {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+@media only screen and (max-width: 720px) {
+  .language-choose-dialog {
+    &--window {
+      min-height: 90%;
+      height: auto;
+      width: 80%;
+      padding: 0 5%;
+    }
+
+    &--options {
+      justify-content: space-around;
+    }
+  }
+}

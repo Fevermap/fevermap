@@ -10,6 +10,7 @@ import './components/dialog.js';
 import './components/button.js';
 import './components/development-mode-banner.js';
 import AccessibilityUtil from './util/accessibility-util.js';
+import './components/language-choose-dialog.js';
 
 class FevermapRoot extends LitElement {
   static get properties() {
@@ -26,6 +27,11 @@ class FevermapRoot extends LitElement {
 
   firstUpdated() {
     AccessibilityUtil.init();
+    const preferredLangHasBeenSet = localStorage.getItem('PREFERRED_LANGUAGE');
+    if (!preferredLangHasBeenSet) {
+      const languageChooseDialog = document.createElement('language-choose-dialog');
+      document.body.appendChild(languageChooseDialog);
+    }
   }
 
   render() {
