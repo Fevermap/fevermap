@@ -3,6 +3,9 @@ import 'firebase/messaging';
 import Dialog from '../components/dialog.js';
 import Translator from '../util/translator.js';
 
+const pushServiceBaseUrl = process.env.PUSH_API_URL || window.URLS.PUSH_API_URL;
+const registrationUrl = `${pushServiceBaseUrl}/push-api/v0/register`;
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',
@@ -84,7 +87,7 @@ export default class NotificationService {
 
   static subscribeToTopic(registrationToken) {
     const topic = `UTC${new Date().getTimezoneOffset()}`;
-    fetch('http://localhost:9001/register', {
+    fetch(registrationUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ registrationToken, topic }),

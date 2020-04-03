@@ -59,6 +59,7 @@ class FevermapDataView extends LitElement {
   }
 
   firstUpdated() {
+    NotificationService.requestNotificationPermissions();
     this.getGeoLocationInfo();
     document.addEventListener('update-submission-list', () => {
       this.getPreviousSubmissionsFromIndexedDb();

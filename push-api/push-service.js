@@ -4,6 +4,8 @@ const app = express();
 const SubscriptionService = require("./subscription-service");
 
 const PORT = 9001;
+const VERSION = "v0";
+const PREFIX = "push-api";
 
 app.use(express.json());
 app.use(cors()); // Change in prod use
@@ -14,7 +16,7 @@ app.use(cors()); // Change in prod use
 /**
  * Used for registering a new Firebase token to notifications of certain topic
  */
-app.post("/register", (req, res) => {
+app.post(`/${PREFIX}/${VERSION}/register`, (req, res) => {
   const subscriptionObject = req.body;
   if (!subscriptionObject) {
     res.json({ success: false });

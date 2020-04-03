@@ -8,9 +8,9 @@ import { clientsClaim, skipWaiting } from 'workbox-core';
 import * as googleAnalytics from 'workbox-google-analytics';
 import * as firebase from 'firebase/app';
 import 'firebase/messaging';
+import dayjs from 'dayjs';
 import DataEntryService from './app/services/data-entry-service.js';
 import Translator from './app/util/translator.js';
-import dayjs from 'dayjs';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyCPAiiuIPv0-0gEn_6kjjBBJt8DUasgo6M',

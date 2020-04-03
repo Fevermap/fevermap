@@ -16,15 +16,20 @@ npm install
 # container in directory app/node_modules, but right now we will just live with
 # it.
 
-# Run webpack in development mode (this Dockerfile is only for development use)
-node node_modules/webpack-cli/bin/cli.js -w --mode development \
-  --env.NODE_ENV="development" --env.API_URL="http://localhost:9000" --env.PUSH_API_URL="http://localhost:9001" &
-# NOTE! The built files will end up with root ownership outside of the container
-# in directory app/dist, but right now we will just live with it.
+export GOOGLE_APPLICATION_CREDENTIALS="/app/fevermap-firebase-account-file.json"
 
-# Run ES server
-node node_modules/es-dev-server/dist/cli.js
+# Default to development if nothing is set
+if [ -z "$NODE_ENV" ]
+then
+  export NODE_ENV="development"
+fi
 
-# Both of the above watch the source code files for new changes and
-# automatically reload. This does however not apply to Webpack itself or its
-# configuration file changes.
+
+if [ "$NODE_ENV" == "development" ]
+then
+  # If run in development mode, run environment with nodemon to enable hot-reloads
+  npm run serve
+else
+  # If in production mode, run with regular node
+  node push-service.js
+fi
