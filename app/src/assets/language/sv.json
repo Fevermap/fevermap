@@ -4,16 +4,16 @@
   "fevermap_title": "Fevermap",
   "back": "Back",
   "today": "Today",
-  "user_description": "You are a %{age} -year-old %{gender}, with %{diagnosis}",
-  "a_covid_diagnosis": "a COVID-19 diagnosis",
-  "no_covid_diagnosis": "no COVID-19 diagnosis",
+  "user_description": "Du är en %{age} år gammal %{gender}, med %{diagnosis}",
+  "a_covid_diagnosis": "COVID-19 diagnos",
+  "no_covid_diagnosis": "ingen COVID-19 diagnos",
 
   "landing": {
     "about": "Om Fevermap",
     "about_title": "Vad är Fevermap?",
     "about_content_explanation": "är en webbapplikation skapad för att samla in data om Covid-19 epidemin.",
     "about_current_methods": "Nuvarande metoder för att följa med Coronavirusets spridning ger inte en fullständig bild. Det tar för länge att testa alla, och det finns hur som helst inte testutrustning för det.",
-    "about_solution": "Fevermap är en lösning på problemte. Med Fevermap kan vem som helst anmäla sin egen feber och andra symtpom anonymt. Med denna info kan vi uppskatta det verkliga antalet COVID-19 -infektioner i realtid och förse myndigheter med data som hjälper dem att i god tid ta databaserade, korrekta beslut om skyddsåtgärder.",
+    "about_solution": "Fevermap är en lösning på problemet. Med Fevermap kan vem som helst anmäla sin egen feber och andra symtpom anonymt. Med denna info kan vi uppskatta det verkliga antalet COVID-19 -infektioner i realtid och förse myndigheter med data som hjälper dem att i god tid ta databaserade, korrekta beslut om skyddsåtgärder.",
     "about_data_collection": "Data som insamlas av Fevermap är anonyma och kommer att användas för att öka medvetenheten om den globala situationen.",
     "about_current_participant_count": "Hittills har Fevermap samlat in rapporter från %{participantCount} personer.",
 
@@ -25,7 +25,7 @@
     "data_use_explanation": "All data anonymiseras och delas som öppen data genom vår API."
   },
   "entry": {
-    "data_entry": "Datainmatning",
+    "data_entry": "Dina data",
     "first_entry_disclaimer": "Din data skickas in på basen av den dator eller telefon du använder. Vi skulle uppskatta om du kan använda samma apparat varje gång. Detta hjälper oss att följa din febernivå bättre.",
     "last_submission": "Senaste registrering",
     "submission_period_disclaimer": "För att undvika onödiga data, så begränsas registreringar till var 12:e timme.",
@@ -80,27 +80,25 @@
   },
 
   "history": {
-    "title": "History",
-    "your_streak": "Your streak",
-    "days": "Days",
-    "total_entries": "Total entries",
-    "measurements": "measurement",
-    "add_entry": "Add entry"
+    "title": "Historik",
+    "your_streak": "Efterföljande dagar",
+    "days": "Dagar",
+    "total_entries": "Antal inlägg",
+    "measurements": "mätningar",
+    "add_entry": "Lägg till"
   },
-
   "stats": {
     "stats": "Statistik"
   },
-
   "system_messages": {
     "success": {
       "location_update": "Platsen uppdaterades",
       "data_entry": "Registreringen lyckades",
-      "offline_entry_queued": "Det verkar som du är offline, registreringen är satt i kö.",
-      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
+      "offline_entry_queued": "Det verkar som om du är offline, inlägget är satt i kö.",
+      "entry_send_failed_queued": "Det gick inte att skicka, inlägget väntar i kö.",
       "sync_finished": "Synkroniseringen lyckades.",
-      "subscribe_success": "Subscribed to push notifications successfully",
-      "unsubscribe_success": "Unsubscribed from push notifications successfully"
+      "subscribe_success": "Du kommer att få push-aviseringar",
+      "unsubscribe_success": "Du kommer inte längre att få push-aviseringar"
     },
     "error": {
       "age_not_in_range": "Ditt födelseår är inte i det tillåtna intervallet (1900 - 2020).",
@@ -108,9 +106,9 @@
       "location_data_invalid": "Den givna platset är inte giltig.",
       "api_data_invalid": "Data som skickades var inte giltiga.",
       "gender_not_set": "Du har inte valt kön.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
-      "subscribe_error": "Subscribing to push notifications failed",
-      "unsubscribe_error": "Unsubscribing from push notifications failed"
+      "do_not_submit_new_temp_until": "Vänligen skicka inte ett nytt inlägg förrän %{dateTime}",
+      "subscribe_error": "Det gick inte att registrera för push-aviseringar",
+      "unsubscribe_error": "Det gick inte att avregistrera push-aviseringar"
     }
   },
   "dialog": {
