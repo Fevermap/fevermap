@@ -1,10 +1,10 @@
-SPDX-License-Identifier: GPL-3.0
+SPDX-License-Identifier: GPL-3.0-only
 
 SPDX-FileCopyrightText: 2020 HH Partners, Attorneys-at-law, Ltd (info@hhpartners.fi)
 
 # Privacy documentation at Fevermap open source development project
 
-This document contains privacy related considerations in relation to Fevermap [Fevermap open source development project] (https://gitlab.com/fevermap/fevermap). As the open source development project does not run software in production, it therefore does not collect any production data. However, the software is created to be used, and it is already being used in production. While the open source development project does not accept any liability for others running software, pursuant to its [license terms] (https://gitlab.com/fevermap/fevermap/LICENSE), we still try to make usable software, and provide useable documentation to help in using the software. This privacy documentation is one example of that. If you find this useful, you are free to use this under the [project license] (https://gitlab.com/fevermap/fevermap/LICENSE).
+This document contains privacy related considerations in relation to Fevermap [Fevermap open source development project](https://gitlab.com/fevermap/fevermap). As the open source development project does not run software in production, it therefore does not collect any production data. However, the software is created to be used, and it is already being used in production. While the open source development project does not accept any liability for others running software, pursuant to its [license terms](https://gitlab.com/fevermap/fevermap/LICENSE), we still try to make usable software, and provide useable documentation to help in using the software. This privacy documentation is one example of that. If you find this useful, you are free to use this under the [project license](https://gitlab.com/fevermap/fevermap/LICENSE).
 
 ## No Legal Advice
 
@@ -20,7 +20,7 @@ Fevermap has secondarily been designed to enable more detailed and efficient tra
 
 ## What data does Fevermap process?
 
-For more details on what data Fevermap handles, pease see the respective [issue, and the below discussion] (https://gitlab.com/fevermap/fevermap/-/issues/20). The discussion contains, for example [an analysis on data points managed by some version of Fevermap] (https://gitlab.com/fevermap/fevermap/-/issues/20#note_317563175).
+For more details on what data Fevermap handles, pease see the respective [issue, and the below discussion](https://gitlab.com/fevermap/fevermap/-/issues/20). The discussion contains, for example [an analysis on data points managed by some version of Fevermap](https://gitlab.com/fevermap/fevermap/-/issues/20#note_317563175).
 
 ## What could a privacy notice look like in an anoymous production setting?
 
@@ -34,7 +34,7 @@ Due to the anonymous approach, X is not obligated to follow data protection regu
 
 #### What code is used for the service?
 
-X is built based on Fevermap, open source project. Please check [Fevermap Gitlab repository to inspect or view code being used to run X] (https://gitlab.com/fevermap/fevermap). X has / has not deviated from the Fevermap main line, but is not necessarily running the latest version of Fevermap open source project.
+X is built based on Fevermap, open source project. Please check [Fevermap Gitlab repository to inspect or view code being used to run X](https://gitlab.com/fevermap/fevermap). X has / has not deviated from the Fevermap main line, but is not necessarily running the latest version of Fevermap open source project.
 
 #### What data is collected by the service?
 
@@ -49,7 +49,7 @@ The service collects the following data points provided by the user:
 * Gender: male or female or not specified
 * Postal code; postal codes, when available, are meant to be grouped to a population amount of at least 1000 persons.
 * Location: location data with one decimal precision, roughly 10 kilometres (or 7 miles). You are using your browser to determine, whether to give location data or not. 
-    Your browser likely asks for your permission for this, check your browser's settings or documentation, if you are unsure. The precision with one decimal is about 10 kilometres depending on the latitude. See e.g. [Wikipedia article on decimal degrees] (https://en.wikipedia.org/wiki/Decimal_degrees). Location data is asked alongside population, since postal codes are not generally available or functioning in a trustworthy manner everywhere. The postal codes and location data points are also explored for usage in verifying the trustworthiness of individual submissions. 
+    Your browser likely asks for your permission for this, check your browser's settings or documentation, if you are unsure. The precision with one decimal is about 10 kilometres depending on the latitude. See e.g. [Wikipedia article on decimal degrees](https://en.wikipedia.org/wiki/Decimal_degrees). Location data is asked alongside population, since postal codes are not generally available or functioning in a trustworthy manner everywhere. The postal codes and location data points are also explored for usage in verifying the trustworthiness of individual submissions. 
 
 The above data precision has been determined based on analysing the amount of population in the geographical areas where this is being used, and erred on the side of caution. Background data points (age, gender) narrow down the population group in a geographical area to 5 %. Age is considered to narrow it down to 10 % and the gender data's impact is further narrowing down to 5 %. In case the size of the population group is 1000 or greater, this can be considered quite safely anonymous, since the remaining group size would be 50 or higher. However, not all age groups are equally large, so the narrowing down could be somewhat greater, but unlikely to be 5x greater or more. The symptoms data is considered to be non-identifying in nature, i.e. a third party cannot by looking at a person determine whether he or she has sometimes in the past had a fever entry of e.g. 37.9 centigrades.
 
