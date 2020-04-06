@@ -5,6 +5,7 @@ class LanguageChooseDialogButton extends LitElement {
     return {
       label: { type: String },
       language: { type: Object },
+      highLight: { type: Boolean },
     };
   }
 
@@ -17,7 +18,9 @@ class LanguageChooseDialogButton extends LitElement {
   render() {
     return html`
       <div
-        class="language-choose-dialog--button mdc-elevation--z3"
+        class="language-choose-dialog--button mdc-elevation--z3${this.highLight
+          ? ' language-choose-dialog--button__highlighted'
+          : ''}"
         @click="${this.handleLanguageSelection}"
       >
         <p>${this.label}</p>

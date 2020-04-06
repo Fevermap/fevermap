@@ -27,6 +27,7 @@ class LanguageChooseDialog extends LitElement {
   // eslint-disable-next-line class-methods-use-this
   setPreferredLang(lang) {
     localStorage.setItem('PREFERRED_LANGUAGE', lang.key);
+    localStorage.setItem('USER_SET_LANG', lang.key);
     Translator.setLang(lang.key);
     window.location.reload();
   }
@@ -40,12 +41,7 @@ class LanguageChooseDialog extends LitElement {
             Seems like it's your first time here. Please select the language you would like to use
             Fevermap with.
           </p>
-          <p>Our system recommended us to display Fevermap in:</p>
-          <language-choose-dialog-button
-            @language-selected="${e => this.setPreferredLang(e.detail.language)}"
-            label="${this.defaultedLanguage.name}"
-            .language="${this.defaultedLanguage}"
-          ></language-choose-dialog-button>
+          <p>We highlighted the language our system recommended us to display Fevermap in.</p>
           <p>
             However if this isn't the language you would like to use Fevermap with, choose your
             preferred language below.
@@ -58,6 +54,7 @@ class LanguageChooseDialog extends LitElement {
                     @language-selected="${e => this.setPreferredLang(e.detail.language)}"
                     label="${opt.name}"
                     .language="${opt}"
+                    ?highLight="${this.defaultedLanguage.key === opt.key}"
                   ></language-choose-dialog-button>
                 `,
             )}

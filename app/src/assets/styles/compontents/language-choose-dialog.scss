@@ -29,12 +29,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10% 20%;
+    padding: 2.5% 20%;
     text-align: center;
 
     p {
       color: #8e8e8e;
     }
+  }
+
+  language-choose-dialog-button {
+    flex-basis: 50%;
   }
 
   &--button {
@@ -47,6 +51,11 @@
     color: #8e8e8e;
     margin-bottom: 1rem;
     margin-right: 1rem;
+
+    &__highlighted {
+      background: #37d4d4;
+      color: #FFF;
+    }
 
     &:hover {
       background: #fcfcfc;

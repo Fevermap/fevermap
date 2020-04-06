@@ -23,7 +23,6 @@ class FevermapLanding extends LitElement {
   }
 
   firstUpdated() {
-    const deviceId = localStorage.getItem('DEVICE_ID');
     this.getCurrentStats();
     GoogleAnalyticsService.reportNavigationAction('About View');
   }
