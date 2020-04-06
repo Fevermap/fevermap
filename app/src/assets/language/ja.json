@@ -1,0 +1,120 @@
+{
+  "lang_name": "日本語",
+  "language": "言語",
+  "fevermap_title": "Fevermap",
+  "back": "戻る",
+  "today": "今日",
+  "user_description": "あなたは%{age}才の%{gender}、 with %{diagnosis}",
+  "a_covid_diagnosis": "a COVID-19 diagnosis",
+  "no_covid_diagnosis": "no COVID-19 diagnosis",
+
+  "landing": {
+    "about": "About",
+    "about_title": "Fevermapとは何ですか？",
+    "about_content_explanation": " は、コロナウイルスCOVID-19パンデミックの「有病率」を簡単かつリアルタイムに収集するために作成されたウェブおよびモバイルアプリケーションです。",
+    "about_current_methods": "コロナウイルスの流行を追跡する現在の方法では、完全な状況はわかりません。多くの方々は、必要な人が利用できる時間とリソースを確保するために、未テストのままです。",
+    "about_solution": "Fevermapはこの問題の解決策です。Fevermapを使用すると、世界中の一般の人々が発熱やその他の症状を匿名で自己報告できます。これは、COVID-19感染の本当の有病率をリアルタイムで推定し、保護対策に関するデータに基づいた正確でタイムリーな決定を下すのに役立つデータを当局（政府・地方自治体など）に提供できることを意味します。",
+    "about_data_collection": "Fevermapによって収集されたデータは匿名化されており、現在の地球規模の状況の認識を高めるために使用されます。",
+    "about_current_participant_count": "今日までに、%{participantCount}人のユーザーがFevermapを使用して症状を報告しています。 ",
+
+    "how_to_participate": "どうすれば参加できますか？",
+    "participation_info": "簡単です。自分の体温を測定して、誕生日や郵便番号などの統計情報も含めてサーバに提出します。",
+    "info_disclaimer": "私たちはあなたが特定されることにつながる可能性のある質問をしません。私たちはあなたのプライバシーと匿名性を大切にしています。",
+
+    "how_will_my_data_be_used": "私のデータはどのように使用されますか？",
+    "data_use_explanation": "データは匿名化され、その後APIインターフェースを通じてオープンデータとして共有されます。"
+  },
+  "entry": {
+    "data_entry": "データの入力",
+    "first_entry_disclaimer": "エントリーは、デバイスに基づいてデータベースに送信されます。毎回同じデバイスから情報を送信していただき、ありがとうございます。発熱の状態をより適切に監視できるようになります。",
+    "last_submission": "前回の送信",
+    "submission_period_disclaimer": "不要なデータを防ぐため、提出は12時間に1回に制限されています。",
+    "sync_now": "今すぐ同期",
+    "new_entry": "新規エントリー",
+    "first_time_disclaimer": "Fevermapの初回使用のため、最初にいくつか質問します。",
+    "these_questions_wont_be_repeated": "これらの質問は、今後の提出では繰り返されません。",
+    "queued_entries": "エントリーをキューに入れました",
+    "send_now": "今すぐ送る",
+    "questions": {
+      "what_is_your_temperature": "あなたの体温は？",
+      "temperature": "体温",
+      "how_much": "How much?",
+      "degrees_of_fever": "%{degrees} of fever",
+      "havent_measured_but": "私は体温を測定していませんが...",
+      "feel_healthy": "元気です",
+      "feel_feverish": "熱っぽい",
+      "set_temperature": "体温を設定",
+      "other_symptoms": "その他の症状？",
+      "choose_all_that_apply": "当てはまるものをすべて選択してください",
+      "difficulty_to_breathe": "呼吸困難",
+      "cough": "咳",
+      "sore_throat": "喉の痛み",
+      "muscular_pain": "筋肉痛",
+      "positive_covid_diagnosis": "COVID-19の診断が陽性です。",
+      "set_symptoms": "症状を設定",
+      "birth_year": "生年",
+      "birth_year_placeholder": "生年（1900 ～ 2020）",
+      "gender_in_passport": "パスポートまたは他の政府の記録に記載されている性別",
+      "male": "男性",
+      "female": "女性",
+      "location_information": "位置情報",
+      "whats_your_location": "あなたの位置はどこですか？",
+      "city": "区市町村",
+      "country": "国",
+      "postal_code": "郵便番号",
+      "location_determination_subtitle": "位置はロケーションAPIを使用して決定されます。 位置センサーを許可してください。",
+      "location_change_subtitle": "位置情報を更新するには、国と郵便番号入力フィールドの値を更新するか、下のボタンを押してください。",
+      "update_location": "位置を更新",
+      "use_gps": "GPSから位置を取得",
+      "set_location_and_submit": "位置を設定して送信"
+    },
+    "previous_submissions": "以前の送信",
+    "submit": "送信",
+    "save": "保存",
+
+    "last_submission_was_done": "あなたが最後に提出したのは%{date}",
+    "submission_count_text": "入力されました発熱情報は",
+    "submission_count_times": "回です。",
+    "currently_holding_a_streak_of": "現在の連続した日数は: ",
+    "streak_days": "日"
+  },
+
+  "history": {
+    "title": "履歴",
+    "your_streak": "ひと続き",
+    "days": "日",
+    "total_entries": "合計エントリー",
+    "measurements": "測定",
+    "add_entry": "エントリーを追加"
+  },
+
+  "stats": {
+    "stats": "統計情報"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "位置情報が正常に更新されました",
+      "data_entry": "データ入力が正常に送信されました",
+      "offline_entry_queued": "オフラインのようです。エントリーはキューに入れられました。",
+      "entry_send_failed_queued": "提出に失敗しました。エントリーはキューに入れられました。",
+      "sync_finished": "エントリを同期しました。"
+    },
+    "error": {
+      "age_not_in_range": "指定された生年は許容範囲内ではありません（1900 ～ 2020）。",
+      "fever_temp_value_invalid": "発熱温度の値が無効です。",
+      "location_data_invalid": "提供された位置情報は無効です。",
+      "api_data_invalid": "APIに送信されたデータは無効です。",
+      "gender_not_set": "性別が設定されていません。",
+      "do_not_submit_new_temp_until": "%{dateTime}まで新しい温度を送信しないでください。"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Fevermapをインストール",
+      "content": "Fevermapはプログレッシブウェブアプリケーションとしてインストールできます。インストールされている場合は、ランタイムの高速化やプッシュ通知（近日公開）などの優れた追加機能を提供できます。",
+      "approve_text": "インストール",
+      "decline_text": "いいえ、後で"
+    }
+  }
+}
