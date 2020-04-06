@@ -382,6 +382,7 @@ class FevermapDataView extends LitElement {
           })}.
         </p>
         <material-icon
+          tabindex="0"
           icon="edit"
           @click="${() => {
             this.showEditFields = !this.showEditFields;

@@ -1,6 +1,7 @@
 import { LitElement, html } from 'lit-element';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MDCDialog } from '@material/dialog/component';
+import tabtrap from 'tabtrap';
 
 export default class Dialog extends LitElement {
   static get properties() {
@@ -12,6 +13,8 @@ export default class Dialog extends LitElement {
       dialogDeclineText: { type: String },
       dialogDeclineEvent: { type: String },
       elem: { type: Object },
+
+      oldFocusElem: { type: Object },
     };
   }
 
@@ -27,12 +30,16 @@ export default class Dialog extends LitElement {
   }
 
   firstUpdated() {
+    this.oldFocusElem = document.activeElement;
     this.elem = new MDCDialog(this.querySelector('.mdc-dialog'));
     this.elem.open();
 
     this.elem.listen('MDCDialog:closed', e => {
       if (e.detail.action === 'yes') {
         document.dispatchEvent(new CustomEvent(this.dialogApproveEvent));
+      }
+      if (this.oldFocusElem) {
+        this.oldFocusElem.focus();
       }
     });
   }
@@ -47,6 +54,10 @@ export default class Dialog extends LitElement {
     dialog.setAttribute('dialogDeclineEvent', options.declineEvent);
 
     document.body.appendChild(dialog);
+    setTimeout(() => {
+      dialog.focus();
+      tabtrap.trapAll(dialog.querySelector('.mdc-dialog'));
+    });
   }
 
   render() {

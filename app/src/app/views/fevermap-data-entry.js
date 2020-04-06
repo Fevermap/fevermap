@@ -2,6 +2,7 @@
 import { LitElement, html } from 'lit-element';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MDCCheckbox } from '@material/checkbox/component';
+import tabtrap from 'tabtrap';
 import GeolocatorService from '../services/geolocator-service.js';
 import '../components/input-field.js';
 import '../components/select-field.js';
@@ -40,6 +41,8 @@ class FevermapDataEntry extends LitElement {
 
       symptoms: { type: Array },
       covidDiagnosed: { type: Boolean },
+
+      transitioning: { type: Boolean },
     };
   }
 
@@ -70,15 +73,20 @@ class FevermapDataEntry extends LitElement {
     this.currentQuestion = 1;
     this.questionCount = 4;
     this.symptoms = [];
+    this.transitioning = false;
   }
 
   firstUpdated() {
     this.initSlider();
     this.getGeoLocationInfo();
     this.carouselWrapper = this.querySelector('.fevermap-data-entry-content');
-    if (!this.firstTimeSubmitting) {
+    if (this.firstTimeSubmitting) {
       setTimeout(() => {
-        this.nextQuestion();
+        this.handleDialogFocus('#question-1');
+      });
+    } else {
+      setTimeout(() => {
+        this.nextQuestion(() => this.handleDialogFocus('#question-2'));
       });
     }
   }
@@ -156,12 +164,18 @@ class FevermapDataEntry extends LitElement {
       fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
     });
     celcius.addEventListener('keyup', e => {
+      if (e.key === 'Tab') {
+        return;
+      }
       this.handleCommaInput(e);
       this.feverAmount = e.target.value;
       fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(e.target.value);
       tempMeter.value = this.feverAmount;
     });
     fahrenheit.addEventListener('keyup', e => {
+      if (e.key === 'Tab') {
+        return;
+      }
       this.handleCommaInput(e);
       this.feverAmount = FeverDataUtil.fahrenheitToCelsius(e.target.value);
       celcius.value = this.feverAmount;
@@ -173,13 +187,15 @@ class FevermapDataEntry extends LitElement {
     });
 
     celcius.addEventListener('blur', e => {
-      if (e.target.value.length < 1) {
+      const val = e.target.value;
+      if (val.length < 1) {
         e.target.value = this.feverAmount;
       }
     });
 
     fahrenheit.addEventListener('blur', e => {
-      if (e.target.value.length < 1) {
+      const val = e.target.value;
+      if (val.length < 1) {
         e.target.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
       }
     });
@@ -426,74 +442,89 @@ class FevermapDataEntry extends LitElement {
     if (!this.validateAge(this.birthYear) || !this.validateGender(this.gender)) {
       return;
     }
-    this.nextQuestion();
+    this.nextQuestion(() => this.handleDialogFocus('#question-2'));
   }
 
   handleFeverInfoSubmit() {
-    this.nextQuestion();
+    this.nextQuestion(() => this.handleDialogFocus('#question-3'));
   }
 
   handleUnmeasuredFeverSubmit(hasFever) {
     this.hasFever = hasFever;
     this.feverAmount = null;
-    this.nextQuestion();
+    this.nextQuestion(() => this.handleDialogFocus('#question-3'));
     if (!hasFever) {
       // Skip symptoms
-      this.nextQuestion();
+      this.nextQuestion(() => this.handleDialogFocus('#question-4'));
     }
   }
 
   handleSymptomSubmit() {
     this.covidDiagnosed = this.querySelector('#covid-diagnosed').checked;
-    this.nextQuestion();
+    this.nextQuestion(() => this.handleDialogFocus('#question-4'));
   }
 
-  previousQuestion() {
+  previousQuestion(callback) {
     if (this.currentQuestion === 1) {
       return;
     }
     this.currentQuestion -= 1;
-    this.scrollToCurrentQuestion(false);
+    this.scrollToCurrentQuestion(false, callback);
   }
 
-  nextQuestion() {
-    if (this.currentQuestion === this.questionCount) {
+  nextQuestion(callback) {
+    if (this.currentQuestion === this.questionCount || this.transitioning) {
       return;
     }
+    this.transitioning = true;
     this.currentQuestion += 1;
-    this.scrollToCurrentQuestion();
+    this.scrollToCurrentQuestion(true, callback);
   }
 
-  scrollToCurrentQuestion(forwards = true) {
+  scrollToCurrentQuestion(forwards = true, callback) {
     const targetElem = this.querySelector(`#question-${this.currentQuestion}`);
     if (!targetElem) {
       return;
     }
     const target = targetElem.offsetLeft - (window.innerWidth - targetElem.clientWidth) / 2;
-    this.smoothScroll(this.carouselWrapper, target, forwards);
+    this.smoothScroll(this.carouselWrapper, target, forwards, callback);
+    this.transitioning = false;
   }
 
-  smoothScroll(div, target, forwards = true) {
+  smoothScroll(div, target, forwards = true, callback) {
     // Tickrate will determine the amount of iterations + 1 that the scrolling will do
     // To speed things up, change the division value. Smaller is faster.
     const tickRate = Math.abs(target - div.scrollLeft) / 30;
     if (forwards) {
-      (function smoothScroll() {
-        if (div.scrollLeft >= target) return;
+      (function smoothScroll(_this) {
+        if (div.scrollLeft >= target) {
+          callback.call();
+          return;
+        }
         div.scroll(div.scrollLeft + tickRate, 0);
-        setTimeout(smoothScroll, 10);
-      })();
+        setTimeout(() => smoothScroll(_this), 10);
+      })(this);
     } else {
       if (target < 0) {
         // eslint-disable-next-line no-param-reassign
         target = 0;
       }
-      (function smoothScrollBackwards() {
-        if (div.scrollLeft <= target) return;
+      (function smoothScrollBackwards(_this) {
+        if (div.scrollLeft <= target) {
+          if (callback) {
+            callback.call();
+          }
+          return;
+        }
         div.scroll(div.scrollLeft - tickRate, 0);
-        setTimeout(smoothScrollBackwards, 10);
-      })();
+        setTimeout(() => smoothScrollBackwards(_this), 10);
+      })(this);
     }
+  }
+
+  handleDialogFocus(dialogId) {
+    this.querySelector(dialogId).focus();
+    tabtrap.trapAll(dialogId);
   }
 
   handleSymptomAdd(e) {
@@ -531,21 +562,27 @@ class FevermapDataEntry extends LitElement {
       <div class="entry-dialog-close-button">
         <material-icon @click="${this.closeView}" icon="close"></material-icon>
       </div>
-      <div class="fevermap-entry-window mdc-elevation--z9" id="question-1">
+      <div class="fevermap-entry-window mdc-elevation--z9" id="question-1" tabindex="0">
         ${this.getPersonalQuestions()}
       </div>
-      <div class="fevermap-entry-window mdc-elevation--z9 fevermap-fever-questions" id="question-2">
+      <div
+        class="fevermap-entry-window mdc-elevation--z9 fevermap-fever-questions"
+        id="question-2"
+        tabindex="0"
+      >
         ${this.getFeverMeter()}
       </div>
       <div
         class="fevermap-entry-window mdc-elevation--z9 fevermap-other-symptoms-questions"
         id="question-3"
+        tabindex="0"
       >
         ${this.getSymptomsFields()}
       </div>
       <div
         class="fevermap-entry-window mdc-elevation--z9 fevermap-location-questions"
         id="question-4"
+        tabindex="0"
       >
         ${this.getGeoLocationInput()}
       </div>
@@ -576,7 +613,10 @@ class FevermapDataEntry extends LitElement {
 
   getFeverMeter() {
     return html`
-      <div class="back-button" @click="${this.previousQuestion}">
+      <div
+        class="back-button"
+        @click="${() => this.previousQuestion(() => this.handleDialogFocus('#question-1'))}"
+      >
         <material-icon icon="keyboard_arrow_left"></material-icon>${Translator.get('back')}
       </div>
       <div class="question-number-holder">
@@ -607,7 +647,15 @@ class FevermapDataEntry extends LitElement {
               </div>
             </div>
             <div class="fever-slider-element">
-              <input type="range" id="temperature-meter" min="35" max="42" step="0.1" value="35" />
+              <input
+                type="range"
+                id="temperature-meter"
+                min="35"
+                max="42"
+                step="0.1"
+                value="35"
+                tabindex="-1"
+              />
             </div>
             <div class="fever-amount-display">
               <div class="fever-amount-field  mdc-elevation--z3">
@@ -667,7 +715,10 @@ class FevermapDataEntry extends LitElement {
 
   getSymptomsFields() {
     return html`
-      <div class="back-button" @click="${this.previousQuestion}">
+      <div
+        class="back-button"
+        @click="${() => this.previousQuestion(() => this.handleDialogFocus('#question-2'))}"
+      >
         <material-icon icon="keyboard_arrow_left"></material-icon>${Translator.get('back')}
       </div>
       <div class="question-number-holder">
@@ -679,16 +730,31 @@ class FevermapDataEntry extends LitElement {
       </div>
       <p class="subtitle">${Translator.get('entry.questions.choose_all_that_apply')}</p>
       <div class="symptom-holder">
-        <div class="symptom" id="symptom_difficult_to_breath" @click="${this.handleSymptomAdd}">
+        <div
+          class="symptom"
+          id="symptom_difficult_to_breath"
+          @click="${this.handleSymptomAdd}"
+          tabindex="0"
+        >
           <p>${Translator.get('entry.questions.difficulty_to_breathe')}</p>
         </div>
-        <div class="symptom" id="symptom_cough" @click="${this.handleSymptomAdd}">
+        <div class="symptom" id="symptom_cough" @click="${this.handleSymptomAdd}" tabindex="0">
           <p>${Translator.get('entry.questions.cough')}</p>
         </div>
-        <div class="symptom" id="symptom_sore_throat" @click="${this.handleSymptomAdd}">
+        <div
+          class="symptom"
+          id="symptom_sore_throat"
+          @click="${this.handleSymptomAdd}"
+          tabindex="0"
+        >
           <p>${Translator.get('entry.questions.sore_throat')}</p>
         </div>
-        <div class="symptom" id="symptom_muscle_pain" @click="${this.handleSymptomAdd}">
+        <div
+          class="symptom"
+          id="symptom_muscle_pain"
+          @click="${this.handleSymptomAdd}"
+          tabindex="0"
+        >
           <p>${Translator.get('entry.questions.muscular_pain')}</p>
         </div>
       </div>
@@ -730,7 +796,10 @@ class FevermapDataEntry extends LitElement {
 
   getGeoLocationInput() {
     return html`
-      <div class="back-button" @click="${this.previousQuestion}">
+      <div
+        class="back-button"
+        @click="${() => this.previousQuestion(() => this.handleDialogFocus('#question-3'))}"
+      >
         <material-icon icon="keyboard_arrow_left"></material-icon>${Translator.get('back')}
       </div>
       <div class="question-number-holder">
