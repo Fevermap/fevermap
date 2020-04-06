@@ -11,18 +11,18 @@
   "landing": {
     "about": "Om Fevermap",
     "about_title": "Vad är Fevermap?",
-    "about_content_explanation": "är en webbapplikation skapad för att samla in data om Covid-19 epidemin.",
-    "about_current_methods": "Nuvarande metoder för att följa med Coronavirusets spridning ger inte en fullständig bild. Det tar för länge att testa alla, och det finns hur som helst inte testutrustning för det.",
-    "about_solution": "Fevermap är en lösning på problemet. Med Fevermap kan vem som helst anmäla sin egen feber och andra symtpom anonymt. Med denna info kan vi uppskatta det verkliga antalet COVID-19 -infektioner i realtid och förse myndigheter med data som hjälper dem att i god tid ta databaserade, korrekta beslut om skyddsåtgärder.",
-    "about_data_collection": "Data som insamlas av Fevermap är anonyma och kommer att användas för att öka medvetenheten om den globala situationen.",
+    "about_content_explanation": "Fevermap är en webbapplikation skapad för att samla in data om COVID-19 epidemin.",
+    "about_current_methods": "Nuvarande metoder för att följa med coronavirusets spridning ger inte en fullständig bild av situationen, eftersom det finns inte tillräckligt med tid eller testutrustning för att testa alla människor.",
+    "about_solution": "Fevermap är en lösning till detta problem med hjälp av datainsamlingen. Med Fevermap kan vem som helst rapportera sina egna symtom på COVID-19, till exempel feber och torrhosta. Med denna information kan vi uppskatta i realtid det verkliga antalet COVID-19 infektioner. Som resultat av datainsamlingen ger vi planerings- och beslutsstöd till myndigheterna, till exempel beträffande de lämpliga skyddsåtgärderna.",
+    "about_data_collection": "Informationen som samlas in via Fevermap är anonym. Datan används för att öka medvetenheten på global nivå, men ingen personlig information kan bevisas framåt.",
     "about_current_participant_count": "Hittills har Fevermap samlat in rapporter från %{participantCount} personer.",
 
     "how_to_participate": "Hur kan jag delta?",
-    "participation_info": "För att delta behöver du mäta din egen kroppstemperatur, och skicka in den tillsammans med annan information i datavyn.",
-    "info_disclaimer": "Vi ber inte om någon information som kan identifiera dig. Vi värnar om din integritet.",
+    "participation_info": "Första gången du använder Fevermap anmäler du din ålder och kön. Sen räcker det att mäta kroppstemperaturen (förhoppningsvis dagligen) och att anmäla den tillsammans med de andra möjliga symtomen du har.",
+    "info_disclaimer": "Vi ber inte om information som kan identifiera dig.",
 
     "how_will_my_data_be_used": "Hur kommer min data att användas?",
-    "data_use_explanation": "All data anonymiseras och delas som öppen data genom vår API."
+    "data_use_explanation": "Vi värnar om din integritet och ingen personlig information kan bevisas framåt. All data anonymiseras och delas som öppen data genom vår API."
   },
   "entry": {
     "data_entry": "Dina data",
