@@ -281,9 +281,39 @@ p.mdc-theme--error {
         background: $bluegreen;
       }
     }
+
+    .birth-year-range-selectors {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      .birth-year-range-selector {
+        border-radius: 5px;
+        background: #FFF;
+        flex-basis: calc(30% - 1rem);
+        padding: 0.5rem;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+        transition: 0.1s ease-in;
+
+        p {
+          margin: 0;
+        }
+
+        &--selected {
+          background: #32cd32;
+          p {
+            color: #FFF;
+          }
+        }
+      }
+    }
   }
 }
-
 
 .temperature-title {
   font-size: 1.2rem;
@@ -558,19 +588,21 @@ input[type="range"]::-webkit-slider-runnable-track {
         }
 
         .gender-input-holder {
+          width: 80%;
+          margin: 0 auto 1rem;
           .gender-input {
-            padding: 0.5rem 0 0;
+            padding: 0.5rem 0 0.5rem;
             img {
-              width: 20%;
+              width: 15%;
               max-width: 250px;
             }
             &--female {
               img {
-                width: 25%;
+                width: 15%;
               }
             }
             p {
-              margin: 0.5rem 0;
+              margin: 0.5rem 0 0;
             }
           }
         }
@@ -662,6 +694,16 @@ input[type="range"]::-webkit-slider-runnable-track {
         button {
           font-size: 0.5rem;
         }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 330px) {
+  .birth-year-range-selectors {
+    .birth-year-range-selector {
+      p {
+        font-size: 0.6rem
       }
     }
   }
