@@ -38,13 +38,11 @@ class LanguageChooseDialog extends LitElement {
         <div class="language-choose-dialog--window mdc-elevation--z3">
           <h1>Choose a language</h1>
           <p>
-            Seems like it's your first time here. Please select the language you would like to use
-            Fevermap with.
+            Seems like it’s your first time here.
           </p>
-          <p>We highlighted the language our system recommended us to display Fevermap in.</p>
           <p>
-            However if this isn't the language you would like to use Fevermap with, choose your
-            preferred language below.
+            We highlighted the language our system recommends for you. If this isn’t the language
+            you would like to use, choose your preferred language below
           </p>
           <div class="language-choose-dialog--options">
             ${this.possibleLanguages.map(

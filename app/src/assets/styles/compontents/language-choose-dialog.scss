@@ -48,7 +48,7 @@
     cursor: pointer;
     background: #FFF;
     transition: 0.2s linear;
-    color: #8e8e8e;
+    color: $gunmetal;
     margin-bottom: 1rem;
     margin-right: 1rem;
 
@@ -69,6 +69,7 @@
   &--options {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 1rem;
   }
 }
 
