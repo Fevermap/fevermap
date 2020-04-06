@@ -4,6 +4,8 @@ oc get bc -o yaml --export fevermap-app-compile > bc-staging-fevermap-app-compil
 oc get bc -o yaml --export fevermap-pipeline > bc-staging-fevermap-pipeline.yaml
 oc get bc -o yaml --export fevermap-release > bc-staging-fevermap-release.yaml
 oc get cm -o yaml --export window-settings > cm-staging-window-settings.yaml
+oc get cm -o yaml --export fevermap-app-nginx-liveness > cm-staging-liveness-nginx.yaml
+oc get cm -o yaml --export fevermap-api-uwsgi-starter > cm-staging-api-uwsgi-starter.yaml
 oc get is -o yaml --export fevermap-app > is-staging-fevermap-app.yaml
 oc get is -o yaml --export fevermap-app-compile > is-staging-fevermap-app-compile.yaml
 oc get is -o yaml --export fevermap-api > is-staging-fevermap-api.yaml

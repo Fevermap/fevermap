@@ -3,6 +3,8 @@
 # oc project fevermap-prod
 # and make sure you DON'T EVER PUSH THE SECRETS IN PLAINTEXT into git!
 
+oc get cm -o yaml --export fevermap-app-nginx-liveness > cm-prod-liveness-nginx.yaml
+oc get cm -o yaml --export fevermap-api-uwsgi-starter > cm-prod-uwsgi-starter.yaml
 oc get dc -o yaml --export fevermap-front > dc-prod-fevermap-front.yaml
 oc get dc -o yaml --export fevermap-api > dc-prod-fevermap-api.yaml
 oc get dc -o yaml --export fevermap-db > dc-prod-fevermap-db.yaml
@@ -19,3 +21,5 @@ oc get secret -o yaml --export fevermap-api-db > secret-prod-fevermap-api-db.yam
 oc get svc -o yaml --export fevermap-front > svc-prod-fevermap-front.yaml
 oc get svc -o yaml --export fevermap-api > svc-prod-fevermap-api.yaml
 oc get svc -o yaml --export fevermap-db > svc-prod-fevermap-db.yaml
+
+echo "Done. Remember to ansible-vault secret* and route*"
