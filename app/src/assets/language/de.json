@@ -3,10 +3,10 @@
   "language": "Sprache",
   "fevermap_title": "Fieberkarte",
   "back": "Zurück",
-  "today": "Today",
-  "user_description": "You are a %{age} -year-old %{gender}, with %{diagnosis}",
-  "a_covid_diagnosis": "a COVID-19 diagnosis",
-  "no_covid_diagnosis": "no COVID-19 diagnosis",
+  "today": "Heute",
+  "user_description": "Du bist %{age} Jahre alt und %{gender}, mit %{diagnosis}",
+  "a_covid_diagnosis": "Diagnose COVID-19 positiv",
+  "no_covid_diagnosis": "Diagnose COVID-19 negativ",
 
   "landing": {
     "about": "Über",
@@ -32,12 +32,12 @@
     "new_entry": "Neuer Eintrag",
     "first_time_disclaimer": "Bei der ersten Verwendung der Fieberkarte stellen wir einige Fragen.",
     "these_questions_wont_be_repeated": "Diese Fragen werden bei zukünftigen Übertragungen nicht wiederholt.",
-    "queued_entries": "You have queued entries",
-    "send_now": "Send now",
+    "queued_entries": "Du hast Einträge in der Warteschlange",
+    "send_now": "Absenden",
     "questions": {
       "what_is_your_temperature": "Wie ist die Temperatur?",
       "temperature": "Temperatur",
-      "how_much": "Wieviel?",
+      "how_much": "Wie hoch?",
       "degrees_of_fever": "%{degrees} Fieber",
       "not_measured": "Ungenau, nicht gemessen.",
       "set_temperature": "Temperatur setzen",
@@ -55,7 +55,7 @@
       "male": "Männlich",
       "female": "Weiblich",
       "location_information": "Ortsinformation",
-      "whats_your_location": "Wo sind Sie gerade?",
+      "whats_your_location": "Wo bist du gerade?",
       "city": "Ort",
       "country": "Land",
       "postal_code": "Postleitzahl",
@@ -72,17 +72,17 @@
     "last_submission_was_done": "Die letzte Übertragung war um %{date}",
     "submission_count_text": "Fieberinformation wurde ",
     "submission_count_times": " Mal eingegeben",
-    "currently_holding_a_streak_of": "Ihre aktuelle fortlaufende Meldezeitspanne ist: ",
+    "currently_holding_a_streak_of": "Deine aktuelle fortlaufende Meldezeitspanne ist: ",
     "streak_days": "Tage"
   },
 
   "history": {
-    "title": "History",
-    "your_streak": "Your streak",
-    "days": "Days",
-    "total_entries": "Total entries",
-    "measurements": "measurement",
-    "add_entry": "Add entry"
+    "title": "Historie",
+    "your_streak": "Deine Serie",
+    "days": "Tage",
+    "total_entries": "Einträge gesamt",
+    "measurements": "Messung",
+    "add_entry": "Eintrag hinzufügen"
   },
 
   "stats": {
@@ -93,8 +93,8 @@
     "success": {
       "location_update": "Ort erfolgreich aktualisiert",
       "data_entry": "Eintrag erfolgreich abgeschickt",
-      "offline_entry_queued": "Offenbar sind Sie offline. Eintrag wartet.",
-      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
+      "offline_entry_queued": "Offenbar bist du offline. Eintrag wartet.",
+      "entry_send_failed_queued": "Senden fehlgeschlagen. Eintrag nun in der Warteschlange.",
       "sync_finished": "Einträge erfolgreich abgeglichen."
     },
     "error": {
@@ -103,13 +103,13 @@
       "location_data_invalid": "Der angegebene Ort ist ungültig.",
       "api_data_invalid": "Die zur API geschickten Daten waren ungültig.",
       "gender_not_set": "Geschlecht ist nicht gesetzt.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Speichere keine neue Temperatur bis %{dateTime}"
     }
   },
   "dialog": {
     "pwa_installer": {
       "title": "Fieberkarte installieren",
-      "content": "Fieberkarte kann als progressive Webapplikation installiert werden. Bei Installation können wir Sie mit tollen neuen Extrafunktionen wie schnellerer Laufzeit und Push-Benachrichtigungen versorgen (kommt bald).",
+      "content": "Fieberkarte kann als progressive Webapplikation installiert werden. Bei Installation können wir Dich mit tollen neuen Extrafunktionen wie schnellerer Laufzeit und Push-Benachrichtigungen versorgen (kommt bald).",
       "approve_text": "Installieren",
       "decline_text": "Vielleicht später"
     }
