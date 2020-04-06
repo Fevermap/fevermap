@@ -44,7 +44,7 @@ class SubscriptionService {
     let timeZoneOffset = this.roundToFive(diff / 60);
 
     // If timezone Offset is above the maximum (Samoa timezone offset), we circle around
-    if (timeZoneOffset > 840) {
+    if (timeZoneOffset >= 840) {
       timeZoneOffset -= 1440; // 24 hours in minutes
     }
     const targetTimeZone = `UTC${timeZoneOffset * -1}`;
