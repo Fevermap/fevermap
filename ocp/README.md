@@ -39,11 +39,11 @@ Another way is to provision it from command line. Here are two examples, the sec
 one omits some parameters that are not necessary:
 
 ```
-curl https://gitlab.com/fevermap/fevermap/-/blob/feature/ocp-template/ocp/template-fevermap-persistent.yaml| \
+curl https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/staging/template-fevermap-staging.yaml| \
   oc new-app \
   -p NAME=test \
   -p NAMESPACE=fever-template \
-  -p MEMORY_FRONT_LIMIT=512Mi \
+  -p MEMORY_APP_LIMIT=512Mi \
   -p MEMORY_API_LIMIT=512Mi \
   -p MEMORY_MYSQL_LIMIT=512Mi \
   -p VOLUME_CAPACITY=1Gi \
@@ -62,12 +62,25 @@ from local file:
 
 ```
 oc new-app \
-  -f template-fevermap-persistent.yaml \
+  -f template-fevermap-staging.yaml \
   -p NAME=fevermap \
-  -p NAMESPACE=fever-template \
-  -p APPLICATION_FRONT_DOMAIN=front.apps.ocp4.konttikoulu.fi \
+  -p NAMESPACE=fevermap-staging \
+  -p APPLICATION_APP_DOMAIN=app.apps.ocp4.konttikoulu.fi \
   -p APPLICATION_API_DOMAIN=api.apps.ocp4.konttikoulu.fi
 ```
+
+for production kind of env:
+
+```
+oc new-app \
+  -f template-fevermap-runtime.yaml \
+  -p NAME=fevermap \
+  -p NAMESPACE=fevermap-prod \
+  -p APPLICATION_APP_DOMAIN=app-prod.apps.ocp4.konttikoulu.fi \
+  -p APPLICATION_API_DOMAIN=api-prod.apps.ocp4.konttikoulu.fi \
+  -p APP_IMG_URL=quay.io/fevermap/fevermap-app \
+  -p API_IMG_URL=quay.io/fevermap/fevermap-api
+  ```
 
 # Storage
 
