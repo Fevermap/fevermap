@@ -1,0 +1,36 @@
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: fevermap
+      app.kubernetes.io/component: fevermap-push-api
+      app.kubernetes.io/part-of: fevermap
+      env: staging
+    name: fevermap-push-api
+  spec:
+    failedBuildsHistoryLimit: 5
+    output:
+      to:
+        kind: ImageStreamTag
+        name: fevermap-push-api:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: /push-api
+      git:
+        uri: https://gitlab.com/fevermap/fevermap.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: NPM_BUILD
+          value: node install
+        from:
+          kind: ImageStreamTag
+          name: nodejs:10
+          namespace: openshift
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - type: ConfigChange

@@ -3,9 +3,11 @@
 echo "Encrypting files, it's fine if you see error about already encrypted files."
 
 for file in route-prod-fevermap-api.yaml \
+route-prod-fevermap-push-api.yaml \
 route-prod-fevermap-front.yaml \
 secret-prod-aws-db-backup.yaml \
 secret-prod-fevermap-api-db.yaml \
+secret-prod-firebase.yaml \
 secret-prod-fevermap-db.yaml; \
 do
   echo encrypting $file
