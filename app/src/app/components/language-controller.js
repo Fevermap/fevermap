@@ -66,7 +66,9 @@ class LanguageController extends LitElement {
             if (lang.key === Translator.lang) {
               return '';
             }
-            return html` <option value="${lang.key}">${lang.name}</option> `;
+            return html`
+              <option value="${lang.key}">${lang.name}</option>
+            `;
           })}</select
         >
       </div>

@@ -934,7 +934,11 @@ class FevermapDataEntry extends LitElement {
   getSubmitButton() {
     return html`
       <div class="entry-field">
-        ${this.errorMessage ? html` <p class="mdc-theme--error">${this.errorMessage}</p> ` : ''}
+        ${this.errorMessage
+          ? html`
+              <p class="mdc-theme--error">${this.errorMessage}</p>
+            `
+          : ''}
         <div class="submit-button">
           <button class="mdc-button mdc-button--outlined" @click="${this.handleSubmit}">
             <div class="mdc-button__ripple"></div>

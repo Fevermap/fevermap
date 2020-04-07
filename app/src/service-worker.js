@@ -112,7 +112,10 @@ self.addEventListener('message', e => {
 const hasUserSubmittedToday = () => {
   if (self.LATEST_SUBMISSION_TIME) {
     const latestSubmissionTime = dayjs(Number(self.LATEST_SUBMISSION_TIME));
-    const todayMidnight = dayjs(Date.now()).set('hour', 0).set('minute', 0).set('second', 0);
+    const todayMidnight = dayjs(Date.now())
+      .set('hour', 0)
+      .set('minute', 0)
+      .set('second', 0);
     return latestSubmissionTime.isAfter(todayMidnight);
   }
   return false;

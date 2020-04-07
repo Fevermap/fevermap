@@ -37,12 +37,18 @@ class FevermapRoot extends LitElement {
   render() {
     return html`
       ${window.location.origin.includes('dev') || window.location.origin.includes('localhost')
-        ? html` <development-mode-banner></development-mode-banner> `
+        ? html`
+            <development-mode-banner></development-mode-banner>
+          `
         : ''}
       <language-controller></language-controller>
       ${this.hasSubmittedAtLeastOnce
-        ? html` <fevermap-data-view></fevermap-data-view> `
-        : html` <fevermap-landing></fevermap-landing> `}
+        ? html`
+            <fevermap-data-view></fevermap-data-view>
+          `
+        : html`
+            <fevermap-landing></fevermap-landing>
+          `}
       <fevermap-navigation
         currentView="${this.hasSubmittedAtLeastOnce ? 'fevermap-data-view' : 'fevermap-landing'}"
       ></fevermap-navigation>
