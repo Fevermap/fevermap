@@ -14,7 +14,9 @@
 @use "compontents/ios-pwa-install-prompt";
 @use "compontents/birth-year-range-selector";
 @use "compontents/language-choose-dialog";
+@use "compontents/visualization-map";
 
 // External
 
 @use "material-components-web/material-components-web";
+@import "~leaflet/dist/leaflet.css";
