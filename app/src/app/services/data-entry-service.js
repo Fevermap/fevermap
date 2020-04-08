@@ -12,7 +12,7 @@ const apiBaseUrl = () => {
   if (process.env.API_URL) {
     return process.env.API_URL;
   }
-  if (window.URLS.API_URL) {
+  if (typeof window !== 'undefined' && window.URLS.API_URL) {
     return window.URLS.API_URL;
   }
   return '';
