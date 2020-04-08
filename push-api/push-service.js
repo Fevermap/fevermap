@@ -13,6 +13,11 @@ app.use(cors()); // Change in prod use
 // To make initialization work, a Firebase account file needs to be downloaded,
 // and exported with e.g. `export GOOGLE_APPLICATION_CREDENTIALS="/home/matsu/Downloads/fevermap-firebase-account-file.json`
 
+// Health check endpoint
+app.get("/ping", (req, res) => {
+  res.json({ alive: true });
+});
+
 /**
  * Used for registering a new Firebase token to notifications of certain topic
  */
