@@ -127,7 +127,7 @@
   },
   "notification": {
     "daily_reminder": {
-      "title": "Good morning! \uD83D\uDE0A",
+      "title": "Good evening! \uD83D\uDE0A",
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"

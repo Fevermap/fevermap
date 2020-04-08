@@ -50,7 +50,7 @@ build-api:
 build-push-api:
     # Build container that runs the Push API
     # This step is run in production (and staging) but also works for development.
-	cd push-api && docker-build -t fevermap/push-api .
+	cd push-api && docker build -t fevermap/push-api .
 	@echo "----------- Push API build completed successfully ------"
 
 run-api:

@@ -129,7 +129,7 @@
 
   "notification": {
     "daily_reminder": {
-      "title": "Hyvää huomenta! \uD83D\uDE0A",
+      "title": "Hyvää iltaa! \uD83D\uDE0A",
       "content": "Kuinka voit tänään?",
       "healthy": "Hyvin",
       "sick": "Huonosti"

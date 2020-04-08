@@ -122,5 +122,15 @@
     },
     "subscribe_to_notifications": "Subscribe to notifications",
     "unsubscribe_from_notifications": "Unsubscribe from notifications"
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good evening! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }
