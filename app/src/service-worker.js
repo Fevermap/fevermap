@@ -78,6 +78,13 @@ registerRoute(
   }),
 );
 
+/**
+ * Set Data to service worker about the user. This data is normally stored in the localstorage,
+ * but the service worker doesn't have access to the localstorage, so we need to send this
+ * info to the service worker to persist seperately.
+ *
+ * This info is used for offline functionality and push notification responses.
+ */
 self.addEventListener('message', e => {
   switch (e.data.type) {
     case 'SET_CLIENT_INFORMATION':
@@ -157,6 +164,7 @@ const initFirebaseMessaging = () => {
   const messaging = firebase.messaging();
 
   messaging.setBackgroundMessageHandler(() => {
+    // Hide the default message and handle it ourselves
     self.registration.hideNotification();
     createHealthStatusNotification();
   });
@@ -247,7 +255,6 @@ self.onnotificationclick = e => {
       handleLoggingSick(e);
       break;
     default:
-      // Open app
       openAppFromNotification(e);
       break;
   }

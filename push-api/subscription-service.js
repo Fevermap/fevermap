@@ -3,6 +3,7 @@ const dayjs = require("dayjs");
 const utc = require("dayjs/plugin/utc");
 
 const NOTIFICATION_HOUR = 18;
+const databaseURL = "https://fevermap-95d71.firebaseio.com";
 
 class SubscriptionService {
   static getInstance() {
@@ -14,9 +15,10 @@ class SubscriptionService {
   constructor() {
     admin.initializeApp({
       credential: admin.credential.applicationDefault(),
-      databaseURL: "https://fevermap-95d71.firebaseio.com"
+      databaseURL: databaseURL
     });
     dayjs.extend(utc);
+
     // Check the time every minute. Operates the messages only 4 times an hour,
     // but since the server can be restarted, we can't rely on a looser timer.
     setInterval(() => this.handleDailyMessages(), 60000);
