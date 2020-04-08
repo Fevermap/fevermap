@@ -149,12 +149,11 @@ const createHealthStatusNotification = e => {
         options,
       ),
     );
-  } else {
-    return self.registration.showNotification(
-      Translator.get('notification.daily_reminder.title'),
-      options,
-    );
   }
+  return self.registration.showNotification(
+    Translator.get('notification.daily_reminder.title'),
+    options,
+  );
 };
 
 const initFirebaseMessaging = () => {
@@ -163,10 +162,10 @@ const initFirebaseMessaging = () => {
 
   const messaging = firebase.messaging();
 
-  messaging.setBackgroundMessageHandler(() => {
+  messaging.setBackgroundMessageHandler(() =>
     // Hide the default message and handle it ourselves
-    return createHealthStatusNotification();
-  });
+    createHealthStatusNotification(),
+  );
 };
 
 self.addEventListener('push', e => {
