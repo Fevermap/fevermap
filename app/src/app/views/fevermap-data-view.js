@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit-element';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -10,6 +11,7 @@ import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import ScrollService from '../services/scroll-service.js';
 import DataEntryService from '../services/data-entry-service.js';
 import SnackBar from '../components/snackbar.js';
+import NotificationService from '../services/notification-service.js';
 
 class FevermapDataView extends LitElement {
   static get properties() {
@@ -29,6 +31,7 @@ class FevermapDataView extends LitElement {
       showEditFields: { type: Boolean },
 
       queuedEntries: { type: Array },
+      hasSubscribedToTopic: { type: Boolean },
     };
   }
 
@@ -55,6 +58,7 @@ class FevermapDataView extends LitElement {
     this.firstTimeSubmitting = this.setGender == null || this.setBirthYear == null;
 
     this.getPreviousSubmissionsFromIndexedDb();
+    this.hasSubscribedToTopic = localStorage.getItem('NOTIFICATION_TOPIC');
   }
 
   firstUpdated() {
@@ -76,7 +80,10 @@ class FevermapDataView extends LitElement {
     document.addEventListener('update-queued-count', () => {
       this.getQueuedEntriesFromIndexedDb();
     });
-    if (this.firstTimeSubmitting) {
+    document.addEventListener('update-notification-subscription-status', () => {
+      this.hasSubscribedToTopic = localStorage.getItem('NOTIFICATION_TOPIC');
+    });
+    if (this.firstTimeSubmitting || this.isFromNotification()) {
       this.showEntryDialog();
     }
     this.getQueuedEntriesFromIndexedDb();
@@ -96,6 +103,11 @@ class FevermapDataView extends LitElement {
         .local()
         .format('DD-MM-YYYY : HH:mm');
     }
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  isFromNotification() {
+    return /fromNotification=true/.test(window.location.search.substring(1));
   }
 
   async getGeoLocationInfo(forceUpdate) {
@@ -337,8 +349,32 @@ class FevermapDataView extends LitElement {
                   `;
                 })}
             </div>
+            ${this.getNotificationSubscriptionButton()}
           </div>
         </div>
+      </div>
+    `;
+  }
+
+  getNotificationSubscriptionButton() {
+    if (this.hasSubscribedToTopic) {
+      return html`
+        <div class="unsubscribe-from-notifications">
+          <material-button
+            label="${Translator.get('notification.unsubscribe_from_notifications')}"
+            icon="unsubscribe"
+            @click="${NotificationService.unsubscribeFromDailyReminders}"
+          ></material-button>
+        </div>
+      `;
+    }
+    return html`
+      <div class="subscribe-to-notifications">
+        <material-button
+          label="${Translator.get('notification.subscribe_to_notifications')}"
+          icon="email"
+          @click="${NotificationService.requestNotificationPermissions}"
+        ></material-button>
       </div>
     `;
   }

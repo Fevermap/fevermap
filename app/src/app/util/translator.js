@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import Polyglot from 'node-polyglot';
-
 /* Split each translation into a separate file for easier source code management */
 
 import translation_en from '../../assets/language/en.json';
@@ -52,7 +51,9 @@ export default class Translator {
     // Set fallback language based on current language
     Translator.fallback = Translator.lang === 'en' ? null : 'en';
     Translator._loadPhrases();
-    document.querySelector('html').setAttribute('lang', lang ? lang.toLowerCase() : 'en');
+    if (typeof document !== 'undefined') {
+      document.querySelector('html').setAttribute('lang', lang ? lang.toLowerCase() : 'en');
+    }
   }
 
   static _loadPhrases() {

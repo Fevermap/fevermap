@@ -95,7 +95,9 @@
       "data_entry": "Eintrag erfolgreich abgeschickt",
       "offline_entry_queued": "Offenbar bist du offline. Eintrag wartet.",
       "entry_send_failed_queued": "Senden fehlgeschlagen. Eintrag nun in der Warteschlange.",
-      "sync_finished": "Einträge erfolgreich abgeglichen."
+      "sync_finished": "Einträge erfolgreich abgeglichen.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "Angegebenes Geburtsjahr ist nicht im erlaubten Bereich (1900-2020).",
@@ -103,7 +105,9 @@
       "location_data_invalid": "Der angegebene Ort ist ungültig.",
       "api_data_invalid": "Die zur API geschickten Daten waren ungültig.",
       "gender_not_set": "Geschlecht ist nicht gesetzt.",
-      "do_not_submit_new_temp_until": "Speichere keine neue Temperatur bis %{dateTime}"
+      "do_not_submit_new_temp_until": "Speichere keine neue Temperatur bis %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -112,6 +116,22 @@
       "content": "Fieberkarte kann als progressive Webapplikation installiert werden. Bei Installation können wir Dich mit tollen neuen Extrafunktionen wie schnellerer Laufzeit und Push-Benachrichtigungen versorgen (kommt bald).",
       "approve_text": "Installieren",
       "decline_text": "Vielleicht später"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

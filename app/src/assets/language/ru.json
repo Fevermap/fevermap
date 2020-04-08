@@ -96,7 +96,9 @@
       "data_entry": "Измерение успешно зарегистрировано",
       "offline_entry_queued": "Похоже, сеть Internet недоступна. Запись была поставлена в очередь на отправку.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Синхронизация успешно завершена."
+      "sync_finished": "Синхронизация успешно завершена.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "Год рождения вне разрешенного диапазона (1900 - 2020).",
@@ -104,7 +106,9 @@
       "location_data_invalid": "Местонахождение некорректно.",
       "api_data_invalid": "Отправленные данные некорректны.",
       "gender_not_set": "Пол не задан.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -113,6 +117,22 @@
       "content": "Fevermap можно установить как прогрессивное web-приложение (PWA). В этом случае мы сможем предоставить дополнительные функции, такие как быстрое исполнение и push-уведомления (скоро!).",
       "approve_text": "Установить",
       "decline_text": "Попозже"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

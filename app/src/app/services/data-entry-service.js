@@ -81,7 +81,7 @@ export default class DataEntryService {
         if (!entryInDb) {
           await db.add(FEVER_ENTRIES, submission);
         }
-        if (i >= submissionHistoryLength) {
+        if (i >= submissionHistoryLength && typeof document !== 'undefined') {
           document.dispatchEvent(new CustomEvent('update-submission-list'));
         }
       });

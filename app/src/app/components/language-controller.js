@@ -1,6 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit-element';
 import Translator from '../util/translator.js';
+import ServiceWorkerService from '../services/service-worker-service.js';
 
 class LanguageController extends LitElement {
   static get properties() {
@@ -38,6 +39,7 @@ class LanguageController extends LitElement {
     Translator.getPossibleLanguages();
     Translator.setLang(lang);
     localStorage.setItem('USER_SET_LANG', lang);
+    this.messageLanguageToSW();
   }
 
   handleLanguageChange(e) {
@@ -45,6 +47,13 @@ class LanguageController extends LitElement {
     localStorage.setItem('USER_SET_LANG', selectedLang);
     Translator.setLang(selectedLang);
     window.location.reload();
+  }
+
+  messageLanguageToSW() {
+    ServiceWorkerService.sendMessage({
+      type: 'SET_LANGUAGE',
+      LANGUAGE: Translator.getLang(),
+    });
   }
 
   render() {
