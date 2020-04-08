@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit-element';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -30,6 +31,7 @@ class FevermapDataView extends LitElement {
       showEditFields: { type: Boolean },
 
       queuedEntries: { type: Array },
+      hasSubscribedToTopic: { type: Boolean },
     };
   }
 
@@ -56,6 +58,7 @@ class FevermapDataView extends LitElement {
     this.firstTimeSubmitting = this.setGender == null || this.setBirthYear == null;
 
     this.getPreviousSubmissionsFromIndexedDb();
+    this.hasSubscribedToTopic = localStorage.getItem('NOTIFICATION_TOPIC');
   }
 
   firstUpdated() {
@@ -76,6 +79,9 @@ class FevermapDataView extends LitElement {
     });
     document.addEventListener('update-queued-count', () => {
       this.getQueuedEntriesFromIndexedDb();
+    });
+    document.addEventListener('update-notification-subscription-status', () => {
+      this.hasSubscribedToTopic = localStorage.getItem('NOTIFICATION_TOPIC');
     });
     if (this.firstTimeSubmitting || this.isFromNotification()) {
       this.showEntryDialog();
@@ -343,8 +349,32 @@ class FevermapDataView extends LitElement {
                   `;
                 })}
             </div>
+            ${this.getNotificationSubscriptionButton()}
           </div>
         </div>
+      </div>
+    `;
+  }
+
+  getNotificationSubscriptionButton() {
+    if (this.hasSubscribedToTopic) {
+      return html`
+        <div class="unsubscribe-from-notifications">
+          <material-button
+            label="Unsubscribe from notifications"
+            icon="unsubscribe"
+            @click="${NotificationService.unsubscribeFromDailyReminders}"
+          ></material-button>
+        </div>
+      `;
+    }
+    return html`
+      <div class="subscribe-to-notifications">
+        <material-button
+          label="Subscribe to notifications"
+          icon="email"
+          @click="${NotificationService.requestNotificationPermissions}"
+        ></material-button>
       </div>
     `;
   }

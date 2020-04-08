@@ -29,6 +29,19 @@ app.post(`/${PREFIX}/${VERSION}/register`, (req, res) => {
   const subscriptionService = SubscriptionService.getInstance();
   subscriptionService.subscribeUserToTopic(subscriptionObject, res);
 });
+
+/**
+ * Used to unsubscribe users from daily notifications
+ */
+app.post(`/${PREFIX}/${VERSION}/unsubscribe`, (req, res) => {
+  const subscriptionObject = req.body;
+  if (!subscriptionObject) {
+    res.json({success: false});
+  }
+  const subscriptionService = SubscriptionService.getInstance();
+  subscriptionService.unsubscribeFromTopic(subscriptionObject, res);
+});
+
 // Initialize service & timer
 SubscriptionService.getInstance();
 

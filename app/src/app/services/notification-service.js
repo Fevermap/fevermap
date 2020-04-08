@@ -2,9 +2,11 @@ import * as firebase from 'firebase/app';
 import 'firebase/messaging';
 import Dialog from '../components/dialog.js';
 import Translator from '../util/translator.js';
+import SnackBar from '../components/snackbar.js';
 
 const pushServiceBaseUrl = process.env.PUSH_API_URL || window.URLS.PUSH_API_URL;
 const registrationUrl = `${pushServiceBaseUrl}/push-api/v0/register`;
+const unsubscribeUrl = `${pushServiceBaseUrl}/push-api/v0/unsubscribe`;
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -28,7 +30,7 @@ export default class NotificationService {
   }
 
   static createNotificationRequestDialog() {
-    if (Notification.permission === 'granted') {
+    if (Notification.permission === 'granted' && localStorage.getItem('NOTIFICATION_TOPIC')) {
       NotificationService.subscribeUserToTopic();
       return;
     }
@@ -87,10 +89,44 @@ export default class NotificationService {
 
   static subscribeToTopic(registrationToken) {
     const topic = `UTC${new Date().getTimezoneOffset()}`;
+    localStorage.setItem('NOTIFICATION_TOPIC', topic);
     fetch(registrationUrl, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ registrationToken, topic }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        if (res.success) {
+          SnackBar.success('Successfully subscribed to push notifications.');
+          localStorage.setItem('NOTIFICATION_TOPIC', topic);
+          document.dispatchEvent(new CustomEvent('update-notification-subscription-status'));
+        } else {
+          SnackBar.error('There was an error while trying to subscribe to notifications.');
+        }
+      });
+  }
+
+  static async unsubscribeFromDailyReminders() {
+    await NotificationService.waitForMessagingInit();
+    const message = NotificationService._messaging;
+    message.getToken().then(registrationToken => {
+      const topic = localStorage.getItem('NOTIFICATION_TOPIC');
+      fetch(unsubscribeUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ registrationToken, topic }),
+      })
+        .then(res => res.json())
+        .then(res => {
+          if (res.success) {
+            SnackBar.success('Successfully unsubsribed from push notifications.');
+            localStorage.removeItem('NOTIFICATION_TOPIC');
+            document.dispatchEvent(new CustomEvent('update-notification-subscription-status'));
+          } else {
+            SnackBar.error('There was an error while trying to unsubscribe from notifications.');
+          }
+        });
     });
   }
 

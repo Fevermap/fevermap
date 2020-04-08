@@ -27,6 +27,33 @@
   }
 }
 
+.unsubscribe-from-notifications, .subscribe-to-notifications {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 4rem;
+}
+
+.unsubscribe-from-notifications {
+  material-button {
+    .mdc-button {
+      &:not(:disabled) {
+        background: $bluegreendarker;
+      }
+    }
+  }
+}
+
+.subscribe-to-notifications {
+  material-button {
+    .mdc-button {
+      &:not(:disabled) {
+        background: $bluegreen;
+      }
+    }
+  }
+}
+
 .entry-info-view-wrapper {
   padding: 0 1rem;
 

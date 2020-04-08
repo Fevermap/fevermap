@@ -96,6 +96,17 @@ class SubscriptionService {
         console.log(res);
       });
   }
+
+  unsubscribeFromTopic(subscriptionObject, res) {
+    console.log(`Unsubscribing token ${subscriptionObject.registrationToken} from topic ${subscriptionObject.topic}`);
+
+    admin.messaging().unsubscribeFromTopic([subscriptionObject.registrationToken], subscriptionObject.topic).then(unSubResponse => {
+      console.log(unSubResponse);
+      res.json({success: true});
+    }).catch(err => {
+      res.json({success: false, message: err});
+    })
+  }
 }
 
 module.exports = SubscriptionService;
