@@ -7,7 +7,8 @@ import GoogleAnalyticsService from './google-analytics-service.js';
 
 /*  Get API server address from environment variable stored in the webpack build
 /* during build time */
-const apiBaseUrl = process.env.API_URL || window.URLS.API_URL;
+// This Service is used by the Service worker also, so we have to check for window object existence
+const apiBaseUrl = process.env.API_URL || typeof window !== 'undefined' ? window.URLS.API_URL : '';
 
 const apiSubmitUrl = `${apiBaseUrl}/api/v0/submit`;
 const apiDataUrl = `${apiBaseUrl}/api/v0/stats`;
