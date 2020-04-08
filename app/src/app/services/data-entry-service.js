@@ -8,10 +8,18 @@ import GoogleAnalyticsService from './google-analytics-service.js';
 /*  Get API server address from environment variable stored in the webpack build
 /* during build time */
 // This Service is used by the Service worker also, so we have to check for window object existence
-const apiBaseUrl = process.env.API_URL || typeof window !== 'undefined' ? window.URLS.API_URL : '';
+const apiBaseUrl = () => {
+  if (process.env.API_URL) {
+    return process.env.API_URL;
+  }
+  if (window.URLS.API_URL) {
+    return window.URLS.API_URL;
+  }
+  return '';
+};
 
-const apiSubmitUrl = `${apiBaseUrl}/api/v0/submit`;
-const apiDataUrl = `${apiBaseUrl}/api/v0/stats`;
+const apiSubmitUrl = `${apiBaseUrl()}/api/v0/submit`;
+const apiDataUrl = `${apiBaseUrl()}/api/v0/stats`;
 
 export default class DataEntryService {
   static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
