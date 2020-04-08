@@ -1,0 +1,6 @@
+
+# eslint complains too much if .js files don't have LF endings
+*.js text eol=lf
+
+# docker entrypoints break if the shell scripts don't have LF endings
+*.sh text eol=lf
