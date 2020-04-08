@@ -165,7 +165,6 @@ const initFirebaseMessaging = () => {
 
   messaging.setBackgroundMessageHandler(() => {
     // Hide the default message and handle it ourselves
-    self.registration.hideNotification();
     return createHealthStatusNotification();
   });
 };
