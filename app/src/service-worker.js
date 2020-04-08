@@ -124,9 +124,9 @@ const hasUserSubmittedToday = () => {
 const createHealthStatusNotification = e => {
   const hasSubmittedTodayAlready = hasUserSubmittedToday();
   if (hasSubmittedTodayAlready) {
-    return;
+    return null;
   }
-  Translator.setLang(self.LANGUAGE.key);
+  Translator.setLang(self.LANGUAGE ? self.LANGUAGE.key : 'en');
   const options = {
     body: Translator.get('notification.daily_reminder.content'),
     badge: 'icon-64x64.png',
@@ -143,14 +143,14 @@ const createHealthStatusNotification = e => {
     ],
   };
   if (e) {
-    e.waitUntil(
+    return e.waitUntil(
       self.registration.showNotification(
         Translator.get('notification.daily_reminder.title'),
         options,
       ),
     );
   } else {
-    self.registration.showNotification(
+    return self.registration.showNotification(
       Translator.get('notification.daily_reminder.title'),
       options,
     );
@@ -166,7 +166,7 @@ const initFirebaseMessaging = () => {
   messaging.setBackgroundMessageHandler(() => {
     // Hide the default message and handle it ourselves
     self.registration.hideNotification();
-    createHealthStatusNotification();
+    return createHealthStatusNotification();
   });
 };
 
@@ -174,10 +174,10 @@ self.addEventListener('push', e => {
   const messageData = e.data.json().data;
   // Prevent duplicate messages
   if (messageData.timestamp === self.LAST_PUSH_NOTIFICATION_TIMESTAMP) {
-    return;
+    return null;
   }
   self.LAST_PUSH_NOTIFICATION_TIMESTAMP = e.data.json().data.timestamp;
-  createHealthStatusNotification(e);
+  return createHealthStatusNotification(e);
 });
 
 const openAppFromNotification = e => {
