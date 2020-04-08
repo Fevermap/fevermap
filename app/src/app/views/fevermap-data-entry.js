@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this,lit/no-value-attribute */
-/* global BigInt */
 import { LitElement, html } from 'lit-element';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { MDCCheckbox } from '@material/checkbox/component';
@@ -210,37 +209,10 @@ class FevermapDataEntry extends LitElement {
     }
   }
 
-  // Generates random numerical device id, which fits in a BIGINT (64-bit), signed or unsigned
-  createDeviceId() {
-    const isModern = window.crypto && window.crypto.getRandomValues && window.Uint32Array;
-    if (!isModern) {
-      return this.createLegacyDeviceId();
-    }
-    // Create a 63-bit integer
-    const array = new Uint32Array(2);
-    window.crypto.getRandomValues(array);
-    // eslint-disable-next-line no-bitwise
-    const msb = BigInt(array[0] & 0x7fffffff) << BigInt(32); // use 31 bits
-    return (msb + BigInt(array[1])).toString(10);
-  }
-
-  createLegacyDeviceId() {
-    // Legacy platforms: create a hand-wavy large "integer" of max 18 characters
-    const time = Date.now();
-    const randomInt = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-    return `${time}${randomInt}`.substr(0, 17);
-  }
-
   async buildFeverData() {
     const feverData = {};
     const geoCodingInfo = await this.getGeoCodingInputInfo();
-    let deviceId = localStorage.getItem('DEVICE_ID');
-    if (!deviceId) {
-      deviceId = this.createDeviceId();
-      localStorage.setItem('DEVICE_ID', deviceId);
-    }
-
-    feverData.device_id = deviceId;
+    // device ID is handled during submission
     feverData.fever_status = this.hasFever;
     feverData.fever_temp = this.feverAmount;
     if (this.hasFever) {
@@ -351,6 +323,9 @@ class FevermapDataEntry extends LitElement {
       switch (submissionResponse.reason) {
         case 'INVALID_DATA':
           SnackBar.error(Translator.get('system_messages.error.api_data_invalid'));
+          break;
+        case 'REGEN_DEVICE_ID':
+          this.handlePostSubmissionActions(feverData, Date.now(), true);
           break;
         case 'NETWORK_STATUS_OFFLINE':
           this.handlePostSubmissionActions(feverData, Date.now(), true);

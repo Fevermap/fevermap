@@ -1,3 +1,4 @@
+/* global BigInt */
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import dayOfYear from 'dayjs/plugin/dayOfYear';
@@ -15,12 +16,34 @@ const apiDataUrl = `${apiBaseUrl}/api/v0/stats`;
 export default class DataEntryService {
   static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
     try {
-      const response = await fetch(apiSubmitUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(feverData),
-      });
+      // Set or generate device ID
+      this.setDeviceId(feverData);
+
+      const response = await this.callWithRetry(
+        async () =>
+          fetch(apiSubmitUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(feverData),
+          }),
+        r => {
+          if (!r.success && r.status === 409) {
+            // The newly generated device id is already taken, so we regenerate and retry
+            this.resetDeviceId();
+            this.setDeviceId(feverData);
+            return true;
+          }
+          return false;
+        },
+      );
       if (!response.ok) {
+        if (response.status === 409) {
+          if (addToDbOnFail) {
+            this.addToDb(feverData);
+          }
+          this.resetDeviceId();
+          return { success: false, reason: 'REGEN_DEVICE_ID' };
+        }
         return { success: false, reason: 'INVALID_DATA' };
       }
       const resJson = await response.json(); // Change to json on real one
@@ -28,11 +51,15 @@ export default class DataEntryService {
       return resJson;
     } catch (err) {
       if (addToDbOnFail) {
-        const db = await DBUtil.getInstance();
-        db.add(QUEUED_ENTRIES, feverData);
+        this.addToDb(feverData);
       }
       return { success: false, reason: 'NETWORK_STATUS_OFFLINE' };
     }
+  }
+
+  static async addToDb(feverData) {
+    const db = await DBUtil.getInstance();
+    db.add(QUEUED_ENTRIES, feverData);
   }
 
   static handleAPIErrorMessages(resJson) {
@@ -114,5 +141,78 @@ export default class DataEntryService {
       }
     }
     return streak;
+  }
+
+  static resetDeviceId() {
+    localStorage.removeItem('DEVICE_ID');
+  }
+
+  //
+  static setDeviceId(data) {
+    const feverData = data;
+    let deviceId = localStorage.getItem('DEVICE_ID');
+    if (!deviceId) {
+      deviceId = this.createDeviceId();
+      feverData.new_device_id = true;
+      localStorage.setItem('DEVICE_ID', deviceId);
+    } else {
+      feverData.new_device_id = false;
+    }
+    feverData.device_id = deviceId;
+  }
+
+  /**
+   * Try and retry an action with exponential backoff
+   *
+   * @param f {function} Action function
+   * @param shouldRetry {function} Evaluate whether to retry or not
+   * @param retryCount Max retry count
+   * @returns {Promise<*>}
+   */
+  static async callWithRetry(f, shouldRetry, retryCount = 10) {
+    let retries = 0;
+    let response = await f();
+    while (retries < retryCount && shouldRetry(response)) {
+      retries += 1;
+      // Exponential backoff up to 30 seconds, with added random jitter
+      // eslint-disable-next-line no-await-in-loop
+      await this.wait(Math.random() * 100 + 2.8 ** retries);
+      // eslint-disable-next-line no-await-in-loop
+      response = await f();
+    }
+    return response;
+  }
+
+  static async wait(millis) {
+    return new Promise(resolve => {
+      setTimeout(resolve, Math.ceil(millis));
+    });
+  }
+
+  /**
+   * Generates random numerical device id, which fits in a BIGINT (64-bit), signed or unsigned
+   * @returns {string}
+   */
+  static createDeviceId() {
+    const isModern = window.crypto && window.crypto.getRandomValues && window.Uint32Array;
+    if (!isModern) {
+      return this.createLegacyDeviceId();
+    }
+    // Create a 63-bit integer
+    const array = new Uint32Array(2);
+    window.crypto.getRandomValues(array);
+    // eslint-disable-next-line no-bitwise
+    const msb = BigInt(array[0] & 0x7fffffff) << BigInt(32); // use 31 bits
+    return (msb + BigInt(array[1])).toString(10);
+  }
+
+  /**
+   * Legacy platforms: create a hand-wavy large "integer" of max 18 characters
+   * @returns {string}
+   */
+  static createLegacyDeviceId() {
+    const time = Date.now();
+    const randomInt = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
+    return `${time}${randomInt}`.substr(0, 18);
   }
 }
