@@ -95,7 +95,9 @@
       "data_entry": "Saisie des données réussie ",
       "offline_entry_queued": "Il semble que vous soyez hors ligne. Votre saisie a été mise en file d'attente.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Les entrées ont été synchronisées avec succès"
+      "sync_finished": "Les entrées ont été synchronisées avec succès",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "La date de naissance introduite ne se situe pas dans les années 1900 - 2020.",
@@ -103,7 +105,9 @@
       "location_data_invalid": "Les données de géolocalisation sont incorrectes.",
       "api_data_invalid": "Les données envoyées sont incorrectes.",
       "gender_not_set": "Le genre n’a pas été defini.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -126,6 +130,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

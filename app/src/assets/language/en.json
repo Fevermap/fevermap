@@ -98,7 +98,9 @@
       "data_entry": "Successfully submitted data entry",
       "offline_entry_queued": "Seems like you are offline. Entry has been queued.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Successfully synced entries."
+      "sync_finished": "Successfully synced entries.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "Given birth year is not in the allowed range (1900 - 2020).",
@@ -106,7 +108,9 @@
       "location_data_invalid": "The given location data is invalid.",
       "api_data_invalid": "Data sent to the API was invalid.",
       "gender_not_set": "Gender is not set.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -130,6 +134,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

@@ -98,11 +98,11 @@ export default class NotificationService {
       .then(res => res.json())
       .then(res => {
         if (res.success) {
-          SnackBar.success('Successfully subscribed to push notifications.');
+          SnackBar.success(Translator.get('system_messages.success.subscribe_success'));
           localStorage.setItem('NOTIFICATION_TOPIC', topic);
           document.dispatchEvent(new CustomEvent('update-notification-subscription-status'));
         } else {
-          SnackBar.error('There was an error while trying to subscribe to notifications.');
+          SnackBar.error(Translator.get('system_messages.error.subscribe_error'));
         }
       });
   }
@@ -120,11 +120,11 @@ export default class NotificationService {
         .then(res => res.json())
         .then(res => {
           if (res.success) {
-            SnackBar.success('Successfully unsubsribed from push notifications.');
+            SnackBar.success(Translator.get('system_messages.success.unsubscribe_success'));
             localStorage.removeItem('NOTIFICATION_TOPIC');
             document.dispatchEvent(new CustomEvent('update-notification-subscription-status'));
           } else {
-            SnackBar.error('There was an error while trying to unsubscribe from notifications.');
+            SnackBar.error(Translator.get('system_messages.error.unsubscribe_error'));
           }
         });
     });

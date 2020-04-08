@@ -91,7 +91,9 @@
             "data_entry": "Вимірювання успішно зареєстровано",
             "offline_entry_queued": "Схоже, мережа Internet недоступна. Запис було поставлено в чергу на відправку.",
             "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-            "sync_finished": "Синхронізація успішно завершена."
+            "sync_finished": "Синхронізація успішно завершена.",
+            "subscribe_success": "Subscribed to push notifications successfully",
+            "unsubscribe_success": "Unsubscribed from push notifications successfully"
         },
         "error": {
             "age_not_in_range": "Рік народження межами дозволеного діапазону (1900 - 2020).",
@@ -99,7 +101,9 @@
             "location_data_invalid": "Місцезнаходження некоректно.",
             "api_data_invalid": "Надіслані дані некоректні.",
             "gender_not_set": "Стать не вказано.",
-            "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+            "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+            "subscribe_error": "Subscribing to push notifications failed",
+            "unsubscribe_error": "Unsubscribing from push notifications failed"
         }
     },
     "dialog": {
@@ -122,6 +126,8 @@
             "content": "How are you feeling today?",
             "healthy": "Healthy",
             "sick": "Sick"
-        }
+        },
+        "subscribe_to_notifications": "Subscribe to notifications",
+        "unsubscribe_from_notifications": "Unsubscribe from notifications"
     }
 }

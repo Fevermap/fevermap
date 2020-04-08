@@ -95,7 +95,9 @@
       "data_entry": "Eintrag erfolgreich abgeschickt",
       "offline_entry_queued": "Offenbar bist du offline. Eintrag wartet.",
       "entry_send_failed_queued": "Senden fehlgeschlagen. Eintrag nun in der Warteschlange.",
-      "sync_finished": "Einträge erfolgreich abgeglichen."
+      "sync_finished": "Einträge erfolgreich abgeglichen.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "Angegebenes Geburtsjahr ist nicht im erlaubten Bereich (1900-2020).",
@@ -103,7 +105,9 @@
       "location_data_invalid": "Der angegebene Ort ist ungültig.",
       "api_data_invalid": "Die zur API geschickten Daten waren ungültig.",
       "gender_not_set": "Geschlecht ist nicht gesetzt.",
-      "do_not_submit_new_temp_until": "Speichere keine neue Temperatur bis %{dateTime}"
+      "do_not_submit_new_temp_until": "Speichere keine neue Temperatur bis %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -126,6 +130,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

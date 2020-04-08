@@ -361,7 +361,7 @@ class FevermapDataView extends LitElement {
       return html`
         <div class="unsubscribe-from-notifications">
           <material-button
-            label="Unsubscribe from notifications"
+            label="${Translator.get('notification.unsubscribe_from_notifications')}"
             icon="unsubscribe"
             @click="${NotificationService.unsubscribeFromDailyReminders}"
           ></material-button>
@@ -371,7 +371,7 @@ class FevermapDataView extends LitElement {
     return html`
       <div class="subscribe-to-notifications">
         <material-button
-          label="Subscribe to notifications"
+          label="${Translator.get('notification.subscribe_to_notifications')}"
           icon="email"
           @click="${NotificationService.requestNotificationPermissions}"
         ></material-button>

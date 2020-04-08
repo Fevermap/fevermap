@@ -96,14 +96,18 @@
       "data_entry": "Змены паспяхова унесеныя ",
       "offline_entry_queued": "Падобныя сетка Internet недаступная. Запіс быў пастаўлены ў чаргу на адпраўку.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Сінхранізацыя паспяхова завершаная."
+      "sync_finished": "Сінхранізацыя паспяхова завершаная.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "Год нараджэння па-за межамі дапушчальнага дыяпазону (1900 - 2020).",
       "fever_temp_value_invalid": "Уведзенае недапушчальнае значэнне тэмпературы.",
       "location_data_invalid": "Месцазнаходжанне некарэктнае.",
       "api_data_invalid": "Адпраўленыя дадзеныя некарэктныя.",
-      "gender_not_set": "Пол не зададзены."
+      "gender_not_set": "Пол не зададзены.",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -126,6 +130,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

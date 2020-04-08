@@ -90,7 +90,9 @@
       "data_entry": "I valori sono stati inviati correttamente.",
       "offline_entry_queued": "Sembra che la connessione di rete sia non attiva. Il valore è stato inserito in coda.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "I valori sono stati sincronizzati con successo. "
+      "sync_finished": "I valori sono stati sincronizzati con successo. ",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "La data di nascita non rientra nei valori consentiti. (1900 - 2020).",
@@ -98,7 +100,9 @@
       "location_data_invalid": "I dati relativi alla posizione non sono validi.",
       "api_data_invalid": "I dati inviati all API non sono validi.",
       "gender_not_set": "Il Sesso non è stato selezionato.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -121,6 +125,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

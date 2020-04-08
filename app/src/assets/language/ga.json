@@ -100,7 +100,9 @@
       "data_entry": "Iontráil sonraí déanta go rathúil ",
       "offline_entry_queued": "Is cosúil go bhfuil tú as líne. Tá an iontráil sa scuaine. ",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Iontrálacha sioncronaithe go rathúil."
+      "sync_finished": "Iontrálacha sioncronaithe go rathúil.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": " Níl an Bhliain breithe tugtha sa réimse ceadaithe  (1900 - 2020).",
@@ -108,7 +110,9 @@
       "location_data_invalid": "Tá an láthair tugtha neamhbhailí.",
       "api_data_invalid": "Tá na sonraí tugtha go dtí an API neamhbhailí ",
       "gender_not_set": "Níl an Inscne socraithe.",
-      "do_not_submit_new_temp_until": "Ná déan iontráil ar theocht nua go dtí %{dateTime}"
+      "do_not_submit_new_temp_until": "Ná déan iontráil ar theocht nua go dtí %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -131,6 +135,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

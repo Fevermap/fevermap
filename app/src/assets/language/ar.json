@@ -96,7 +96,9 @@
       "data_entry": "تم إرسال البيانات المدخلة بنجاح",
       "offline_entry_queued": "يبدو أنك غير متصل بالإنترنت. تم وضع الإدخال في قائمة الإنتظار.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "تمت مزامنة المدخلات بنجاح."
+      "sync_finished": "تمت مزامنة المدخلات بنجاح.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "سنة الميلاد المحددة ليست في النطاق المسموح به (1900-2020).",
@@ -104,7 +106,9 @@
       "location_data_invalid": "بيانات الموقع المعطاة غير صحيحة.",
       "api_data_invalid": "البيانات المرسلة إلى الـ API كانت غير صحيحة.",
       "gender_not_set": "لم يتم تحديد الجنس.",
-      "do_not_submit_new_temp_until": "لا ترسل درجة حرارة جديدة حتى %{dateTime}"
+      "do_not_submit_new_temp_until": "لا ترسل درجة حرارة جديدة حتى %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -127,6 +131,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

@@ -96,7 +96,9 @@
       "data_entry": "Kirjaus lisätty onnistuneesti",
       "offline_entry_queued": "Olet offline tilassa. Kirjaus lisätään jonoon.",
       "entry_send_failed_queued": "Lähetys epäonnistui. Kirjaus asetetaan jonoon.",
-      "sync_finished": "Onnistuneesti synkronoitu kirjaukset."
+      "sync_finished": "Onnistuneesti synkronoitu kirjaukset.",
+      "subscribe_success": "Push-ilmoitukset tilattu onnistuneesti",
+      "unsubscribe_success": "Push-ilmoitusten tilaus lopetettu"
     },
     "error": {
       "age_not_in_range": "Syntymävuosi ei ole sallitussa haarukassa (1900 - 2020).",
@@ -104,7 +106,9 @@
       "location_data_invalid": "Syötetty sijaintidata ei ole sallittu.",
       "api_data_invalid": "Rajanpintaan lähetetty data ei ollut kelpaavaa.",
       "gender_not_set": "Sukupuolta ei ole valittu.",
-      "do_not_submit_new_temp_until": "Älä syötä uutta kirjausta ennen %{dateTime}"
+      "do_not_submit_new_temp_until": "Älä syötä uutta kirjausta ennen %{dateTime}",
+      "subscribe_error": "Push-ilmoitusten tilaus epäonnistui",
+      "unsubscribe_error": "Push-ilmoitusten tilauksen lopetus epäonnistui"
     }
   },
 
@@ -129,6 +133,8 @@
       "content": "Kuinka voit tänään?",
       "healthy": "Hyvin",
       "sick": "Huonosti"
-    }
+    },
+    "subscribe_to_notifications": "Tilaa ilmoitukset",
+    "unsubscribe_from_notifications": "Peruuta ilmoitusten tilaus"
   }
 }

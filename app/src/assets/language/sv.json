@@ -98,7 +98,9 @@
       "data_entry": "Registreringen lyckades",
       "offline_entry_queued": "Det verkar som du är offline, registreringen är satt i kö.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Synkroniseringen lyckades."
+      "sync_finished": "Synkroniseringen lyckades.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "Ditt födelseår är inte i det tillåtna intervallet (1900 - 2020).",
@@ -106,7 +108,9 @@
       "location_data_invalid": "Den givna platset är inte giltig.",
       "api_data_invalid": "Data som skickades var inte giltiga.",
       "gender_not_set": "Du har inte valt kön.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -129,6 +133,8 @@
       "content": "How are you feeling today?",
       "healthy": "Healthy",
       "sick": "Sick"
-    }
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }
