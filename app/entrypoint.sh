@@ -18,7 +18,7 @@ npm install
 
 # Run webpack in development mode (this Dockerfile is only for development use)
 node node_modules/webpack-cli/bin/cli.js -w --mode development \
-  --env.NODE_ENV="development" --env.API_URL="http://localhost:9000" &
+  --env.NODE_ENV="development" --env.API_URL="http://localhost:9000" --env.PUSH_API_URL="http://localhost:9001" &
 # NOTE! The built files will end up with root ownership outside of the container
 # in directory app/dist, but right now we will just live with it.
 

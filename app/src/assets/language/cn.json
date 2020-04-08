@@ -96,7 +96,9 @@
       "data_entry": "成功提交条目",
       "offline_entry_queued": "处于离线状态，记录已经存入队列",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "成功同步记录"
+      "sync_finished": "成功同步记录",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "出生年份不在允许范围内（1900 - 2020）。",
@@ -104,7 +106,9 @@
       "location_data_invalid": "位置数据无效。",
       "api_data_invalid": "发送到API的数据无效。",
       "gender_not_set": "未设置性别。",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}"
+      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -113,6 +117,22 @@
       "content": "Fevermap可以作为渐进式Web应用程序安装。 如果已安装，我们可以为您提供更多的附加功能，例如更快的运行时间和推送通知（即将推出）。",
       "approve_text": "安装",
       "decline_text": "以后"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

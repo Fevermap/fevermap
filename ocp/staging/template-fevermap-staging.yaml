@@ -353,6 +353,55 @@ objects:
         imageChange:
       - type: ConfigChange
     runPolicy: Serial
+- apiVersion: v1
+  data:
+    entrypoint.sh: |
+      #!/bin/bash
+      set -e
+
+      # Turn on bash's job control so we can spawn subcommands
+      set -m
+
+      # https://flask.palletsprojects.com/en/1.1.x/cli/
+      export FLASK_APP="fevermap"
+
+      # Default to development if nothing is set
+      if [ -z "$FLASK_ENV" ]
+      then
+        export FLASK_ENV="development"
+      fi
+
+      export PYTHONPATH="${APPDIR}:${PYTHONPATH}"
+      export LC_ALL=C.UTF-8
+      export LANG=C.UTF-8
+
+      if [ "$FLASK_ENV" == "development" ]
+      then
+        # Start a secondary process to gracefully reload uswgi if any of it's files get
+        # modified. Needs Debian packages procps and entr installed on system.
+        echo "Starting entr to watch for source code changes..."
+        (find /app | entr -p -s "echo 'Entr: reloading...' && pkill --signal SIGHUP uwsgi" &)
+        # This is only indented for development use, don't run production with this entrypoint.
+      fi
+
+      uwsgi \
+          --module=fevermap.wsgi:application \
+          --master \
+          --processes=5 \
+          --threads=2 \
+          --set-placeholder="base=${APPDIR}" \
+          --chdir="%(base)" \
+          --http-socket="0.0.0.0:9000" \
+          --uid="$(id -un)" \
+          --gid="$(id -gn)" \
+          --vacuum \
+          --die-on-term \
+          --env="LC_ALL=C.UTF-8" \
+          --env="LANG=C.UTF-8" \
+          --disable-logging
+  kind: ConfigMap
+  metadata:
+    name: ${NAME}-api-uwsgi-starter
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -412,6 +461,36 @@ objects:
                 memory: 1Gi
             terminationMessagePath: /dev/termination-log
             terminationMessagePolicy: File
+            readinessProbe:
+              httpGet:
+                path: /ping
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 5
+              timeoutSeconds: 2
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
+            livenessProbe:
+              httpGet:
+                path: /ping
+                port: 9000
+                scheme: HTTP
+              initialDelaySeconds: 10
+              timeoutSeconds: 3
+              periodSeconds: 10
+              successThreshold: 1
+              failureThreshold: 3
+            volumeMounts:
+            - mountPath: /opt/app-root/src/entrypoint.sh
+              name: uwsgi-starter
+              readOnly: true
+              subPath: entrypoint.sh
+        volumes:
+        - configMap:
+            defaultMode: 0550
+            name: ${NAME}-api-uwsgi-starter
+          name: uwsgi-starter
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -508,7 +587,7 @@ objects:
     - annotations: null
       from:
         kind: DockerImage
-        name: centos/nginx-112-centos7:latest
+        name: registry.redhat.io/rhel8/nginx-116
       name: latest
       referencePolicy:
         type: Source
@@ -597,12 +676,14 @@ objects:
           sourcePath: /opt/app-root/output/.
       type: Image
     strategy:
+      type: Source
       sourceStrategy:
         from:
-          kind: ImageStreamTag
-          name: ${NAME}-runtime:latest
+          kind: DockerImage
+          name: registry.redhat.io/rhel8/nginx-116
+        pullSecret:
+          name: registry-redhat-io-secret
         incremental: true
-      type: Source
     successfulBuildsHistoryLimit: 5
     triggers:
     - type: ConfigChange
@@ -625,6 +706,40 @@ objects:
   kind: ConfigMap
   metadata:
     name: ${NAME}-window-settings
+- apiVersion: v1
+  data:
+    liveness.conf: |2
+
+      map $http_user_agent $log_ua {
+
+          ~kube-probe 0;
+          ~Pingdom 0;
+
+          default 1;
+      }
+
+      server {
+          listen       8081 default_server;
+          listen       [::]:8081 default_server;
+          server_name  _;
+          root         /opt/app-root/src;
+
+          access_log /var/log/nginx/access.log main if=$log_ua;
+
+          location / {
+          }
+
+          error_page 404 /404.html;
+          location = /40x.html {
+          }
+
+          error_page 500 502 503 504  /50x.html;
+          location = /50x.html {
+          }
+      }
+  kind: ConfigMap
+  metadata:
+    name: ${NAME}-app-nginx-liveness
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -662,8 +777,28 @@ objects:
           ports:
           - containerPort: 8080
             protocol: TCP
-          - containerPort: 8443
+          - containerPort: 8081
             protocol: TCP
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /window-settings.js
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /window-settings.js
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
           resources:
             limits:
               memory: 1Gi
@@ -674,6 +809,10 @@ objects:
             name: ${NAME}-window-settings
             readOnly: true
             subPath: window-settings.js
+          - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
+            name: liveness-conf
+            readOnly: true
+            subPath: liveness.conf
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
@@ -683,6 +822,10 @@ objects:
             defaultMode: 420
             name: ${NAME}-window-settings
           name: ${NAME}-window-settings
+        - configMap:
+            defaultMode: 0444
+            name: ${NAME}-app-nginx-liveness
+          name: liveness-conf
     test: false
     triggers:
     - type: ConfigChange
@@ -704,10 +847,6 @@ objects:
       port: 8080
       protocol: TCP
       targetPort: 8080
-    - name: 8443-tcp
-      port: 8443
-      protocol: TCP
-      targetPort: 8443
     selector:
       deploymentconfig: ${NAME}-app
     sessionAffinity: None
@@ -726,5 +865,179 @@ objects:
     to:
       kind: Service
       name: ${NAME}-app
+      weight: 100
+    wildcardPolicy: None
+#
+# push API
+#
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${NAME}
+      app.kubernetes.io/component: ${NAME}-push-api
+      app.kubernetes.io/part-of: ${NAME}
+      env: staging
+    name: ${NAME}-push-api
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    labels:
+      app: ${NAME}
+      app.kubernetes.io/component: ${NAME}-push-api
+      app.kubernetes.io/part-of: ${NAME}
+      env: staging
+    name: ${NAME}-push-api
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: ${NAME}-push-api:latest
+    runPolicy: Serial
+    source:
+      contextDir: /push-api
+      git:
+        uri: https://gitlab.com/${NAME}/${NAME}.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        env:
+        - name: NPM_BUILD
+          value: node install
+        from:
+          kind: ImageStreamTag
+          name: nodejs:10
+          namespace: openshift
+      type: Source
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - type: ConfigChange
+- apiVersion: apps.openshift.io/v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: ${NAME}
+      app.kubernetes.io/component: ${NAME}-push-api
+      app.kubernetes.io/instance: ${NAME}-push-api
+      app.kubernetes.io/part-of: ${NAME}
+      app.openshift.io/runtime: nodejs
+      env: staging
+    name: ${NAME}-push-api
+  spec:
+    replicas: 1
+    revisionHistoryLimit: 5
+    selector:
+      app: ${NAME}-push-api
+      deploymentconfig: ${NAME}-push-api
+    strategy:
+      activeDeadlineSeconds: 21600
+      resources: {}
+      rollingParams:
+        intervalSeconds: 1
+        maxSurge: 25%
+        maxUnavailable: 25%
+        timeoutSeconds: 600
+        updatePeriodSeconds: 1
+      type: Rolling
+    template:
+      metadata:
+        annotations:
+          openshift.io/generated-by: OpenShiftNewApp
+        creationTimestamp: null
+        labels:
+          app: ${NAME}-push-api
+          deploymentconfig: ${NAME}-push-api
+      spec:
+        containers:
+        - env:
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: /opt/app-root/${NAME}-firebase-account-file.json
+          image: ${NAME}-push-api:latest
+          imagePullPolicy: Always
+          name: ${NAME}-push-api
+          ports:
+          - containerPort: 9001
+            protocol: TCP
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /opt/app-root/${NAME}-firebase-account-file.json
+            name: volume-firebase
+            readOnly: true
+            subPath: ${NAME}-firebase-account-file.json
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - name: volume-firebase
+          secret:
+            defaultMode: 420
+            items:
+            - key: ${NAME}-firebase-account-file.json
+              path: ${NAME}-firebase-account-file.json
+            secretName: ${NAME}-firebase-account-file
+    test: false
+    triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${NAME}-push-api
+        from:
+          kind: ImageStreamTag
+          name: ${NAME}-push-api:latest
+      type: ImageChange
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${NAME}
+      app.kubernetes.io/component: ${NAME}-push-api
+      app.kubernetes.io/part-of: ${NAME}
+      env: staging
+    name: ${NAME}-push-api
+  spec:
+    ports:
+    - name: 9001-tcp
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+    selector:
+      app: ${NAME}-push-api
+      deploymentconfig: ${NAME}-push-api
+    sessionAffinity: None
+    type: ClusterIP
+- apiVersion: v1
+  data:
+    ${NAME}-firebase-account-file.json: c2VjcmV0X3N0dWZmX2hlcmUKCg==
+  kind: Secret
+  metadata:
+    labels:
+      app: ${NAME}
+      app.kubernetes.io/component: ${NAME}-push-api
+      app.kubernetes.io/part-of: ${NAME}
+      env: staging
+    name: ${NAME}-firebase-account-file
+  type: Opaque
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: ${NAME}
+      app.kubernetes.io/component: ${NAME}-push-api
+      app.kubernetes.io/part-of: ${NAME}
+      env: staging
+    name: ${NAME}-push-api-staging
+  spec:
+    host: ${APPLICATION_PUSH_API_DOMAIN}
+    port:
+      targetPort: 9001-tcp
+    to:
+      kind: Service
+      name: ${NAME}-push-api
       weight: 100
     wildcardPolicy: None

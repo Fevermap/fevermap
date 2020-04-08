@@ -4,12 +4,13 @@
 # static dist/ produced by the build. Therevore the local developemnt environment
 # and API_URL are hard-coded in this script.
 export API_URL="http://localhost:9000"
+export PUSH_API_URL="http://localhost:9001"
 
 devserverJobId=NULL
 webpackJobId=NULL
 
 run_webpack () {
-	node node_modules/webpack-cli/bin/cli.js -w --mode development --env.NODE_ENV=development --env.API_URL=$API_URL &
+	node node_modules/webpack-cli/bin/cli.js -w --mode development --env.NODE_ENV=development --env.API_URL=$API_URL --env.PUSH_API_URL=$PUSH_API_URL &
 	webpackJobId=$!
 }
 

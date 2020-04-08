@@ -8,6 +8,7 @@ export
 # Default value for URLs if not set in .env
 API_URL ?= "http://localhost:9000/api"
 APP_URL ?= "http://localhost:6006"
+PUSH_API_URL ?= "http://localhost:9001/push-api"
 
 test:
 	# Check syntax and code style in Python files and shell scripts
@@ -46,6 +47,12 @@ build-api:
 	cd api && docker build -t fevermap/api .
 	@echo "----------- API build completed successfully -----------"
 
+build-push-api:
+    # Build container that runs the Push API
+    # This step is run in production (and staging) but also works for development.
+	cd push-api && docker-build -t fevermap/push-api .
+	@echo "----------- Push API build completed successfully ------"
+
 run-api:
 	# Ensures the API server is running as a Docker container.
 	# This step is run in production (and staging).
@@ -61,4 +68,4 @@ run-api:
 
 # This step could be run in production (and staging). For local development,
 # just run `docker-composer up --build` instead.
-run: build-app build-api run-api
+run: build-app build-api build-push-api run-api

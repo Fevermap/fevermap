@@ -90,7 +90,9 @@
       "data_entry": "Entrada de registre enviada satisfactòriament",
       "offline_entry_queued": "Sembla que t'has quedat sense xarxa. L'entrada s'ha posat a la cua.",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Entrades sincronitzades satisfactòriament."
+      "sync_finished": "Entrades sincronitzades satisfactòriament.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": "L'any de naixement proporcionat no està inclòs dintre del rang permès (1900 - 2020).",
@@ -98,7 +100,9 @@
       "location_data_invalid": "L'ubicació no és vàlida.",
       "api_data_invalid": "Les dades enviades a l'API no són vàlids.",
       "gender_not_set": "El gènere no s'ha configurat.",
-      "do_not_submit_new_temp_until": "No enviar nova temperatura fins %{dateTime}"
+      "do_not_submit_new_temp_until": "No enviar nova temperatura fins %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -107,6 +111,22 @@
       "content": "Fevermap es pot instal.lar com una aplicació web progressiva. Una vegada instal.lada disposaràs de funcionalitats extra, com una execució més ràpida i notificacions directes (disponibles properament).",
       "approve_text": "Instal.lar",
       "decline_text": "Ara no"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

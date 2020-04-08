@@ -1,0 +1,20 @@
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: fevermap
+      app.kubernetes.io/component: fevermap-push-api
+      app.kubernetes.io/part-of: fevermap
+      env: staging
+    name: fevermap-push-api
+  spec:
+    ports:
+    - name: 9001-tcp
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+    selector:
+      app: fevermap-push-api
+      deploymentconfig: fevermap-push-api
+    sessionAffinity: None
+    type: ClusterIP

@@ -34,12 +34,32 @@ spec:
       containers:
       - image: fevermap-staging/fevermap-app:latest
         imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /window-settings.js
+            port: 8081
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
         name: fevermap-app
         ports:
         - containerPort: 8080
           protocol: TCP
-        - containerPort: 8443
+        - containerPort: 8081
           protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /window-settings.js
+            port: 8081
+            scheme: HTTP
+          initialDelaySeconds: 5
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
         resources:
           limits:
             memory: 1Gi
@@ -50,6 +70,10 @@ spec:
           name: window-settings
           readOnly: true
           subPath: window-settings.js
+        - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
+          name: liveness-conf
+          readOnly: true
+          subPath: liveness.conf
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -60,6 +84,10 @@ spec:
           defaultMode: 420
           name: window-settings
         name: window-settings
+      - configMap:
+          defaultMode: 420
+          name: fevermap-app-nginx-liveness
+        name: liveness-conf
   test: false
   triggers:
   - imageChangeParams:

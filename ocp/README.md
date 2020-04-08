@@ -7,6 +7,7 @@ Fevermap is designed to be modular. It consist of:
 
 * WWW frontend
 * API service
+* Push API service
 * Database
 
 Those turn nicely into pods in kubernetes, and both the API and web frontend can
@@ -39,11 +40,11 @@ Another way is to provision it from command line. Here are two examples, the sec
 one omits some parameters that are not necessary:
 
 ```
-curl https://gitlab.com/fevermap/fevermap/-/blob/feature/ocp-template/ocp/template-fevermap-persistent.yaml| \
+curl https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/staging/template-fevermap-staging.yaml| \
   oc new-app \
   -p NAME=test \
   -p NAMESPACE=fever-template \
-  -p MEMORY_FRONT_LIMIT=512Mi \
+  -p MEMORY_APP_LIMIT=512Mi \
   -p MEMORY_API_LIMIT=512Mi \
   -p MEMORY_MYSQL_LIMIT=512Mi \
   -p VOLUME_CAPACITY=1Gi \
@@ -62,12 +63,25 @@ from local file:
 
 ```
 oc new-app \
-  -f template-fevermap-persistent.yaml \
+  -f template-fevermap-staging.yaml \
   -p NAME=fevermap \
-  -p NAMESPACE=fever-template \
-  -p APPLICATION_FRONT_DOMAIN=front.apps.ocp4.konttikoulu.fi \
+  -p NAMESPACE=fevermap-staging \
+  -p APPLICATION_APP_DOMAIN=app.apps.ocp4.konttikoulu.fi \
   -p APPLICATION_API_DOMAIN=api.apps.ocp4.konttikoulu.fi
 ```
+
+for production kind of env:
+
+```
+oc new-app \
+  -f template-fevermap-runtime.yaml \
+  -p NAME=fevermap \
+  -p NAMESPACE=fevermap-prod \
+  -p APPLICATION_APP_DOMAIN=app-prod.apps.ocp4.konttikoulu.fi \
+  -p APPLICATION_API_DOMAIN=api-prod.apps.ocp4.konttikoulu.fi \
+  -p APP_IMG_URL=quay.io/fevermap/fevermap-app \
+  -p API_IMG_URL=quay.io/fevermap/fevermap-api
+  ```
 
 # Storage
 
@@ -103,20 +117,21 @@ Jenkins.
 ## Code change
 
 First we evaluate which directories the changes are in. If it doesn't consern
-the ```app/``` or ```api/``` dir, we don't care:
+the ```app/```, ```api/```or ```push-api/``` dir, we don't care:
 
 ![detect change](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-detect-change.png)
 
-If the change is in ```api/``` or ```app/``` dirs, pipeline does the following
+If the change is in ```api/```, ```push-api/```or ```app/``` dirs, pipeline does the following
 steps:
 
 ![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-build.png)
 
 1. Detect change, and accordingly kick OpenShift buildstream to:
-1.1. If API change, get the python container and do API image build with new code. Store the
-   new image locally
-1.2. If APP change, get the code and do nodejs build. Store the artifacts. Start
-   second build step to build NginX image with generated static code.
+  1. If API change, get the python container and do API image build with new code. Store the
+     new image locally
+  1. If APP change, get the code and do nodejs build. Store the artifacts. Start
+     second build step to build NginX image with generated static code.
+  1. If Push API change, get the code and do nodejs build.
 2. Tag the built images with git version hash in OpenShift registry.
 3. Push images to Quay.io for further use and security scan.
 4. Tag image in Quay.io with git version hash.
@@ -133,8 +148,11 @@ gitlab:
 2. Get commit hash
 3. Tag API image in local registry with release tag
 4. Tag APP image in local registry with release tag
-5. Tag [API image in Quay.io](https://quay.io/repository/fevermap/fevermap-api?tab=tags) with release tag
-6. Tag [APP image in Quay.io](https://quay.io/repository/fevermap/fevermap-app?tab=tags) with release tag
+5. Tag Push API image in local registry with release tag
+6. Tag [API image in Quay.io](https://quay.io/repository/fevermap/fevermap-api?tab=tags) with release tag
+7. Tag [APP image in Quay.io](https://quay.io/repository/fevermap/fevermap-app?tab=tags) with release tag
+8. Tag [Push API image in Quay.io](https://quay.io/repository/fevermap/fevermap-push-api?tab=tags) with release tag
+
 
 OpenShift is set to trigger on the release tag. New release tag will cause a
 rolling upgrade for production. See

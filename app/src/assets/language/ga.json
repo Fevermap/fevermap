@@ -100,7 +100,9 @@
       "data_entry": "Iontráil sonraí déanta go rathúil ",
       "offline_entry_queued": "Is cosúil go bhfuil tú as líne. Tá an iontráil sa scuaine. ",
       "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Iontrálacha sioncronaithe go rathúil."
+      "sync_finished": "Iontrálacha sioncronaithe go rathúil.",
+      "subscribe_success": "Subscribed to push notifications successfully",
+      "unsubscribe_success": "Unsubscribed from push notifications successfully"
     },
     "error": {
       "age_not_in_range": " Níl an Bhliain breithe tugtha sa réimse ceadaithe  (1900 - 2020).",
@@ -108,7 +110,9 @@
       "location_data_invalid": "Tá an láthair tugtha neamhbhailí.",
       "api_data_invalid": "Tá na sonraí tugtha go dtí an API neamhbhailí ",
       "gender_not_set": "Níl an Inscne socraithe.",
-      "do_not_submit_new_temp_until": "Ná déan iontráil ar theocht nua go dtí %{dateTime}"
+      "do_not_submit_new_temp_until": "Ná déan iontráil ar theocht nua go dtí %{dateTime}",
+      "subscribe_error": "Subscribing to push notifications failed",
+      "unsubscribe_error": "Unsubscribing from push notifications failed"
     }
   },
   "dialog": {
@@ -117,6 +121,22 @@
       "content": "Is féidir Fevermap a suiteáil mar Fheidhmiú Forásach Gréasáin. Má dhéantar é a shuiteáil, is féidir linn áiseanna breise ar nós am rite níos tapúla agus fógraí brú (ag teacht go luath) .",
       "approve_text": "Suiteáil",
       "decline_text": "B'fhéidir ar ball"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good morning! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }
