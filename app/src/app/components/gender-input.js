@@ -32,6 +32,7 @@ class GenderInput extends LitElement {
           : ''}"
       >
         <div
+          tabindex="0"
           @click="${() => this.changeGender('M')}"
           class="gender-input gender-input--male${this.gender === 'M'
             ? ' gender-input--selected'
@@ -41,6 +42,7 @@ class GenderInput extends LitElement {
           <p>${Translator.get('entry.questions.male')}</p>
         </div>
         <div
+          tabindex="0"
           @click="${() => this.changeGender('F')}"
           class="gender-input gender-input--female${this.gender === 'F'
             ? ' gender-input--selected'

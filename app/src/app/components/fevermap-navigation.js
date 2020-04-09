@@ -95,6 +95,7 @@ class FevermapNavigation extends LitElement {
     return html`
       <div class="fevermap-navigation-wrapper mdc-elevation--z5">
         <div
+          tabindex="0"
           @click="${this.handleNavigationClick}"
           class="fevermap-navigation-block${this.currentView === 'fevermap-landing'
             ? ' fevermap-navigation-block--selected'
@@ -107,6 +108,7 @@ class FevermapNavigation extends LitElement {
           <p>${Translator.get('landing.about')}</p>
         </div>
         <div
+          tabindex="0"
           @click="${this.handleNavigationClick}"
           class="fevermap-navigation-block${this.currentView === 'fevermap-data-view'
             ? ' fevermap-navigation-block--selected'
@@ -119,6 +121,7 @@ class FevermapNavigation extends LitElement {
           <p>${Translator.get('entry.data_entry')}</p>
         </div>
         <div
+          tabindex="0"
           @click="${this.handleNavigationClick}"
           class="fevermap-navigation-block${this.currentView === 'fevermap-stats'
             ? ' fevermap-navigation-block--selected'

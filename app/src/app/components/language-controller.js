@@ -60,7 +60,7 @@ class LanguageController extends LitElement {
     return html`
       <div class="language-switcher${this.visible ? '' : ' language-switcher--hidden'}">
         <p>${Translator.get('language')}</p>
-        <select id="language-selector" @change="${this.handleLanguageChange}"
+        <select id="language-selector" @change="${this.handleLanguageChange}" tabindex="0"
           ><option value="${Translator.getLang().key}">${Translator.getLang().name}</option>
           ${Translator.getPossibleLanguages().map(lang => {
             if (lang.key === Translator.lang) {

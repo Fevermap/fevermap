@@ -9,6 +9,7 @@ import './components/language-controller.js';
 import './components/dialog.js';
 import './components/button.js';
 import './components/development-mode-banner.js';
+import AccessibilityUtil from './util/accessibility-util.js';
 
 class FevermapRoot extends LitElement {
   static get properties() {
@@ -21,6 +22,10 @@ class FevermapRoot extends LitElement {
     super();
     const hasSubmitted = localStorage.getItem('LAST_ENTRY_SUBMISSION_TIME');
     this.hasSubmittedAtLeastOnce = hasSubmitted != null;
+  }
+
+  firstUpdated() {
+    AccessibilityUtil.init();
   }
 
   render() {
