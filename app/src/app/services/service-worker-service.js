@@ -6,10 +6,16 @@ import NotificationService from './notification-service.js';
 export default class ServiceWorkerService {
   constructor() {
     this.wb = new Workbox('service-worker.js');
-
     this.wb.addEventListener('waiting', () => {
       // console.log('Waiting to be allowed to install');
       // window.location.reload();
+    });
+
+    // As a new service worker gains access, update the page so that new content
+    // is reloaded to the user
+    this.wb.addEventListener('controlling', () => {
+      console.info('[WB]: Service Worker updated. Reloading...');
+      window.location.reload();
     });
 
     this.wb.register().then(reg => {
