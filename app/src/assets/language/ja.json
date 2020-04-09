@@ -39,7 +39,7 @@
       "what_is_your_temperature": "あなたの体温は？",
       "temperature": "体温",
       "how_much": "How much?",
-      "degrees_of_fever": "%{degrees} of fever",
+      "degrees_of_fever": "%{degrees}の発熱",
       "havent_measured_but": "私は体温を測定していませんが...",
       "feel_healthy": "元気です",
       "feel_feverish": "熱っぽい",
@@ -99,8 +99,8 @@
       "offline_entry_queued": "オフラインのようです。エントリーはキューに入れられました。",
       "entry_send_failed_queued": "提出に失敗しました。エントリーはキューに入れられました。",
       "sync_finished": "エントリを同期しました。",
-      "subscribe_success": "Subscribed to push notifications successfully",
-      "unsubscribe_success": "Unsubscribed from push notifications successfully"
+      "subscribe_success": "プッシュ通知の購読に成功しました",
+      "unsubscribe_success": "プッシュ通知の購読解除に失敗しました"
     },
     "error": {
       "age_not_in_range": "指定された生年は許容範囲内ではありません（1900 ～ 2020）。",
@@ -109,8 +109,8 @@
       "api_data_invalid": "APIに送信されたデータは無効です。",
       "gender_not_set": "性別が設定されていません。",
       "do_not_submit_new_temp_until": "%{dateTime}まで新しい温度を送信しないでください。",
-      "subscribe_error": "Subscribing to push notifications failed",
-      "unsubscribe_error": "Unsubscribing from push notifications failed"
+      "subscribe_error": "プッシュ通知の購読に失敗しました",
+      "unsubscribe_error": "プッシュ通知の購読解除に失敗しました"
     }
   },
   "dialog": {
@@ -120,17 +120,17 @@
       "approve_text": "インストール",
       "decline_text": "いいえ、後で"
     },
-    "subscribe_to_notifications": "Subscribe to notifications",
-    "unsubscribe_from_notifications": "Unsubscribe from notifications"
+    "subscribe_to_notifications": "通知を購読する",
+    "unsubscribe_from_notifications": "通知の登録を解除する"
   },
   "notification": {
     "daily_reminder": {
-      "title": "Good evening! \uD83D\uDE0A",
-      "content": "How are you feeling today?",
-      "healthy": "Healthy",
-      "sick": "Sick"
+      "title": "こんばんは！ \uD83D\uDE0A",
+      "content": "今日の気分はどうですか？",
+      "healthy": "元気",
+      "sick": "元気ない"
     },
-    "subscribe_to_notifications": "Subscribe to notifications",
-    "unsubscribe_from_notifications": "Unsubscribe from notifications"
+    "subscribe_to_notifications": "通知を購読する",
+    "unsubscribe_from_notifications": "通知の登録を解除する"
   }
 }
