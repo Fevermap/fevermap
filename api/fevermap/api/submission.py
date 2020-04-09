@@ -80,11 +80,12 @@ class SubmissionResource(Resource):
         errors = []
 
         if not isinstance(data['device_id'], int) and \
-           not re.fullmatch(r'[0-9]{13}', data['device_id']):
+           not re.fullmatch(r'[0-9]{1,19}', data['device_id']):
             errors += ('device_id', 'Incorrect form for device identifier')
 
         # Check boolean values from multiple fields
         boolean_fields = [
+            'new_device_id',
             'fever_status',
             'symptom_difficult_to_breath',
             'symptom_cough',
@@ -192,12 +193,20 @@ class SubmissionResource(Resource):
         submitter = db_session.query(Submitter).filter(
             Submitter.device_id == device_id).one_or_none()
 
+        new_device_id = bool(data['new_device_id'])
+
         # Create a new submitter if device_id is new
         if submitter is None:
             submitter = Submitter(
                 device_id=device_id,
                 birth_year=birth_year,
                 gender=gender)
+        elif new_device_id is True:
+            # Submitter exists, but claims to be new. Reject and ask to retry
+            return {
+                'success': False,
+                'message': 'Device ID exists, regenerate and retry.'
+            }, 409
         elif len(submitter.submissions) > 0:
             # For existing submitter, check when was the last data received
             last_submission = submitter.submissions[-1]

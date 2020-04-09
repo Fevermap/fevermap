@@ -231,13 +231,7 @@ class FevermapDataEntry extends LitElement {
   async buildFeverData() {
     const feverData = {};
     const geoCodingInfo = await this.getGeoCodingInputInfo();
-    let deviceId = localStorage.getItem('DEVICE_ID');
-    if (!deviceId) {
-      deviceId = Date.now();
-      localStorage.setItem('DEVICE_ID', deviceId);
-    }
-
-    feverData.device_id = deviceId;
+    // device ID is handled during submission
     feverData.fever_status = this.hasFever;
     feverData.fever_temp = this.feverAmount;
     if (this.hasFever) {
@@ -348,6 +342,9 @@ class FevermapDataEntry extends LitElement {
       switch (submissionResponse.reason) {
         case 'INVALID_DATA':
           SnackBar.error(Translator.get('system_messages.error.api_data_invalid'));
+          break;
+        case 'REGEN_DEVICE_ID':
+          this.handlePostSubmissionActions(feverData, Date.now(), true);
           break;
         case 'NETWORK_STATUS_OFFLINE':
           this.handlePostSubmissionActions(feverData, Date.now(), true);
