@@ -48,7 +48,7 @@ To add a translation in a new language, open the translation file in `src/assets
 
 A easy work process is to copy the English translation object, paste it at the end of the array, and rename the `"en"` object to the wanted language.
 
-The language selector on the page takes care of adding the choice to change to given language so all you need to do is rewrite the translation values in the file `translations.json`.
+The language selector on the page takes care of adding the choice to change to given language so all you need to do is rewrite the translation values in the file `translator.js`.
 
 
 #### Contacting external API's

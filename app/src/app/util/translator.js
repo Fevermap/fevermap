@@ -16,6 +16,7 @@ import translation_be from '../../assets/language/be.json';
 import translation_ar from '../../assets/language/ar.json';
 import translation_pl from '../../assets/language/pl.json';
 import translation_ga from '../../assets/language/ga.json';
+import translation_ja from '../../assets/language/ja.json';
 
 const translations = {
   en: translation_en,
@@ -32,6 +33,7 @@ const translations = {
   ar: translation_ar,
   pl: translation_pl,
   ga: translation_ga,
+  ja: translation_ja,
 };
 
 export default class Translator {
