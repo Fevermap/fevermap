@@ -17,6 +17,7 @@ import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import PWAService from '../services/pwa-service.js';
 import NotificationService from '../services/notification-service.js';
 import { syncClientInformation } from '../services/service-worker-service.js';
+import BirthYearRangeSelector from '../components/birth-year-range-selector.js';
 
 class FevermapDataEntry extends LitElement {
   static get properties() {
@@ -442,7 +443,6 @@ class FevermapDataEntry extends LitElement {
   }
 
   handlePersonalInfoSubmit() {
-    this.birthYear = this.querySelector('#birth-year').getValue();
     if (!this.validateAge(this.birthYear) || !this.validateGender(this.gender)) {
       return;
     }
@@ -543,6 +543,23 @@ class FevermapDataEntry extends LitElement {
       this.symptoms.push(e.target.id);
       target.classList.add('symptom--selected');
     }
+  }
+
+  getBirthYearRanges() {
+    return [
+      { name: '1900-1909', value: '1900' },
+      { name: '1910-1919', value: '1910' },
+      { name: '1920-1929', value: '1920' },
+      { name: '1930-1939', value: '1930' },
+      { name: '1940-1949', value: '1940' },
+      { name: '1950-1959', value: '1950' },
+      { name: '1960-1969', value: '1960' },
+      { name: '1970-1979', value: '1970' },
+      { name: '1980-1989', value: '1980' },
+      { name: '1990-1999', value: '1990' },
+      { name: '2000-2009', value: '2000' },
+      { name: '2010-2019', value: '2010' },
+    ];
   }
 
   render() {
@@ -861,13 +878,21 @@ class FevermapDataEntry extends LitElement {
     return html`
       <div class="entry-field">
         <p>${Translator.get('entry.questions.birth_year')}</p>
-        <input-field
-          placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
-          fieldId="year-of-birth-input"
-          id="birth-year"
-          value="${this.birthYear ? this.birthYear : ''}"
-          type="number"
-        ></input-field>
+        <div class="birth-year-range-selectors">
+          ${BirthYearRangeSelector.getBirthYearRanges().map(
+            range =>
+              html`
+                <birth-year-range-selector
+                  @birth-year-selected="${e => {
+                    this.birthYear = e.detail.birthYear;
+                  }}"
+                  label=${range.name}
+                  value=${range.value}
+                  ?selected="${this.birthYear === range.value}"
+                ></birth-year-range-selector>
+              `,
+          )}
+        </div>
       </div>
     `;
   }

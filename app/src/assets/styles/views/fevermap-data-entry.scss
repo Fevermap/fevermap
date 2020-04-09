@@ -284,7 +284,6 @@ p.mdc-theme--error {
   }
 }
 
-
 .temperature-title {
   font-size: 1.2rem;
   margin: 0 0 2rem;
@@ -558,19 +557,21 @@ input[type="range"]::-webkit-slider-runnable-track {
         }
 
         .gender-input-holder {
+          width: 80%;
+          margin: 0 auto 1rem;
           .gender-input {
-            padding: 0.5rem 0 0;
+            padding: 0.5rem 0 0.5rem;
             img {
-              width: 20%;
+              width: 15%;
               max-width: 250px;
             }
             &--female {
               img {
-                width: 25%;
+                width: 15%;
               }
             }
             p {
-              margin: 0.5rem 0;
+              margin: 0.5rem 0 0;
             }
           }
         }

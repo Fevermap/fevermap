@@ -12,6 +12,7 @@ import ScrollService from '../services/scroll-service.js';
 import DataEntryService from '../services/data-entry-service.js';
 import SnackBar from '../components/snackbar.js';
 import NotificationService from '../services/notification-service.js';
+import BirthYearRangeSelector from '../components/birth-year-range-selector.js';
 
 class FevermapDataView extends LitElement {
   static get properties() {
@@ -47,7 +48,8 @@ class FevermapDataView extends LitElement {
     this.checkLastSubmissionTime();
 
     const gender = localStorage.getItem('GENDER');
-    const birthYear = localStorage.getItem('BIRTH_YEAR');
+    let birthYear = localStorage.getItem('BIRTH_YEAR');
+    birthYear = this.handleOldBirthYear(birthYear);
     const covidDiagnosis = localStorage.getItem('COVID_DIAGNOSIS');
     this.setGender = gender || null;
     this.setBirthYear = birthYear || '';
@@ -59,6 +61,19 @@ class FevermapDataView extends LitElement {
 
     this.getPreviousSubmissionsFromIndexedDb();
     this.hasSubscribedToTopic = localStorage.getItem('NOTIFICATION_TOPIC');
+  }
+
+  /**
+   * Since we've changed from exact year to year range, some users have the old format.
+   * This wil re-format the user's age to match the new system.
+   * @param birthYear
+   */
+  handleOldBirthYear(birthYear) {
+    if (birthYear % 10 !== 0) {
+      this.handleAgeChange(Math.floor(birthYear / 10) * 10);
+      return this.setBirthYear;
+    }
+    return birthYear;
   }
 
   firstUpdated() {
@@ -186,7 +201,7 @@ class FevermapDataView extends LitElement {
 
   getAge() {
     const age = dayjs(new Date()).year() - this.setBirthYear;
-    return `${age - 1}-${age}`;
+    return `${age - 10}-${age}`;
   }
 
   handleAgeChange(newAge) {
@@ -432,14 +447,19 @@ class FevermapDataView extends LitElement {
       >
         <div class="persistent-info-editing-fields--age-input">
           <p>${Translator.get('entry.questions.birth_year')}</p>
-          <input-field
-            @input-blur="${e => this.handleAgeChange(e.detail.age)}"
-            placeHolder=${Translator.get('entry.questions.birth_year_placeholder')}
-            fieldId="year-of-birth-input"
-            id="birth-year"
-            value="${this.setBirthYear}"
-            type="number"
-          ></input-field>
+          <div class="birth-year-range-selectors">
+            ${BirthYearRangeSelector.getBirthYearRanges().map(
+              range =>
+                html`
+                  <birth-year-range-selector
+                    @birth-year-selected="${e => this.handleAgeChange(e.detail.birthYear)}"
+                    label=${range.name}
+                    value=${range.value}
+                    ?selected="${this.setBirthYear === range.value}"
+                  ></birth-year-range-selector>
+                `,
+            )}
+          </div>
         </div>
 
         <div class="persistent-info-editing-fields--gender-input">
