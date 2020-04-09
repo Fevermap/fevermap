@@ -42,7 +42,7 @@ parameters:
   displayName: Front Image URL
   name: APP_IMG_URL
   required: true
-  value: quay.io/fevermap/fevermap
+  value: quay.io/fevermap/fevermap-app
 - description: Version of front image to be used (release-tag or latest).
   displayName: Front-end image Version
   name: APP_VERSION
@@ -709,6 +709,24 @@ objects:
 #
 # push API
 #
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-push-api
+    annotations:
+      description: The run-time image for push-api
+      template.alpha.openshift.io/wait-for-ready: "true"
+  spec:
+    lookupPolicy:
+      local: false
+    tags:
+    - annotations: null
+      from:
+        kind: DockerImage
+        name: ${PUSH_API_IMG_URL}:${PUSH_API_VERSION}
+      name: latest
+      referencePolicy:
+        type: Source
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -783,7 +801,7 @@ objects:
         - ${NAME}-push-api
         from:
           kind: ImageStreamTag
-          name: ${PUSH_API_IMG_URL}:${PUSH_API_VERSION}
+          name: ${NAME}-push-api:${PUSH_API_VERSION}
       type: ImageChange
 - apiVersion: v1
   kind: Service
