@@ -281,37 +281,6 @@ p.mdc-theme--error {
         background: $bluegreen;
       }
     }
-
-    .birth-year-range-selectors {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      justify-content: space-between;
-
-      .birth-year-range-selector {
-        border-radius: 5px;
-        background: #FFF;
-        flex-basis: calc(30% - 1rem);
-        padding: 0.5rem;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 0.5rem;
-        transition: 0.1s ease-in;
-
-        p {
-          margin: 0;
-        }
-
-        &--selected {
-          background: #32cd32;
-          p {
-            color: #FFF;
-          }
-        }
-      }
-    }
   }
 }
 
@@ -694,16 +663,6 @@ input[type="range"]::-webkit-slider-runnable-track {
         button {
           font-size: 0.5rem;
         }
-      }
-    }
-  }
-}
-
-@media only screen and (max-width: 330px) {
-  .birth-year-range-selectors {
-    .birth-year-range-selector {
-      p {
-        font-size: 0.6rem
       }
     }
   }

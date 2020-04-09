@@ -16,7 +16,7 @@ import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import PWAService from '../services/pwa-service.js';
 import NotificationService from '../services/notification-service.js';
 import { syncClientInformation } from '../services/service-worker-service.js';
-import '../components/birth-year-range-selector.js';
+import BirthYearRangeSelector from '../components/birth-year-range-selector.js';
 
 class FevermapDataEntry extends LitElement {
   static get properties() {
@@ -810,7 +810,7 @@ class FevermapDataEntry extends LitElement {
       <div class="entry-field">
         <p>${Translator.get('entry.questions.birth_year')}</p>
         <div class="birth-year-range-selectors">
-          ${this.getBirthYearRanges().map(
+          ${BirthYearRangeSelector.getBirthYearRanges().map(
             range =>
               html`
                 <birth-year-range-selector
