@@ -21,7 +21,20 @@ Images are built once, and the URLs and some start options may be given them as
 environment variables and config map to make them adapt to different runtime
 locations.
 
-# Setting up test environment
+# Setting up Fevermap into OpenShift
+
+## Pre-requisites
+
+Setup expects you have OpenShift access, and the oc -client installed. For local
+tests on your laptop, get [Code Ready Containers installed](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/) on your laptop. It's
+OpenShift in virtual machine. Also this assumes you have done Red Hat
+[registry pull token](https://docs.openshift.com/container-platform/3.11/install_config/configuring_red_hat_registry.html#creating-service-accounts-tokens_configuring_red_hat_registry)
+and added it to secret named registry-redhat-io-secret
+[instructed here](https://docs.openshift.com/container-platform/3.11/install_config/configuring_red_hat_registry.html#using-service-accounts_configuring_red_hat_registry). You need to create
+free Red Hat developer account for this unless you already have an account.
+
+
+## Installing Fevermap project to OpenShift environment
 
 The easiest way is to use the template. It asks you few parameters, and
 lets OpenShift bring up all the components. If you want to use GUI, import the
