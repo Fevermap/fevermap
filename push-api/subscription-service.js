@@ -21,7 +21,10 @@ class SubscriptionService {
 
     // Check the time every minute. Operates the messages only 4 times an hour,
     // but since the server can be restarted, we can't rely on a looser timer.
-    setInterval(() => this.handleDailyMessages(), 60000);
+    if (process.env.NODE_ENV === "production") {
+      console.log("Started daily message timer");
+      setInterval(() => this.handleDailyMessages(), 60000);
+    }
     SubscriptionService._instance = this;
   }
 
