@@ -3,21 +3,21 @@
   "language": "Idioma",
   "fevermap_title": "Fevermap",
   "back": "Atrás",
-  "today": "Today",
-  "user_description": "You are a %{age} -year-old %{gender}, with %{diagnosis}",
-  "a_covid_diagnosis": "a COVID-19 diagnosis",
-  "no_covid_diagnosis": "no COVID-19 diagnosis",
+  "today": "Hoy",
+  "user_description": "Eres un(a) %{gender} de %{age} años de edad, diagnosticado con: %{diagnosis}",
+  "a_covid_diagnosis": "con disgnóstico de COVID-19 positivo",
+  "no_covid_diagnosis": "con disgnóstico de COVID-19 negativo",
 
   "landing": {
     "about": "Acerca de",
     "about_title": "¿Qué es Fevermap?",
-    "about_content_explanation": " es una aplicación móvil y web creada para la recolección de datos de una manera sencilla y en tiempo real de la prevalencia de la pandemia del Coronavirus COVID-19.",
-    "about_current_methods": "Los métodos actuales de seguimiento de la prevalencia del Conoravirus no dan una visión global. Existe una gran cantidad de gente que aún no ha sido diagnosticada debido a que los recursos disponibles han sido derivados a aquellos que más lo necesitan.",
-    "about_solution": "Fevermap presenta una solución a este problema. Con Fevermap, cualquiera en cualquier parte del globo puede informar anónimamente de su fiebre u otros síntomas. Así es posible estimar la verdadera prevalencia de las infecciones de COVID-19 en tiempo real, y proporcionar a los gobiernos datos que les ayuden a tomar decisiones más acertadas y en plazos en base a los datos recolectados.",
+    "about_content_explanation": " es una aplicación móvil y una web creada para la recolección de datos de una manera sencilla y en tiempo real de la prevalencia de la pandemia del Coronavirus COVID-19.",
+    "about_current_methods": "Los métodos actuales de seguimiento de la prevalencia del Conoravirus no dan una visión global, existe una gran cantidad de gente que aún no ha sido diagnosticada debido a que los recursos disponibles han sido derivados a aquellos que más lo necesitan.",
+    "about_solution": "Fevermap presenta una solución a este problema. Con Fevermap, cualquier persona en cualquier parte del mundo puede informar anónimamente de su fiebre u otros síntomas. Así es posible estimar la verdadera prevalencia de las infecciones de COVID-19 en tiempo real y proporcionar a los gobiernos datos que les ayuden a tomar decisiones más acertadas y en plazos en base a los datos recolectados.",
     "about_data_collection": "Los datos recolectados por Fevermap son anonimizados y serán usados para ayudarnos a tener una visión más realista de la situación global actual.",
-    "about_current_participant_count": "A fecha de hoy, %{participantCount} usuarios han usado Fevermap para informar sobre sus síntomas. ",
+    "about_current_participant_count": "Hasta la fecha de hoy, %{participantCount} usuarios han usado Fevermap para informar sobre sus síntomas. ",
     "how_to_participate": "¿Cómo puedo participar?",
-    "participation_info": "Fácil. Simplemente ponte el termómetro y sube tu medida de temperatura – así como algo de información para fines estadísticos, como tu año de nacimiento y tu código postal.",
+    "participation_info": "Fácil. Simplemente ponte el termómetro y envía tu temperatura mediante Fivermap, envía también algo de información para fines estadísticos, como tu año de nacimiento y tu código postal.",
     "info_disclaimer": "En ningún momento te pediremos información que permita identificarte públicamente. Respetamos tu privacidad y anonimato.",
     "how_will_my_data_be_used": "¿Cómo serán usados mis datos?",
     "data_use_explanation": "Los datos serán anonimizados, y posteriormente compartidos como datos abiertos a través de un API."
@@ -28,33 +28,34 @@
     "first_entry_disclaimer": "Los registros son enviados a la base de datos en función de tu dispositivo. Por ello mejor si envías tu información siempre desde el mismo dispositivo. Esto nos permitirá monitorizar mejor el estado de tu fiebre.",
     "last_submission": "Últimos datos enviados",
     "submission_period_disclaimer": "Para evitar datos innecesarios, sólo se podrá enviar datos una vez cada doce horas.",
-    "sync_now": "Sincronizar ya",
+    "sync_now": "Sincronizar ahora",
     "new_entry": "Nuevo registro",
     "first_time_disclaimer": "Como es la primera vez que usas Fevermap, te haremos antes unas preguntas.",
     "these_questions_wont_be_repeated": "Estas preguntas no se repetirán para registros futuros.",
-    "queued_entries": "You have queued entries",
-    "send_now": "Send now",
+    "queued_entries": "Tienes datos en cola para enviar",
+    "send_now": "Enviar ahora",
     "questions": {
-      "what_is_your_temperature": "¿Cuál es tu temperatura?",
+      "what_is_your_temperature": "¿Cuál es tu temperatura actual?",
       "temperature": "Temperatura",
       "how_much": "¿Cuánto?",
       "degrees_of_fever": "%{degrees} de fiebre",
       "not_measured": "No lo sé exactamente, no me la he medido.",
+      "havent_measured_but": "No me la he medido aún, pero...",
       "set_temperature": "Guardar temperatura",
       "other_symptoms": "¿Algún otro síntoma?",
-      "choose_all_that_apply": "Marca los que correspondan",
+      "choose_all_that_apply": "Marca todos los que correspondan",
       "difficulty_to_breathe": "Dificultad respiratoria",
       "cough": "Tos",
       "sore_throat": "Dolor de garganta",
       "muscular_pain": "Dolor muscular",
-      "positive_covid_diagnosis": "He sido diagnostido como positivo de COVID-19.",
+      "positive_covid_diagnosis": "He sido diagnostido como positivo a la COVID-19.",
       "set_symptoms": "Guardar síntomas",
       "birth_year": "Año de nacimiento",
       "birth_year_placeholder": "Año de nacimiento (años 1900 - 2020)",
-      "gender_in_passport": "Género según figura en tu pasaporte u otro registro civil",
+      "gender_in_passport": "Género según figura en tu pasaporte u otro registro oficial",
       "male": "Hombre",
       "female": "Mujer",
-      "location_information": "Información de localización",
+      "location_information": "Información sobre su ubicación",
       "whats_your_location": "¿Dónde te encuentras?",
       "city": "Ciudad",
       "country": "País",
@@ -76,12 +77,12 @@
   },
 
   "history": {
-    "title": "History",
-    "your_streak": "Your streak",
-    "days": "Days",
-    "total_entries": "Total entries",
-    "measurements": "measurement",
-    "add_entry": "Add entry"
+    "title": "Historial",
+    "your_streak": "Tu racha",
+    "days": "Días",
+    "total_entries": "Total de entradas",
+    "measurements": "mediciones",
+    "add_entry": "Nueva entrada"
   },
 
   "stats": {
@@ -90,47 +91,47 @@
 
   "system_messages": {
     "success": {
-      "location_update": "Ubicación actualizada satisfactoriamente",
-      "data_entry": "Entrada de registro enviada satisfactoriamente",
+      "location_update": "Ubicación actualizada con éxito",
+      "data_entry": "Entrada enviada satisfactoriamente",
       "offline_entry_queued": "Parece que te has quedado sin red. Tu entrada ha sido puesta en cola.",
-      "entry_send_failed_queued": "Submission failed. Entry has been queued.",
-      "sync_finished": "Entradas sincronizadas satisfactoriamente.",
-      "subscribe_success": "Subscribed to push notifications successfully",
-      "unsubscribe_success": "Unsubscribed from push notifications successfully"
+      "entry_send_failed_queued": "Envío fallido. Tu entrada ha sido puesta en cola.",
+      "sync_finished": "Datos sincronizados satisfactoriamente.",
+      "subscribe_success": "Se ha suscrito a las notificaciones",
+      "unsubscribe_success": "Ha cancelado las notificaciones"
     },
     "error": {
-      "age_not_in_range": "El año de nacimiento proporcionado no pertenece al rango permitido (1900 - 2020).",
+      "age_not_in_range": "El año de nacimiento no pertenece al rango permitido (1900 - 2020).",
       "fever_temp_value_invalid": "El valor de temperatura no es válido.",
       "location_data_invalid": "La ubicación provista no es válida.",
       "api_data_invalid": "Los datos enviados al API no fueron válidos.",
       "gender_not_set": "El género no ha sido establecido.",
-      "do_not_submit_new_temp_until": "Do not submit a new temperature until %{dateTime}",
-      "subscribe_error": "Subscribing to push notifications failed",
-      "unsubscribe_error": "Unsubscribing from push notifications failed"
+      "do_not_submit_new_temp_until": "No puedes enviar nuevas entradas hasta %{dateTime}",
+      "subscribe_error": "No se pudo suscribir a las notificaciones",
+      "unsubscribe_error": "No se pudo cancelar la suscripción a las notificaciones"
     }
   },
   "dialog": {
     "pwa_installer": {
-      "title": "Instala Fevermap",
+      "title": "Instalar Fevermap",
       "content": "Fevermap se puede instalar como una aplicación web progresiva. Una vez instalada dispondrás de funcionalidad extra, como una ejecución más rápida y notificaciones directas (disponibles en breve).",
       "approve_text": "Instalar",
-      "decline_text": "Ahora no"
+      "decline_text": "Quizás más tarde"
     },
     "notifications": {
-      "title": "Allow notifications",
-      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
-      "approve_text": "Allow notifications",
-      "decline_text": "No please"
+      "title": "Permitir notificationes",
+      "content": "Fevermap puede recordarte a diario que envíes datos sobre tu estado de salud. ¿Permitir las notificaciones?",
+      "approve_text": "Permitir notificaciones",
+      "decline_text": "No, gracias"
     }
   },
   "notification": {
     "daily_reminder": {
-      "title": "Good evening! \uD83D\uDE0A",
-      "content": "How are you feeling today?",
-      "healthy": "Healthy",
-      "sick": "Sick"
+      "title": "Saludos! \uD83D\uDE0A",
+      "content": "¿Cómo te sientes hoy?",
+      "healthy": "Saludable",
+      "sick": "Enfermo"
     },
-    "subscribe_to_notifications": "Subscribe to notifications",
-    "unsubscribe_from_notifications": "Unsubscribe from notifications"
+    "subscribe_to_notifications": "Suscribirse a las notificaciones",
+    "unsubscribe_from_notifications": "Cancelar las notificationes"
   }
 }
