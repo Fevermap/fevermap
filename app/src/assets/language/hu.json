@@ -4,9 +4,9 @@
     "fevermap_title": "Fevermap",
     "back": "Vissza",
     "today": "Ma",
-    "user_description": "%{age} éves %{gender} vagy, %{diagnosis} diagnózissal.",
-    "a_covid_diagnosis": "COVID-19",
-    "no_covid_diagnosis": "COVID-19 nélküli",
+    "user_description": "%{age} éves %{gender} vagy, %{diagnosis}",
+    "a_covid_diagnosis": "pozitív COVID-19 diagnózissal",
+    "no_covid_diagnosis": "pozitív COVID-19 diagnózis nélkül",
   
     "landing": {
       "about": "A Fevermap-ról",
