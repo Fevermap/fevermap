@@ -78,6 +78,10 @@ parameters:
     if left blank a value will be defaulted.
   displayName: Application API Hostname
   name: APPLICATION_API_DOMAIN
+- description: The exposed hostname that will route to the Fevermap Push API service,
+    if left blank a value will be defaulted.
+  displayName: Application API Hostname
+  name: APPLICATION_PUSH_API_DOMAIN
 - description: Google Analytics property ID. Add this to activate Google Analytics,
     otherwise leave empty to not use GA.
   displayName: Google analytics property ID
