@@ -8,7 +8,7 @@ metadata:
     volume.beta.kubernetes.io/storage-provisioner: kubernetes.io/aws-ebs
   creationTimestamp: null
   finalizers:
-  - kubernetes.io/pvc-protection
+    - kubernetes.io/pvc-protection
   labels:
     app: fevermap-mysql-runtime
     application: fevermap
@@ -17,7 +17,7 @@ metadata:
   selfLink: /api/v1/namespaces/fevermap-prod/persistentvolumeclaims/fevermap-mariadb-storage
 spec:
   accessModes:
-  - ReadWriteOnce
+    - ReadWriteOnce
   resources:
     requests:
       storage: 1Gi

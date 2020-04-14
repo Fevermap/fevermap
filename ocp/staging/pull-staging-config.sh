@@ -1,3 +1,4 @@
+#!/bin/bash
 oc get bc -o yaml --export fevermap-api > bc-staging-fevermap-api.yaml
 oc get bc -o yaml --export fevermap-app > bc-staging-fevermap-app.yaml
 oc get bc -o yaml --export fevermap-app-compile > bc-staging-fevermap-app-compile.yaml
@@ -33,4 +34,3 @@ oc get route -o yaml --export fevermap-app > route-staging-fevermap-app.yaml
 oc get route -o yaml --export fevermap-push-api > route-staging-push-api.yaml
 
 echo "Done. Remember to ansible-vault secret*"
-

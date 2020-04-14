@@ -16,12 +16,13 @@ test:
 	# Ignore lines too long (E501) because in many cases code becomes less readable
 	flake8 --ignore E501 $(shell find -name "*.py" -not -path "*/node_modules/*" | xargs)
 	shellcheck --shell=bash $(shell grep -rnw . -e '^#!.*/bash' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs)
+	shellcheck --shell=sh $(shell grep -rnw . -e '^#!.*/sh' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs)
 	@echo "----------- Tests completed successfully -----------"
 
 test-extra:
 	gnitpick
-	shellcheck --shell=bash $(shell grep -rnw . -e '^#!.*/sh' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs)
-	yamllint -d "{extends: default, rules: {line-length: {max: 120}}}" $(shell find -name "*.yaml" -or -name "*.yml" -not -path "*/node_modules/*" | xargs)
+	shellcheck $(shell find -name "*.sh" -not -path "*/node_modules/*" | xargs)
+	yamllint -d "{extends: default, rules: {line-length: {level: warning}}}" $(shell find -name "*.yaml" -or -name "*.yml" -not -path "*/node_modules/*" | xargs)
 	@echo "----------- Extra tests completed successfully -----------"
 
 test-api:

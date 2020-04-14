@@ -40,89 +40,89 @@ spec:
         deploymentconfig: fevermap-front
     spec:
       containers:
-      - image: fevermap-staging/fevermap-app:release
-        imagePullPolicy: Always
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /window-settings.js
-            port: 8081
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 2
-        name: fevermap
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        - containerPort: 8081
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /window-settings.js
-            port: 8081
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 2
-        resources:
-          limits:
-            memory: 1Gi
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /opt/app-root/src/window-settings.js
-          name: fevermap-window-settings
-          readOnly: true
-          subPath: window-settings.js
-        - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
-          name: liveness-conf
-          readOnly: true
-          subPath: liveness.conf
-        - mountPath: /opt/app-root/src/.well-known/acme-challenge/Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
-          name: challenge-api
-          readOnly: true
-          subPath: Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
-        - mountPath: /opt/app-root/src/.well-known/acme-challenge/EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
-          name: challenge-app
-          readOnly: true
-          subPath: EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
+        - image: fevermap-staging/fevermap-app:release
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /window-settings.js
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: fevermap
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8081
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /window-settings.js
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+            limits:
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /opt/app-root/src/window-settings.js
+              name: fevermap-window-settings
+              readOnly: true
+              subPath: window-settings.js
+            - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
+              name: liveness-conf
+              readOnly: true
+              subPath: liveness.conf
+            - mountPath: /opt/app-root/src/.well-known/acme-challenge/Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
+              name: challenge-api
+              readOnly: true
+              subPath: Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
+            - mountPath: /opt/app-root/src/.well-known/acme-challenge/EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
+              name: challenge-app
+              readOnly: true
+              subPath: EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-      - configMap:
-          defaultMode: 420
+        - configMap:
+            defaultMode: 420
+            name: fevermap-window-settings
           name: fevermap-window-settings
-        name: fevermap-window-settings
-      - configMap:
-          defaultMode: 420
-          name: fevermap-app-nginx-liveness
-        name: liveness-conf
-      - configMap:
-          defaultMode: 420
+        - configMap:
+            defaultMode: 420
+            name: fevermap-app-nginx-liveness
+          name: liveness-conf
+        - configMap:
+            defaultMode: 420
+            name: challenge-api
           name: challenge-api
-        name: challenge-api
-      - configMap:
-          defaultMode: 420
-          name: challenge-api
-        name: challenge-app
+        - configMap:
+            defaultMode: 420
+            name: challenge-api
+          name: challenge-app
   test: false
   triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - fevermap
-      from:
-        kind: ImageStreamTag
-        name: fevermap-app:release
-        namespace: fevermap-staging
-    type: ImageChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - fevermap
+        from:
+          kind: ImageStreamTag
+          name: fevermap-app:release
+          namespace: fevermap-staging
+      type: ImageChange
 status:
   availableReplicas: 0
   latestVersion: 0

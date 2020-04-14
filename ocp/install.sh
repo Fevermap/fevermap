@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo secrets are not in git, put them in place first and remove this line
+echo "secrets are not in git, put them in place first and remove this line"
 exit
 
 # create image streams
@@ -47,4 +47,4 @@ echo give mariadb some time to start
 sleep 120
 oc create -f dc-fevermap-api.yaml
 
-echo done
+echo "done"

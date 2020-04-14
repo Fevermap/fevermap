@@ -16,6 +16,6 @@ metadata:
   uid: 932c5d3f-6e6a-11ea-bf7a-0645a759894e
 spec:
   finalizers:
-  - kubernetes
+    - kubernetes
 status:
   phase: Active

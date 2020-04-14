@@ -12,14 +12,14 @@ metadata:
   selfLink: /api/v1/namespaces/fevermap-prod/services/fevermap-front
 spec:
   ports:
-  - name: 8080-tcp
-    port: 8080
-    protocol: TCP
-    targetPort: 8080
-  - name: 8443-tcp
-    port: 8443
-    protocol: TCP
-    targetPort: 8443
+    - name: 8080-tcp
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+    - name: 8443-tcp
+      port: 8443
+      protocol: TCP
+      targetPort: 8443
   selector:
     deploymentconfig: fevermap-front
   sessionAffinity: None

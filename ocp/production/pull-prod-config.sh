@@ -1,3 +1,4 @@
+#!/bin/bash
 # Before running this script, ensure you have done:
 # oc login
 # oc project fevermap-prod

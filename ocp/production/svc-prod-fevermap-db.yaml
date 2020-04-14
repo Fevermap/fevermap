@@ -17,10 +17,10 @@ metadata:
   selfLink: /api/v1/namespaces/fevermap-prod/services/fevermap-db
 spec:
   ports:
-  - name: mariadb
-    port: 3306
-    protocol: TCP
-    targetPort: 3306
+    - name: mariadb
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
   selector:
     deploymentconfig: fevermap-db
   sessionAffinity: None
