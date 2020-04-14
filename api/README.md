@@ -20,7 +20,7 @@ http://localhost:9000 or more importantly, run `curl` or other requests against
 the API.
 
 To access the MariaDB shell, simply run
-`docker exec -it api_database_1 mariadb -prootpass fevermap`.
+`docker exec -it fevermap_database_1 mariadb -prootpass fevermap`.
 
 If you during testing want to empty either of the database tables, then run
 `TRUNCATE submissions;`. To completely wipe out existing database, run the above
@@ -201,25 +201,29 @@ MariaDB [fevermap]> select * from submitters;
 +----+---------------------+---------------------+---------------+------------+--------+
 
 MariaDB [fevermap]> describe submissions;
-+-----------------------+-------------+------+-----+---------+----------------+
-| Field                 | Type        | Null | Key | Default | Extra          |
-+-----------------------+-------------+------+-----+---------+----------------+
-| id                    | int(11)     | NO   | PRI | NULL    | auto_increment |
-| timestamp_created     | datetime    | NO   |     | NULL    |                |
-| timestamp_modified    | datetime    | NO   |     | NULL    |                |
-| fever_status          | tinyint(1)  | YES  |     | NULL    |                |
-| fever_temp            | float       | YES  |     | NULL    |                |
-| location_country_code | varchar(2)  | YES  |     | NULL    |                |
-| location_postal_code  | varchar(10) | YES  |     | NULL    |                |
-| location_lng          | int(11)     | YES  |     | NULL    |                |
-| location_lat          | int(11)     | YES  |     | NULL    |                |
-| submitter_id          | int(11)     | YES  | MUL | NULL    |                |
-+-----------------------+-------------+------+-----+---------+----------------+
++-----------------------------+-------------+------+-----+---------+----------------+
+| Field                       | Type        | Null | Key | Default | Extra          |
++-----------------------------+-------------+------+-----+---------+----------------+
+| id                          | int(11)     | NO   | PRI | NULL    | auto_increment |
+| timestamp_created           | datetime    | NO   |     | NULL    |                |
+| timestamp_modified          | datetime    | NO   |     | NULL    |                |
+| fever_status                | tinyint(1)  | YES  |     | NULL    |                |
+| fever_temp                  | float       | YES  |     | NULL    |                |
+| symptom_difficult_to_breath | tinyint(1)  | YES  |     | NULL    |                |
+| symptom_cough               | tinyint(1)  | YES  |     | NULL    |                |
+| symptom_sore_throat         | tinyint(1)  | YES  |     | NULL    |                |
+| symptom_muscle_pain         | tinyint(1)  | YES  |     | NULL    |                |
+| diagnosed_covid19           | tinyint(1)  | YES  |     | NULL    |                |
+| location_country_code       | varchar(2)  | YES  |     | NULL    |                |
+| location_postal_code        | varchar(10) | YES  |     | NULL    |                |
+| location_lng                | int(11)     | YES  |     | NULL    |                |
+| location_lat                | int(11)     | YES  |     | NULL    |                |
+| submitter_id                | int(11)     | YES  | MUL | NULL    |                |
++-----------------------------+-------------+------+-----+---------+----------------+
 
 MariaDB [fevermap]> select * from submissions;
-+----+---------------------+---------------------+--------------+------------+-----------------------+----------------------+--------------+--------------+--------------+
-| id | timestamp_created   | timestamp_modified  | fever_status | fever_temp | location_country_code | location_postal_code | location_lng | location_lat | submitter_id |
-+----+---------------------+---------------------+--------------+------------+-----------------------+----------------------+--------------+--------------+--------------+
-|  1 | 2020-03-19 23:36:03 | 2020-03-19 23:36:03 |            1 |         37 | FI                    | 33100                |           61 |           24 |            1 |
-+----+---------------------+---------------------+--------------+------------+-----------------------+----------------------+--------------+--------------+--------------+
-```
++---------+---------------------+---------------------+--------------+------------+-----------------------------+---------------+---------------------+---------------------+-------------------+-----------------------+----------------------+--------------+--------------+--------------+
+| id      | timestamp_created   | timestamp_modified  | fever_status | fever_temp | symptom_difficult_to_breath | symptom_cough | symptom_sore_throat | symptom_muscle_pain | diagnosed_covid19 | location_country_code | location_postal_code | location_lng | location_lat | submitter_id |
++---------+---------------------+---------------------+--------------+------------+-----------------------------+---------------+---------------------+---------------------+-------------------+-----------------------+----------------------+--------------+--------------+--------------+
+| 3937597 | 2020-04-13 07:18:45 | 2020-04-13 07:18:45 |            0 |       NULL |                        NULL |          NULL |                NULL |                NULL |                 0 | US                    | 70-17710             |           22 |           60 |       187580 |
++---------+---------------------+---------------------+--------------+------------+-----------------------------+---------------+---------------------+---------------------+-------------------+-----------------------+----------------------+--------------+--------------+--------------+
