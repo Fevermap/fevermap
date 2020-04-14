@@ -1,0 +1,4 @@
+In filenames, please use official two-letter ISO 639-1 language codes:
+https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+
+Remember to add in app/src/util/translator.js the bindings for any new language.
