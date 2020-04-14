@@ -1,8 +1,9 @@
 #!/bin/bash
 set -e
-
-# Since this populates the database with dummy data, the script is hard-coded
-# to only run against a local development environment
+#
+# This runs dummy API queries (using curl) against the API server.
+#
+# The script is hard-coded to only run against a local development environment.
 API_URL="http://localhost:9000"
 
 function api_test(){

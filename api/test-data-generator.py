@@ -1,22 +1,19 @@
 #!/usr/bin/python3
+"""Test data generator for Fevermap.
+
+This generates directly into the database dummy users and submissions for
+development purposes.
+"""
 
 from random import seed, random, randint, getrandbits
 from pprint import pprint
 import time
 import copy
-import mysql.connector as mariadb
+import MySQLdb as mariadb
 
-# Configuration begin
-
-# IP address of the MariaDB server to send the data to
-# For docker-based deployment issue the following command to find IP:
-#  docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fevermap_database_1
-# (fevermap_database_1 is container id)
-MARIA_DB_HOST = '172.18.0.2'
-
-# Number of submitters (users). Each users has 10-30 submissions (determined randomly)
-SUBMITTERS_QTY = 100000
-# Configuration end
+# Number of submitters (users). Each users has 10-30 submissions (determined
+# randomly)
+SUBMITTERS_QTY = 10000
 
 # Statistics of the generated dataset
 stats = {"total_users": 0,
@@ -35,17 +32,19 @@ stats = {"total_users": 0,
          }
 
 
-# Convert time from unix timestamp to the format required by MariaDB
 def ts_to_mariadb(ts):
+    """Convert time from Unix timestamp to the format required by MariaDB."""
     return time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(ts))
 
 
-# Insert user's submissions into the database
 def submit_to_db(submissions, submitter_cursor, submissions_cursor):
+    """Insert user's submissions into the database."""
     # 1st: create submitter
-    submitter_query = """ INSERT INTO submitters
-                       (timestamp_created, timestamp_modified, device_id, birth_year, gender) VALUES (%s,%s,%s,%s,%s)
-                    """
+    submitter_query = """
+        INSERT INTO submitters
+        (timestamp_created, timestamp_modified, device_id, birth_year, gender)
+        VALUES (%s,%s,%s,%s,%s)
+        """
 
     submitter_tuple = (ts_to_mariadb(submissions[0]["timestamp_created"]),
                        ts_to_mariadb(submissions[0]["timestamp_modified"]),
@@ -94,21 +93,21 @@ def submit_to_db(submissions, submitter_cursor, submissions_cursor):
         submissions_cursor.execute(submission_query, submission_tuple)
 
 
-# Utility function
 def count_users(submissions, key):
+    """Utility function."""
     r = 0
     if(next((s for s in submissions if s[key]), {})):
         r = 1
 
     return r
 
-# Updates stats based on a list of submissions for specific user
-
 
 def update_stats(submissions):
+    """Update stats based on a list of submissions for specific user."""
     stats["total_users"] += 1
 
-    for k in ["symptom_cough", "symptom_difficult_to_breath", "symptom_sore_throat", "symptom_muscle_pain"]:
+    for k in ["symptom_cough", "symptom_difficult_to_breath",
+              "symptom_sore_throat", "symptom_muscle_pain"]:
         stats[k] += count_users(submissions, k)
 
     stats["users_w_fever"] += count_users(submissions, "fever_status")
@@ -119,25 +118,22 @@ def update_stats(submissions):
         stats["female"] += 1
 
     for country in ["FI", "US", "SE", "IE"]:
-        if(next((s for s in submissions if s["location_country_code"] == country), {})):
+        if (next((s for s in submissions if s["location_country_code"] == country), {})):
             stats["users_" + country] += 1
-
-# Prints statistics of the generated data set
 
 
 def print_stats(stats):
+    """Print statistics of the generated data set."""
     pprint(stats)
 
 
-# Returns random boolean value
-
 def get_rand_bool():
+    """Return random boolean value."""
     return bool(getrandbits(1))
-
-# Generates the very first submission (user data)
 
 
 def create_user():
+    """Generate the very first submission (user data)."""
     user_data = {"fever_status": None,
                  "fever_temp": None,
                  "symptom_difficult_to_breath": None,
@@ -149,19 +145,19 @@ def create_user():
                  "timestamp_modified": time.time()
                  }
 
-    # Creating random device id more than 1584649859812
+    # Create random device id more than 1584649859812
     user_data["device_id"] = randint(1584000000000, 1584000000000 * 100)
 
-    # Randomly selecting the gender
+    # Randomly select the gender
     if(get_rand_bool()):
         user_data["gender"] = "F"
     else:
         user_data["gender"] = "M"
 
-    # Randomly selecting birth year (12-100 years old in the year of 2020)
+    # Randomly select birth year (12-100 years old in the year of 2020)
     user_data["birth_year"] = randint(1920, 2008)
 
-    # Randomly selecting location between four: Finland, Ireland, USA, Sweden
+    # Randomly select location between four: Finland, Ireland, USA, Sweden
     locs = [{"location_country_code": "FI",
              "location_postal_code": "20100",
              "location_lng": "22.123",
@@ -183,32 +179,33 @@ def create_user():
              "location_lat": "60.45388459999"
              }]
     user_data.update(locs[randint(0, 3)])
-    # Randomly selected fever status. Limitation: users will have one fever status for all submissions
+    # Randomly select fever status. Limitation: users will have one fever
+    # status for all submissions
     user_data["fever_status"] = get_rand_bool()
 
     return user_data
 
-# Generates new submission record
-
 
 def submit_record(submissions, randomizations_left):
-    if(randomizations_left["submissions_left"] > 0):
-        # Generating new submission based on the previous submissions
+    """Generate new submission record."""
+    if (randomizations_left["submissions_left"] > 0):
+        # Generate new submission based on the previous submissions
         data = copy.deepcopy(submissions[-1])
-        # Generating timestamp: between 12 and 36 hours from the last one
+        # Generate timestamp: between 12 and 36 hours from the last one
         data["timestamp_modified"] += 3600 * randint(12, 36)
         # Cough can appear even if the temperature is normal
         if(randomizations_left["cough"] > 0):
             data["symptom_cough"] = get_rand_bool()
             randomizations_left["cough"] -= 1
 
-        # Generating temperature
+        # Generate temperature
         temp = random()
         if(data["fever_status"]):
             # scaled temperature value = min + (value * (max - min))
             data["fever_temp"] = 37.0 + (temp * (40 - 37.0))
             # Randomisations fo different symptoms and COVID19 diagnosis
-            for k in ["diagnosed_covid19", "symptom_muscle_pain", "symptom_sore_throat", "symptom_difficult_to_breath"]:
+            for k in ["diagnosed_covid19", "symptom_muscle_pain",
+                      "symptom_sore_throat", "symptom_difficult_to_breath"]:
                 if(randomizations_left[k] > 0):
                     data[k] = get_rand_bool()
                     randomizations_left[k] -= 1
@@ -230,9 +227,11 @@ def submit_record(submissions, randomizations_left):
 seed(2)
 
 mariadb_connection = mariadb.connect(
-    user='fevermap', password='feverpass', database='fevermap', host=MARIA_DB_HOST)
-cursor_submitter = mariadb_connection.cursor(prepared=True)
-cursor_submissions = mariadb_connection.cursor(prepared=True)
+    user='fevermap', password='feverpass', database='fevermap',
+    port=3306, host='fevermap_database_1')
+
+cursor_submitter = mariadb_connection.cursor()
+cursor_submissions = mariadb_connection.cursor()
 
 for i in range(0, SUBMITTERS_QTY):
     # Every user will have from 10 to 30 submissions
@@ -246,7 +245,7 @@ for i in range(0, SUBMITTERS_QTY):
     submissions = submit_record([create_user()], randomizations)
     submit_to_db(submissions, cursor_submitter, cursor_submissions)
     update_stats(submissions)
-    if (i % 5000 == 0):
+    if (i % 500 == 0):
         mariadb_connection.commit()
         print("Submitted data from %d users" % (stats["total_users"]))
 

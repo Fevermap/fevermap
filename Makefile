@@ -28,7 +28,12 @@ test-extra:
 test-api:
 	# Test common API requests (requires API server to be running)
 	# This always tests http://localhost:9000 and is intended only for local testing.
-	./api/api-test.sh
+	./api/test-api.sh
+
+test-data-generate:
+	# Run test data generator inside the container, where it automatically has
+	# corrent permissions to access the database.
+	docker exec -it fevermap_api_1 /app/test-data-generator.py
 
 update-master:
 	# Ensure latest master branch is checked out. This command is run in the
