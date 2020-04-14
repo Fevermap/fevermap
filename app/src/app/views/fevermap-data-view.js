@@ -81,28 +81,50 @@ class FevermapDataView extends LitElement {
     document.addEventListener('update-submission-list', () => {
       this.getPreviousSubmissionsFromIndexedDb();
 
-      const submissionCount = localStorage.getItem('SUBMISSION_COUNT');
-      const submissionStreak = localStorage.getItem('SUBMISSION_STREAK');
-
       this.setGender = localStorage.getItem('GENDER');
       this.setBirthYear = localStorage.getItem('BIRTH_YEAR');
       this.setCovidDiagnosis = localStorage.getItem('COVID_DIAGNOSIS') === 'true';
 
-      this.submissionCount = submissionCount || 0;
-      this.submissionStreak = submissionStreak || 0;
       this.checkLastSubmissionTime();
     });
+
     document.addEventListener('update-queued-count', () => {
       this.getQueuedEntriesFromIndexedDb();
     });
     document.addEventListener('update-notification-subscription-status', () => {
       this.hasSubscribedToTopic = localStorage.getItem('NOTIFICATION_TOPIC');
     });
+
     if (this.firstTimeSubmitting || this.isFromNotification()) {
       this.showEntryDialog();
+      window.history.pushState({}, '', `/`);
     }
     this.getQueuedEntriesFromIndexedDb();
     GoogleAnalyticsService.reportNavigationAction('Your Data View');
+    this.getSubmissionStats();
+
+    document.addEventListener('submission-stats-update', () => {
+      this.getSubmissionStats();
+    });
+
+    // Update the feed on focus to get the latest info after background submit etc
+    window.addEventListener('focus', () => {
+      this.getSubmissionStats();
+      document.dispatchEvent(new CustomEvent('update-submission-list'));
+    });
+  }
+
+  async getSubmissionStats() {
+    const db = await DBUtil.getInstance();
+    const submissionHistory = await db.getAll(FEVER_ENTRIES);
+    const submissionCount = submissionHistory.length;
+    const submissionStreak = DataEntryService.determineStreak(submissionHistory);
+
+    localStorage.setItem('SUBMISSION_COUNT', submissionCount);
+    localStorage.setItem('SUBMISSION_STREAK', submissionStreak);
+
+    this.submissionCount = submissionCount || 0;
+    this.submissionStreak = submissionStreak || 0;
   }
 
   checkLastSubmissionTime() {

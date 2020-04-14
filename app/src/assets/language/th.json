@@ -115,6 +115,26 @@
       "content": "Fevermap สามารถติดตั้งเป็นเว็บแอพพลิเคชั่น หากติดตั้งเราสามารถมอบคุณสมบัติพิเศษที่ยอดเยี่ยมเช่นรันไทม์ที่เร็วขึ้นและข้อความแจ้งเตือน (เร็วๆนี้).",
       "approve_text": "ติดตั้ง",
       "decline_text": "ไว้ทีหลัง"
+    },
+    "notifications": {
+      "title": "Allow notifications",
+      "content": "Fevermap would like to offer you a daily notification reminding you to log your daily health status. Allow notifications?",
+      "approve_text": "Allow notifications",
+      "decline_text": "No please"
     }
+  },
+  "notification": {
+    "daily_reminder": {
+      "title": "Good evening! \uD83D\uDE0A",
+      "content": "How are you feeling today?",
+      "healthy": "Healthy",
+      "sick": "Sick"
+    },
+    "thank_you": {
+      "title": "Successfully submitted data.",
+      "content": "Thank you for submitting!"
+    },
+    "subscribe_to_notifications": "Subscribe to notifications",
+    "unsubscribe_from_notifications": "Unsubscribe from notifications"
   }
 }

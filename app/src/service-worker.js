@@ -169,7 +169,7 @@ const initFirebaseMessaging = () => {
       return null;
     }
     self.LAST_PUSH_NOTIFICATION_TIMESTAMP = e.data.json().data.timestamp;
-    createHealthStatusNotification();
+    return createHealthStatusNotification();
   });
 };
 
@@ -183,16 +183,17 @@ self.addEventListener('push', e => {
   return createHealthStatusNotification(e);
 });
 
-const openAppFromNotification = e => {
+const openAppFromNotification = (e, skipToEntryView) => {
   // This looks to see if the current page / app is already open and
   // focuses if it is
+  const windowUrl = skipToEntryView ? '/?fromNotification=true' : '/';
   e.waitUntil(
     self.clients.matchAll({ type: 'window' }).then(clientList => {
       for (let i = 0; i < clientList.length; i += 1) {
         const client = clientList[i];
         if (client.url === '/' && 'focus' in client) return client.focus();
       }
-      if (self.clients.openWindow) return self.clients.openWindow('/?fromNotification=true');
+      if (self.clients.openWindow) return self.clients.openWindow(windowUrl);
       return null;
     }),
   );
@@ -216,15 +217,16 @@ const generateHealthyFeverDataSubmissionObject = () => ({
 });
 
 const handleSuccessfulNotificationSubmit = () => {
+  Translator.setLang(self.LANGUAGE ? self.LANGUAGE.key : 'en');
   const options = {
-    body: 'Thank you for submitting!',
+    body: Translator.get('notification.thank_you.content'),
     icon: 'app-icon-128x128.png',
     data: {
       dateOfArrival: Date.now(),
       primaryKey: '1',
     },
   };
-  self.registration.showNotification('Successfully submitted data.', options);
+  self.registration.showNotification(Translator.get('notification.thank_you.title'), options);
 };
 
 const handleLoggingHealthy = () => {
@@ -239,6 +241,7 @@ const handleLoggingHealthy = () => {
       if (res.success) {
         handleSuccessfulNotificationSubmit(res);
         DataEntryService.setEntriesToIndexedDb(res);
+        self.SUBMISSION_SENT_FROM_NOTIFICATION = true;
       }
     })
     // eslint-disable-next-line no-console
@@ -246,10 +249,11 @@ const handleLoggingHealthy = () => {
 };
 
 const handleLoggingSick = e => {
-  openAppFromNotification(e);
+  openAppFromNotification(e, true);
 };
 
 self.onnotificationclick = e => {
+  e.notification.close();
   switch (e.action) {
     case 'log-healthy':
       handleLoggingHealthy(e);
@@ -258,10 +262,9 @@ self.onnotificationclick = e => {
       handleLoggingSick(e);
       break;
     default:
-      openAppFromNotification(e);
+      openAppFromNotification(e, false);
       break;
   }
-  e.notification.close();
 };
 
 cleanupOutdatedCaches();

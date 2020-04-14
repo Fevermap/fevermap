@@ -134,6 +134,10 @@
       "healthy": "Hyvin",
       "sick": "Huonosti"
     },
+    "thank_you": {
+      "title": "Onnistuneesti kirjattu tiedot.",
+      "content": "Kiitos kirjauksesta!"
+    },
     "subscribe_to_notifications": "Tilaa ilmoitukset",
     "unsubscribe_from_notifications": "Peruuta ilmoitusten tilaus"
   }

@@ -14,7 +14,7 @@ export default class ServiceWorkerService {
     // As a new service worker gains access, update the page so that new content
     // is reloaded to the user
     this.wb.addEventListener('controlling', () => {
-      console.info('[WB]: Service Worker updated. Reloading...');
+      // console.info('[WB]: Service Worker updated. Reloading...');
       window.location.reload();
     });
 

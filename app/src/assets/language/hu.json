@@ -134,6 +134,10 @@
           "healthy": "Egézségessen",
           "sick": "Betegnek"
         },
+      "thank_you": {
+        "title": "Successfully submitted data.",
+        "content": "Thank you for submitting!"
+      },
         "subscribe_to_notifications": "Feliratkozás az értesítésekre",
         "unsubscribe_from_notifications": "Leíratkozás az értesítésekről"
       }

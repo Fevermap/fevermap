@@ -119,14 +119,12 @@ export default class DataEntryService {
         }
         if (i >= submissionHistoryLength && typeof document !== 'undefined') {
           document.dispatchEvent(new CustomEvent('update-submission-list'));
+
+          if (typeof document !== 'undefined') {
+            document.dispatchEvent(new CustomEvent('submission-stats-update'));
+          }
         }
       });
-
-      localStorage.setItem('SUBMISSION_COUNT', submissionHistoryLength + 1);
-      localStorage.setItem(
-        'SUBMISSION_STREAK',
-        DataEntryService.determineStreak(submissionHistory),
-      );
     }
   }
 

@@ -72,7 +72,7 @@ export default class NotificationService {
     messaging
       .getToken()
       .then(currentToken => {
-        if (currentToken) {
+        if (currentToken && !localStorage.getItem('NOTIFICATION_TOPIC')) {
           NotificationService.subscribeToTopic(currentToken);
         }
       })

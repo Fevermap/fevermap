@@ -130,6 +130,10 @@
       "healthy": "元気",
       "sick": "元気ない"
     },
+    "thank_you": {
+      "title": "Successfully submitted data.",
+      "content": "Thank you for submitting!"
+    },
     "subscribe_to_notifications": "通知を購読する",
     "unsubscribe_from_notifications": "通知の登録を解除する"
   }
