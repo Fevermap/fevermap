@@ -1,52 +1,66 @@
-# Website fevermap.net is updated on every master branch commit
-pages:
-  script:
-    - mkdir .public
-    - cp -r * .public
-    - mv .public public
-  artifacts:
-    paths:
-      - public
-  only:
-    - master
-
+---
 stages:
   - test
   - build
   - deploy
 
-test:
+# These tests must pass for CI to pass
+mandatory tests:
   stage: test
-  script:
+  before_script:
     - apt-get update -qq && apt-get install -qq --no-install-recommends flake8 shellcheck
+  script:
     - make test
+
+# These tests are allowed may fail without stopping CI, but there will be a warning
+extra tests:
+  allow_failure: true
+  stage: test
+  before_script:
+    - apt-get update -qq && apt-get install -qq --no-install-recommends --yes ca-certificates curl python3-minimal git yamllint shellcheck
+    - curl -sS https://raw.githubusercontent.com/Seravo/gnitpick/master/gnitpick.py -o /usr/bin/gnitpick; chmod +x /usr/bin/gnitpick
+  script:
+    - make test-extra
 
 build-app:
   stage: build
-  script:
-    - apt-get update -qq && apt-get install -qq --no-install-recommends nodejs npm webpack
+  image: node:latest
+  cache:
+    paths:
+      - app/.node_modules
+  before_script:
     - npm install -g npm@latest
     - cd app
     - npm install
+  script:
     - npm run lint
     - npm run build
     - find dist -ls
 
 staging:
   stage: deploy
+  rules:
+    # Only run deply on Fevermap master branch when a release is tagged
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
+    # Only run deploy if there are changes to the api or app
+    - changes:
+      - api/**
+      - app/**
   script:
     - 'which ssh-agent || ( apt-get update -qq && apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$FEVERMAP_APP_USER_SSH_PRIVATE_KEY")
     # Deploy
     - ssh fevermap@dev.fevermap.net -p 33100 -o StrictHostKeyChecking=no "cd /var/www/fevermap && make update-master && make run"
-  rules:
-    # Only run deply on Fevermap master branch when a release is tagged
-    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
 
 # Production server does not yet exist, this is a placeholder only
 production:
   stage: deploy
+  rules:
+    # Only run deply on Fevermap master branch when a release is tagged
+    # NOTE! Either $CI_COMMIT_BRANCH or $CI_COMMIT_TAG is always null.
+    # They are never set at the same time. Tag pipelines trigger only on `git push --tags`.
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_TAG
   script:
     - |
       cat > "$(pwd)/post.data" << EOF
@@ -57,6 +71,21 @@ production:
         value: "${CI_COMMIT_SHORT_SHA}"
       EOF
     - curl -H "Content-Type:application/yaml" --data-binary @$(pwd)/post.data -X POST -k https://api.pro-eu-west-1.openshift.com/apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-release/webhooks/${OCP_WEBHOOK_TOKEN}/generic
+
+
+# Website fevermap.net is updated on every master branch commit
+pages:
   rules:
     # Only run deply on Fevermap master branch when a release is tagged
-    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master" && $CI_COMMIT_TAG
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
+    # Only run deploy if there are changes to the website files
+    - changes:
+      - ./*.*
+      - images/*
+  script:
+    - mkdir .public
+    - cp -r * .public
+    - mv .public public
+  artifacts:
+    paths:
+      - public

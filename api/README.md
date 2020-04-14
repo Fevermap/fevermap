@@ -26,7 +26,7 @@ If you during testing want to empty either of the database tables, then run
 `TRUNCATE submissions;`. To completely wipe out existing database, run the above
 cycle to remove Docker volumes and restart everything.
 
-## Development wih Podman
+## Development with Podman
 
 In case you use [podman](https://podman.io/getting-started/) instead of docker,
 here are the steps to get similar environment running with podman as an admin

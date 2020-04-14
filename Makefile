@@ -18,6 +18,12 @@ test:
 	shellcheck --shell=bash $(shell grep -rnw . -e '^#!.*/bash' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs)
 	@echo "----------- Tests completed successfully -----------"
 
+test-extra:
+	gnitpick
+	shellcheck --shell=bash $(shell grep -rnw . -e '^#!.*/sh' --exclude-dir=.git --exclude-dir=node_modules | sort -u | cut -d: -f1 | xargs)
+	yamllint -d "{extends: default, rules: {line-length: {max: 120}}}" $(shell find -name "*.yaml" -or -name "*.yml" -not -path "*/node_modules/*" | xargs)
+	@echo "----------- Extra tests completed successfully -----------"
+
 test-api:
 	# Test common API requests (requires API server to be running)
 	# This always tests http://localhost:9000 and is intended only for local testing.
