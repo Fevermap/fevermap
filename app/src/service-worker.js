@@ -162,15 +162,20 @@ const initFirebaseMessaging = () => {
 
   const messaging = firebase.messaging();
 
-  messaging.setBackgroundMessageHandler(() =>
-    // Hide the default message and handle it ourselves
-    createHealthStatusNotification(),
-  );
+  messaging.setBackgroundMessageHandler(e => {
+    // Prevent duplicates by checking if push handler already handled this notification
+    const messageData = e.data;
+    if (messageData.timestamp === self.LAST_PUSH_NOTIFICATION_TIMESTAMP) {
+      return null;
+    }
+    self.LAST_PUSH_NOTIFICATION_TIMESTAMP = e.data.json().data.timestamp;
+    createHealthStatusNotification();
+  });
 };
 
 self.addEventListener('push', e => {
   const messageData = e.data.json().data;
-  // Prevent duplicate messages
+  // Prevent duplicates by checking if firebase messaging already handled this notification
   if (messageData.timestamp === self.LAST_PUSH_NOTIFICATION_TIMESTAMP) {
     return null;
   }

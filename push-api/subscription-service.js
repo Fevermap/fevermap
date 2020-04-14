@@ -100,6 +100,18 @@ class SubscriptionService {
       });
   }
 
+  /**
+   * For testing purpouses.
+   * Allows send to a single device
+   *
+   * @param userToken
+   */
+  sendMessageToSingleUser(userToken) {
+    admin
+      .messaging()
+      .send({ data: { timestamp: Date.now().toString() }, token: userToken });
+  }
+
   unsubscribeFromTopic(subscriptionObject, res) {
     console.log(
       `Unsubscribing token ${subscriptionObject.registrationToken} from topic ${subscriptionObject.topic}`
