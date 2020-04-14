@@ -1,0 +1,145 @@
+{
+  "lang_name": "Nederlands",
+  "language": "Taal",
+  "fevermap_title": "Fevermap",
+  "back": "Terug",
+  "today": "Vandaag",
+  "user_description": "Je bent een %{age} jaar oude %{gender}, met %{diagnosis} diagnose",
+  "a_covid_diagnosis": "positieve COVID-19",
+  "no_covid_diagnosis": "negatieve COVID-19",
+
+  "landing": {
+    "about": "Over",
+    "about_title": "Wat is Fevermap?",
+    "about_content_explanation": " is een web and mobiele applicatie gemaakt voor eenvoudige en real-time datacollectie over de verspreiding van de Coronavirus COVID-19 pandemie.",
+    "about_current_methods": "Huidige methoden om de verspreiding van het virus bij te houden geven geen compleet beeld. Grote groepen blijven ongetest om tijd en middelen beschikbaar te houden voor degenen in nood.",
+    "about_solution": "Fevermap is de oplossing voor dit probleem. Met Fevermap kunnen gewone mensen over de hele wereld anoniem hun koorts en andere symptomen zelf rapporteren. Dit betekent dat we de echte verspreiding van COVID-19 infecties in real-time kunnen inschatten en de instellingen kunnen voorzien van data die ze helpt om data-gebaseerde, correcte en tijdige besluiten te  maken over beschermingsmaatregelen.",
+    "about_data_collection": "De data verzameld door Fevermap is geanonimiseerd en zal gebruikt worden om te helpen het bewustzijn te vergroten over de huidige wereldwijde situatie.",
+    "about_current_participant_count": "Tot vandaag hebben %{participantCount} gebruikers Fevermap gebruikt om hun symptomen te rapporteren. ",
+
+    "how_to_participate": "Hoe neem ik deel?",
+    "participation_info": "Het is eenvoudig. Je neemt je temperatuur en voert het resultaat in samen met beperkte statistieke informatie zoals je geboortejaar en postcode.",
+    "info_disclaimer": "We stellen je geen vragen die tot jou te herleiden zijn. We waarderen je privacy en anonimiteit.",
+
+    "how_will_my_data_be_used": "Hoe zal mijn data gebruikt worden?",
+    "data_use_explanation": "De data zal geanonimiseerd worden, waarna het gedeeld zal worden als open data via een API interface."
+  },
+  "entry": {
+    "data_entry": "Data invoer",
+    "first_entry_disclaimer": "Invoeren zijn in de database opgeslagen gebaseerd op je apparaat. We zouden het waarderen als je jouw informatie elke keer vanaf hetzelfde apparaat invoert. Dit staat ons toe jouw koorts beter te monitoren. Dit stelt ons in staat om de status van je koorts beter te monitoren.",
+    "last_submission": "Laatste invoer",
+    "submission_period_disclaimer": "Om onnodige data te voorkomen zijn invoeren beperkt tot eens per 12 uur.",
+    "sync_now": "Synchroniseer nu",
+    "new_entry": "Nieuwe invoer",
+    "first_time_disclaimer": "Omdat dit de eerste keer is dat je Fevermap gebruikt, stellen we je eerst wat vragen.",
+    "these_questions_wont_be_repeated": "Deze vragen zullen niet herhaald worden bij volgende invoeren.",
+    "queued_entries": "Je hebt invoeren in de wachtrij",
+    "send_now": "Verstuur nu",
+    "questions": {
+      "what_is_your_temperature": "Wat is je temperatuur?",
+      "temperature": "Temperatuur",
+      "how_much": "Hoeveel?",
+      "degrees_of_fever": "%{degrees} koorts",
+      "havent_measured_but": "Ik heb niet gemeten maar...",
+      "feel_healthy": "Ik voel me gezond",
+      "feel_feverish": "I voel me koortsig",
+      "set_temperature": "Stel temperatuur in",
+      "other_symptoms": "Andere symptomen?",
+      "choose_all_that_apply": "Selecteer allen van toepassing",
+      "difficulty_to_breathe": "Moeite met ademen",
+      "cough": "Hoest",
+      "sore_throat": "Zere keel",
+      "muscular_pain": "Spierpijn",
+      "positive_covid_diagnosis": "Ik heb een positieve diagnose van COVID-19.",
+      "set_symptoms": "Stel symptomen in",
+      "birth_year": "Geboortejaar",
+      "birth_year_placeholder": "Geboortejaar (jaren 1900 - 2020)",
+      "gender_in_passport": "Geslacht zoals op op je identiteitsbewijs of andere overheidsgegevens",
+      "male": "Man",
+      "female": "Vrouw",
+      "location_information": "Locatie-informatie",
+      "whats_your_location": "Wat is je locatie?",
+      "city": "Stad",
+      "country": "Land",
+      "postal_code": "Postcode",
+      "location_determination_subtitle": "Locatie wordt bepaald op basis van de locatie API. Zorg dat je locatie-sensoren toestaat.",
+      "location_change_subtitle": "Om locatie-informatie te updaten, update de waarden in het land en postcode veld en druk op de knop hieronder.",
+      "update_location": "Update locatie",
+      "use_gps": "Verkrijg locatie via GPS",
+      "set_location_and_submit": "Zet locatie en voer op"
+    },
+    "previous_submissions": "Vorige invoeren",
+    "submit": "Invoeren",
+    "save": "Opslaan",
+
+    "last_submission_was_done": "Je laatste invoer was gemaakt op %{date}",
+    "submission_count_text": "Je hebt je koortsinformatie ",
+    "submission_count_times": "keer ingevoerd",
+    "currently_holding_a_streak_of": "Je huidige aangesloten dagen streak is: ",
+    "streak_days": "dagen"
+  },
+
+  "history": {
+    "title": "Historie",
+    "your_streak": "Je streak",
+    "days": "Dagen",
+    "total_entries": "Totaal invoeren",
+    "measurements": "metingen",
+    "add_entry": "Voer in"
+  },
+
+  "stats": {
+    "stats": "Statistieken"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Locatie succesvol bijgewerkt",
+      "data_entry": "Succesvol data opgevoerd",
+      "offline_entry_queued": "Het lijkt erop dat je offline bent. Invoer is in de wachtrij geplaatst.",
+      "entry_send_failed_queued": "Opvoeren is mislukt. Invoer is in de wachtrij geplaatst.",
+      "sync_finished": "Succesvol invoeren gesynchroniseerd.",
+      "subscribe_success": "Succesvol aangemeld voor push notificaties",
+      "unsubscribe_success": "Succesvol afgemeld van push notificaties"
+    },
+    "error": {
+      "age_not_in_range": "Gegeven geboortejaar ligt niet in de toegestane periode (1900 - 2020).",
+      "fever_temp_value_invalid": "De koortstemperatuur is niet valide.",
+      "location_data_invalid": "De gegeven locatie-informatie is niet valide.",
+      "api_data_invalid": "Data verstuurd naar de API was niet valide.",
+      "gender_not_set": "Geslacht is niet gezet.",
+      "do_not_submit_new_temp_until": "Voer geen nieuwe temperatuur in tot %{dateTime}",
+      "subscribe_error": "Abonneren op push notificaties is mislukt",
+      "unsubscribe_error": "Afmelden van push notificaties is mislukt"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Installeer Fevermap",
+      "content": "Fevermap kan worden geïnstalleerd als een Progressive Web Applicatie. Eenmaal geïnstalleerd kunnen we je voorzien van fijne extra mogelijkheden zoals een snellere werking en push notificaties (komt binnenkort).",
+      "approve_text": "Installeer",
+      "decline_text": "Misschien later"
+    },
+    "notifications": {
+      "title": "Sta notificaties toe",
+      "content": "Fevermap wil je een dagelijkse notificatie sturen om je eraan te herinneren je dagelijkse gezondheidsstatus te registreren. Notificaties toestaan?",
+      "approve_text": "Sta notificaties toe",
+      "decline_text": "Nee bedankt"
+    }
+  },
+
+  "notification": {
+    "daily_reminder": {
+      "title": "Goedenavond! \uD83D\uDE0A",
+      "content": "Hoe voel je je vandaag?",
+      "healthy": "Gezond",
+      "sick": "Ziek"
+    },
+    "thank_you": {
+      "title": "Succesvol data opgevoerd.",
+      "content": "Bedankt voor het opvoeren!"
+    },
+    "subscribe_to_notifications": "Abonneer je op notificaties",
+    "unsubscribe_from_notifications": "Meld je af op notificaties"
+  }
+}
