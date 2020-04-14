@@ -15,11 +15,23 @@ stages:
   - build
   - deploy
 
-test:
+# These tests must pass for CI to pass
+mandatory tests:
   stage: test
-  script:
+  before_script:
     - apt-get update -qq && apt-get install -qq --no-install-recommends flake8 shellcheck
+  script:
     - make test
+
+# These tests are allowed may fail without stopping CI, but there will be a warning
+extra tests:
+  allow_failure: true
+  stage: test
+  before_script:
+    - apt-get update -qq && apt-get install -qq --no-install-recommends --yes ca-certificates curl python3-minimal git yamllint shellcheck
+    - curl -sS https://raw.githubusercontent.com/Seravo/gnitpick/master/gnitpick.py -o /usr/bin/gnitpick; chmod +x /usr/bin/gnitpick
+  script:
+    - make test-extra
 
 build-app:
   stage: build

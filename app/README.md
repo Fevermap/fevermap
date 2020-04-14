@@ -24,7 +24,7 @@ If you don't want to install NodeJs et al on your own environment, you can alter
 
 Before creating a merge request fixing a front-end issue, please run `npm run check` and fix warnings/error accordingly.
 
-The command will run `Prettier` and `ESLint` with the development rules set for Web Components. 
+The command will run `Prettier` and `ESLint` with the development rules set for Web Components.
 
 
 #### Creating a new Component
@@ -66,7 +66,6 @@ To build the project, run `npm run build`
 
 - [Polymer Project](https://lit-element.polymer-project.org/guide) has great resources about Lit Elements.
 - [Open WC](https://open-wc.org/) has great info about Web Components
-
 
 ## Production
 

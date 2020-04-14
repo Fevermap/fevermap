@@ -47,15 +47,19 @@ Browse issues at https://gitlab.com/groups/fevermap/-/issues and chip in the dis
 
 If you come across similar apps or initiatives, add them to the list in issue #1. If you want to help with the analysis and science, see issue #14. Discussion on what questions to ask is in #15, and UI design in #19 and marketing in #16.
 
+If you do graphical design, please follow our [brand guidelines](BRAND.md).
+
 ### 5. Help us with coding and implementation
 
-If you have HTML/CSS/JS skills, you can participate in front-end development. See `app/README.md` for details.
+If you have HTML/CSS/JS skills, you can participate in front-end development. See [app/README.md](app/README.md) for details.
 
-If you have Python/Flask skills, you can participate in back-end development. See `api/README.md` for details.
+If you have Python/Flask skills, you can participate in back-end development. See [api/README.md](api/README.md) for details.
 
 If you have checked out a clone of this repository, simply run `docker-compose up --build` to play around with the [local development environment](https://www.youtube.com/watch?v=hsXWF-hpBJM).
 
 This is an open source project, so feel free to review the code, fix things you think are important and open a merge request for others to review.
+
+Read more in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Video and sides
 

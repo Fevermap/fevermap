@@ -119,3 +119,7 @@ If you have front-end skills (HTML/CSS/JS) you can easily contribute to the Feve
 Local development makes things smooth, since every time you make a change and save a code file, the servers will automatically restart and the browser window will automatically reload, so you always see the latest version of your changes.
 
 To spin up a local development environment, simply run `docker-compose up --build` in the project root.
+
+## Testing and deployment
+
+Please read the [Makefile](../Makefile) and [.gitlab-ci.yml](../.gitlab-ci.yml) contents to see how you run local tests and hour our CI system runs tests and deploys each master commit on our test server.
