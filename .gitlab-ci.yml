@@ -59,6 +59,11 @@ staging:
 # Production server does not yet exist, this is a placeholder only
 production:
   stage: deploy
+  rules:
+    # Only run deply on Fevermap master branch when a release is tagged
+    # NOTE! Either $CI_COMMIT_BRANCH or $CI_COMMIT_TAG is always null.
+    # They are never set at the same time. Tag pipelines trigger only on `git push --tags`.
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_TAG
   script:
     - |
       cat > "$(pwd)/post.data" << EOF
@@ -69,6 +74,3 @@ production:
         value: "${CI_COMMIT_SHORT_SHA}"
       EOF
     - curl -H "Content-Type:application/yaml" --data-binary @$(pwd)/post.data -X POST -k https://api.pro-eu-west-1.openshift.com/apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-release/webhooks/${OCP_WEBHOOK_TOKEN}/generic
-  rules:
-    # Only run deply on Fevermap master branch when a release is tagged
-    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master" && $CI_COMMIT_TAG
