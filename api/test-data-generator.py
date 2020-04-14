@@ -5,7 +5,7 @@ This generates directly into the database dummy users and submissions for
 development purposes.
 """
 
-from random import seed, random, randint, getrandbits
+from random import random, randint, getrandbits
 from pprint import pprint
 import time
 import copy
@@ -17,6 +17,7 @@ SUBMITTERS_QTY = 10000
 
 # Statistics of the generated dataset
 stats = {"total_users": 0,
+         "total_submissions": 0,
          "users_w_fever": 0,
          "users_w_diagnos": 0,
          "users_FI": 0,
@@ -105,6 +106,7 @@ def count_users(submissions, key):
 def update_stats(submissions):
     """Update stats based on a list of submissions for specific user."""
     stats["total_users"] += 1
+    stats["total_submissions"] += len(submissions)
 
     for k in ["symptom_cough", "symptom_difficult_to_breath",
               "symptom_sore_throat", "symptom_muscle_pain"]:
@@ -133,7 +135,11 @@ def get_rand_bool():
 
 
 def create_user():
-    """Generate the very first submission (user data)."""
+    """Create user and the very first submission (user data)."""
+
+    # Make submissions start a week ago
+    WEEK_IN_SECONDS = 60*60*24*7
+
     user_data = {"fever_status": None,
                  "fever_temp": None,
                  "symptom_difficult_to_breath": None,
@@ -141,12 +147,12 @@ def create_user():
                  "symptom_sore_throat": None,
                  "symptom_muscle_pain": None,
                  "diagnosed_covid19": False,
-                 "timestamp_created": time.time(),
-                 "timestamp_modified": time.time()
+                 "timestamp_created": time.time()-WEEK_IN_SECONDS,
+                 "timestamp_modified": time.time()-WEEK_IN_SECONDS
                  }
 
-    # Create random device id more than 1584649859812
-    user_data["device_id"] = randint(1584000000000, 1584000000000 * 100)
+    # Create random device id
+    user_data["device_id"] = randint(1584000000000, 9999999999999)
 
     # Randomly select the gender
     if(get_rand_bool()):
@@ -191,8 +197,8 @@ def submit_record(submissions, randomizations_left):
     if (randomizations_left["submissions_left"] > 0):
         # Generate new submission based on the previous submissions
         data = copy.deepcopy(submissions[-1])
-        # Generate timestamp: between 12 and 36 hours from the last one
-        data["timestamp_modified"] += 3600 * randint(12, 36)
+        # Generate timestamp: between 6 and 36 hours from the last one
+        data["timestamp_modified"] += 3600 * randint(6, 36)
         # Cough can appear even if the temperature is normal
         if(randomizations_left["cough"] > 0):
             data["symptom_cough"] = get_rand_bool()
@@ -223,9 +229,7 @@ def submit_record(submissions, randomizations_left):
         return submissions
 
 
-# Initializing with a constant to get the same results over different runs
-seed(2)
-
+# Connect to development database
 mariadb_connection = mariadb.connect(
     user='fevermap', password='feverpass', database='fevermap',
     port=3306, host='fevermap_database_1')
@@ -233,7 +237,7 @@ mariadb_connection = mariadb.connect(
 cursor_submitter = mariadb_connection.cursor()
 cursor_submissions = mariadb_connection.cursor()
 
-for i in range(0, SUBMITTERS_QTY):
+for i in range(1, SUBMITTERS_QTY + 1):
     # Every user will have from 10 to 30 submissions
     randomizations = {"submissions_left": randint(10, 30),
                       "cough": 2,
@@ -245,9 +249,10 @@ for i in range(0, SUBMITTERS_QTY):
     submissions = submit_record([create_user()], randomizations)
     submit_to_db(submissions, cursor_submitter, cursor_submissions)
     update_stats(submissions)
-    if (i % 500 == 0):
+    if (i > 0 and i % 500 == 0):
         mariadb_connection.commit()
-        print("Submitted data from %d users" % (stats["total_users"]))
+        print("Submitted %d times from %d users" %
+              (stats["total_submissions"], stats["total_users"]))
 
 mariadb_connection.commit()
 print_stats(stats)
