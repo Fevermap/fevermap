@@ -24,11 +24,6 @@ extra tests:
 
 build-app:
   stage: build
-  rules:
-    # Only run build if there are changes to the api or app
-    - changes:
-        - api/**
-        - app/**
   image: node:latest
   cache:
     paths:
@@ -44,13 +39,9 @@ build-app:
 
 staging:
   stage: deploy
+  # Only deply to staging on Fevermap master branch commits
   rules:
-    # Only consider deploying if there are changes to the api or app
-    - changes:
-        - api/**
-        - app/**
-      # Only deply on Fevermap master branch
-      if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
   script:
     - 'which ssh-agent || ( apt-get update -qq && apt-get install -qq openssh-client )'
     - eval $(ssh-agent -s)
@@ -81,11 +72,7 @@ production:
 # Website fevermap.net is updated on every master branch commit
 pages:
   rules:
-    - changes:
-        - ./*.*
-        - images/*
-      # Only update Gitlab pages on Fevermap master branch commits
-      if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
+    - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
   script:
     - mkdir .public
     - cp -r * .public
