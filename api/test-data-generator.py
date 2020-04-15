@@ -136,9 +136,8 @@ def get_rand_bool():
 
 def create_user():
     """Create user and the very first submission (user data)."""
-
     # Make submissions start a week ago
-    WEEK_IN_SECONDS = 60*60*24*7
+    WEEK_IN_SECONDS = 60 * 60 * 24 * 7
 
     user_data = {"fever_status": None,
                  "fever_temp": None,
@@ -147,8 +146,8 @@ def create_user():
                  "symptom_sore_throat": None,
                  "symptom_muscle_pain": None,
                  "diagnosed_covid19": False,
-                 "timestamp_created": time.time()-WEEK_IN_SECONDS,
-                 "timestamp_modified": time.time()-WEEK_IN_SECONDS
+                 "timestamp_created": time.time() - WEEK_IN_SECONDS,
+                 "timestamp_modified": time.time() - WEEK_IN_SECONDS
                  }
 
     # Create random device id
