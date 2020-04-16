@@ -403,26 +403,24 @@ p.mdc-theme--error {
       }
     }
 
-
-    &--feverish {
-      justify-content: flex-start;
       button {
-        background: #FFF;
+      &:focus {
+        border-color: $bluegreendarker;
+        background-color: $bluegreenlighter;
+      }
+      background: #fff;
         color: #484848;
         border: $bluegreen 2px solid;
       }
+
+    &--feverish {
+      justify-content: flex-start;
     }
 
     &--healthy {
       justify-content: flex-end;
-      button {
-        background: #FFF;
-        color: #484848;
-        border: $bluegreen 2px solid;
-      }
     }
   }
-
 }
 
 .symptom-holder {
