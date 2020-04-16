@@ -423,6 +423,7 @@ p.mdc-theme--error {
   }
 }
 
+$symptom-color: #0898ad;
 .symptom-holder {
   display: flex;
   flex-direction: column;
@@ -435,10 +436,14 @@ p.mdc-theme--error {
     display: flex;
     align-items: center;
     border-radius: 10px;
-    border: 2px solid #0898ad;
+    border: 2px solid $symptom-color;
     padding: 0.5rem;
     margin-bottom: 1rem;
     transition: 0.1s linear;
+
+    &:focus {
+      border-color: change-color($symptom-color, $lightness: 70%);
+    }
 
     &--selected {
       background: #0898ad;
