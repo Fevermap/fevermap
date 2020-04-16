@@ -82,6 +82,11 @@ class FevermapDataEntry extends LitElement {
   firstUpdated() {
     this.initSlider();
     this.getGeoLocationInfo();
+    Array.from(this.querySelectorAll('.mdc-checkbox')).forEach(elem => {
+      // eslint-disable-next-line no-new
+      new MDCCheckbox(elem);
+    });
+
     this.carouselWrapper = this.querySelector('.fevermap-data-entry-content');
     if (this.firstTimeSubmitting) {
       setTimeout(() => {
