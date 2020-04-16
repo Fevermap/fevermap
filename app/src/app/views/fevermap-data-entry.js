@@ -532,14 +532,14 @@ class FevermapDataEntry extends LitElement {
 
   handleSymptomAdd(e) {
     let { target } = e;
-    if (e.target.nodeName === 'P') {
+    if (target.nodeName === 'P') {
       target = target.parentNode;
     }
-    if (this.symptoms.includes(e.target.id)) {
-      this.symptoms.splice(this.symptoms.indexOf(e.target.id), 1);
+    if (this.symptoms.includes(target.id)) {
+      this.symptoms.splice(this.symptoms.indexOf(target.id), 1);
       target.classList.remove('symptom--selected');
     } else {
-      this.symptoms.push(e.target.id);
+      this.symptoms.push(target.id);
       target.classList.add('symptom--selected');
     }
   }
