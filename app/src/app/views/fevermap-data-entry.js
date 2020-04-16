@@ -535,6 +535,12 @@ class FevermapDataEntry extends LitElement {
     tabtrap.trapAll(dialogId);
   }
 
+  handleSymptomKeyDown(e) {
+    if (e.code === 'Space') {
+      this.handleSymptomAdd(e);
+    }
+  }
+
   handleSymptomAdd(e) {
     let { target } = e;
     if (target.nodeName === 'P') {
@@ -758,17 +764,26 @@ class FevermapDataEntry extends LitElement {
         <div
           class="symptom"
           id="symptom_difficult_to_breath"
+          @keypress="${this.handleSymptomKeyDown}"
           @click="${this.handleSymptomAdd}"
           tabindex="0"
         >
           <p>${Translator.get('entry.questions.difficulty_to_breathe')}</p>
         </div>
-        <div class="symptom" id="symptom_cough" @click="${this.handleSymptomAdd}" tabindex="0">
+
+        <div
+          class="symptom"
+          id="symptom_cough"
+          @keypress="${this.handleSymptomKeyDown}"
+          @click="${this.handleSymptomAdd}"
+          tabindex="0"
+        >
           <p>${Translator.get('entry.questions.cough')}</p>
         </div>
         <div
           class="symptom"
           id="symptom_sore_throat"
+          @keypress="${this.handleSymptomKeyDown}"
           @click="${this.handleSymptomAdd}"
           tabindex="0"
         >
@@ -777,6 +792,7 @@ class FevermapDataEntry extends LitElement {
         <div
           class="symptom"
           id="symptom_muscle_pain"
+          @keypress="${this.handleSymptomKeyDown}"
           @click="${this.handleSymptomAdd}"
           tabindex="0"
         >
@@ -804,7 +820,7 @@ class FevermapDataEntry extends LitElement {
           </div>
           <div class="mdc-checkbox__ripple"></div>
         </div>
-        <label for="checkbox-1"
+        <label for="covid-diagnosed"
           >${Translator.get('entry.questions.positive_covid_diagnosis')}</label
         >
       </div>
