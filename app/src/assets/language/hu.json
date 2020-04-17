@@ -108,7 +108,7 @@
         "location_data_invalid": "A megadott tartózokdási hely nem érvényes.",
         "api_data_invalid": "Az API-nak kűldött adat nem érvényes.",
         "gender_not_set": "Nem adtad meg a nemedet.",
-        "do_not_submit_new_temp_until": "Kérjük csak 12 óránként kűldjél bejegyzéseket, legközelebb %{dateTime}-kor",
+        "do_not_submit_new_temp_until": "Kérjük %{dateTime} előtt ne küldjél bejegyzést.",
         "subscribe_error": "Nem sikerült feliratkoznod az értesítésekre.",
         "unsubscribe_error": "Nem sikerült leiratkoznod az értesítésekről."
       }
