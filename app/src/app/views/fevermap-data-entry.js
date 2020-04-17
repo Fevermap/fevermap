@@ -370,7 +370,9 @@ class FevermapDataEntry extends LitElement {
       PWAService.launchInstallDialog();
       this.closeView();
       syncClientInformation();
-      NotificationService.createNotificationRequestDialog();
+      if (NotificationService.isMessagingSupported()) {
+        NotificationService.createNotificationRequestDialog();
+      }
     } else {
       document.dispatchEvent(new CustomEvent('update-queued-count'));
       SnackBar.success(Translator.get('system_messages.success.entry_send_failed_queued'));
