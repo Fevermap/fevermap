@@ -137,6 +137,9 @@ export default class DataEntryService {
     let dateToFind = latest;
     dayjs.extend(dayOfYear);
 
+    if (!dateToFind) {
+      return 0;
+    }
     while (!streakWasBroken) {
       dateToFind = dateToFind.subtract(1, 'day');
       const dayOfYearToFind = dateToFind.dayOfYear();
