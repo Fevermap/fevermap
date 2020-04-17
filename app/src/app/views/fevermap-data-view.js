@@ -394,6 +394,9 @@ class FevermapDataView extends LitElement {
   }
 
   getNotificationSubscriptionButton() {
+    if (!NotificationService.isMessagingSupported()) {
+      return null;
+    }
     if (this.hasSubscribedToTopic) {
       return html`
         <div class="unsubscribe-from-notifications">

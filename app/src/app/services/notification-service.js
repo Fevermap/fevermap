@@ -21,6 +21,10 @@ const firebaseConfig = {
 };
 
 export default class NotificationService {
+  static isMessagingSupported() {
+    return firebase.messaging.isSupported();
+  }
+
   static requestNotificationPermissions() {
     Notification.requestPermission(status => {
       if (status === 'granted') {
@@ -52,6 +56,9 @@ export default class NotificationService {
 
   static initFirebase(reg) {
     // Initialize Firebase
+    if (!firebase.messaging.isSupported()) {
+      return;
+    }
     firebase.initializeApp(firebaseConfig);
 
     const messaging = firebase.messaging();
