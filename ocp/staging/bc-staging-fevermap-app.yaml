@@ -1,3 +1,4 @@
+---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
@@ -5,7 +6,6 @@ metadata:
   labels:
     env: staging
   name: fevermap-app
-  selfLink: /apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-app
 spec:
   failedBuildsHistoryLimit: 5
   nodeSelector: null
@@ -18,13 +18,13 @@ spec:
   runPolicy: Serial
   source:
     images:
-    - as: null
-      from:
-        kind: ImageStreamTag
-        name: fevermap-app-compile:latest
-      paths:
-      - destinationDir: .
-        sourcePath: /opt/app-root/output/.
+      - as: null
+        from:
+          kind: ImageStreamTag
+          name: fevermap-app-compile:latest
+        paths:
+          - destinationDir: .
+            sourcePath: /opt/app-root/output/.
     type: Image
   strategy:
     sourceStrategy:

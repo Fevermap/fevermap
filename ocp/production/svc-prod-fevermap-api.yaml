@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -12,16 +13,13 @@ metadata:
     app.kubernetes.io/part-of: fevermap
     application: fevermap
   name: fevermap-api
-  selfLink: /api/v1/namespaces/fevermap-prod/services/fevermap-api
 spec:
   ports:
-  - name: 9000-tcp
-    port: 9000
-    protocol: TCP
-    targetPort: 9000
+    - name: 9000-tcp
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
   selector:
     deploymentconfig: fevermap-api
   sessionAffinity: None
   type: ClusterIP
-status:
-  loadBalancer: {}

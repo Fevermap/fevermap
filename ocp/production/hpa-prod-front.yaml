@@ -1,3 +1,4 @@
+---
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
@@ -12,7 +13,6 @@ metadata:
     app.openshift.io/runtime-version: "1.12"
     application: fevermap
   name: fevermap-front
-  selfLink: /apis/autoscaling/v1/namespaces/fevermap-prod/horizontalpodautoscalers/fevermap-front
 spec:
   maxReplicas: 4
   minReplicas: 2
@@ -21,6 +21,3 @@ spec:
     kind: DeploymentConfig
     name: fevermap-front
   targetCPUUtilizationPercentage: 50
-status:
-  currentReplicas: 0
-  desiredReplicas: 0

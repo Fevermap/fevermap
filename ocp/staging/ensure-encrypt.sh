@@ -13,5 +13,5 @@ secret-staging-quay-push-secret.yaml \
 secret-staging-firebase.yaml \
 secret-staging-registry-redhat-io-secret.yaml; do
   echo encrypting $file
-  ansible-vault encrypt --vault-password-file=../.vault-pw $file
+  ansible-vault encrypt --vault-password-file=../.vault-pw $file --output $file.vaulted
 done

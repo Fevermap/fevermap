@@ -1,3 +1,4 @@
+---
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
@@ -6,7 +7,6 @@ metadata:
   labels:
     env: staging
   name: ubi8-s2i-web-app
-  selfLink: /apis/image.openshift.io/v1/namespaces/fevermap-staging/imagestreams/ubi8-s2i-web-app
 spec:
   lookupPolicy:
     local: false

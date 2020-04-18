@@ -1,9 +1,11 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
   annotations:
     openshift.io/generated-by: OpenShiftNewApp
-    template.openshift.io/expose-uri: mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mariadb")].port}
+    template.openshift.io/expose-uri:
+      mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mariadb")].port}
   creationTimestamp: null
   labels:
     app: fevermap-mysql-runtime
@@ -25,5 +27,3 @@ spec:
     deploymentconfig: fevermap-db
   sessionAffinity: None
   type: ClusterIP
-status:
-  loadBalancer: {}

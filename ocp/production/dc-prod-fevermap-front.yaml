@@ -1,3 +1,4 @@
+---
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
@@ -15,7 +16,6 @@ metadata:
     app.openshift.io/runtime-version: "1.12"
     application: fevermap
   name: fevermap-front
-  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-prod/deploymentconfigs/fevermap-front
 spec:
   replicas: 2
   revisionHistoryLimit: 10
@@ -82,11 +82,13 @@ spec:
               name: liveness-conf
               readOnly: true
               subPath: liveness.conf
-            - mountPath: /opt/app-root/src/.well-known/acme-challenge/Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
+            - mountPath: "/opt/app-root/src/.well-known/acme-challenge/Nxm-iKVC\
+                GXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE"
               name: challenge-api
               readOnly: true
               subPath: Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
-            - mountPath: /opt/app-root/src/.well-known/acme-challenge/EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
+            - mountPath: "/opt/app-root/src/.well-known/acme-challenge/EVp7eMI\
+                4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY"
               name: challenge-app
               readOnly: true
               subPath: EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
@@ -123,10 +125,3 @@ spec:
           name: fevermap-app:release
           namespace: fevermap-staging
       type: ImageChange
-status:
-  availableReplicas: 0
-  latestVersion: 0
-  observedGeneration: 0
-  replicas: 0
-  unavailableReplicas: 0
-  updatedReplicas: 0

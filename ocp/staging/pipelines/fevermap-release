@@ -67,6 +67,17 @@ pipeline {
             }
           }
         }
+        stage ('Tagging push-api for release'){
+          steps{
+            script {
+              openshift.withCluster() {
+                openshift.withProject("${project}") {
+                  openshift.tag("${project}/fevermap-push-api:${env.commit_id}", "${project}/fevermap-push-api:release")
+                }
+              }
+            }
+          }
+        }
         stage('Push api release to quay.io'){
           steps{
             script {
@@ -82,6 +93,7 @@ pipeline {
             }
           }
         }
+        
         stage('Push app release to quay.io'){
           steps{
             script {
@@ -91,6 +103,21 @@ pipeline {
                   def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
                   sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:release"
                   sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:${env.latest_tag}"
+                  
+                }
+              }
+            }
+          }
+        }
+        stage('Push push-api release to quay.io'){
+          steps{
+            script {
+              openshift.withCluster() {
+                withCredentials([usernamePassword(credentialsId: "fevermap-staging-quay-push-secret", usernameVariable: "QUAY_USER", passwordVariable: "QUAY_PWD")]) {
+                  def srcCatalogRef = openshift.selector("istag", "fevermap-push-api:${env.commit_id}").object().image.dockerImageReference
+                  def srcToken = readFile "/run/secrets/kubernetes.io/serviceaccount/token"
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-push-api:release"
+                  sh "skopeo copy --src-creds openshift:${srcToken} --dest-creds \"$QUAY_USER:$QUAY_PWD\" --src-tls-verify=false --dest-tls-verify=false docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-push-api:${env.latest_tag}"
                   
                 }
               }

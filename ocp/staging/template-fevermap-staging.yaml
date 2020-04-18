@@ -1,22 +1,31 @@
+---
+
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
   template: fevermap-mysql-persistent
   app: ${NAME}
 message: |-
-  The following service(s) have been created in your project: ${NAME} ${NAME}-api, ${DATABASE_SERVICE_NAME}.
+  The following service(s) have been created in your project:
+  ${NAME} ${NAME}-api, ${DATABASE_SERVICE_NAME}.
 
-  For more information about using this template, including OpenShift considerations, see https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
+  For more information about using this template, including OpenShift
+  considerations, see
+  https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
 metadata:
   annotations:
-    description: An example Fevermap application with a MariaDB database. For more information
-      about using this template, including OpenShift considerations, see https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
+    description:
+      An example Fevermap application with a MariaDB database. For more
+      information about using this template, including OpenShift considerations,
+      see https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md.
     iconClass: icon-python
     openshift.io/display-name: Fevermap
-    openshift.io/documentation-url: https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md
-    openshift.io/long-description: This template defines resources needed to develop
-      a Fevermap application, including a build configurations, application deployment
-      configurations, and database deployment configuration.
+    openshift.io/documentation-url:
+      https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/README.md
+    openshift.io/long-description:
+      This template defines resources needed to develop a Fevermap application,
+      including a build configurations, application deployment configurations,
+      and database deployment configuration.
     openshift.io/provider-display-name: Red Hat, Inc.
     openshift.io/support-url: https://gitlab.com/fevermap/fevermap/-/issues
     samples.operator.openshift.io/version: "0.1"
@@ -26,1022 +35,1024 @@ metadata:
     samples.operator.openshift.io/managed: "false"
   name: fevermap-mysql-persistent
 parameters:
-- description: The name prefix assigned to frontend objects defined in this template.
-  displayName: Name
-  name: NAME
-  required: true
-  value: fevermap-mysql-persistent
-- description: The OpenShift Namespace where the ImageStream resides.
-  displayName: Namespace
-  name: NAMESPACE
-  required: true
-  value: fevermap
-- description: Version of Python image to be used (3.6 or latest).
-  displayName: Python Version
-  name: PYTHON_VERSION
-  required: false
-  value: "3.6"
-- description: Maximum amount of memory the frontend container can use.
-  displayName: Memory Limit Frontned
-  name: MEMORY_APP_LIMIT
-  required: true
-  value: 512Mi
-- description: Maximum amount of memory the API container can use.
-  displayName: Memory Limit API
-  name: MEMORY_API_LIMIT
-  required: true
-  value: 512Mi
-- description: Maximum amount of memory the MySQL container can use.
-  displayName: Memory Limit (MySQL)
-  name: MEMORY_MYSQL_LIMIT
-  required: true
-  value: 512Mi
-- description: Volume space available for data, e.g. 512Mi, 2Gi
-  displayName: Volume Capacity
-  name: VOLUME_CAPACITY
-  required: true
-  value: 1Gi
-- description: The URL of the repository with your application source code.
-  displayName: Git Repository URL
-  name: SOURCE_REPOSITORY_URL
-  required: true
-  value: https://gitlab.com/fevermap/fevermap.git
-- description: Set this to a branch name, tag or other ref of your repository if you
-    are not using the default branch.
-  displayName: Git Reference
-  name: SOURCE_REPOSITORY_REF
-- description: The exposed hostname that will route to the Fevermap frontend service,
-    if left blank a value will be defaulted.
-  displayName: Application Frontend Hostname
-  name: APPLICATION_APP_DOMAIN
-- description: The exposed hostname that will route to the Fevermap API service,
-    if left blank a value will be defaulted.
-  displayName: Application API Hostname
-  name: APPLICATION_API_DOMAIN
-- description: The exposed hostname that will route to the Fevermap Push API service,
-    if left blank a value will be defaulted.
-  displayName: Application API Hostname
-  name: APPLICATION_PUSH_API_DOMAIN
-- description: Google Analytics property ID. Add this to activate Google Analytics,
-    otherwise leave empty to not use GA.
-  displayName: Google analytics property ID
-  name: GOOGLE_ANALYTICS_CODE
-- description: GitLab trigger secret.  A difficult to guess string encoded as part
-    of the webhook URL.  Not encrypted.
-  displayName: GitLab Webhook Secret
-  from: '[a-zA-Z0-9]{40}'
-  generate: expression
-  name: GITLAB_WEBHOOK_SECRET
-- displayName: Database Service Name
-  name: DATABASE_SERVICE_NAME
-  required: true
-  value: mariadb
-- displayName: Database Name
-  name: DATABASE_NAME
-  required: true
-  value: fevermap
-- displayName: Database User
-  name: DATABASE_USER
-  required: true
-  value: fevermap
-- displayName: Database Password
-  from: '[a-zA-Z0-9]{16}'
-  generate: expression
-  name: DATABASE_PASSWORD
-- displayName: Database Root Password
-  from: '[a-zA-Z0-9]{16}'
-  generate: expression
-  name: DATABASE_ROOT_PASSWORD
+  - description: The name prefix assigned to frontend objects defined in this
+      template.
+    displayName: Name
+    name: NAME
+    required: true
+    value: fevermap-mysql-persistent
+  - description: The OpenShift Namespace where the ImageStream resides.
+    displayName: Namespace
+    name: NAMESPACE
+    required: true
+    value: fevermap
+  - description: Version of Python image to be used (3.6 or latest).
+    displayName: Python Version
+    name: PYTHON_VERSION
+    required: false
+    value: "3.6"
+  - description: Maximum amount of memory the frontend container can use.
+    displayName: Memory Limit Frontned
+    name: MEMORY_APP_LIMIT
+    required: true
+    value: 512Mi
+  - description: Maximum amount of memory the API container can use.
+    displayName: Memory Limit API
+    name: MEMORY_API_LIMIT
+    required: true
+    value: 512Mi
+  - description: Maximum amount of memory the MySQL container can use.
+    displayName: Memory Limit (MySQL)
+    name: MEMORY_MYSQL_LIMIT
+    required: true
+    value: 512Mi
+  - description: Volume space available for data, e.g. 512Mi, 2Gi
+    displayName: Volume Capacity
+    name: VOLUME_CAPACITY
+    required: true
+    value: 1Gi
+  - description: The URL of the repository with your application source code.
+    displayName: Git Repository URL
+    name: SOURCE_REPOSITORY_URL
+    required: true
+    value: https://gitlab.com/fevermap/fevermap.git
+  - description:
+      Set this to a branch name, tag or other ref of your repository if you
+      are not using the default branch.
+    displayName: Git Reference
+    name: SOURCE_REPOSITORY_REF
+  - description:
+      The exposed hostname that will route to the Fevermap frontend service,
+      if left blank a value will be defaulted.
+    displayName: Application Frontend Hostname
+    name: APPLICATION_APP_DOMAIN
+  - description:
+      The exposed hostname that will route to the Fevermap API service,
+      if left blank a value will be defaulted.
+    displayName: Application API Hostname
+    name: APPLICATION_API_DOMAIN
+  - description:
+      The exposed hostname that will route to the Fevermap Push API service,
+      if left blank a value will be defaulted.
+    displayName: Application API Hostname
+    name: APPLICATION_PUSH_API_DOMAIN
+  - description:
+      Google Analytics property ID. Add this to activate Google Analytics,
+      otherwise leave empty to not use GA.
+    displayName: Google analytics property ID
+    name: GOOGLE_ANALYTICS_CODE
+  - description:
+      GitLab trigger secret.  A difficult to guess string encoded as part
+      of the webhook URL.  Not encrypted.
+    displayName: GitLab Webhook Secret
+    from: "[a-zA-Z0-9]{40}"
+    generate: expression
+    name: GITLAB_WEBHOOK_SECRET
+  - displayName: Database Service Name
+    name: DATABASE_SERVICE_NAME
+    required: true
+    value: mariadb
+  - displayName: Database Name
+    name: DATABASE_NAME
+    required: true
+    value: fevermap
+  - displayName: Database User
+    name: DATABASE_USER
+    required: true
+    value: fevermap
+  - displayName: Database Password
+    from: "[a-zA-Z0-9]{16}"
+    generate: expression
+    name: DATABASE_PASSWORD
+  - displayName: Database Root Password
+    from: "[a-zA-Z0-9]{16}"
+    generate: expression
+    name: DATABASE_ROOT_PASSWORD
 objects:
-#
-# Database
-#
-- apiVersion: v1
-  stringData:
-    database-name: ${DATABASE_NAME}
-    database-password: ${DATABASE_PASSWORD}
-    database-root-password: c${DATABASE_ROOT_PASSWORD}
-    database-user: ${DATABASE_USER}
-  kind: Secret
-  metadata:
-    annotations:
-      template.openshift.io/expose-database_name: '{.data[''database-name'']}'
-      template.openshift.io/expose-password: '{.data[''database-password'']}'
-      template.openshift.io/expose-root_password: '{.data[''database-root-password'']}'
-      template.openshift.io/expose-username: '{.data[''database-user'']}'
-    name: ${NAME}-db
-  type: Opaque
-- apiVersion: v1
-  kind: PersistentVolumeClaim
-  metadata:
-    finalizers:
-    - kubernetes.io/pvc-protection
-    name: ${NAME}-mariadb-storage
-  spec:
-    accessModes:
-    - ReadWriteOnce
-    resources:
-      requests:
-        storage: 1Gi
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
-  metadata:
-    annotations:
-      template.alpha.openshift.io/wait-for-ready: "true"
-    creationTimestamp: null
-    generation: 1
-    labels:
-      app.kubernetes.io/component: database
-      app.kubernetes.io/instance: ${NAME}-db
-      app.kubernetes.io/name: mariadb
-      app.kubernetes.io/part-of: fevermap
-      app.openshift.io/runtime: mariadb
-    name: ${NAME}-db
-  spec:
-    replicas: 1
-    revisionHistoryLimit: 5
-    selector:
-      deploymentconfig: ${NAME}-db
-      #name: ${NAME}-db
-    strategy:
-      activeDeadlineSeconds: 21600
-      recreateParams:
-        timeoutSeconds: 600
-      type: Recreate
-    template:
-      metadata:
-        creationTimestamp: null
-        name: ${NAME}-db
-        labels:
-          deploymentconfig: ${NAME}-db
-      spec:
-        containers:
-        - env:
-          - name: MYSQL_USER
-            valueFrom:
-              secretKeyRef:
-                key: database-user
-                name: ${NAME}-db
-          - name: MYSQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-password
-                name: ${NAME}-db
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-root-password
-                name: ${NAME}-db
-          - name: MYSQL_DATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: ${NAME}-db
-          image: openshift/mariadb@latest
-          imagePullPolicy: IfNotPresent
-          livenessProbe:
-            failureThreshold: 3
-            initialDelaySeconds: 30
-            periodSeconds: 10
-            successThreshold: 1
-            tcpSocket:
-              port: 3306
-            timeoutSeconds: 1
-          name: mariadb
-          ports:
-          - containerPort: 3306
-            protocol: TCP
-          readinessProbe:
-            exec:
-              command:
-              - /bin/sh
-              - -i
-              - -c
-              - MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE
-                -e 'SELECT 1'
-            failureThreshold: 3
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          resources:
-            limits:
-              memory: 2Gi
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          volumeMounts:
-          - mountPath: /var/lib/mysql/data
-            name: ${NAME}-data
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - name: ${NAME}-data
-          persistentVolumeClaim:
-            claimName: ${NAME}-mariadb-storage
-    test: false
-    triggers:
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - mariadb
-        from:
+  #
+  # Database
+  #
+  - apiVersion: v1
+    stringData:
+      database-name: ${DATABASE_NAME}
+      database-password: ${DATABASE_PASSWORD}
+      database-root-password: c${DATABASE_ROOT_PASSWORD}
+      database-user: ${DATABASE_USER}
+    kind: Secret
+    metadata:
+      annotations:
+        template.openshift.io/expose-database_name: "{.data['database-name']}"
+        template.openshift.io/expose-password: "{.data['database-password']}"
+        template.openshift.io/expose-root_password: >-
+          "{.data['database-root-password']}"
+        template.openshift.io/expose-username: "{.data['database-user']}"
+      name: ${NAME}-db
+    type: Opaque
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      finalizers:
+        - kubernetes.io/pvc-protection
+      name: ${NAME}-mariadb-storage
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        template.alpha.openshift.io/wait-for-ready: "true"
+      creationTimestamp: null
+      generation: 1
+      labels:
+        app.kubernetes.io/component: database
+        app.kubernetes.io/instance: ${NAME}-db
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/part-of: fevermap
+        app.openshift.io/runtime: mariadb
+      name: ${NAME}-db
+    spec:
+      replicas: 1
+      revisionHistoryLimit: 5
+      selector:
+        deploymentconfig: ${NAME}-db
+        # name: ${NAME}-db
+      strategy:
+        activeDeadlineSeconds: 21600
+        recreateParams:
+          timeoutSeconds: 600
+        type: Recreate
+      template:
+        metadata:
+          creationTimestamp: null
+          name: ${NAME}-db
+          labels:
+            deploymentconfig: ${NAME}-db
+        spec:
+          containers:
+            - env:
+                - name: MYSQL_USER
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-user
+                      name: ${NAME}-db
+                - name: MYSQL_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-password
+                      name: ${NAME}-db
+                - name: MYSQL_ROOT_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-root-password
+                      name: ${NAME}-db
+                - name: MYSQL_DATABASE
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-name
+                      name: ${NAME}-db
+              image: openshift/mariadb@latest
+              imagePullPolicy: IfNotPresent
+              livenessProbe:
+                failureThreshold: 3
+                initialDelaySeconds: 30
+                periodSeconds: 10
+                successThreshold: 1
+                tcpSocket:
+                  port: 3306
+                timeoutSeconds: 1
+              name: mariadb
+              ports:
+                - containerPort: 3306
+                  protocol: TCP
+              readinessProbe:
+                exec:
+                  command:
+                    - /bin/sh
+                    - -i
+                    - -c
+                    - >-
+                      MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1
+                      -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'
+                failureThreshold: 3
+                initialDelaySeconds: 5
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 1
+              resources:
+                limits:
+                  memory: 2Gi
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /var/lib/mysql/data
+                  name: ${NAME}-data
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: ${NAME}-data
+              persistentVolumeClaim:
+                claimName: ${NAME}-mariadb-storage
+      test: false
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - mariadb
+            from:
+              kind: ImageStreamTag
+              name: mariadb:10.2
+              namespace: openshift
+          type: ImageChange
+        - type: ConfigChange
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      annotations:
+        template.openshift.io/expose-uri: >-
+          mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mariadb")].port}
+      labels:
+        app.kubernetes.io/component: ${NAME}-db
+        app.kubernetes.io/instance: ${NAME}-db
+        app.kubernetes.io/name: "${NAME}-db"
+        app.kubernetes.io/part-of: ${NAME}
+      name: ${NAME}-db
+    spec:
+      ports:
+        - name: mariadb
+          port: 3306
+          protocol: TCP
+          targetPort: 3306
+      selector:
+        deploymentconfig: ${NAME}-db
+      sessionAffinity: None
+      type: ClusterIP
+  #
+  # API
+  #
+  - apiVersion: v1
+    stringData:
+      database-uri: "mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${NAME}-db/\
+        ${DATABASE_NAME}?charset=utf8mb4"
+    kind: Secret
+    metadata:
+      annotations:
+        template.openshift.io/expose-database_name: "{.data['database-uri']}"
+      name: ${NAME}-api-db
+    type: Opaque
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ubi8-python-36
+      annotations:
+        description: Base image to build API onto
+        template.alpha.openshift.io/wait-for-ready: "true"
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - annotations: null
+          from:
+            kind: DockerImage
+            name: ubi8/python-36
+          name: latest
+          referencePolicy:
+            type: Source
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ${NAME}-api
+      annotations:
+        description: Defines how to build the application
+        template.alpha.openshift.io/wait-for-ready: "true"
+    spec:
+      lookupPolicy:
+        local: false
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      name: ${NAME}-api
+      labels:
+        app.kubernetes.io/component: api
+        app.kubernetes.io/instance: ${NAME}
+        app.kubernetes.io/name: python
+        app.kubernetes.io/part-of: fevermap
+        app.openshift.io/runtime: python
+        app.openshift.io/runtime-version: ${PYTHON_VERSION}
+      annotations:
+        app.openshift.io/vcs-ref: ${SOURCE_REPOSITORY_REF}
+        app.openshift.io/vcs-uri: ${SOURCE_REPOSITORY_URL}
+    spec:
+      output:
+        to:
           kind: ImageStreamTag
-          name: mariadb:10.2
-          namespace: openshift
-      type: ImageChange
-    - type: ConfigChange
-- apiVersion: v1
-  kind: Service
-  metadata:
-    annotations:
-      template.openshift.io/expose-uri: mysql://{.spec.clusterIP}:{.spec.ports[?(.name=="mariadb")].port}
-    labels:
-      app.kubernetes.io/component: ${NAME}-db
-      app.kubernetes.io/instance: ${NAME}-db
-      app.kubernetes.io/name: "${NAME}-db"
-      app.kubernetes.io/part-of: ${NAME}
-    name: ${NAME}-db
-  spec:
-    ports:
-    - name: mariadb
-      port: 3306
-      protocol: TCP
-      targetPort: 3306
-    selector:
-      deploymentconfig: ${NAME}-db
-    sessionAffinity: None
-    type: ClusterIP
-#
-# API
-#
-- apiVersion: v1
-  stringData:
-    database-uri: 'mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@${NAME}-db/${DATABASE_NAME}?charset=utf8mb4'
-  kind: Secret
-  metadata:
-    annotations:
-      template.openshift.io/expose-database_name: '{.data[''database-uri'']}'
-    name: ${NAME}-api-db
-  type: Opaque
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    name: ubi8-python-36
-    annotations:
-      description: Base image to build API onto
-      template.alpha.openshift.io/wait-for-ready: "true"
-  spec:
-    lookupPolicy:
-      local: false
-    tags:
-    - annotations: null
-      from:
-        kind: DockerImage
-        name: ubi8/python-36
-      name: latest
-      referencePolicy:
+          name: "${NAME}-api:latest"
+      successfulBuildsHistoryLimit: 5
+      failedBuildsHistoryLimit: 5
+      strategy:
         type: Source
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    name: ${NAME}-api
-    annotations:
-      description: Defines how to build the application
-      template.alpha.openshift.io/wait-for-ready: "true"
-  spec:
-    lookupPolicy:
-      local: false
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    name: ${NAME}-api
-    labels:
-      app.kubernetes.io/component: api
-      app.kubernetes.io/instance: ${NAME}
-      app.kubernetes.io/name: python
-      app.kubernetes.io/part-of: fevermap
-      app.openshift.io/runtime: python
-      app.openshift.io/runtime-version: ${PYTHON_VERSION}
-    annotations:
-      app.openshift.io/vcs-ref: ${SOURCE_REPOSITORY_REF}
-      app.openshift.io/vcs-uri: ${SOURCE_REPOSITORY_URL}
-  spec:
-    output:
-      to:
-        kind: ImageStreamTag
-        name: '${NAME}-api:latest'
-    successfulBuildsHistoryLimit: 5
-    failedBuildsHistoryLimit: 5
-    strategy:
-      type: Source
-      sourceStrategy:
-        from:
-          kind: DockerImage
-          name: registry.redhat.io/ubi8/python-36
-        pullSecret:
-          name: registry-redhat-io-secret
-          ### XXX ^ what about the pull secret ^
-    source:
-      type: Git
-      git:
-        uri: ${SOURCE_REPOSITORY_URL}
-        ref: ${SOURCE_REPOSITORY_REF}
-      contextDir: /api
-    triggers:
-      - gitlab:
-          secret: ${GITLAB_WEBHOOK_SECRET}
-        type: GitLab
-      - type: ImageChange
-        imageChange:
-      - type: ConfigChange
-    runPolicy: Serial
-- apiVersion: v1
-  data:
-    entrypoint.sh: |
-      #!/bin/bash
-      set -e
+        sourceStrategy:
+          from:
+            kind: DockerImage
+            name: registry.redhat.io/ubi8/python-36
+          pullSecret:
+            name: registry-redhat-io-secret
+            ### XXX ^ what about the pull secret ^
+      source:
+        type: Git
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+        contextDir: /api
+      triggers:
+        - gitlab:
+            secret: ${GITLAB_WEBHOOK_SECRET}
+          type: GitLab
+        - type: ImageChange
+          imageChange:
+        - type: ConfigChange
+      runPolicy: Serial
+  - apiVersion: v1
+    data:
+      entrypoint.sh: |
+        #!/bin/bash
+        set -e
 
-      # Turn on bash's job control so we can spawn subcommands
-      set -m
+        # Turn on bash's job control so we can spawn subcommands
+        set -m
 
-      # https://flask.palletsprojects.com/en/1.1.x/cli/
-      export FLASK_APP="fevermap"
+        # https://flask.palletsprojects.com/en/1.1.x/cli/
+        export FLASK_APP="fevermap"
 
-      # Default to development if nothing is set
-      if [ -z "$FLASK_ENV" ]
-      then
-        export FLASK_ENV="development"
-      fi
+        # Default to development if nothing is set
+        if [ -z "$FLASK_ENV" ]
+        then
+          export FLASK_ENV="development"
+        fi
 
-      export PYTHONPATH="${APPDIR}:${PYTHONPATH}"
-      export LC_ALL=C.UTF-8
-      export LANG=C.UTF-8
+        export PYTHONPATH="${APPDIR}:${PYTHONPATH}"
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
 
-      if [ "$FLASK_ENV" == "development" ]
-      then
-        # Start a secondary process to gracefully reload uswgi if any of it's files get
-        # modified. Needs Debian packages procps and entr installed on system.
-        echo "Starting entr to watch for source code changes..."
-        (find /app | entr -p -s "echo 'Entr: reloading...' && pkill --signal SIGHUP uwsgi" &)
-        # This is only indented for development use, don't run production with this entrypoint.
-      fi
-
-      uwsgi \
-          --module=fevermap.wsgi:application \
-          --master \
-          --processes=5 \
-          --threads=2 \
-          --set-placeholder="base=${APPDIR}" \
-          --chdir="%(base)" \
-          --http-socket="0.0.0.0:9000" \
-          --uid="$(id -un)" \
-          --gid="$(id -gn)" \
-          --vacuum \
-          --die-on-term \
-          --env="LC_ALL=C.UTF-8" \
-          --env="LANG=C.UTF-8" \
-          --disable-logging
-  kind: ConfigMap
-  metadata:
-    name: ${NAME}-api-uwsgi-starter
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
-  metadata:
-    annotations:
-      app.openshift.io/connects-to: ${NAME}-db
-    labels:
-      app.kubernetes.io/component: api
-      app.kubernetes.io/instance: ${NAME}-api
-      app.kubernetes.io/name: python
-      app.kubernetes.io/part-of: fevermap
-      app.openshift.io/runtime: python
-      app.openshift.io/runtime-version: ${PYTHON_VERSION}
-    name: ${NAME}-api
-  spec:
-    replicas: 2
-    revisionHistoryLimit: 5
-    selector:
-      deploymentconfig: ${NAME}-api
-    strategy:
-      activeDeadlineSeconds: 21600
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        creationTimestamp: null
-        labels:
-          deploymentconfig: ${NAME}-api
-        name: ${name}-api
-      spec:
-        containers:
-          - env:
-              - name: FEVERMAP_API_DATABASE_URI
-                valueFrom:
-                  secretKeyRef:
-                    key: database-uri
-                    name: ${NAME}-api-db
-              - name: FLASK_ENV
-                value: kube
-              - name: APP_SCRIPT
-                value: entrypoint.sh
-              - name: APPDIR
-                value: /opt/app-root/src
-              - name: UWSGIPLUGINLINE
-            image: ${NAME}-api:latest
-            imagePullPolicy: IfNotPresent
-            name: ${NAME}-api
-            ports:
-              - containerPort: 8080
-                protocol: TCP
-            resources:
-              limits:
-                memory: 1Gi
-            terminationMessagePath: /dev/termination-log
-            terminationMessagePolicy: File
-            readinessProbe:
-              httpGet:
-                path: /ping
-                port: 9000
-                scheme: HTTP
-              initialDelaySeconds: 5
-              timeoutSeconds: 2
-              periodSeconds: 10
-              successThreshold: 1
-              failureThreshold: 3
-            livenessProbe:
-              httpGet:
-                path: /ping
-                port: 9000
-                scheme: HTTP
-              initialDelaySeconds: 10
-              timeoutSeconds: 3
-              periodSeconds: 10
-              successThreshold: 1
-              failureThreshold: 3
-            volumeMounts:
-            - mountPath: /opt/app-root/src/entrypoint.sh
+        uwsgi \
+            --module=fevermap.wsgi:application \
+            --master \
+            --processes=5 \
+            --threads=2 \
+            --set-placeholder="base=${APPDIR}" \
+            --chdir="%(base)" \
+            --http-socket="0.0.0.0:9000" \
+            --uid="$(id -un)" \
+            --gid="$(id -gn)" \
+            --vacuum \
+            --die-on-term \
+            --env="LC_ALL=C.UTF-8" \
+            --env="LANG=C.UTF-8" \
+            --disable-logging
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-api-uwsgi-starter
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    metadata:
+      annotations:
+        app.openshift.io/connects-to: ${NAME}-db
+      labels:
+        app.kubernetes.io/component: api
+        app.kubernetes.io/instance: ${NAME}-api
+        app.kubernetes.io/name: python
+        app.kubernetes.io/part-of: fevermap
+        app.openshift.io/runtime: python
+        app.openshift.io/runtime-version: ${PYTHON_VERSION}
+      name: ${NAME}-api
+    spec:
+      replicas: 2
+      revisionHistoryLimit: 5
+      selector:
+        deploymentconfig: ${NAME}-api
+      strategy:
+        activeDeadlineSeconds: 21600
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            deploymentconfig: ${NAME}-api
+          name: ${name}-api
+        spec:
+          containers:
+            - env:
+                - name: FEVERMAP_API_DATABASE_URI
+                  valueFrom:
+                    secretKeyRef:
+                      key: database-uri
+                      name: ${NAME}-api-db
+                - name: FLASK_ENV
+                  value: kube
+                - name: APP_SCRIPT
+                  value: entrypoint.sh
+                - name: APPDIR
+                  value: /opt/app-root/src
+                - name: UWSGIPLUGINLINE
+              image: ${NAME}-api:latest
+              imagePullPolicy: IfNotPresent
+              name: ${NAME}-api
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+              resources:
+                limits:
+                  memory: 1Gi
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              readinessProbe:
+                httpGet:
+                  path: /ping
+                  port: 9000
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                timeoutSeconds: 2
+                periodSeconds: 10
+                successThreshold: 1
+                failureThreshold: 3
+              livenessProbe:
+                httpGet:
+                  path: /ping
+                  port: 9000
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                timeoutSeconds: 3
+                periodSeconds: 10
+                successThreshold: 1
+                failureThreshold: 3
+              volumeMounts:
+                - mountPath: /opt/app-root/src/entrypoint.sh
+                  name: uwsgi-starter
+                  readOnly: true
+                  subPath: entrypoint.sh
+          volumes:
+            - configMap:
+                defaultMode: 0550
+                name: ${NAME}-api-uwsgi-starter
               name: uwsgi-starter
-              readOnly: true
-              subPath: entrypoint.sh
-        volumes:
-        - configMap:
-            defaultMode: 0550
-            name: ${NAME}-api-uwsgi-starter
-          name: uwsgi-starter
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        terminationGracePeriodSeconds: 30
-    test: false
-    triggers:
-      - imageChangeParams:
-          automatic: true
-          containerNames:
-            - ${NAME}-api
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+      test: false
+      triggers:
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}-api
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-api:latest
+          type: ImageChange
+        - type: ConfigChange
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app.kubernetes.io/component: api
+        app.kubernetes.io/instance: ${NAME}
+        app.kubernetes.io/name: python
+        app.kubernetes.io/part-of: fevermap
+      name: ${NAME}-api
+    spec:
+      ports:
+        - name: 9000-tcp
+          port: 9000
+          protocol: TCP
+          targetPort: 9000
+      sessionAffinity: None
+      type: ClusterIP
+      selector:
+        deploymentconfig: ${NAME}-api
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: ${NAME}-api
+    spec:
+      host: ${APPLICATION_API_DOMAIN}
+      # path: /api
+      port:
+        targetPort: 9000-tcp
+      # tls:
+      #  insecureEdgeTerminationPolicy: Allow
+      #  termination: edge
+      to:
+        kind: Service
+        name: ${NAME}-api
+        weight: 100
+      wildcardPolicy: None
+  #
+  # Front
+  #
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ubi8-s2i-web-app
+      annotations:
+        description: Base image to build front 1 stage onto
+        template.alpha.openshift.io/wait-for-ready: "true"
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - annotations: null
+          from:
+            kind: DockerImage
+            name: nodeshift/ubi8-s2i-web-app:10.x
+          name: latest
+          referencePolicy:
+            type: Source
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ${NAME}-build
+      annotations:
+        description: 2nd Stage builder image for the front
+        template.alpha.openshift.io/wait-for-ready: "true"
+    spec:
+      lookupPolicy:
+        local: false
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ${NAME}-runtime
+      annotations:
+        description: The run-time base image for API (second stage)
+        template.alpha.openshift.io/wait-for-ready: "true"
+    spec:
+      lookupPolicy:
+        local: false
+      tags:
+        - annotations: null
+          from:
+            kind: DockerImage
+            name: registry.redhat.io/rhel8/nginx-116
+          name: latest
+          referencePolicy:
+            type: Source
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      name: ${NAME}-app
+      annotations:
+        description: The final run-time image for frontend
+        template.alpha.openshift.io/wait-for-ready: "true"
+    spec:
+      lookupPolicy:
+        local: false
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      name: ${NAME}-build
+      labels:
+        app.kubernetes.io/component: front
+        app.kubernetes.io/instance: ${NAME}-app
+        app.kubernetes.io/name: nodejs
+        app.kubernetes.io/part-of: fevermap
+        app.openshift.io/runtime: nodejs
+    spec:
+      failedBuildsHistoryLimit: 5
+      output:
+        to:
+          kind: ImageStreamTag
+          name: "${NAME}-build:latest"
+      resources:
+        limits:
+          memory: 2Gi
+      runPolicy: Serial
+      source:
+        contextDir: app
+        git:
+          uri: ${SOURCE_REPOSITORY_URL}
+          ref: ${SOURCE_REPOSITORY_REF}
+        type: Git
+      strategy:
+        sourceStrategy:
+          env:
+            - name: NPM_BUILD
+              value: >-
+                webpack --mode production --env.NODE_ENV=production
+            - name: OUTPUT_DIR
+              value: dist
           from:
             kind: ImageStreamTag
-            name: ${NAME}-api:latest
-        type: ImageChange
-      - type: ConfigChange
-- apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app.kubernetes.io/component: api
-      app.kubernetes.io/instance: ${NAME}
-      app.kubernetes.io/name: python
-      app.kubernetes.io/part-of: fevermap
-    name: ${NAME}-api
-  spec:
-    ports:
-    - name: 9000-tcp
-      port: 9000
-      protocol: TCP
-      targetPort: 9000
-    sessionAffinity: None
-    type: ClusterIP
-    selector:
-      deploymentconfig: ${NAME}-api
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    name: ${NAME}-api
-  spec:
-    host: ${APPLICATION_API_DOMAIN}
-    # path: /api
-    port:
-      targetPort: 9000-tcp
-    # tls:
-    #  insecureEdgeTerminationPolicy: Allow
-    #  termination: edge
-    to:
-      kind: Service
-      name: ${NAME}-api
-      weight: 100
-    wildcardPolicy: None
-#
-# Front
-#
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    name: ubi8-s2i-web-app
-    annotations:
-      description: Base image to build front 1 stage onto
-      template.alpha.openshift.io/wait-for-ready: "true"
-  spec:
-    lookupPolicy:
-      local: false
-    tags:
-    - annotations: null
-      from:
-        kind: DockerImage
-        name: nodeshift/ubi8-s2i-web-app:10.x
-      name: latest
-      referencePolicy:
+            name: "ubi8-s2i-web-app:latest"
         type: Source
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    name: ${NAME}-build
-    annotations:
-      description: 2nd Stage builder image for the front
-      template.alpha.openshift.io/wait-for-ready: "true"
-  spec:
-    lookupPolicy:
-      local: false
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    name: ${NAME}-runtime
-    annotations:
-      description: The run-time base image for API (second stage)
-      template.alpha.openshift.io/wait-for-ready: "true"
-  spec:
-    lookupPolicy:
-      local: false
-    tags:
-    - annotations: null
-      from:
-        kind: DockerImage
-        name: registry.redhat.io/rhel8/nginx-116
-      name: latest
-      referencePolicy:
-        type: Source
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    name: ${NAME}-app
-    annotations:
-      description: The final run-time image for frontend
-      template.alpha.openshift.io/wait-for-ready: "true"
-  spec:
-    lookupPolicy:
-      local: false
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    name: ${NAME}-build
-    labels:
-      app.kubernetes.io/component: front
-      app.kubernetes.io/instance: ${NAME}-app
-      app.kubernetes.io/name: nodejs
-      app.kubernetes.io/part-of: fevermap
-      app.openshift.io/runtime: nodejs
-  spec:
-    failedBuildsHistoryLimit: 5
-    output:
-      to:
-        kind: ImageStreamTag
-        name: '${NAME}-build:latest'
-    resources:
-      limits:
-        memory: 2Gi
-    runPolicy: Serial
-    source:
-      contextDir: app
-      git:
-        uri: ${SOURCE_REPOSITORY_URL}
-        ref: ${SOURCE_REPOSITORY_REF}
-      type: Git
-    strategy:
-      sourceStrategy:
-        env:
-          - name: NPM_BUILD
-            value: >-
-              webpack --mode production --env.NODE_ENV=production
-          - name: OUTPUT_DIR
-            value: dist
-        from:
-          kind: ImageStreamTag
-          name: 'ubi8-s2i-web-app:latest'
-      type: Source
-    successfulBuildsHistoryLimit: 5
-    triggers:
-      - gitlab:
-          secret: ${GITLAB_WEBHOOK_SECRET}
-        type: GitLab
-      - type: ConfigChange
-      - imageChange:
-        type: ImageChange
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    name: ${NAME}-runtime
-    labels:
-      app.kubernetes.io/component: front
-      app.kubernetes.io/instance: ${NAME}-app
-      app.kubernetes.io/name: nginx
-      app.kubernetes.io/part-of: fevermap
-      app.openshift.io/runtime: nginx
-  spec:
-    failedBuildsHistoryLimit: 5
-    nodeSelector: null
-    output:
-      to:
-        kind: ImageStreamTag
-        name: ${NAME}-app:latest
-    runPolicy: Serial
-    source:
-      images:
-      - as: null
-        from:
-          kind: ImageStreamTag
-          name: ${NAME}-build:latest
-        paths:
-        - destinationDir: .
-          sourcePath: /opt/app-root/output/.
-      type: Image
-    strategy:
-      type: Source
-      sourceStrategy:
-        from:
-          kind: DockerImage
-          name: registry.redhat.io/rhel8/nginx-116
-        pullSecret:
-          name: registry-redhat-io-secret
-        incremental: true
-    successfulBuildsHistoryLimit: 5
-    triggers:
-    - type: ConfigChange
-    - imageChange:
-      type: ImageChange
-    - imageChange:
-        from:
-          kind: ImageStreamTag
-          name: ${NAME}-build:latest
-      type: ImageChange
-- apiVersion: v1
-  data:
-    window-settings.js: |+
-      window.URLS = {
-          API_URL: 'http://${APPLICATION_API_DOMAIN}',
-          APP_URL: 'http://${APPLICATION_APP_DOMAIN}',
-      };
-      window.GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
-
-  kind: ConfigMap
-  metadata:
-    name: ${NAME}-window-settings
-- apiVersion: v1
-  data:
-    liveness.conf: |2
-
-      map $http_user_agent $log_ua {
-
-          ~kube-probe 0;
-          ~Pingdom 0;
-
-          default 1;
-      }
-
-      server {
-          listen       8081 default_server;
-          listen       [::]:8081 default_server;
-          server_name  _;
-          root         /opt/app-root/src;
-
-          access_log /var/log/nginx/access.log main if=$log_ua;
-
-          location / {
-          }
-
-          error_page 404 /404.html;
-          location = /40x.html {
-          }
-
-          error_page 500 502 503 504  /50x.html;
-          location = /50x.html {
-          }
-      }
-  kind: ConfigMap
-  metadata:
-    name: ${NAME}-app-nginx-liveness
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
-  metadata:
-    labels:
-      app.kubernetes.io/component: front
-      app.kubernetes.io/instance: ${NAME}-app
-      app.kubernetes.io/name: nginx
-      app.kubernetes.io/part-of: fevermap
-      app.openshift.io/runtime: nginx
-      app.openshift.io/runtime-version: '1.12'
-    name: ${NAME}-app
-  spec:
-    replicas: 2
-    revisionHistoryLimit: 10
-    selector:
-      deploymentconfig: ${NAME}-app
-    strategy:
-      activeDeadlineSeconds: 21600
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        labels:
-          deploymentconfig: ${NAME}-app
-      spec:
-        containers:
-        - image: ${NAME}-app:latest
-          imagePullPolicy: Always
-          name: ${NAME}-app
-          ports:
-          - containerPort: 8080
-            protocol: TCP
-          - containerPort: 8081
-            protocol: TCP
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /window-settings.js
-              port: 8081
-              scheme: HTTP
-            initialDelaySeconds: 10
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 2
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /window-settings.js
-              port: 8081
-              scheme: HTTP
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 2
-          resources:
-            limits:
-              memory: 1Gi
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          volumeMounts:
-          - mountPath: /opt/app-root/src/window-settings.js
-            name: ${NAME}-window-settings
-            readOnly: true
-            subPath: window-settings.js
-          - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
-            name: liveness-conf
-            readOnly: true
-            subPath: liveness.conf
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - configMap:
-            defaultMode: 420
-            name: ${NAME}-window-settings
-          name: ${NAME}-window-settings
-        - configMap:
-            defaultMode: 0444
-            name: ${NAME}-app-nginx-liveness
-          name: liveness-conf
-    test: false
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${NAME}-app
-        from:
+      successfulBuildsHistoryLimit: 5
+      triggers:
+        - gitlab:
+            secret: ${GITLAB_WEBHOOK_SECRET}
+          type: GitLab
+        - type: ConfigChange
+        - imageChange:
+          type: ImageChange
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      name: ${NAME}-runtime
+      labels:
+        app.kubernetes.io/component: front
+        app.kubernetes.io/instance: ${NAME}-app
+        app.kubernetes.io/name: nginx
+        app.kubernetes.io/part-of: fevermap
+        app.openshift.io/runtime: nginx
+    spec:
+      failedBuildsHistoryLimit: 5
+      nodeSelector: null
+      output:
+        to:
           kind: ImageStreamTag
           name: ${NAME}-app:latest
-      type: ImageChange
-- apiVersion: v1
-  kind: Service
-  metadata:
-    name: ${NAME}-app
-  spec:
-    ports:
-    - name: 8080-tcp
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-    selector:
-      deploymentconfig: ${NAME}-app
-    sessionAffinity: None
-    type: ClusterIP
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    name: ${NAME}-app
-  spec:
-    host: ${APPLICATION_APP_DOMAIN}
-    port:
-      targetPort: 8080-tcp
-    # tls:
-    #  insecureEdgeTerminationPolicy: Allow
-    #  termination: edge
-    to:
-      kind: Service
+      runPolicy: Serial
+      source:
+        images:
+          - as: null
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-build:latest
+            paths:
+              - destinationDir: .
+                sourcePath: /opt/app-root/output/.
+        type: Image
+      strategy:
+        type: Source
+        sourceStrategy:
+          from:
+            kind: DockerImage
+            name: registry.redhat.io/rhel8/nginx-116
+          pullSecret:
+            name: registry-redhat-io-secret
+          incremental: true
+      successfulBuildsHistoryLimit: 5
+      triggers:
+        - type: ConfigChange
+        - imageChange:
+          type: ImageChange
+        - imageChange:
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-build:latest
+          type: ImageChange
+  - apiVersion: v1
+    data:
+      window-settings.js: |+
+        window.URLS = {
+            API_URL: 'http://${APPLICATION_API_DOMAIN}',
+            APP_URL: 'http://${APPLICATION_APP_DOMAIN}',
+        };
+        window.GOOGLE_ANALYTICS_CODE='${GOOGLE_ANALYTICS_CODE}';
+
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-window-settings
+  - apiVersion: v1
+    data:
+      liveness.conf: |2
+
+        map $http_user_agent $log_ua {
+
+            ~kube-probe 0;
+            ~Pingdom 0;
+
+            default 1;
+        }
+
+        server {
+            listen       8081 default_server;
+            listen       [::]:8081 default_server;
+            server_name  _;
+            root         /opt/app-root/src;
+
+            access_log /var/log/nginx/access.log main if=$log_ua;
+
+            location / {
+            }
+
+            error_page 404 /404.html;
+            location = /40x.html {
+            }
+
+            error_page 500 502 503 504  /50x.html;
+            location = /50x.html {
+            }
+        }
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-app-nginx-liveness
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        app.kubernetes.io/component: front
+        app.kubernetes.io/instance: ${NAME}-app
+        app.kubernetes.io/name: nginx
+        app.kubernetes.io/part-of: fevermap
+        app.openshift.io/runtime: nginx
+        app.openshift.io/runtime-version: "1.12"
       name: ${NAME}-app
-      weight: 100
-    wildcardPolicy: None
-#
-# push API
-#
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: ${NAME}
-      app.kubernetes.io/component: ${NAME}-push-api
-      app.kubernetes.io/part-of: ${NAME}
-      env: staging
-    name: ${NAME}-push-api
-- apiVersion: build.openshift.io/v1
-  kind: BuildConfig
-  metadata:
-    labels:
-      app: ${NAME}
-      app.kubernetes.io/component: ${NAME}-push-api
-      app.kubernetes.io/part-of: ${NAME}
-      env: staging
-    name: ${NAME}-push-api
-  spec:
-    failedBuildsHistoryLimit: 5
-    nodeSelector: null
-    output:
+    spec:
+      replicas: 2
+      revisionHistoryLimit: 10
+      selector:
+        deploymentconfig: ${NAME}-app
+      strategy:
+        activeDeadlineSeconds: 21600
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          labels:
+            deploymentconfig: ${NAME}-app
+        spec:
+          containers:
+            - image: ${NAME}-app:latest
+              imagePullPolicy: Always
+              name: ${NAME}-app
+              ports:
+                - containerPort: 8080
+                  protocol: TCP
+                - containerPort: 8081
+                  protocol: TCP
+              livenessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /window-settings.js
+                  port: 8081
+                  scheme: HTTP
+                initialDelaySeconds: 10
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 2
+              readinessProbe:
+                failureThreshold: 3
+                httpGet:
+                  path: /window-settings.js
+                  port: 8081
+                  scheme: HTTP
+                initialDelaySeconds: 5
+                periodSeconds: 10
+                successThreshold: 1
+                timeoutSeconds: 2
+              resources:
+                limits:
+                  memory: 1Gi
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /opt/app-root/src/window-settings.js
+                  name: ${NAME}-window-settings
+                  readOnly: true
+                  subPath: window-settings.js
+                - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
+                  name: liveness-conf
+                  readOnly: true
+                  subPath: liveness.conf
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - configMap:
+                defaultMode: 420
+                name: ${NAME}-window-settings
+              name: ${NAME}-window-settings
+            - configMap:
+                defaultMode: 0444
+                name: ${NAME}-app-nginx-liveness
+              name: liveness-conf
+      test: false
+      triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}-app
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-app:latest
+          type: ImageChange
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      name: ${NAME}-app
+    spec:
+      ports:
+        - name: 8080-tcp
+          port: 8080
+          protocol: TCP
+          targetPort: 8080
+      selector:
+        deploymentconfig: ${NAME}-app
+      sessionAffinity: None
+      type: ClusterIP
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      name: ${NAME}-app
+    spec:
+      host: ${APPLICATION_APP_DOMAIN}
+      port:
+        targetPort: 8080-tcp
+      # tls:
+      #  insecureEdgeTerminationPolicy: Allow
+      #  termination: edge
       to:
-        kind: ImageStreamTag
-        name: ${NAME}-push-api:latest
-    runPolicy: Serial
-    source:
-      contextDir: /push-api
-      git:
-        uri: https://gitlab.com/${NAME}/${NAME}.git
-      type: Git
-    strategy:
-      sourceStrategy:
-        env:
-        - name: NPM_BUILD
-          value: node install
-        from:
-          kind: ImageStreamTag
-          name: nodejs:10
-          namespace: openshift
-      type: Source
-    successfulBuildsHistoryLimit: 5
-    triggers:
-    - type: ConfigChange
-- apiVersion: apps.openshift.io/v1
-  kind: DeploymentConfig
-  metadata:
-    labels:
-      app: ${NAME}
-      app.kubernetes.io/component: ${NAME}-push-api
-      app.kubernetes.io/instance: ${NAME}-push-api
-      app.kubernetes.io/part-of: ${NAME}
-      app.openshift.io/runtime: nodejs
-      env: staging
-    name: ${NAME}-push-api
-  spec:
-    replicas: 1
-    revisionHistoryLimit: 5
-    selector:
-      app: ${NAME}-push-api
-      deploymentconfig: ${NAME}-push-api
-    strategy:
-      activeDeadlineSeconds: 21600
-      resources: {}
-      rollingParams:
-        intervalSeconds: 1
-        maxSurge: 25%
-        maxUnavailable: 25%
-        timeoutSeconds: 600
-        updatePeriodSeconds: 1
-      type: Rolling
-    template:
-      metadata:
-        annotations:
-          openshift.io/generated-by: OpenShiftNewApp
-        creationTimestamp: null
-        labels:
-          app: ${NAME}-push-api
-          deploymentconfig: ${NAME}-push-api
-      spec:
-        containers:
-        - env:
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /opt/app-root/${NAME}-firebase-account-file.json
-          image: ${NAME}-push-api:latest
-          imagePullPolicy: Always
-          name: ${NAME}-push-api
-          ports:
-          - containerPort: 9001
-            protocol: TCP
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          volumeMounts:
-          - mountPath: /opt/app-root/${NAME}-firebase-account-file.json
-            name: volume-firebase
-            readOnly: true
-            subPath: ${NAME}-firebase-account-file.json
-        dnsPolicy: ClusterFirst
-        restartPolicy: Always
-        schedulerName: default-scheduler
-        terminationGracePeriodSeconds: 30
-        volumes:
-        - name: volume-firebase
-          secret:
-            defaultMode: 420
-            items:
-            - key: ${NAME}-firebase-account-file.json
-              path: ${NAME}-firebase-account-file.json
-            secretName: ${NAME}-firebase-account-file
-    test: false
-    triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - ${NAME}-push-api
-        from:
+        kind: Service
+        name: ${NAME}-app
+        weight: 100
+      wildcardPolicy: None
+  #
+  # push API
+  #
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      labels:
+        app: ${NAME}
+        app.kubernetes.io/component: ${NAME}-push-api
+        app.kubernetes.io/part-of: ${NAME}
+        env: staging
+      name: ${NAME}-push-api
+  - apiVersion: build.openshift.io/v1
+    kind: BuildConfig
+    metadata:
+      labels:
+        app: ${NAME}
+        app.kubernetes.io/component: ${NAME}-push-api
+        app.kubernetes.io/part-of: ${NAME}
+        env: staging
+      name: ${NAME}-push-api
+    spec:
+      failedBuildsHistoryLimit: 5
+      nodeSelector: null
+      output:
+        to:
           kind: ImageStreamTag
           name: ${NAME}-push-api:latest
-      type: ImageChange
-- apiVersion: v1
-  kind: Service
-  metadata:
-    labels:
-      app: ${NAME}
-      app.kubernetes.io/component: ${NAME}-push-api
-      app.kubernetes.io/part-of: ${NAME}
-      env: staging
-    name: ${NAME}-push-api
-  spec:
-    ports:
-    - name: 9001-tcp
-      port: 9001
-      protocol: TCP
-      targetPort: 9001
-    selector:
-      app: ${NAME}-push-api
-      deploymentconfig: ${NAME}-push-api
-    sessionAffinity: None
-    type: ClusterIP
-- apiVersion: v1
-  data:
-    ${NAME}-firebase-account-file.json: c2VjcmV0X3N0dWZmX2hlcmUKCg==
-  kind: Secret
-  metadata:
-    labels:
-      app: ${NAME}
-      app.kubernetes.io/component: ${NAME}-push-api
-      app.kubernetes.io/part-of: ${NAME}
-      env: staging
-    name: ${NAME}-firebase-account-file
-  type: Opaque
-- apiVersion: route.openshift.io/v1
-  kind: Route
-  metadata:
-    creationTimestamp: null
-    labels:
-      app: ${NAME}
-      app.kubernetes.io/component: ${NAME}-push-api
-      app.kubernetes.io/part-of: ${NAME}
-      env: staging
-    name: ${NAME}-push-api-staging
-  spec:
-    host: ${APPLICATION_PUSH_API_DOMAIN}
-    port:
-      targetPort: 9001-tcp
-    to:
-      kind: Service
+      runPolicy: Serial
+      source:
+        contextDir: /push-api
+        git:
+          uri: https://gitlab.com/${NAME}/${NAME}.git
+        type: Git
+      strategy:
+        sourceStrategy:
+          env:
+            - name: NPM_BUILD
+              value: node install
+          from:
+            kind: ImageStreamTag
+            name: nodejs:10
+            namespace: openshift
+        type: Source
+      successfulBuildsHistoryLimit: 5
+      triggers:
+        - type: ConfigChange
+  - apiVersion: apps.openshift.io/v1
+    kind: DeploymentConfig
+    metadata:
+      labels:
+        app: ${NAME}
+        app.kubernetes.io/component: ${NAME}-push-api
+        app.kubernetes.io/instance: ${NAME}-push-api
+        app.kubernetes.io/part-of: ${NAME}
+        app.openshift.io/runtime: nodejs
+        env: staging
       name: ${NAME}-push-api
-      weight: 100
-    wildcardPolicy: None
+    spec:
+      replicas: 1
+      revisionHistoryLimit: 5
+      selector:
+        app: ${NAME}-push-api
+        deploymentconfig: ${NAME}-push-api
+      strategy:
+        activeDeadlineSeconds: 21600
+        resources: {}
+        rollingParams:
+          intervalSeconds: 1
+          maxSurge: 25%
+          maxUnavailable: 25%
+          timeoutSeconds: 600
+          updatePeriodSeconds: 1
+        type: Rolling
+      template:
+        metadata:
+          annotations:
+            openshift.io/generated-by: OpenShiftNewApp
+          creationTimestamp: null
+          labels:
+            app: ${NAME}-push-api
+            deploymentconfig: ${NAME}-push-api
+        spec:
+          containers:
+            - env:
+                - name: GOOGLE_APPLICATION_CREDENTIALS
+                  value: /opt/app-root/${NAME}-firebase-account-file.json
+              image: ${NAME}-push-api:latest
+              imagePullPolicy: Always
+              name: ${NAME}-push-api
+              ports:
+                - containerPort: 9001
+                  protocol: TCP
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+              volumeMounts:
+                - mountPath: /opt/app-root/${NAME}-firebase-account-file.json
+                  name: volume-firebase
+                  readOnly: true
+                  subPath: ${NAME}-firebase-account-file.json
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          terminationGracePeriodSeconds: 30
+          volumes:
+            - name: volume-firebase
+              secret:
+                defaultMode: 420
+                items:
+                  - key: ${NAME}-firebase-account-file.json
+                    path: ${NAME}-firebase-account-file.json
+                secretName: ${NAME}-firebase-account-file
+      test: false
+      triggers:
+        - type: ConfigChange
+        - imageChangeParams:
+            automatic: true
+            containerNames:
+              - ${NAME}-push-api
+            from:
+              kind: ImageStreamTag
+              name: ${NAME}-push-api:latest
+          type: ImageChange
+  - apiVersion: v1
+    kind: Service
+    metadata:
+      labels:
+        app: ${NAME}
+        app.kubernetes.io/component: ${NAME}-push-api
+        app.kubernetes.io/part-of: ${NAME}
+        env: staging
+      name: ${NAME}-push-api
+    spec:
+      ports:
+        - name: 9001-tcp
+          port: 9001
+          protocol: TCP
+          targetPort: 9001
+      selector:
+        app: ${NAME}-push-api
+        deploymentconfig: ${NAME}-push-api
+      sessionAffinity: None
+      type: ClusterIP
+  - apiVersion: v1
+    data:
+      ${NAME}-firebase-account-file.json: c2VjcmV0X3N0dWZmX2hlcmUKCg==
+    kind: Secret
+    metadata:
+      labels:
+        app: ${NAME}
+        app.kubernetes.io/component: ${NAME}-push-api
+        app.kubernetes.io/part-of: ${NAME}
+        env: staging
+      name: ${NAME}-firebase-account-file
+    type: Opaque
+  - apiVersion: route.openshift.io/v1
+    kind: Route
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ${NAME}
+        app.kubernetes.io/component: ${NAME}-push-api
+        app.kubernetes.io/part-of: ${NAME}
+        env: staging
+      name: ${NAME}-push-api-staging
+    spec:
+      host: ${APPLICATION_PUSH_API_DOMAIN}
+      port:
+        targetPort: 9001-tcp
+      to:
+        kind: Service
+        name: ${NAME}-push-api
+        weight: 100
+      wildcardPolicy: None

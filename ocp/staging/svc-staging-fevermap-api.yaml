@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -13,10 +14,10 @@ metadata:
   name: fevermap-api
 spec:
   ports:
-  - name: 9000-tcp
-    port: 9000
-    protocol: TCP
-    targetPort: 9000
+    - name: 9000-tcp
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
   selector:
     app: fevermap-api
     deploymentconfig: fevermap-api
