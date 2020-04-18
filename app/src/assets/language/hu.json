@@ -11,27 +11,27 @@
     "landing": {
       "about": "A Fevermap-ról",
       "about_title": "Mi a Fevermap?",
-      "about_content_explanation": "egy olyan web és mobil applikáció ami egyszerűen és valós időben gyűjt adatokat a COVID-19 koronavírus járványról.",
-      "about_current_methods": "Azok a módszerek amikkel jelenleg követik a COVID-19 koronavírus járvány terjedését nem mutatnak teljes képet. Sokakat nem tesztelnek, hogy a szűkös számú teszt elérhető legyen az arra rászorulók számára. ",
-      "about_solution": "A Fevermap megoldást ad erre a problémára. A Fevermap-ben bárki, bárhol a világon megadhatja a saját hőmérsékletét és egyéb tüneteit. Az így felépített anonim adatbázis alapján, valős időben követhetővé válik a COVID-19 koronavírus járvány valódi terjedése ami segítheti azt, hogy a helyi hatóságok adatokon alapuló, helyes és gyors döntéseket tudjanak hozni a szükséges intézkedésekhez.",
+      "about_content_explanation": "egy olyan web és mobil applikáció, ami egyszerűen és valós időben gyűjt adatokat a COVID-19 koronavírus járványról.",
+      "about_current_methods": "Azok a módszerek, melyekkel jelenleg követik a COVID-19 koronavírus járvány terjedését, nem mutatnak teljes képet. Sokakat nem tesztelnek, hogy a szűkös számú teszt elérhető legyen az arra rászorulók számára. ",
+      "about_solution": "A Fevermap megoldást ad erre a problémára. A Fevermap-ben bárki, bárhol a világon megadhatja a saját hőmérsékletét és egyéb tüneteit. Az így felépített anonim adatbázis alapján, valős időben követhetővé válik a COVID-19 koronavírus járvány valódi terjedése, ami segítheti azt, hogy a helyi hatóságok adatokon alapuló, helyes és gyors döntéseket tudjanak hozni a szükséges intézkedésekhez.",
       "about_data_collection": "A Fevermap által gyűjtött adatok anonimizáltak és arra fogjuk őket használni, hogy felhívjuk a figyelmet a jelenlegi globális helyzetre.",
-      "about_current_participant_count": "A mai napig, %{participantCount} felhasználó jelentette a tümeteit a Fevermapnak.",
+      "about_current_participant_count": "A mai napig %{participantCount} felhasználó jelentette a tümeteit a Fevermapnak.",
 
       "how_to_participate": "Hogyan tudok részt venni?",
-      "participation_info": "Nagyon egyszerű. Csak mérd meg a hőmérsékleted és pár egyéb statisztikai információval együtt készíts egy bejegyzést a Fevermap–ban.",
-      "info_disclaimer": "Olyan kérdést nem teszünk fel ami alapján bárki beazonosítható lenne. Fontosnak tartjuk a felhasználók anonimitását és adatbiztonságát.",
+      "participation_info": "A dolog nagyon egyszerű: csak mérd meg a hőmérsékleted és pár egyéb statisztikai információval együtt készíts egy bejegyzést a Fevermap–ban.",
+      "info_disclaimer": "Olyan kérdést nem teszünk fel, ami alapján bárki beazonosítható lenne. Fontosnak tartjuk a felhasználók anonimitását és adataik biztonságát.",
 
       "how_will_my_data_be_used": "Hogyan fogjátok használni az adataimat?",
-      "data_use_explanation": "Az adatokat anonimizáljuk majd egy API-n mindenki számára elérhetővé tesszük."
+      "data_use_explanation": "Az adatokat anonimizáljuk, majd egy API-n keresztül mindenki számára elérhetővé tesszük."
     },
     "entry": {
       "data_entry": "Új bejegyzés",
-      "first_entry_disclaimer": "A bejegyzéseid azon eszköz alapján kerülnek az adatbázisba amiről megadtad őket, ezért megkérünk hogy mindíg ugyanarról az eszközről készítsd a bejegyzéseidet. Ez megkönnyíti számunkra a tüneteid követését.",
+      "first_entry_disclaimer": "A bejegyzéseid azon eszköz alapján kerülnek az adatbázisba, amiről megadtad őket, ezért megkérünk hogy, mindíg ugyanarról az eszközről készítsd a bejegyzéseidet. Ez megkönnyíti számunkra a tüneteid követését.",
       "last_submission": "Utolsó bejegyzés.",
       "submission_period_disclaimer": "Űj bejegyzéseket csak 12 óránként csinálhatsz.",
       "sync_now": "Szinkronizálás",
       "new_entry": "Új bejegyzés",
-      "first_time_disclaimer": "Mivel ez az első alkalom, hogy használod a Fevermap-et megkérünk, hogy válaszolj pár kérdésre.",
+      "first_time_disclaimer": "Mivel ez az első alkalom, hogy használod a Fevermap-et, megkérünk, hogy válaszolj pár kérdésre.",
       "these_questions_wont_be_repeated": "Ezeket a kérdéseket nem kell újra megválaszolni a további bejegyzéseknél.",
       "queued_entries": "Vannak el nem kűldött bejegyzéseid.",
       "send_now": "Elküldés",
@@ -45,10 +45,10 @@
         "feel_feverish": "Lázasnak érzem magam",
         "set_temperature": "Hőmérséklet megadása",
         "other_symptoms": "Egyéb tünetek?",
-        "choose_all_that_apply": "Jelőld meg az összes tünetet amivel rendelkezel.",
+        "choose_all_that_apply": "Jelőld meg az összes tünetet, amivel rendelkezel.",
         "difficulty_to_breathe": "Nehéz légzés",
         "cough": "Köhögés",
-        "sore_throat": "Torok kaparás",
+        "sore_throat": "Torokkaparás",
         "muscular_pain": "Izomfájdalom",
         "positive_covid_diagnosis": "Pozitívan diagnosztizált COVID-19 koronavírusom van.",
         "set_symptoms": "Tünetek megadása",
@@ -60,10 +60,10 @@
         "location_information": "Tartózokdási helyed megadása",
         "whats_your_location": "Mi a tartózokdási helyed?",
         "city": "Város",
-        "country": "Oszág",
+        "country": "Ország",
         "postal_code": "Irányítószám",
-        "location_determination_subtitle": "Tartózokdási helyedet az eszközöd segítségével határozzuk meg. Engedélyezd a helyadatok elérését.",
-        "location_change_subtitle": "A tartózokdási helyed megadásához add meg az országot és az irányítószámot majd nyomd meg a Tartózokdási hely megadása gombot",
+        "location_determination_subtitle": "Tartózokdási helyedet az eszközöd segítségével határozzuk meg. Kérjük engedélyezd a helyadatok elérését.",
+        "location_change_subtitle": "A tartózokdási helyed megadásához add meg az országot és az irányítószámot, majd nyomd meg a Tartózokdási hely megadása gombot",
         "update_location": "Tartózokdási hely megadása",
         "use_gps": "Tartózokdási hely lekérése a GPS-től",
         "set_location_and_submit": "Tartózokdási hely megadása"
@@ -94,7 +94,7 @@
   
     "system_messages": {
       "success": {
-        "location_update": "A Tartózokdási helyedet autómatikusan frissítettük",
+        "location_update": "A tartózokdási helyedet autómatikusan frissítettük",
         "data_entry": "Bejegyzésedet rögzítettük",
         "offline_entry_queued": "Nincs internet kapcsolat. A bejegyzést elraktároztuk.",
         "entry_send_failed_queued": "A bejegyzés mentése nem sikerült. A bejegyzést elraktároztuk.",
@@ -106,9 +106,9 @@
         "age_not_in_range": "A megadott születési év nincs az engedélyezett tartományban (1900 - 2020).",
         "fever_temp_value_invalid": "A megadott hőmérséklet nem érvényes.",
         "location_data_invalid": "A megadott tartózokdási hely nem érvényes.",
-        "api_data_invalid": "Az API nak kűldött adat nem érvényes.",
+        "api_data_invalid": "Az API-nak kűldött adat nem érvényes.",
         "gender_not_set": "Nem adtad meg a nemedet.",
-        "do_not_submit_new_temp_until": "Kérünk csak 12 óránként kűldjél bejegyzéseket, legközelebb %{dateTime}-kor",
+        "do_not_submit_new_temp_until": "Kérjük %{dateTime} előtt ne küldjél bejegyzést.",
         "subscribe_error": "Nem sikerült feliratkoznod az értesítésekre.",
         "unsubscribe_error": "Nem sikerült leiratkoznod az értesítésekről."
       }
@@ -116,13 +116,13 @@
     "dialog": {
       "pwa_installer": {
         "title": "A Fevermap telepítése",
-        "content": "A Fevermap Progresszív Web Alkalmazásként is felinstallálható. Ha felinstallálod akkor olyan szolgáltatásokhoz is hozzáférsz, mint a gyorsabb futtatás vagy értesítések (hamarosan).",
+        "content": "A Fevermap Progresszív Web Alkalmazásként is telepíthető. Telepítés után olyan szolgáltatásokhoz is hozzáférsz, mint a gyorsabb futtatás vagy értesítések (hamarosan).",
         "approve_text": "Telepítés",
         "decline_text": "Talán máskor"
         },
         "notifications": {
         "title": "Értesítések engedélyezése",
-        "content": "A Fevermap szeretne értesíteni minden nap, hogy nefelejtsd el a bejegyzésed. Engedélyezed az értesítéseket?",
+        "content": "A Fevermap szeretne értesíteni minden nap, hogy ne felejtsd el a bejegyzésed. Engedélyezed az értesítéseket?",
         "approve_text": "Értesítések engedélyezése",
         "decline_text": "Nem, köszönöm"
         }
@@ -131,12 +131,12 @@
         "daily_reminder": {
           "title": "Jó estét! \uD83D\uDE0A",
             "content": "Hogy érzed magad ma?",
-          "healthy": "Egézségessen",
+          "healthy": "Egészségesnek",
           "sick": "Betegnek"
         },
       "thank_you": {
-        "title": "Successfully submitted data.",
-        "content": "Thank you for submitting!"
+        "title": "Sikeres bejegyzés.",
+        "content": "Köszönjük a bejegyzésedet!"
       },
         "subscribe_to_notifications": "Feliratkozás az értesítésekre",
         "unsubscribe_from_notifications": "Leíratkozás az értesítésekről"
