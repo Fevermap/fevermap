@@ -167,6 +167,3 @@ api_test '{
   "location_lng":"22.28",
   "location_lat":"60.45"
 }'
-
-# Also test the stats API
-curl -iLsS "$API_URL/api/v0/stats"
