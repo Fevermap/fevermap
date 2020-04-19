@@ -1,3 +1,4 @@
+---
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
@@ -16,7 +17,6 @@ metadata:
     application: fevermap
     template: fevermap-mysql-persistent
   name: fevermap-db
-  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-prod/deploymentconfigs/fevermap-db
 spec:
   replicas: 1
   revisionHistoryLimit: 5
@@ -39,26 +39,26 @@ spec:
     spec:
       containers:
         - env:
-          - name: MYSQL_USER
-            valueFrom:
-              secretKeyRef:
-                key: database-user
-                name: fevermap-db
-          - name: MYSQL_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-password
-                name: fevermap-db
-          - name: MYSQL_ROOT_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: database-root-password
-                name: fevermap-db
-          - name: MYSQL_DATABASE
-            valueFrom:
-              secretKeyRef:
-                key: database-name
-                name: fevermap-db
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  key: database-user
+                  name: fevermap-db
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-password
+                  name: fevermap-db
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: database-root-password
+                  name: fevermap-db
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  key: database-name
+                  name: fevermap-db
           image: openshift/mariadb:10.2
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -79,8 +79,9 @@ spec:
                 - /bin/sh
                 - -i
                 - -c
-                - MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1 -u $MYSQL_USER -D $MYSQL_DATABASE
-                  -e 'SELECT 1'
+                - >-
+                  MYSQL_PWD="$MYSQL_PASSWORD" mysql -h 127.0.0.1
+                  -u $MYSQL_USER -D $MYSQL_DATABASE -e 'SELECT 1'
             failureThreshold: 3
             initialDelaySeconds: 5
             periodSeconds: 10
@@ -115,10 +116,3 @@ spec:
           namespace: openshift
       type: ImageChange
     - type: ConfigChange
-status:
-  availableReplicas: 0
-  latestVersion: 0
-  observedGeneration: 0
-  replicas: 0
-  unavailableReplicas: 0
-  updatedReplicas: 0

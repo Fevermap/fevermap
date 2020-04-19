@@ -1,3 +1,4 @@
+---
 - apiVersion: apps.openshift.io/v1
   kind: DeploymentConfig
   metadata:
@@ -32,43 +33,43 @@
           deploymentconfig: fevermap-push-api
       spec:
         containers:
-        - env:
-          - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: /opt/app-root/fevermap-firebase-account-file.json
-          image: fevermap-push-api:latest
-          imagePullPolicy: Always
-          name: fevermap-push-api
-          ports:
-          - containerPort: 9001
-            protocol: TCP
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-          volumeMounts:
-          - mountPath: /opt/app-root/fevermap-firebase-account-file.json
-            name: volume-firebase
-            readOnly: true
-            subPath: fevermap-firebase-account-file.json
+          - env:
+              - name: GOOGLE_APPLICATION_CREDENTIALS
+                value: /opt/app-root/fevermap-firebase-account-file.json
+            image: fevermap-push-api:latest
+            imagePullPolicy: Always
+            name: fevermap-push-api
+            ports:
+              - containerPort: 9001
+                protocol: TCP
+            terminationMessagePath: /dev/termination-log
+            terminationMessagePolicy: File
+            volumeMounts:
+              - mountPath: /opt/app-root/fevermap-firebase-account-file.json
+                name: volume-firebase
+                readOnly: true
+                subPath: fevermap-firebase-account-file.json
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         schedulerName: default-scheduler
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - name: volume-firebase
-          secret:
-            defaultMode: 420
-            items:
-            - key: fevermap-firebase-account-file.json
-              path: fevermap-firebase-account-file.json
-            secretName: fevermap-firebase-account-file
+          - name: volume-firebase
+            secret:
+              defaultMode: 420
+              items:
+                - key: fevermap-firebase-account-file.json
+                  path: fevermap-firebase-account-file.json
+              secretName: fevermap-firebase-account-file
     test: false
     triggers:
-    - type: ConfigChange
-    - imageChangeParams:
-        automatic: true
-        containerNames:
-        - fevermap-push-api
-        from:
-          kind: ImageStreamTag
-          name: fevermap-push-api:latest
-      type: ImageChange
+      - type: ConfigChange
+      - imageChangeParams:
+          automatic: true
+          containerNames:
+            - fevermap-push-api
+          from:
+            kind: ImageStreamTag
+            name: fevermap-push-api:latest
+        type: ImageChange

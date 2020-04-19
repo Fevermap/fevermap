@@ -1,14 +1,15 @@
+---
 apiVersion: v1
 items:
-- apiVersion: image.openshift.io/v1
-  kind: ImageStream
-  metadata:
-    labels:
-      app: fevermap
-      app.kubernetes.io/component: fevermap-push-api
-      app.kubernetes.io/part-of: fevermap
-      env: staging
-    name: fevermap-push-api
-  spec:
-    lookupPolicy:
-      local: false
+  - apiVersion: image.openshift.io/v1
+    kind: ImageStream
+    metadata:
+      labels:
+        app: fevermap
+        app.kubernetes.io/component: fevermap-push-api
+        app.kubernetes.io/part-of: fevermap
+        env: staging
+      name: fevermap-push-api
+    spec:
+      lookupPolicy:
+        local: false

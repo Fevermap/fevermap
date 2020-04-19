@@ -1,3 +1,4 @@
+---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
@@ -5,7 +6,6 @@ metadata:
   labels:
     env: staging
   name: fevermap-app-compile
-  selfLink: /apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-app-compile
 spec:
   failedBuildsHistoryLimit: 5
   nodeSelector: null
@@ -26,10 +26,10 @@ spec:
   strategy:
     sourceStrategy:
       env:
-      - name: NPM_BUILD
-        value: webpack --mode production --env.NODE_ENV=production
-      - name: OUTPUT_DIR
-        value: dist
+        - name: NPM_BUILD
+          value: webpack --mode production --env.NODE_ENV=production
+        - name: OUTPUT_DIR
+          value: dist
       from:
         kind: ImageStreamTag
         name: ubi8-s2i-web-app:latest

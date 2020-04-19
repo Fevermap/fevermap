@@ -1,3 +1,4 @@
+---
 apiVersion: apps.openshift.io/v1
 kind: DeploymentConfig
 metadata:
@@ -7,7 +8,6 @@ metadata:
     app: fevermap
     env: staging
   name: fevermap-app
-  selfLink: /apis/apps.openshift.io/v1/namespaces/fevermap-staging/deploymentconfigs/fevermap-app
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -32,71 +32,71 @@ spec:
         deploymentconfig: fevermap-app
     spec:
       containers:
-      - image: fevermap-staging/fevermap-app:latest
-        imagePullPolicy: Always
-        livenessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /window-settings.js
-            port: 8081
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 2
-        name: fevermap-app
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-        - containerPort: 8081
-          protocol: TCP
-        readinessProbe:
-          failureThreshold: 3
-          httpGet:
-            path: /window-settings.js
-            port: 8081
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 2
-        resources:
-          limits:
-            memory: 1Gi
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
-        volumeMounts:
-        - mountPath: /opt/app-root/src/window-settings.js
-          name: window-settings
-          readOnly: true
-          subPath: window-settings.js
-        - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
-          name: liveness-conf
-          readOnly: true
-          subPath: liveness.conf
+        - image: fevermap-staging/fevermap-app:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /window-settings.js
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          name: fevermap-app
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8081
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /window-settings.js
+              port: 8081
+              scheme: HTTP
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 2
+          resources:
+            limits:
+              memory: 1Gi
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /opt/app-root/src/window-settings.js
+              name: window-settings
+              readOnly: true
+              subPath: window-settings.js
+            - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
+              name: liveness-conf
+              readOnly: true
+              subPath: liveness.conf
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-      - configMap:
-          defaultMode: 420
+        - configMap:
+            defaultMode: 420
+            name: window-settings
           name: window-settings
-        name: window-settings
-      - configMap:
-          defaultMode: 420
-          name: fevermap-app-nginx-liveness
-        name: liveness-conf
+        - configMap:
+            defaultMode: 420
+            name: fevermap-app-nginx-liveness
+          name: liveness-conf
   test: false
   triggers:
-  - imageChangeParams:
-      automatic: true
-      containerNames:
-      - fevermap-app
-      from:
-        kind: ImageStreamTag
-        name: fevermap-app:latest
-        namespace: fevermap-staging
-    type: ImageChange
-  - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - fevermap-app
+        from:
+          kind: ImageStreamTag
+          name: fevermap-app:latest
+          namespace: fevermap-staging
+      type: ImageChange
+    - type: ConfigChange

@@ -1,14 +1,14 @@
+---
 apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   annotations:
-    pipeline.alpha.openshift.io/uses: '[{"name": "fevermap", "namespace": "fevermap-staging",
-      "kind": "DeploymentConfig"}]'
+    pipeline.alpha.openshift.io/uses: '[{"name": "fevermap",
+      "namespace": "fevermap-staging", "kind": "DeploymentConfig"}]'
   creationTimestamp: null
   labels:
     app: fevermap
   name: fevermap-release
-  selfLink: /apis/build.openshift.io/v1/namespaces/fevermap-staging/buildconfigs/fevermap-release
 spec:
   failedBuildsHistoryLimit: 5
   nodeSelector: {}
@@ -20,65 +20,12 @@ spec:
     type: None
   strategy:
     jenkinsPipelineStrategy:
-      jenkinsfile: "def project = 'fevermap-staging'\npipeline {\n    agent {\n      kubernetes
-        (\n        label: \"skopeo\",\n        cloud: \"openshift\",\n        inheritFrom:
-        \"maven\",\n        containers: [\n          containerTemplate(\n            name:
-        \"jnlp\",\n            image: \"quay.io/redhat-emea-ssa-team/jenkins-slave-skopeo:master\",\n
-        \           resourceRequestMemory: \"512Mi\",\n            resourceLimitMemory:
-        \"1Gi\"\n          )\n        ]\n      )\n    }\n    stages{\n        \n        stage
-        ('Get release info') {\n            steps{\n                script{\n                    git
-        branch: 'master', url: 'https://gitlab.com/fevermap/fevermap.git'\n                    sh
-        \"git describe --tags `git rev-list --tags --max-count=1` > .git/latest-tag\"\n
-        \                   env.latest_tag = readFile('.git/latest-tag')\n                    echo
-        \"tag: ${env.latest_tag}\"\n                    \n                }\n            }\n
-        \       }\n        stage('Get commit info') {\n            steps {\n                checkout([$class:
-        'GitSCM', \n                          branches: [[name: \"${env.latest_tag}\"]],
-        \n                          doGenerateSubmoduleConfigurations: false, \n                          extensions:
-        [], \n                          gitTool: 'Default', \n                          submoduleCfg:
-        [], \n                          userRemoteConfigs: [[url: 'https://gitlab.com/fevermap/fevermap.git']]\n
-        \                       ]);\n                script {\n                sh
-        \"git rev-parse --short HEAD > .git/commit-id\"\n                env.commit_id
-        = readFile('.git/commit-id')\n                echo \"commit: ${env.commit_id}\"\n
-        \               }\n            }\n        }\n        stage ('Tagging api for
-        release'){\n          steps{\n            script {\n              openshift.withCluster()
-        {\n                openshift.withProject(\"${project}\") {\n                  openshift.tag(\"${project}/fevermap-api:${env.commit_id}\",
-        \"${project}/fevermap-api:release\")\n                }\n              }\n
-        \           }\n          }\n        }\n        stage ('Tagging app for release'){\n
-        \         steps{\n            script {\n              openshift.withCluster()
-        {\n                openshift.withProject(\"${project}\") {\n                  openshift.tag(\"${project}/fevermap-app:${env.commit_id}\",
-        \"${project}/fevermap-app:release\")\n                }\n              }\n
-        \           }\n          }\n        }\n        stage('Push api release to
-        quay.io'){\n          steps{\n            script {\n              openshift.withCluster()
-        {\n                withCredentials([usernamePassword(credentialsId: \"fevermap-staging-quay-push-secret\",
-        usernameVariable: \"QUAY_USER\", passwordVariable: \"QUAY_PWD\")]) {\n                  def
-        srcCatalogRef = openshift.selector(\"istag\", \"fevermap-api:${env.commit_id}\").object().image.dockerImageReference\n
-        \                 def srcToken = readFile \"/run/secrets/kubernetes.io/serviceaccount/token\"\n
-        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
-        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
-        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-api:release\"\n
-        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
-        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
-        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-api:${env.latest_tag}
-        \"\n                  \n                }\n              }\n            }\n
-        \         }\n        }\n        stage('Push app release to quay.io'){\n          steps{\n
-        \           script {\n              openshift.withCluster() {\n                withCredentials([usernamePassword(credentialsId:
-        \"fevermap-staging-quay-push-secret\", usernameVariable: \"QUAY_USER\", passwordVariable:
-        \"QUAY_PWD\")]) {\n                  def srcCatalogRef = openshift.selector(\"istag\",
-        \"fevermap-app:${env.commit_id}\").object().image.dockerImageReference\n                  def
-        srcToken = readFile \"/run/secrets/kubernetes.io/serviceaccount/token\"\n
-        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
-        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
-        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:release\"\n
-        \                 sh \"skopeo copy --src-creds openshift:${srcToken} --dest-creds
-        \\\"$QUAY_USER:$QUAY_PWD\\\" --src-tls-verify=false --dest-tls-verify=false
-        docker://${srcCatalogRef} docker://quay.io/fevermap/fevermap-app:${env.latest_tag}\"\n
-        \                 \n                }\n              }\n            }\n          }\n
-        \       }\n        \n    }\n}"
+      jenkinsfilePath: ocp/staging/pipelines/fevermap-release
     type: JenkinsPipeline
   successfulBuildsHistoryLimit: 5
   triggers:
-  - generic:
-      secretReference:
-        name: gitlab-webhook
-      allowEnv: true
-    type: Generic
+    - generic:
+        secretReference:
+          name: gitlab-webhook
+        allowEnv: true
+      type: Generic

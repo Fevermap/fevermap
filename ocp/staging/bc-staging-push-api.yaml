@@ -1,3 +1,4 @@
+---
 - apiVersion: build.openshift.io/v1
   kind: BuildConfig
   metadata:
@@ -24,8 +25,8 @@
     strategy:
       sourceStrategy:
         env:
-        - name: NPM_BUILD
-          value: node install
+          - name: NPM_BUILD
+            value: node install
         from:
           kind: ImageStreamTag
           name: nodejs:10
@@ -33,4 +34,4 @@
       type: Source
     successfulBuildsHistoryLimit: 5
     triggers:
-    - type: ConfigChange
+      - type: ConfigChange

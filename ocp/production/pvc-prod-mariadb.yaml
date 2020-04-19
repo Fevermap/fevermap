@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -14,7 +15,6 @@ metadata:
     application: fevermap
     template: fevermap-mysql-persistent
   name: fevermap-mariadb-storage
-  selfLink: /api/v1/namespaces/fevermap-prod/persistentvolumeclaims/fevermap-mariadb-storage
 spec:
   accessModes:
     - ReadWriteOnce
@@ -23,4 +23,3 @@ spec:
       storage: 1Gi
   storageClassName: gp2-encrypted
   volumeName: pvc-e002f680-7276-11ea-bf7a-0645a759894e
-status: {}

@@ -11,5 +11,5 @@ secret-prod-firebase.yaml \
 secret-prod-fevermap-db.yaml; \
 do
   echo encrypting $file
-  ansible-vault encrypt --vault-password-file=../.vault-pw $file
+  ansible-vault encrypt --vault-password-file=../.vault-pw $file --output $file.vaulted
 done
