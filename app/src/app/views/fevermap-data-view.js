@@ -114,6 +114,25 @@ class FevermapDataView extends LitElement {
     });
   }
 
+  /**
+   * Set asynchronously load language pack from dayjs locales and
+   * set it for weekday translations in stats
+   * @returns {Promise<void>}
+   */
+  async setDayJsLanguage() {
+    const langKey = Translator.getLang().key || 'en';
+    if (langKey === 'en') {
+      // Dayjs defaults to english
+      return;
+    }
+    try {
+      await import(`dayjs/locale/${langKey}.js`);
+      dayjs.locale(langKey);
+    } catch (err) {
+      dayjs.locale('en');
+    }
+  }
+
   async getSubmissionStats() {
     const db = await DBUtil.getInstance();
     const submissionHistory = await db.getAll(FEVER_ENTRIES);
@@ -160,6 +179,7 @@ class FevermapDataView extends LitElement {
   }
 
   async getPreviousSubmissionsFromIndexedDb() {
+    await this.setDayJsLanguage();
     const db = await DBUtil.getInstance();
     const previousSubmissions = await db.getAll(FEVER_ENTRIES);
     if (previousSubmissions && previousSubmissions.length > 0) {
