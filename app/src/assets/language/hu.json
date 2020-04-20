@@ -66,6 +66,8 @@
         "location_change_subtitle": "A tartózokdási helyed megadásához add meg az országot és az irányítószámot, majd nyomd meg a Tartózokdási hely megadása gombot",
         "update_location": "Tartózokdási hely megadása",
         "use_gps": "Tartózokdási hely lekérése a GPS-től",
+        "location_seek_for_help_text": "Ha felfedezted magadon a vrus tüneteit, akkor a segítségről bővebb informácót ",
+        "location_seek_for_help_link_text": "ezen az oldalon kaphatsz.",
         "set_location_and_submit": "Tartózokdási hely megadása"
       },
       "previous_submissions": "Előző bejegyzések",

@@ -459,6 +459,19 @@ class FevermapDataView extends LitElement {
     return html` <material-icon class="green-text" icon="done"></material-icon> `;
   }
 
+  getSeekForHelpText() {
+    const locationCountry = localStorage.getItem('LOCATION_COUNTRY');
+    if (!locationCountry) {
+      return html``;
+    }
+    return html`
+      ${Translator.get('entry.questions.location_seek_for_help_text')}
+      <a href="${GeolocatorService.getCountrySeekTreatmentUrl(locationCountry)}" target="_blank">
+        ${Translator.get('entry.questions.location_seek_for_help_link_text')}</a
+      >
+    `;
+  }
+
   createPersistentDataFields() {
     if (!this.setBirthYear && !this.setGender) {
       return html``;
@@ -470,7 +483,8 @@ class FevermapDataView extends LitElement {
             age: this.getAge(),
             gender: this.getGenderTranslated(),
             diagnosis: this.getCovidStatusTranslated(),
-          })}.
+          })}. <br />
+          ${this.getSeekForHelpText()}
         </p>
         <material-icon
           tabindex="0"
