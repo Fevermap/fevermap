@@ -7,6 +7,7 @@ class LanguageChooseDialog extends LitElement {
     return {
       possibleLanguages: { type: Array },
       defaultedLanguage: { type: Object },
+      languageFromUri: { type: Object },
     };
   }
 
@@ -14,6 +15,17 @@ class LanguageChooseDialog extends LitElement {
     super();
     this.possibleLanguages = Translator.getPossibleLanguages();
     this.defaultedLanguage = Translator.getLang();
+    this.getLanguageFromUri();
+  }
+
+  getLanguageFromUri() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const langFromURI = urlParams.get('lang');
+    if (this.possibleLanguages.find(elem => elem.key === langFromURI)) {
+      this.languageFromUri = this.defaultedLanguage;
+      this.languageFromUri.key = langFromURI;
+      this.setPreferredLang(this.languageFromUri);
+    }
   }
 
   firstUpdated() {
