@@ -75,10 +75,7 @@ export default class DBUtil {
   async get(objectStore, identifier) {
     await this.makeSureDbIsReady();
     return new Promise(resolve => {
-      const getter = this.db
-        .transaction(objectStore)
-        .objectStore(objectStore)
-        .get(identifier);
+      const getter = this.db.transaction(objectStore).objectStore(objectStore).get(identifier);
       getter.onsuccess = event => resolve(event.target.result);
     });
   }
@@ -86,10 +83,7 @@ export default class DBUtil {
   async getAll(objectStore) {
     await this.makeSureDbIsReady();
     return new Promise(resolve => {
-      const getter = this.db
-        .transaction(objectStore)
-        .objectStore(objectStore)
-        .getAll();
+      const getter = this.db.transaction(objectStore).objectStore(objectStore).getAll();
       getter.onsuccess = event => resolve(event.target.result);
       getter.onerror = e => {
         throw ('Had trouble trying to access indexedDB', e);
