@@ -99,6 +99,28 @@ Then you can fix it by opening `https://gitlab.com/<username>/fevermap/-/setting
 
 See also: https://git-scm.com/book/en/v2/Git-Branching-Rebasing
 
+## Developing on the front-end
+
+Fevermap front end uses [prettier](https://prettier.io/) to format the code, and [eslint](https://eslint.org/) to lint the code.
+
+ESLint performs automated scans of your JavaScript files for common syntax and style errors
+
+Prettier scans your files for style issues and automatically reformats your code to ensure consistent rules are being followed for indentation, spacing, semicolons, single quotes vs double quotes, etc.
+
+
+#### How to setup prettier
+
+Prettier is installed as a development dependency when running `npm install`. You can run prettier manually by running the command `npm run format:prettier` in the `app` directory.
+However a best practice would be to always run it in conjunction with `eslint`. This can be done with the command `npm run format`.
+
+Prettier can be set to run on save, making it really easy to follow the coding style of the project, since the editor will format the code for you as you save the file.
+
+[How to run prettier on your editor](https://prettier.io/docs/en/editors.html)
+
+
+#### Before you commit
+
+When developing on the front end, before you commit your changes you should always run `npm run check` which will run both `prettier`, and `eslint` in conjunction, making sure the code style matches with the configuration set up for the project.
 
 ## How to plan and implement something
 
@@ -123,3 +145,4 @@ To spin up a local development environment, simply run `docker-compose up --buil
 ## Testing and deployment
 
 Please read the [Makefile](../Makefile) and [.gitlab-ci.yml](../.gitlab-ci.yml) contents to see how you run local tests and hour our CI system runs tests and deploys each master commit on our test server.
+
