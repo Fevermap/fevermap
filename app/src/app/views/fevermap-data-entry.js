@@ -82,6 +82,11 @@ class FevermapDataEntry extends LitElement {
   firstUpdated() {
     this.initSlider();
     this.getGeoLocationInfo();
+    Array.from(this.querySelectorAll('.mdc-checkbox')).forEach(elem => {
+      // eslint-disable-next-line no-new
+      new MDCCheckbox(elem);
+    });
+
     this.carouselWrapper = this.querySelector('.fevermap-data-entry-content');
     if (this.firstTimeSubmitting) {
       setTimeout(() => {
@@ -530,16 +535,22 @@ class FevermapDataEntry extends LitElement {
     tabtrap.trapAll(dialogId);
   }
 
+  handleSymptomKeyDown(e) {
+    if (e.code === 'Space') {
+      this.handleSymptomAdd(e);
+    }
+  }
+
   handleSymptomAdd(e) {
     let { target } = e;
-    if (e.target.nodeName === 'P') {
+    if (target.nodeName === 'P') {
       target = target.parentNode;
     }
-    if (this.symptoms.includes(e.target.id)) {
-      this.symptoms.splice(this.symptoms.indexOf(e.target.id), 1);
+    if (this.symptoms.includes(target.id)) {
+      this.symptoms.splice(this.symptoms.indexOf(target.id), 1);
       target.classList.remove('symptom--selected');
     } else {
-      this.symptoms.push(e.target.id);
+      this.symptoms.push(target.id);
       target.classList.add('symptom--selected');
     }
   }
@@ -753,17 +764,26 @@ class FevermapDataEntry extends LitElement {
         <div
           class="symptom"
           id="symptom_difficult_to_breath"
+          @keypress="${this.handleSymptomKeyDown}"
           @click="${this.handleSymptomAdd}"
           tabindex="0"
         >
           <p>${Translator.get('entry.questions.difficulty_to_breathe')}</p>
         </div>
-        <div class="symptom" id="symptom_cough" @click="${this.handleSymptomAdd}" tabindex="0">
+
+        <div
+          class="symptom"
+          id="symptom_cough"
+          @keypress="${this.handleSymptomKeyDown}"
+          @click="${this.handleSymptomAdd}"
+          tabindex="0"
+        >
           <p>${Translator.get('entry.questions.cough')}</p>
         </div>
         <div
           class="symptom"
           id="symptom_sore_throat"
+          @keypress="${this.handleSymptomKeyDown}"
           @click="${this.handleSymptomAdd}"
           tabindex="0"
         >
@@ -772,6 +792,7 @@ class FevermapDataEntry extends LitElement {
         <div
           class="symptom"
           id="symptom_muscle_pain"
+          @keypress="${this.handleSymptomKeyDown}"
           @click="${this.handleSymptomAdd}"
           tabindex="0"
         >
@@ -799,7 +820,7 @@ class FevermapDataEntry extends LitElement {
           </div>
           <div class="mdc-checkbox__ripple"></div>
         </div>
-        <label for="checkbox-1"
+        <label for="covid-diagnosed"
           >${Translator.get('entry.questions.positive_covid_diagnosis')}</label
         >
       </div>
