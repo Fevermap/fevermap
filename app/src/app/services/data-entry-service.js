@@ -201,7 +201,11 @@ export default class DataEntryService {
    * @returns {string}
    */
   static createDeviceId() {
-    const isModern = window.crypto && window.crypto.getRandomValues && window.Uint32Array;
+    const isModern =
+      window.crypto &&
+      window.crypto.getRandomValues &&
+      window.Uint32Array &&
+      typeof BigInt !== 'undefined';
     if (!isModern) {
       return this.createLegacyDeviceId();
     }
