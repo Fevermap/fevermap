@@ -36,7 +36,7 @@ class FevermapLanding extends LitElement {
     return html`
       <div class="container view-wrapper">
         <div class="fevermap-landing-content">
-          <a href="https://fevermap.net"><img src="${logoImg}"/></a>
+          <a href="https://fevermap.net"><img src="${logoImg}" /></a>
           ${PWAService.installable()
             ? html`
                 <material-button

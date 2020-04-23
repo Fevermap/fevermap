@@ -39,4 +39,3 @@ class Submission(Base):
 
     def __repr__(self):
         return '<Submission(id={})>'.format(self.id)
-        

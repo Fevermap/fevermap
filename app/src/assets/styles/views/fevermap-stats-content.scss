@@ -64,6 +64,24 @@
 }
 @media only screen and (max-width: 780px) {
 
+  .visualization-map-container {
+    flex-direction: column-reverse;
+    visualization-map {
+      width: 100%;
+      margin: 0 0 1rem 0;
+    }
+  }
+
+  .color-range-element {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .color-range-entry{
+      flex-basis: 30%;
+      margin: 0 10% 6px;
+    }
+  }
+
   .fevermap-stats-content {
     margin: 3rem 5%;
   }

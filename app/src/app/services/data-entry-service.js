@@ -79,10 +79,7 @@ export default class DataEntryService {
         dayjs.extend(utc);
         // eslint-disable-next-line no-param-reassign
         resJson.message = Translator.get('system_messages.error.do_not_submit_new_temp_until', {
-          dateTime: dayjs
-            .utc(time)
-            .local()
-            .format('YYYY-MM-DD : HH:mm'),
+          dateTime: dayjs.utc(time).local().format('YYYY-MM-DD : HH:mm'),
         });
         GoogleAnalyticsService.reportTooEarlySubmission();
       }
