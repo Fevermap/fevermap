@@ -34,6 +34,34 @@
     font-size: 1.4rem;
   }
 }
+
+.color-range-element {
+  width: 15%;
+  display: flex;
+  flex-direction: column;
+
+  .color-range-entry {
+    display: flex;
+    align-items: center;
+    p {
+      margin: 0 0 0 0.5rem;
+    }
+  }
+
+  .color-range-box {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+.visualization-map-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  visualization-map {
+    width: 85%;
+  }
+}
 @media only screen and (max-width: 780px) {
 
   .fevermap-stats-content {
