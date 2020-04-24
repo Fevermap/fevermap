@@ -14,11 +14,11 @@ We welcome all sorts of contributions:
 - Making back-end code improvements (Python)
 - Making infrastructure improvements (shell scripts, Docker, security)
 
-As you can see, coding is just one of the ways to contribute. If you don't now where to begin, start out with something small and dive deeper later :)
+As you can see, coding is just one of the ways to contribute. If you don't know where to begin, start out with something small and dive deeper later :)
 
-Most of the collaboration is done over Gitlab, so learning the basics of Gitlab is required. At minimum you must have a Gitlab account to be able to comment the issues.
+Most of the collaboration is done over Gitlab, so learning the basics of Gitlab is required. At a minimum you must have a Gitlab account to be able to comment the issues.
 
-> NOTE! Please use the search feature at https://gitlab.com/fevermap/fevermap/-/issues to check if the issue you are about to report is already reported, or discussed in some existing issue. We already have quite many things covered, so check existing issues before jumping to make new ones. Thanks for your diligence!
+> NOTE! Please use the search feature at https://gitlab.com/fevermap/fevermap/-/issues to check if the issue you are about to report is already reported, or discussed in some existing issue. We already have quite many things covered, so check existing issues before jumping to make new ones. Thank you for your diligence!
 
 ## How to make a Merge Request
 
@@ -35,7 +35,7 @@ For those who are new to Merge Requests, here is a basic walk-through on how to 
 7. Once done, save changes to version control and commit with `git commit -a`. In the text editor that opens, write a git commit message. An example could be "Fix typo in Finnish translation". Exit the text editor and the commit is made. You can inspect your commit with `git show` and `git log`. Graphical tools like `git citool` makes commit writing much easier, and `gitk --all` makes history browsing much easier, but those tools are not installed in the standard git installation.
 8. Push the new branch with a new commit you made to your own Gitlab account so the change is made public. Pushing is don with `git push`. If it is a completely new branch, you need to set the upstream on the first push, e.g. `git push --set-upstream origin typofix/finnish-translation`, but after that it's just `git push` all the time for that branch.
 9. Open the [Fevermap Merge Request page](https://gitlab.com/fevermap/fevermap/-/merge_requests) and click "New merge request", update the description if it wasn't automatically correct, and hit "Save" to file the merge request. Then your code is on the way into into Fevermap officially!
-10. After filing a Merge Request just wait patiently for review. It can take a couple of hours or days. From the review you will either get come comments or your change will be accepted as-is.
+10. After filing a Merge Request just wait patiently for review. It can take a couple of hours or days. From the review you will either get some comments or your change will be accepted as-is.
 11. Enjoy the results!
 
 ### Rebasing a merge request
@@ -124,13 +124,13 @@ When developing on the front end, before you commit your changes you should alwa
 
 ## How to plan and implement something
 
-If you are doing something small, just plan it, just implement it directly and file a Merge Request to get it reviewed. However, if you plan to do something bigger, if might make sense to file an issue about it, plan ahead what to do in the issue and wait for comments on the idea, and only then start implementing it.
+If you are doing something small, just plan it, just implement it directly and file a Merge Request to get it reviewed. However, if you plan to do something bigger, it might make sense to file an issue about it, plan ahead what to do in the issue and wait for comments on the idea, and only then start implementing it.
 
 If you are working on an issue, please assign it to yourself, so people can see in the issue and in the [board](https://gitlab.com/fevermap/fevermap/-/boards) that you are working on it.
 
 ### Joing the project on Gitlab
 
-To open an issue, to comment on an issue or to make a Merge Request you just need an Gitlab account, you don't need to have any special role in the project you are contributing to.
+To open an issue, to comment on an issue or to make a Merge Request you just need a Gitlab account, you don't need to have any special role in the project you are contributing to.
 
 However, to be able to assign an issue to yourself, you need to join the project to be in the pool of users that can be assigned. To join the project, go to the [Fevermap repository main page](https://gitlab.com/fevermap/fevermap) and click "Request access." ![Gitlab Sign up](images/gitlab-request-access.png)
 
@@ -144,5 +144,4 @@ To spin up a local development environment, simply run `docker-compose up --buil
 
 ## Testing and deployment
 
-Please read the [Makefile](../Makefile) and [.gitlab-ci.yml](../.gitlab-ci.yml) contents to see how you run local tests and hour our CI system runs tests and deploys each master commit on our test server.
-
+Please read the [Makefile](../Makefile) and [.gitlab-ci.yml](../.gitlab-ci.yml) contents to see how you run local tests and how our CI system runs tests and deploys each master commit on our test server.
