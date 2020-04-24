@@ -23,10 +23,6 @@ class FevermapStats extends LitElement {
 
             <visualization-map></visualization-map>
           </div>
-          <div class="stats-placeholder-image">
-            <img src="${finnishMap}" />
-            <div class="coming-soon-banner"><p>Data visualization map coming soon</p></div>
-          </div>
           <div class="stats-placeholder">
             <p>
               Please visit <a href="https://gitlab.com/fevermap/fevermap">gitlab.com/fevermap</a> if
