@@ -19,9 +19,11 @@ const apiBaseUrl = () => {
   return '';
 };
 
-const apiSubmitUrl = `${apiBaseUrl()}/api/v0/submit`;
-const apiStatsUrl = `${apiBaseUrl()}/api/v0/stats`;
-const apiLocationUrl = `${apiBaseUrl()}/api/v0/location`;
+const apiBase = `${apiBaseUrl()}/api/v0`;
+
+const apiSubmitUrl = `${apiBase}/submit`;
+const apiStatsUrl = `${apiBase}/stats`;
+const apiLocationUrl = `${apiBase}/location`;
 
 export default class DataEntryService {
   static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
