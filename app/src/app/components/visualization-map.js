@@ -127,15 +127,15 @@ export default class VisualizationMap extends LitElement {
   }
 
   static getColor(d) {
-    if (d > 1000) return '#800026';
-    if (d > 500) return '#BD0026';
-    if (d > 200) return '#E31A1C';
-    if (d > 100) return '#FC4E2A';
-    if (d > 50) return '#FD8D3C';
-    if (d > 20) return '#FEB24C';
-    if (d > 10) return '#FED976';
-    if (d > 0) return '#FFEDA0';
-    return '#c8c8ce';
+    if (d > 1000) return '#2778C8';
+    if (d > 500) return '#2A8BC5';
+    if (d > 200) return '#2C9DC3';
+    if (d > 100) return '#2EAFC1';
+    if (d > 50) return '#30BFBF';
+    if (d > 20) return '#50CBB4';
+    if (d > 10) return '#70D7B1';
+    if (d > 0) return '#B3ECC1';
+    return '#F9FEF8';
   }
 
   getCountryBasedMapStyle(feature) {
@@ -228,17 +228,6 @@ export default class VisualizationMap extends LitElement {
     return this;
   }
 
-  /*
-
-  if (d > 1000) return '#800026';
-    if (d > 500) return '#BD0026';
-    if (d > 200) return '#E31A1C';
-    if (d > 100) return '#FC4E2A';
-    if (d > 50) return '#FD8D3C';
-    if (d > 20) return '#FEB24C';
-    if (d > 10) return '#FED976';
-    if (d > 0) return '#FFEDA0';
-   */
   static getColorRangeElement() {
     const values = [1000, 500, 200, 100, 50, 20, 10, 0];
     return html`
