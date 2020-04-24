@@ -100,6 +100,16 @@ export default class VisualizationMap extends LitElement {
     });
   }
 
+  /**
+   * createHeatMapLayer uses leaflet-heatmap to generate a scaling heatmap
+   * layer for the map. For now the functionality has been disabled, since we haven't
+   * implemented a way of parsing the data in a way that would fit the heatmap nicely.
+   *
+   * Below is an example of how to use the heatmap API for reference to someone
+   * who is going to undertake this task.
+   *
+   * - Matsu, 24.4.2020
+   */
   createHeatmapLayer() {
     // Example usage
     const heatmapData = [
