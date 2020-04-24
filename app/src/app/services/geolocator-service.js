@@ -76,4 +76,17 @@ export default class GeolocatorService {
   static returnErrorMessage() {
     return { success: false, message: 'COULD_NOT_LOCATE' };
   }
+
+  static getCoords() {
+    return new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(
+        success => {
+          resolve(success.coords);
+        },
+        error => {
+          reject(error);
+        },
+      );
+    });
+  }
 }

@@ -2,6 +2,7 @@ import { LitElement, html } from 'lit-element';
 import Translator from '../util/translator.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
 import finnishMap from '../../assets/images/finnish-map.png';
+import VisualizationMap from '../components/visualization-map.js';
 
 class FevermapStats extends LitElement {
   static get properties() {
@@ -17,6 +18,11 @@ class FevermapStats extends LitElement {
       <div class="container view-wrapper">
         <div class="fevermap-stats-content">
           <h1>${Translator.get('stats.stats')}</h1>
+          <div class="visualization-map-container">
+            ${VisualizationMap.getColorRangeElement()}
+
+            <visualization-map></visualization-map>
+          </div>
           <div class="stats-placeholder-image">
             <img src="${finnishMap}" />
             <div class="coming-soon-banner"><p>Data visualization map coming soon</p></div>

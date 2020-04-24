@@ -19,8 +19,11 @@ const apiBaseUrl = () => {
   return '';
 };
 
-const apiSubmitUrl = `${apiBaseUrl()}/api/v0/submit`;
-const apiDataUrl = `${apiBaseUrl()}/api/v0/stats`;
+const apiBase = `${apiBaseUrl()}/api/v0`;
+
+const apiSubmitUrl = `${apiBase}/submit`;
+const apiStatsUrl = `${apiBase}/stats`;
+const apiLocationUrl = `${apiBase}/location`;
 
 export default class DataEntryService {
   static async handleDataEntrySubmission(feverData, addToDbOnFail = true) {
@@ -86,8 +89,15 @@ export default class DataEntryService {
   }
 
   static async getStats() {
-    const response = await fetch(apiDataUrl).then(res => res.json());
+    const response = await fetch(apiStatsUrl).then(res => res.json());
     return response;
+  }
+
+  static async getLocationBasedStats(country) {
+    if (!country) {
+      return fetch(apiLocationUrl).then(res => res.json());
+    }
+    return fetch(`${apiLocationUrl}/${country}`).then(res => res.json());
   }
 
   static async setEntriesToIndexedDb(submissionResponse) {
