@@ -1,0 +1,16 @@
+---
+apiVersion: authorization.openshift.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: certbot-ocp
+  name: certbot
+  namespace: fevermap-staging
+roleRef:
+  name: admin
+subjects:
+  - kind: ServiceAccount
+    name: certbot
+    namespace: fevermap-staging
+userNames:
+  - system:serviceaccount:fevermap-staging:certbot

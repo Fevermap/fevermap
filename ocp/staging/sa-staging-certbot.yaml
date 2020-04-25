@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+imagePullSecrets:
+  - name: certbot-dockercfg-ctlbh
+kind: ServiceAccount
+metadata:
+  creationTimestamp: null
+  labels:
+    app: certbot-ocp
+  name: certbot
+secrets:
+  - name: certbot-token-5jnz4
+  - name: certbot-dockercfg-ctlbh

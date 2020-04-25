@@ -3,8 +3,10 @@
 echo "Encrypting files, it's fine if you see error about already encrypted files."
 
 for file in route-prod-fevermap-api.yaml \
-route-prod-fevermap-push-api.yaml \
+route-prod-push-api.yaml \
 route-prod-fevermap-front.yaml \
+route-prod-feberkarta-se-app.yaml \
+route-prod-kuumekartta-fi-app.yaml \
 secret-prod-aws-db-backup.yaml \
 secret-prod-fevermap-api-db.yaml \
 secret-prod-firebase.yaml \

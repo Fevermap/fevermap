@@ -1,0 +1,73 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: certbot-ocp
+    name: certbot-ocp
+  name: certbot-ocp
+spec:
+  activeDeadlineSeconds: 3600
+  containers:
+    - env:
+        - name: ROUTE_LABEL
+          value: letsencrypt-me=true
+        - name: EMAIL
+          value: tahonen@redhat.com
+        - name: CERTBOT_EXTRA_OPTS
+      image: quay.io/fevermap/certbot-ocp:latest
+      imagePullPolicy: Always
+      name: certbot-ocp
+      ports:
+        - containerPort: 8080
+          protocol: TCP
+      resources:
+        limits:
+          cpu: "1"
+          memory: 512Mi
+        requests:
+          cpu: 30m
+          memory: 409Mi
+      securityContext:
+        capabilities:
+          drop:
+            - KILL
+            - MKNOD
+            - NET_RAW
+            - SETGID
+            - SETUID
+        runAsUser: 1127010000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+        - mountPath: /etc/letsencrypt
+          name: letsencrypt
+        - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+          name: certbot-token-5jnz4
+          readOnly: true
+  dnsPolicy: ClusterFirst
+  nodeName: ip-172-31-63-86.eu-west-1.compute.internal
+  nodeSelector:
+    type: compute
+  priority: 0
+  restartPolicy: Never
+  schedulerName: default-scheduler
+  securityContext:
+    fsGroup: 1127010000
+    seLinuxOptions:
+      level: s0:c356,c315
+  serviceAccount: certbot
+  serviceAccountName: certbot
+  terminationGracePeriodSeconds: 10
+  tolerations:
+    - effect: NoSchedule
+      key: node.kubernetes.io/memory-pressure
+      operator: Exists
+  volumes:
+    - name: letsencrypt
+      persistentVolumeClaim:
+        claimName: certbot-letsencrypt
+    - name: certbot-token-5jnz4
+      secret:
+        defaultMode: 420
+        secretName: certbot-token-5jnz4
