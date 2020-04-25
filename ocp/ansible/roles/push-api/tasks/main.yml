@@ -1,0 +1,282 @@
+---
+#
+# We have different source for API image depending whether whether
+# we use self built image or external. This is for self built (e.g. staging).
+#
+- name: ImageStream {{ app }}-push-api
+  tags: push-api
+  when: push_api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-push-api"
+#
+# We have different source for API image depending whether whether
+# we use self built image or external. This is for external (e..g prod).
+#
+- name: ImageStream {{ app }}-push-api
+  tags: push-api
+  when: not push_api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-push-api"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ push_api_image }}:{{ push_api_image_tag }}"
+              name: "{{ push_api_image_tag }}"
+              importPolicy:
+                scheduled: true
+              referencePolicy:
+                type: Source
+
+- name: ImageStream ubi8-nodejs-s2i
+  tags: push-api
+  when: push_api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: ubi8-nodejs-s2i
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ push_api_build_image }}"
+              importPolicy:
+                scheduled: true
+              name: latest
+              referencePolicy:
+                type: Source
+
+- name: BuildConfig
+  tags: push-api
+  when: push_api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: build.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-push-api"
+        spec:
+          failedBuildsHistoryLimit: 5
+          nodeSelector: null
+          output:
+            to:
+              kind: ImageStreamTag
+              name: "{{ app }}-push-api:latest"
+          runPolicy: Serial
+          source:
+            contextDir: /push-api
+            git:
+              uri: "{{ push_api_source_repository_url }}"
+              ref: "{{ push_api_source_repository_ref }}"
+            type: Git
+          strategy:
+            sourceStrategy:
+              env:
+                - name: NPM_BUILD
+                  value: node install
+              from:
+                kind: ImageStreamTag
+                name: 'ubi8-nodejs-s2i:latest'
+            type: Source
+          successfulBuildsHistoryLimit: 5
+          triggers:
+            - type: ConfigChange
+            - imageChange:
+                from:
+                  kind: ImageStreamTag
+                  name: 'ubi8-nodejs-s2i:latest'
+              type: ImageChange
+
+- name: Firebase Secret
+  tags: push-api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        data:
+          fevermap-firebase-account-file.json: "{{ push_api_firebase_account }}"
+        kind: Secret
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-firebase-account-file"
+        type: Opaque
+
+- name: DeploymentConfig
+  tags: push-api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: apps.openshift.io/v1
+        kind: DeploymentConfig
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/instance: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: nodejs
+            env: "{{ env }}"
+          name: "{{ app }}-push-api"
+        spec:
+          replicas: "{{ push_api_replicas }}"
+          revisionHistoryLimit: 5
+          selector:
+            app: "{{ app }}-push-api"
+            deploymentconfig: "{{ app }}-push-api"
+          strategy:
+            activeDeadlineSeconds: 21600
+            resources: {}
+            rollingParams:
+              intervalSeconds: 1
+              maxSurge: 25%
+              maxUnavailable: 25%
+              timeoutSeconds: 600
+              updatePeriodSeconds: 1
+            type: Rolling
+          template:
+            metadata:
+              annotations:
+                openshift.io/generated-by: OpenShiftNewApp
+              labels:
+                app: "{{ app }}-push-api"
+                deploymentconfig: "{{ app }}-push-api"
+            spec:
+              containers:
+                - env:
+                    - name: GOOGLE_APPLICATION_CREDENTIALS
+                      value: /opt/app-root/fevermap-firebase-account-file.json
+                  image: "{{ app }}-push-api:{{ push_api_image_tag }}"
+                  imagePullPolicy: IfNotPresent
+                  name: "{{ app }}-push-api"
+                  ports:
+                    - containerPort: 9001
+                      protocol: TCP
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  volumeMounts:
+                    - mountPath:
+                        /opt/app-root/fevermap-firebase-account-file.json
+                      name: volume-firebase
+                      readOnly: true
+                      subPath: "{{ app }}-firebase-account-file.json"
+              dnsPolicy: ClusterFirst
+              restartPolicy: Always
+              schedulerName: default-scheduler
+              terminationGracePeriodSeconds: 30
+              volumes:
+                - name: volume-firebase
+                  secret:
+                    defaultMode: 420
+                    items:
+                      - key: fevermap-firebase-account-file.json
+                        path: fevermap-firebase-account-file.json
+                    secretName: "{{ app }}-firebase-account-file"
+          test: false
+          triggers:
+            - type: ConfigChange
+            - imageChangeParams:
+                automatic: true
+                containerNames:
+                  - "{{ app }}-push-api"
+                from:
+                  kind: ImageStreamTag
+                  name: "{{ app }}-push-api:{{ push_api_image_tag }}"
+              type: ImageChange
+
+- name: Service
+  tags: push-api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-push-api"
+        spec:
+          ports:
+            - name: 9001-tcp
+              port: 9001
+              protocol: TCP
+              targetPort: 9001
+          selector:
+            app: "{{ app }}-push-api"
+            deploymentconfig: "{{ app }}-push-api"
+          sessionAffinity: None
+          type: ClusterIP
+
+- name: Route
+  tags: push-api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: route.openshift.io/v1
+        kind: Route
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-push-api"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+            letsencrypt-me: 'true'
+          name: "{{ app }}-push-api-staging"
+        spec:
+          host: "{{ push_api_fqdn }}"
+          port:
+            targetPort: 9001-tcp
+          to:
+            kind: Service
+            name: "{{ app }}-push-api"
+            weight: 100
+          wildcardPolicy: None
+          tls:
+            termination: edge

@@ -1,0 +1,4 @@
+
+[konttikoulu_production]
+
+konttikoulu_production ansible_connection=local

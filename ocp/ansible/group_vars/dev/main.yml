@@ -1,0 +1,84 @@
+---
+ansible_connection: local
+
+#
+# OpenShift
+#
+api_url: 'https://api.pro-eu-west-1.openshift.com'
+api_key: "{{ vault_api_key }}"
+
+#
+# Labels
+#
+env: dev
+app: fevermap
+
+#
+# Project
+#
+project_name: "{{ dev_namespace }}"
+manage_projects: false
+redhat_io_pull_token: "{{ vault_redhat_io_pull_token }}"
+quay_push_passwd: 'we_dont_want_to_push_from_dev'
+quay_push_user: 'we_dont_want_to_push_from_dev'
+
+#
+# Database
+#
+db_name: fevermap
+db_user: "{{ vault_db_user }}"
+db_password: "{{ vault_db_password }}"
+db_root_password: "{{ vault_db_root_password }}"
+
+
+#
+# API
+#
+api_build: true
+api_source_repository_ref: 'master'
+api_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+api_replicas: 1
+api_image: "{{ app }}-api:latest"
+api_fqdn: 'api-dev.fevermap.net'
+api_gitlab_webhook_secret_key: "{{ vault_api_gitlab_webhook_secret_key }}"
+
+#
+# Push-API
+#
+push_api_build: true
+push_api_source_repository_ref: 'master'
+push_api_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+push_api_fqdn: push-api-dev.fevermap.net
+push_api_replicas: 0
+
+#
+# APP
+#
+app_build: true
+app_source_repository_ref: 'master'
+app_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+app_fqdn:
+  - 'app-dev.fevermap.net'
+app_google_analytics_code: "{{ vaut_app_google_analytics_code }}"
+ws_api_url: "https://{{ api_fqdn }}"
+ws_app_url: 'https://app-dev.fevermap.net'
+ws_push_api_url: 'https://{{ push_api_fqdn }}'
+app_replicas: 1
+apm_monitoring_js: vault_apm_monitoring_js
+
+#
+# Pipelines
+#
+# We don't need Jenkis for Dev
+jenkins_replicas: 0
+
+#
+# Certbot
+#
+cb_extra_opts: ''
+cb_email: "{{ vault_cb_email }}"
+
+#
+# Pipelines
+#
+create_jenkis: false

@@ -1,0 +1,6 @@
+---
+
+state: present
+app: db
+db_size: '1Gi'
+db_image: 'mariadb:10.2'

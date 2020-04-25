@@ -1,0 +1,9 @@
+---
+
+prod_namespace: fevermap-prod
+staging_namespace: fevermap-staging
+dev_namespace: fevermap-dev
+
+app: fevermap
+
+state: present

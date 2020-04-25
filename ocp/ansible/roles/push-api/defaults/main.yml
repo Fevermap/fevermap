@@ -1,0 +1,12 @@
+---
+
+state: present
+push_api_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+push_api_source_repository_ref: 'master'
+push_api_firebase_account: hepskukkuu
+push_api_build_image: 'registry.access.redhat.com/ubi8/nodejs-10'
+push_api_image: "{{ app }}-push-api"
+push_api_image_tag: latest
+push_api_fqdn: papi.example.com
+push_api_replicas: 0
+push_api_build: true

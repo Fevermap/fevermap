@@ -1,0 +1,465 @@
+---
+- name: Jenkins ServiceAccount
+  tags: pipelines
+  when:
+    - app_build
+    - create_jenkins
+  vars:
+    oauth_redirect:
+      kind: OAuthRedirectReference
+      apiVersion: v1
+      reference:
+        kind: Route
+        name: "{{ app }}-jenkins"
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: ServiceAccount
+        metadata:
+          annotations:
+            serviceaccounts.openshift.io/oauth-redirectreference.jenkins: >-
+              "{{ oauth_redirect|to_json }}"
+          name: "{{ app }}-jenkins"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+
+- name: Jenkins RoleBinding
+  tags: pipelines
+  when:
+    - app_build
+    - create_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: rbac.authorization.k8s.io/v1
+        groupNames: null
+        kind: RoleBinding
+        metadata:
+          name: "{{ app }}_jenkins_edit"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+        roleRef:
+          apiGroup: rbac.authorization.k8s.io
+          kind: ClusterRole
+          name: admin
+        # roleRef:
+        #   name: edit
+        subjects:
+          - kind: ServiceAccount
+            name: "{{ app }}-jenkins"
+            namespace: "{{ project_name }}"
+
+- name: Persisten Jenkins volume
+  tags: pipelines
+  when:
+    - app_build
+    - create_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: PersistentVolumeClaim
+        metadata:
+          name: "{{ app }}-jenkins"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 2Gi
+
+- name: Jenkins DeoploymentConfig
+  tags: pipelines
+  when:
+    - app_build
+    - create_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: DeploymentConfig
+        metadata:
+          annotations:
+            template.alpha.openshift.io/wait-for-ready: "true"
+          name: "{{ app }}-jenkins"
+          labels:
+            name: "{{ app }}-jenkins"
+            app: "{{ app }}"
+            env: "{{ env }}"
+            app.kubernetes.io/component: jenkins
+            app.kubernetes.io/instance: "{{ app }}-jenkins"
+            app.kubernetes.io/name: "{{ app }}-jenkins"
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: jenkins
+        spec:
+          replicas: "{{ jenkins_replicas }}"
+          selector:
+            name: "{{ app }}-jenkins"
+          strategy:
+            type: Recreate
+          template:
+            metadata:
+              labels:
+                name: "{{ app }}-jenkins"
+                app: "{{ app }}"
+                env: "{{ env }}"
+            spec:
+              containers:
+                - capabilities: {}
+                  env:
+                    - name: OPENSHIFT_ENABLE_OAUTH
+                      value: 'true'
+                    - name: OPENSHIFT_ENABLE_REDIRECT_PROMPT
+                      value: 'true'
+                    - name: DISABLE_ADMINISTRATIVE_MONITORS
+                      value: 'false'
+                    - name: KUBERNETES_MASTER
+                      value: https://kubernetes.default:443
+                    - name: KUBERNETES_TRUST_CERTIFICATES
+                      value: 'true'
+                    - name: JENKINS_SERVICE_NAME
+                      value: "{{ app }}-jenkins"
+                    - name: JNLP_SERVICE_NAME
+                      value: "{{ app }}-jenkins-jnlp"
+                    - name: ENABLE_FATAL_ERROR_LOG_FILE
+                      value: 'false'
+                    - name: JENKINS_UC_INSECURE
+                      value: 'false'
+                    - name: MAVEN_SLAVE_IMAGE
+                      value: >-
+                        quay.io/redhat-emea-ssa-team/jenkins-slave-skopeo:master
+                  image: jenkins:2'
+                  imagePullPolicy: IfNotPresent
+                  livenessProbe:
+                    failureThreshold: 2
+                    httpGet:
+                      path: /login
+                      port: 8080
+                    initialDelaySeconds: 420
+                    periodSeconds: 360
+                    timeoutSeconds: 240
+                  name: jenkins
+                  readinessProbe:
+                    httpGet:
+                      path: /login
+                      port: 8080
+                    initialDelaySeconds: 3
+                    timeoutSeconds: 240
+                  resources:
+                    limits:
+                      memory: 1Gi
+                  securityContext:
+                    capabilities: {}
+                    privileged: false
+                  terminationMessagePath: /dev/termination-log
+                  volumeMounts:
+                    - mountPath: /var/lib/jenkins
+                      name: "{{ app }}-jenkins-data"
+              dnsPolicy: ClusterFirst
+              restartPolicy: Always
+              serviceAccountName: "{{ app }}-jenkins"
+              volumes:
+                - name: "{{ app }}-jenkins-data"
+                  persistentVolumeClaim:
+                    claimName: "{{ app }}-jenkins"
+          triggers:
+            - imageChangeParams:
+                automatic: true
+                containerNames:
+                  - jenkins
+                from:
+                  kind: ImageStreamTag
+                  name: "jenkins:2"
+                  namespace: openshift
+                lastTriggeredImage: ""
+              type: ImageChange
+            - type: ConfigChange
+
+- name: Jenkins Service JNLP
+  tags: pipelines
+  when:
+    - app_build
+    - create_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: "{{ app }}-jenkins-jnlp"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+        spec:
+          ports:
+            - name: agent
+              nodePort: 0
+              port: 50000
+              protocol: TCP
+              targetPort: 50000
+          selector:
+            name: "{{ app }}-jenkins"
+          sessionAffinity: None
+          type: ClusterIP
+
+- name: Jenkins Service
+  tags: pipelines
+  vars:
+    depemdemcies:
+      kind: Service
+      namespace: "{{ project_name }}"
+      name: "{{ app }}-jenkins-jnlp"
+  when:
+    - app_build
+    - create_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          annotations:
+            service.alpha.openshift.io/dependencies: >-
+              "{{ depemdemcies|to_json }}"
+            service.openshift.io/infrastructure: "true"
+          name: "{{ app }}-jenkins"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+        spec:
+          ports:
+            - name: web
+              nodePort: 0
+              port: 80
+              protocol: TCP
+              targetPort: 8080
+          selector:
+            name: "{{ app }}-jenkins"
+          sessionAffinity: None
+          type: ClusterIP
+
+- name: Route
+  tags: pipelines
+  when:
+    - app_build
+    - create_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Route
+        metadata:
+          annotations:
+            haproxy.router.openshift.io/timeout: 4m
+            template.openshift.io/expose-uri: http://{.spec.host}{.spec.path}
+          name: "{{ app }}-jenkins"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+            letsencrypt-me: "true"
+        spec:
+          tls:
+            insecureEdgeTerminationPolicy: Redirect
+            termination: edge
+          to:
+            kind: Service
+            name: "{{ app }}-jenkins"
+
+- name: Modify OCP3 default Jenkis to have skopeo slave
+  tags: pipelines
+  when:
+    - app_build
+    - modify_default_jenkins
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: apps.openshift.io/v1
+        kind: DeploymentConfig
+        metadata:
+          annotations:
+            template.alpha.openshift.io/wait-for-ready: "true"
+          labels:
+            app: jenkins-persistent
+            template: jenkins-persistent-template
+          name: jenkins
+        spec:
+          replicas: 1
+          revisionHistoryLimit: 10
+          selector:
+            name: jenkins
+          strategy:
+            activeDeadlineSeconds: 21600
+            recreateParams:
+              timeoutSeconds: 600
+            resources: {}
+            type: Recreate
+          template:
+            metadata:
+              labels:
+                name: jenkins
+            spec:
+              containers:
+                - env:
+                    - name: OPENSHIFT_ENABLE_OAUTH
+                      value: "true"
+                    - name: OPENSHIFT_ENABLE_REDIRECT_PROMPT
+                      value: "true"
+                    - name: DISABLE_ADMINISTRATIVE_MONITORS
+                      value: "true"
+                    - name: KUBERNETES_MASTER
+                      value: https://kubernetes.default:443
+                    - name: KUBERNETES_TRUST_CERTIFICATES
+                      value: "true"
+                    - name: JENKINS_SERVICE_NAME
+                      value: jenkins
+                    - name: JNLP_SERVICE_NAME
+                      value: jenkins-jnlp
+                    - name: ENABLE_FATAL_ERROR_LOG_FILE
+                      value: "false"
+                    - name: JENKINS_UC_INSECURE
+                      value: "false"
+                    - name: MAVEN_SLAVE_IMAGE
+                      value: >-
+                        quay.io/redhat-emea-ssa-team/jenkins-slave-skopeo:master
+                  image: docker-registry.default.svc:5000/openshift/jenkins:2
+                  imagePullPolicy: IfNotPresent
+                  livenessProbe:
+                    failureThreshold: 2
+                    httpGet:
+                      path: /login
+                      port: 8080
+                      scheme: HTTP
+                    initialDelaySeconds: 420
+                    periodSeconds: 360
+                    successThreshold: 1
+                    timeoutSeconds: 240
+                  name: jenkins
+                  readinessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /login
+                      port: 8080
+                      scheme: HTTP
+                    initialDelaySeconds: 3
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 240
+                  resources:
+                    limits:
+                      memory: 1Gi
+                  securityContext:
+                    capabilities: {}
+                    privileged: false
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  volumeMounts:
+                    - mountPath: /var/lib/jenkins
+                      name: jenkins-data
+              dnsPolicy: ClusterFirst
+              restartPolicy: Always
+              schedulerName: default-scheduler
+              securityContext: {}
+              serviceAccount: jenkins
+              serviceAccountName: jenkins
+              terminationGracePeriodSeconds: 30
+              volumes:
+                - name: jenkins-data
+                  persistentVolumeClaim:
+                    claimName: jenkins
+          test: false
+          triggers:
+            - imageChangeParams:
+                automatic: true
+                containerNames:
+                  - jenkins
+                from:
+                  kind: ImageStreamTag
+                  name: jenkins:2
+                  namespace: openshift
+              type: ImageChange
+            - type: ConfigChange
+
+- name: Build pipeline
+  tags: pipelines
+  when: app_build
+  vars:
+    uses:
+      kind: DeploymentConfig
+      namespace: "{{ project_name }}"
+      name: "{{ app }}"
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: build.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+          annotations:
+            pipeline.alpha.openshift.io/uses: "{{ uses|to_json }}"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-pipeline"
+        spec:
+          failedBuildsHistoryLimit: 5
+          runPolicy: Serial
+          source:
+            git:
+              uri: "{{ jenkins_source_repository_url }}"
+              ref: "{{ jenkins_source_repository_ref }}"
+            type: Git
+          strategy:
+            jenkinsPipelineStrategy:
+              jenkinsfilePath: ocp/staging/pipelines/fevermap-pipeline
+            type: JenkinsPipeline
+          successfulBuildsHistoryLimit: 5
+          triggers:
+            - gitlab:
+                secretReference:
+                  name: "{{ app }}-gitlab-webhook"
+              type: GitLab
+
+- name: Release pipeline
+  tags: pipelines
+  when: app_build
+  vars:
+    uses:
+      kind: DeploymentConfig
+      namespace: "{{ project_name }}"
+      name: "{{ app }}"
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: build.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+          annotations:
+            pipeline.alpha.openshift.io/uses: "{{ uses|to_json }}"
+          labels:
+            app: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-release"
+        spec:
+          failedBuildsHistoryLimit: 5
+          runPolicy: Serial
+          source:
+            git:
+              uri: "{{ jenkins_source_repository_url }}"
+              ref: "{{ jenkins_source_repository_ref }}"
+            type: Git
+          strategy:
+            jenkinsPipelineStrategy:
+              jenkinsfilePath: ocp/staging/pipelines/fevermap-release
+            type: JenkinsPipeline
+          successfulBuildsHistoryLimit: 5
+          triggers:
+            - generic:
+                secretReference:
+                  name: "{{ app }}-gitlab-webhook"
+                allowEnv: true
+              type: Generic

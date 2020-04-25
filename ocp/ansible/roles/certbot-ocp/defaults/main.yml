@@ -1,0 +1,12 @@
+---
+
+state: present
+project_name: fevermap
+cb_extra_opts: '--test'
+cb_email: 'you@example.com'
+cb_label: 'certbot-ocp'
+cb_sa: certbot-ocp
+cb_name: certbot-ocp
+cb_route_label: 'letsencrypt-me=true'
+cb_image: 'quay.io/fevermap/certbot-ocp:latest'
+certbot_storage_size: 1Gi

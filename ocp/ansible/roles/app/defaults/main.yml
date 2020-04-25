@@ -1,0 +1,21 @@
+---
+
+state: present
+app_fqdn:
+  - 'app.ocp.exaple.com'
+app_source_repository_ref: 'master'
+app_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+app_stage1_build_image: nodeshift/ubi8-s2i-web-app:10.x
+app_stage2_build_image: registry.redhat.io/rhel8/nginx-116
+app_google_analytics_code: 'put_your_code_here'
+ws_api_url: 'https://api.example.com'
+ws_app_url: 'https://app.example.com'
+ws_push_api_url: 'https://pa.example.com'
+app_replicas: 2
+app_build: true
+app_image: "{{ app }}-app"
+app_image_tag: latest
+app_hpa_min_replicas: 1
+app_hpa_max_replicas: 6
+app_hpa_target_cpu_utilization_percentage: 50
+apm_monitoring_js: ''

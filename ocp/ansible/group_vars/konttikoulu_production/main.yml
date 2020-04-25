@@ -1,0 +1,77 @@
+---
+ansible_connection: local
+
+#
+# OpenShift
+#
+api_url: 'https://api.ocp4.konttikoulu.fi:6443'
+api_key: "{{ vault_api_key }}"
+
+#
+# Labels
+#
+env: production
+app: fevermap
+
+#
+# Project
+#
+project_name: "{{ prod_namespace }}"
+manage_projects: false
+
+#
+# Database
+#
+db_name: fevermap
+db_user: "{{ vault_db_user }}"
+db_password: "{{ vault_db_password }}"
+db_root_password: "{{ vault_db_root_password }}"
+
+#
+# API
+#
+api_build: false
+api_replicas: 2
+api_fqdn: 'api-prod.apps.ocp4.konttikoulu.fi'
+# api_image: "{{ staging_namespace }}/{{ app }}-api"
+api_image: 'quay.io/fevermap/fevermap-api'
+api_image_tag: release
+api_hpa_min_replicas: 2
+api_hpa_max_replicas: 6
+api_hpa_target_cpu_utilization_percentage: 50
+
+#
+# Push-API
+#
+push_api_build: false
+push_api_firebase_account: "{{ vault_push_api_firebase_account }}"
+push_api_fqdn: papi-prod.apps.ocp4.konttikoulu.fi
+push_api_replicas: 1
+# push_api_image: "{{ staging_namespace }}/{{ app }}-push-api"
+push_api_image: 'quay.io/fevermap/fevermap-push-api'
+push_api_image_tag: release
+
+#
+# APP
+#
+app_build: false
+app_fqdn:
+  - 'app-prod.apps.ocp4.konttikoulu.fi'
+app_google_analytics_code: "{{ vaut_app_google_analytics_code }}"
+ws_api_url: "https://{{ api_fqdn }}"
+ws_app_url: 'https://app-prod.apps.ocp4.konttikoulu.fi'
+ws_push_api_url: 'https://{{ push_api_fqdn }}'
+app_replicas: 2
+# app_image: "{{ staging_namespace }}/{{ app }}-app"
+app_image: 'quay.io/fevermap/fevermap-app'
+app_image_tag: release
+app_hpa_min_replicas: 2
+app_hpa_max_replicas: 4
+app_hpa_target_cpu_utilization_percentage: 50
+apm_monitoring_js: vault_apm_monitoring_js
+
+#
+# Certbot
+#
+cb_extra_opts: ''
+cb_email: "{{ vault_cb_email }}"

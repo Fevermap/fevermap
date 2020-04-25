@@ -4,3 +4,6 @@
 
 # Deploy specific environment settings
 .env
+
+# Ansible vault secret
+ocp/ansible/.vault-pw
