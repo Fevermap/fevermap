@@ -55,6 +55,14 @@ export default class Translator {
     return { key: Translator.lang, name: Translator.get('lang_name') };
   }
 
+  static getLangObject(langKey) {
+    if (!translations[langKey]) return false;
+    return {
+      key: langKey,
+      name: translations[langKey].lang_name,
+    };
+  }
+
   static getPossibleLanguages() {
     return Object.keys(translations).map(langKey => ({
       key: langKey,
@@ -91,5 +99,9 @@ export default class Translator {
       Translator.setLang('en');
     }
     return Translator.polyglot.t(`${this.lang}.${word}`, params);
+  }
+
+  static isTranslated(word) {
+    return Translator.polyglot.has(`${this.lang}.${word}`);
   }
 }

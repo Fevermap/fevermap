@@ -1,4 +1,4 @@
-@import "../palette";
+@import '../palette';
 
 .language-choose-dialog {
   position: absolute;
@@ -7,8 +7,8 @@
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
-  z-index:100;
-  background: rgba(255,255,255,0.99);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.99);
 
   opacity: 1;
   transition: 0.5s ease-in;
@@ -22,7 +22,7 @@
     width: 50%;
     top: 5vh;
     left: 5vw;
-    background: #FFF;
+    background: #fff;
     border-radius: 15px;
     z-index: 101;
 
@@ -33,7 +33,7 @@
     text-align: center;
 
     p {
-      color: #8e8e8e;
+      color: $gunmetallighter;
     }
   }
 
@@ -46,7 +46,7 @@
     border-radius: 10px;
     border: 2px solid $bluegreen;
     cursor: pointer;
-    background: #FFF;
+    background: #fff;
     transition: 0.2s linear;
     color: $gunmetal;
     margin-bottom: 1rem;
@@ -54,7 +54,7 @@
 
     &__highlighted {
       background: #37d4d4;
-      color: #FFF;
+      color: #fff;
     }
 
     &:hover {
@@ -66,7 +66,12 @@
     }
   }
 
-  &--options {
+  &--main-options {
+    display: flex;
+    width: 100%;
+  }
+
+  &--all-options {
     display: flex;
     flex-wrap: wrap;
     margin-top: 1rem;

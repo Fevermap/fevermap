@@ -48,15 +48,40 @@ class LanguageChooseDialog extends LitElement {
     return html`
       <div class="language-choose-dialog language-choose-dialog--hidden">
         <div class="language-choose-dialog--window mdc-elevation--z3">
-          <h1>Choose a language</h1>
-          <p>
+          <h1>
+            Choose a language
+            ${Translator.isTranslated('entry.choose_language') &&
+            this.defaultedLanguage.key !== 'en'
+              ? `(${Translator.get('entry.choose_language')})`
+              : ''}
+          </h1>
+
+          <!-- <p>
             Seems like it’s your first time here.
-          </p>
+          </p> -->
+
+          <div class="language-choose-dialog--main-options">
+            <language-choose-dialog-button
+              @language-selected="${e => this.setPreferredLang(e.detail.language)}"
+              label="${this.defaultedLanguage.name}"
+              .language="${this.defaultedLanguage}"
+              highLight
+            ></language-choose-dialog-button>
+            ${this.defaultedLanguage.key !== 'en'
+              ? html`
+                  <language-choose-dialog-button
+                    @language-selected="${e => this.setPreferredLang(e.detail.language)}"
+                    label="${Translator.getLangObject('en').name}"
+                    .language="${Translator.getLangObject('en')}"
+                  ></language-choose-dialog-button>
+                `
+              : ''}
+          </div>
           <p>
             We highlighted the language our system recommends for you. If this isn’t the language
-            you would like to use, choose your preferred language below
+            you would like to use, choose from all available languages below
           </p>
-          <div class="language-choose-dialog--options">
+          <div class="language-choose-dialog--all-options">
             ${this.possibleLanguages.map(
               opt =>
                 html`
