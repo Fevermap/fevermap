@@ -1,7 +1,6 @@
 import { LitElement, html } from 'lit-element';
 import Translator from '../util/translator.js';
 import GoogleAnalyticsService from '../services/google-analytics-service.js';
-import finnishMap from '../../assets/images/finnish-map.png';
 import VisualizationMap from '../components/visualization-map.js';
 
 class FevermapStats extends LitElement {
