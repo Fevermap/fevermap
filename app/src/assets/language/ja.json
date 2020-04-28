@@ -119,9 +119,7 @@
       "content": "Fevermapはプログレッシブウェブアプリケーションとしてインストールできます。インストールされている場合は、ランタイムの高速化やプッシュ通知（近日公開）などの優れた追加機能を提供できます。",
       "approve_text": "インストール",
       "decline_text": "いいえ、後で"
-    },
-    "subscribe_to_notifications": "通知を購読する",
-    "unsubscribe_from_notifications": "通知の登録を解除する"
+    }
   },
   "notification": {
     "daily_reminder": {
