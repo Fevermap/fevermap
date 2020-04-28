@@ -16,6 +16,7 @@ import translation_hu from '../../assets/language/hu.json';
 import translation_it from '../../assets/language/it.json';
 import translation_ja from '../../assets/language/ja.json';
 import translation_nl from '../../assets/language/nl.json';
+import translation_no from '../../assets/language/no.json';
 import translation_pl from '../../assets/language/pl.json';
 import translation_ru from '../../assets/language/ru.json';
 import translation_sv from '../../assets/language/sv.json';
@@ -37,6 +38,7 @@ const translations = {
   it: translation_it,
   ja: translation_ja,
   nl: translation_nl,
+  no: translation_no,
   pl: translation_pl,
   ru: translation_ru,
   sv: translation_sv,
