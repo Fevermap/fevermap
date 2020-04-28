@@ -15,6 +15,7 @@ class LanguageChooseDialog extends LitElement {
     super();
     this.possibleLanguages = Translator.getPossibleLanguages();
     this.defaultedLanguage = Translator.getLang();
+    this.fallbackLanguageCode = 'en';
     this.getLanguageFromUri();
   }
 
@@ -51,7 +52,7 @@ class LanguageChooseDialog extends LitElement {
           <h1>
             Choose a language
             ${Translator.isTranslated('entry.choose_language') &&
-            this.defaultedLanguage.key !== 'en'
+            this.defaultedLanguage.key !== this.fallbackLanguageCode
               ? `(${Translator.get('entry.choose_language')})`
               : ''}
           </h1>
@@ -67,19 +68,19 @@ class LanguageChooseDialog extends LitElement {
               .language="${this.defaultedLanguage}"
               highLight
             ></language-choose-dialog-button>
-            ${this.defaultedLanguage.key !== 'en'
+            ${this.defaultedLanguage.key !== this.fallbackLanguageCode
               ? html`
                   <language-choose-dialog-button
                     @language-selected="${e => this.setPreferredLang(e.detail.language)}"
-                    label="${Translator.getLangObject('en').name}"
-                    .language="${Translator.getLangObject('en')}"
+                    label="${Translator.getLangObject(this.fallbackLanguageCode).name}"
+                    .language="${Translator.getLangObject(this.fallbackLanguageCode)}"
                   ></language-choose-dialog-button>
                 `
               : ''}
           </div>
           <p>
-            We highlighted the language our system recommends for you. If this isn’t the language
-            you would like to use, choose from all available languages below
+            We highlighted the language our system recommends for you above. If this isn’t the
+            language you would like to use, choose from all available languages below.
           </p>
           <div class="language-choose-dialog--all-options">
             ${this.possibleLanguages.map(
@@ -89,7 +90,6 @@ class LanguageChooseDialog extends LitElement {
                     @language-selected="${e => this.setPreferredLang(e.detail.language)}"
                     label="${opt.name}"
                     .language="${opt}"
-                    ?highLight="${this.defaultedLanguage.key === opt.key}"
                   ></language-choose-dialog-button>
                 `,
             )}
