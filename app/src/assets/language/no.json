@@ -1,0 +1,145 @@
+{
+  "lang_name": "Norsk",
+  "language": "Språk",
+  "fevermap_title": "Fevermap",
+  "back": "Tilbake",
+  "today": "I dag",
+  "user_description": "Du er en %{age} år gammel %{gender}, som %{diagnosis}",
+  "a_covid_diagnosis": "har fått påvist COVID-19",
+  "no_covid_diagnosis": "ikke har fått påvist COVID-19",
+
+  "landing": {
+    "about": "Om Fevermap",
+    "about_title": "Hva er Fevermap?",
+    "about_content_explanation": " er en web- og mobilapplikasjon som er laget for å kunne enkelt samle data i sanntid om spredningen av COVID 19-pandemien.",
+    "about_current_methods": "Dagens metoder for å følge med på koronavirusets spredning gir ikke et helhetlig bilde av situasjonen. Grunnet mangel på midler og ressurser blir ikke alle personer testet, og mange tilfeller går derfor urapportert.",
+    "about_solution": "Fevermap er løsningen på dette problemet. Med Fevermap kan vanlige mennesker over hele verden anonymt registrere sine tilfeller av feber og eventuelle andre symptomer. Dette betyr at vi i sanntid kan estimere den faktiske spredningen av COVID 19-tilfeller og samtidig tilby myndigheter data som kan brukes til å sette i gang riktige beskyttende tiltak til rett tid",
+    "about_data_collection": "All data som blir samlet inn av Fevermap blir anonymisert og brukt til å øke bevisstheten rundt den nåværende globale situasjonen vi er i.",
+    "about_current_participant_count": "Per i dag har %{participantCount} brukere brukt Fevermap til å registrere sine symptomer. ",
+
+    "how_to_participate": "Hvordan kan jeg delta?",
+    "participation_info": "Det er enkelt å delta: ta temperaturen din og legg inn resultatet. I tillegg vil vi be deg om litt statistisk informasjon, slik som kjønnet ditt og året du ble født.",
+    "info_disclaimer": "Vi vil ikke be om informasjon som kan føre til at du blir identifisert.",
+
+    "how_will_my_data_be_used": "Hvordan vil informasjonen min bli brukt?",
+    "data_use_explanation": "Informasjonen din vil bli anonymisert, og deretter delt som åpen data gjennom våre grensesnitt."
+  },
+  "entry": {
+    "data_entry": "Registreringer",
+    "first_entry_disclaimer": "Registreringer blir lagret i databaseen basert på enheten du bruker. Vi setter pris på dersom du bruker samme enhet hver gang du registrerer informasjonen din. Dette hjelper oss med å bedre kunne følge med på helsetilstanden din.",
+    "last_submission": "Forrige registrering",
+    "submission_period_disclaimer": "For å forhindre unødvendig informasjon kan du kun legge inn nye registreringer hver 12. time.",
+    "sync_now": "Synkronisér nå",
+    "new_entry": "Ny registrering",
+    "first_time_disclaimer": "Siden dette er første gang du bruker Fevermap, ønsker vi å stille deg noen spørsmål.",
+    "these_questions_wont_be_repeated": "Vi kommer ikke til å stille disse spørsmålene igjen ved påfølgende registreringer.",
+    "queued_entries": "Du har køede registreringer",
+    "send_now": "Send inn registreringer nå",
+    "questions": {
+      "what_is_your_temperature": "Hvor høy er temperaturen din?",
+      "temperature": "Temperatur",
+      "how_much": "Hvor høy?",
+      "degrees_of_fever": "%{degrees} grader feber",
+      "havent_measured_but": "Jeg har ikke målt temperaturen min, men...",
+      "feel_healthy": "Jeg føler meg frisk",
+      "feel_feverish": "Jeg føler at jeg har feber",
+      "set_temperature": "Sett temperatur",
+      "other_symptoms": "Andre symptomer?",
+      "choose_all_that_apply": "Velg alt som gjelder deg",
+      "difficulty_to_breathe": "Vanskelig å puste",
+      "cough": "Hoste",
+      "sore_throat": "Sår hals",
+      "muscular_pain": "Smerte i musklene",
+      "positive_covid_diagnosis": "Jeg har testet positivt på COVID-19.",
+      "set_symptoms": "Sett symptomer",
+      "birth_year": "Fødselsår",
+      "birth_year_placeholder": "Fødselsår (fra 1900 - 2020)",
+      "gender_in_passport": "Kjønn - som beskrevet i passet ditt eller i et annet offisielt dokument",
+      "male": "Mann",
+      "female": "Kvinne",
+      "location_information": "Stedsinformasjon",
+      "whats_your_location": "Hvor befinner du deg?",
+      "city": "By",
+      "country": "Land",
+      "postal_code": "Postnummer",
+      "location_determination_subtitle": "Stedsinformasjon blir satt basert på bruk av lokasjonsgrensesnitt. Sørg for at du tillatter bruk av lokasjonssensorer.",
+      "location_change_subtitle": "For å oppdatere stedsinformasjon, trykk på knappen nedenfor eller sett verdier i land- og postkodefeltene.",
+      "update_location": "Oppdater stedsinformasjon",
+      "use_gps": "Hent stedsinformasjon fra GPS",
+      "set_location_and_submit": "Sett stedsinformasjon og registrer helsetilstand"
+    },
+    "previous_submissions": "Tidligere registreringer",
+    "submit": "Registrer helsetilstand",
+    "save": "Lagre",
+
+    "last_submission_was_done": "Forrige gang du la inn informasjon om helsetilstanden din var %{date}",
+    "submission_count_text": "Du har lagt inn informasjon om helsetilstanden din ",
+    "submission_count_times": "ganger",
+    "currently_holding_a_streak_of": "Du har nå registrert helsetilstanden din ",
+    "streak_days": "dager på rad"
+  },
+
+  "history": {
+    "title": "Historikk",
+    "your_streak": "Antall registreringer på rad",
+    "days": "Dager",
+    "total_entries": "Totale registreringer",
+    "measurements": "målinger",
+    "add_entry": "Registrer helsetilstand"
+  },
+
+  "stats": {
+    "stats": "Statistikk"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Stedsinformasjon oppdatert",
+      "data_entry": "Helsetilstand registrert",
+      "offline_entry_queued": "Det ser ut til at du er frakoblet. Registreringen har blitt satt i kø.",
+      "entry_send_failed_queued": "Registreringen feilet og har blitt satt i kø.",
+      "sync_finished": "Registreringer synkronisert.",
+      "subscribe_success": "Du vil nå få push-varslinger",
+      "unsubscribe_success": "Du vil ikke lenger få push-varslinger"
+    },
+    "error": {
+      "age_not_in_range": "Fødselsår er ikke innenfor gyldig rekkevidde (1900 - 2020).",
+      "fever_temp_value_invalid": "Febertemperaturen er ikke gyldig.",
+      "location_data_invalid": "Stedsinformasjonen er ikke gyldig.",
+      "api_data_invalid": "Informasjonen som ble sendt til grensesnittet var ikke gyldig.",
+      "gender_not_set": "Kjønn er ikke satt",
+      "do_not_submit_new_temp_until": "Vennligst ikke legg inn ny registrering før %{dateTime}",
+      "subscribe_error": "Abonnering på push-notifikasjoner feilet",
+      "unsubscribe_error": "Stopping av abonnering på push-notifikasjoner feilet"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Installer Fevermap",
+      "content": "Fevermap kan bli installert som en progressiv web app. Om du gjør dette vil appen fungere bedre og vi kan tilby deg ekstra funksjonalitet, som push-notifikasjoner (kommer snart).",
+      "approve_text": "Installer",
+      "decline_text": "Kanskje senere"
+    },
+    "notifications": {
+      "title": "Tillat notifikasjoner",
+      "content": "Fevermap ønsker å tilby deg daglige notifikasjoner for å minne deg på registrere din daglige helsetilstand. Tillat notifikasjoner?",
+      "approve_text": "Tillat notifikasjoner",
+      "decline_text": "Nei takk"
+    }
+  },
+
+  "notification": {
+    "daily_reminder": {
+      "title": "God kveld! \uD83D\uDE0A",
+      "content": "Hvordan føler du deg i dag?",
+      "healthy": "Frisk",
+      "sick": "Syk"
+    },
+    "thank_you": {
+      "title": "Helsetilstand registrert.",
+      "content": "Takk for at du registrerte helsetilstanden din!"
+    },
+    "subscribe_to_notifications": "Abonner på notifikasjoner",
+    "unsubscribe_from_notifications": "Stopp å abonnere på notifikasjoner"
+  }
+}
