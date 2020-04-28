@@ -82,6 +82,7 @@ module.exports = env => {
           '!*.ico',
           '!*.txt',
           '!window-settings.js',
+          '!apm-monitoring.js',
         ],
       }),
       new HtmlWebPackPlugin({
@@ -118,6 +119,11 @@ module.exports = env => {
         {
           context: './src',
           from: 'window-settings.js',
+          to: '.',
+        },
+        {
+          context: './src',
+          from: 'apm-monitoring.js',
           to: '.',
         },
       ]),
