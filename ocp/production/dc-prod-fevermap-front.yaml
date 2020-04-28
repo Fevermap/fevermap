@@ -82,16 +82,10 @@ spec:
               name: liveness-conf
               readOnly: true
               subPath: liveness.conf
-            - mountPath: "/opt/app-root/src/.well-known/acme-challenge/Nxm-iKVC\
-                GXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE"
-              name: challenge-api
+            - mountPath: /opt/app-root/src/apm-monitoring.js
+              name: apm-monitoring
               readOnly: true
-              subPath: Nxm-iKVCGXj7fzEtykKs2-AhOyZ_L6WUWdPxyM9OYNE
-            - mountPath: "/opt/app-root/src/.well-known/acme-challenge/EVp7eMI\
-                4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY"
-              name: challenge-app
-              readOnly: true
-              subPath: EVp7eMI4DrFvFGlo8iqbqyyqXTsCngBoJziGRmbxRiY
+              subPath: apm-monitoring.js
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -108,12 +102,8 @@ spec:
           name: liveness-conf
         - configMap:
             defaultMode: 420
-            name: challenge-api
-          name: challenge-api
-        - configMap:
-            defaultMode: 420
-            name: challenge-api
-          name: challenge-app
+            name: app-apm-monitoring
+          name: apm-monitoring
   test: false
   triggers:
     - imageChangeParams:

@@ -70,6 +70,10 @@ spec:
               name: window-settings
               readOnly: true
               subPath: window-settings.js
+            - mountPath: /opt/app-root/src/apm-monitoring.js
+              name: apm-monitoring
+              readOnly: true
+              subPath: apm-monitoring.js
             - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
               name: liveness-conf
               readOnly: true
@@ -84,6 +88,10 @@ spec:
             defaultMode: 420
             name: window-settings
           name: window-settings
+        - configMap:
+            defaultMode: 420
+            name: app-apm-monitoring
+          name: apm-monitoring
         - configMap:
             defaultMode: 420
             name: fevermap-app-nginx-liveness
