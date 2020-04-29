@@ -98,7 +98,7 @@
       "data_entry": "Submissão de dados concretizada com sucesso",
       "offline_entry_queued": "Parece que está offline. Entrada está em espera.",
       "entry_send_failed_queued": "Submissão falhou. Entrada está em espera.",
-      "sync_finished": "Entradas sincronizadas com sucesso."
+      "sync_finished": "Entradas sincronizadas com sucesso.",
       "subscribe_success": "Subscrito para inserir notificacões com sucesso",
       "unsubscribe_success": "A sua subscricao para notificacões foi removida com sucesso"
     },
