@@ -23,12 +23,14 @@ import translation_sv from '../../assets/language/sv.json';
 import translation_th from '../../assets/language/th.json';
 import translation_uk from '../../assets/language/uk.json';
 import translation_pt from '../../assets/language/pt.json';
+import translation_cs from '../../assets/language/cs.json';
 
 const translations = {
   ar: translation_ar,
   be: translation_be,
   ca: translation_ca,
   cn: translation_cn,
+  cs: translation_cs,
   de: translation_de,
   en: translation_en,
   es: translation_es,
