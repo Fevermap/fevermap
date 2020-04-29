@@ -1,0 +1,145 @@
+{
+  "lang_name": "Portugues",
+  "language": "Idioma",
+  "fevermap_title": "Fevermap",
+  "back": "Retroceder",
+  "today": "Hoje",
+  "user_description": "Voce tem %{age} anos %{gender}, com %{diagnosis} diagnostico",
+  "a_covid_diagnosis": "positivo para COVID-19",
+  "no_covid_diagnosis": "negativo para COVID-19",
+
+  "landing": {
+    "about": "About",
+    "about_title": "O que é o Fevermap?",
+    "about_content_explanation": " é uma aplicacão online e movél criada para a coleccão de dados de forma simples e em tempo real sobre o COVID-19 e o desenvolvimento da pandemia.",
+    "about_current_methods": "Os metodos actuais de despiste do Corona Virus não nos dão uma imagem total. A maioria das pessoas continuam sem ser testadas para salvar os recursos e tempo para quem mais necessita.",
+    "about_solution": "O Fevermap é a solucão para este problem. Com o Fevermap qualquer pessoa em qualquer parte pode, de forma anónima, reportar a sua febre e outro sintomas. Isto significa que podemos estimar melhor qual o nivel de infeccões em tempo real e providenciar as autoridades com a informacão que lhes possibilita a tomada de decisões correctas e atempadas, baseadas na analise de dados.",
+    "about_data_collection": " Os dados recolhidos pelo Fevermap são anónimos e serão usados para aumentar a compreensão da currente situacão global.",
+    "about_current_participant_count": "Até este dia, %{participantCount} utilizadores usaram o Fevermap para reportar os seus sintomas. ",
+
+    "how_to_participate": "Como posso participar?",
+    "participation_info": "É fácil. Só precisas de medir a tua temperatura e reportar o resultado juntamente com alguns dados estatísticos, como a tua data de nascimento e o código postal.",
+    "info_disclaimer": "Nós não perguntamos nada que possa conduzir a tua identificacão. Nós valorizamos a tua privacidade e anonimato.",
+
+    "how_will_my_data_be_used": "Como serão os meus dados utilizados?",
+    "data_use_explanation": "Os dados serão anonimizados e só depois partilhados através do API interface."
+  },
+  "entry": {
+    "data_entry": "Introduzir dados",
+    "first_entry_disclaimer": "A introducão de dados é baseada no dispositivo. Como tal, gostariamos que submete-se os dados com o mesmo dispositivo todas as vezes. Isto permite-nos monotorizar melhor o estado da sua febre.",
+    "last_submission": "Ultima entrada de dados",
+    "submission_period_disclaimer": "Para prevenir dados desnecessários, a submissão de dados só pode ser efectuada uma vez a cada 12 horas.",
+    "sync_now": "Sincronizar agora now",
+    "new_entry": "Nova entrada",
+    "first_time_disclaimer": "Como esta é a primeira vez que está a utilizar o Fevermap, vamos fazer umas perguntas primeiro.",
+    "these_questions_wont_be_repeated": "Estas perguntas nao serão repetidas em entradas futuras.",
+    "queued_entries": "Você tem entradas em espera",
+    "send_now": "Enviar agora",
+    "questions": {
+      "what_is_your_temperature": "Qual é a sua temperatura?",
+      "temperature": "Temperatura",
+      "how_much": "Quantos?",
+      "degrees_of_fever": "%{degrees} de febre",
+      "havent_measured_but": "Eu não medi mas...",
+      "feel_healthy": "Eu sinto-me saudavel",
+      "feel_feverish": "Eu sinto-me febril",
+      "set_temperature": "Acertar temperatura",
+      "other_symptoms": "Outros sintomas?",
+      "choose_all_that_apply": "Escolher todos se aplicão",
+      "difficulty_to_breathe": "Dificuldade em respirar",
+      "cough": "Tosse",
+      "sore_throat": "Dôr de garganta",
+      "muscular_pain": "Dores musculares",
+      "positive_covid_diagnosis": "Eu tenho um diagnóstico positivo para o COVID-19.",
+      "set_symptoms": "Escolher sintomas",
+      "birth_year": "Ano de nascimento",
+      "birth_year_placeholder": "Ano de nascimento(years 1900 - 2020)",
+      "gender_in_passport": "Sexo como está presente no Passaporte ou outros documentos oficiais",
+      "male": "Masculino",
+      "female": "Femenino",
+      "location_information": "Informacão da localizacão",
+      "whats_your_location": "Qual é a sua localizacão?",
+      "city": "Cidade",
+      "country": "País",
+      "postal_code": "Código Postal",
+      "location_determination_subtitle": "A localizacão é determinadad usando API. Por favor certifique que permite acesso aos sensores de locaclizacão.",
+      "location_change_subtitle": "Para actualizar informacão, actualize o dado insirido em País e Código Postal e pressione o butão em baixo.",
+      "update_location": "Actualizar localizacão",
+      "use_gps": "Obter localizacäo através do GPS",
+      "set_location_and_submit": "Acertar localizacão e submeter"
+    },
+    "previous_submissions": "Submissões anterioress",
+    "submit": "Submeter",
+    "save": "Guardar",
+
+    "last_submission_was_done": "A sua última submissão foi efectuada em %{date}",
+    "submission_count_text": "Você insiriu os seus dados relativos à febre ",
+    "submission_count_times": "vezes",
+    "currently_holding_a_streak_of": "Você insiriu dados de forma consecutiva no decorrer de: ",
+    "streak_days": "dias"
+  },
+
+  "history": {
+    "title": "Historico",
+    "your_streak": "Os meus dias consecutivos",
+    "days": "Dias",
+    "total_entries": "Total de submissoes",
+    "measurements": "medidas",
+    "add_entry": "Adicionar entrada"
+  },
+
+  "stats": {
+    "stats": "Dados"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Actualizacao de localizacão concretizada com sucesso",
+      "data_entry": "Submissão de dados concretizada com sucesso",
+      "offline_entry_queued": "Parece que está offline. Entrada está em espera.",
+      "entry_send_failed_queued": "Submissão falhou. Entrada está em espera.",
+      "sync_finished": "Entradas sincronizadas com sucesso.",
+      "subscribe_success": "Subscrito para inserir notificacões com sucesso",
+      "unsubscribe_success": "A sua subscricao para notificacões foi removida com sucesso"
+    },
+    "error": {
+      "age_not_in_range": "A data de nascimento não é valida nos anos(1900 - 2020).",
+      "fever_temp_value_invalid": "A temperatura inserida não é válida.",
+      "location_data_invalid": "A localizacão näo é válida.",
+      "api_data_invalid": "Os dados enviados parar o API são inválidos.",
+      "gender_not_set": "Sexo não está definido.",
+      "do_not_submit_new_temp_until": "Não submeta uma nova temperatura até %{dateTime}",
+      "subscribe_error": "Subscrever para inserir notificacões falhou",
+      "unsubscribe_error": "A remocão da subscricão falho"
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Instalar Fevermap",
+      "content": "O Fevermap pode ser instalado como uma aplicacão progressiva. Caso instalado, pode-mos oferecer-lhe alguns extras exelentes como um mais rapido processamento e notificacões(disponivel em breve).",
+      "approve_text": "Instalar",
+      "decline_text": "Talvez mais tarde"
+    },
+    "notifications": {
+      "title": "Permitir notificacões",
+      "content": "O Fevermap gostaria de lhe enviar uma recordacão diária para o relembrar de inserir o seu estado de saúde diários. Permitir notificacões?",
+      "approve_text": "Permitir notificacões",
+      "decline_text": "Não obrigado"
+    }
+  },
+
+  "notification": {
+    "daily_reminder": {
+      "title": "Boa noite! \uD83D\uDE0A",
+      "content": "Como se está a sentir hoje?",
+      "healthy": "Saudavel",
+      "sick": "Doente"
+    },
+    "thank_you": {
+      "title": "Dados inseridos com sucesso.",
+      "content": "Obrigado pela entrada!"
+    },
+    "subscribe_to_notifications": "Subscrever para receber notificacões",
+    "unsubscribe_from_notifications": "Remover subscricão"
+  }
+}
