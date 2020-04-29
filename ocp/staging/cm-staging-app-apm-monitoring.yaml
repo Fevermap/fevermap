@@ -1,0 +1,7 @@
+---
+apiVersion: v1
+data:
+  apm-monitoring.js: ''
+kind: ConfigMap
+metadata:
+  name: fevermap-app-apm-monitoring

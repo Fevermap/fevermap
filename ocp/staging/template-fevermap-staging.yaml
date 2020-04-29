@@ -723,6 +723,12 @@ objects:
       name: ${NAME}-window-settings
   - apiVersion: v1
     data:
+      apm-monitoring.js: ''
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-app-apm-monitoring
+  - apiVersion: v1
+    data:
       liveness.conf: |2
 
         map $http_user_agent $log_ua {
@@ -824,6 +830,10 @@ objects:
                   name: ${NAME}-window-settings
                   readOnly: true
                   subPath: window-settings.js
+                - mountPath: /opt/app-root/src/apm-monitoring.js
+                  name: ${NAME}-apm-monitoring
+                  readOnly: true
+                  subPath: apm-monitoring.js
                 - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
                   name: liveness-conf
                   readOnly: true
@@ -837,6 +847,10 @@ objects:
                 defaultMode: 420
                 name: ${NAME}-window-settings
               name: ${NAME}-window-settings
+            - configMap:
+                defaultMode: 420
+                name: ${NAME}-app-apm-monitoring
+              name: ${NAME}-apm-monitoring
             - configMap:
                 defaultMode: 0444
                 name: ${NAME}-app-nginx-liveness

@@ -555,6 +555,12 @@ objects:
       name: ${NAME}-window-settings
   - apiVersion: v1
     data:
+      apm-monitoring.js: ''
+    kind: ConfigMap
+    metadata:
+      name: ${NAME}-app-apm-monitoring
+  - apiVersion: v1
+    data:
       liveness.conf: |2
 
         map $http_user_agent $log_ua {
@@ -660,6 +666,10 @@ objects:
                   name: liveness-conf
                   readOnly: true
                   subPath: liveness.conf
+                - mountPath: /opt/app-root/src/apm-monitoring.js
+                  name: apm-monitoring
+                  readOnly: true
+                  subPath: apm-monitoring.js
           dnsPolicy: ClusterFirst
           restartPolicy: Always
           schedulerName: default-scheduler
@@ -673,6 +683,10 @@ objects:
                 defaultMode: 0444
                 name: ${NAME}-app-nginx-liveness
               name: liveness-conf
+            - configMap:
+                defaultMode: 420
+                name: ${NAME}-app-apm-monitoring
+              name: apm-monitoring
       test: false
       triggers:
         - type: ConfigChange
