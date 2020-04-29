@@ -191,7 +191,7 @@ class FevermapDataEntry extends LitElement {
     });
 
     celcius.addEventListener('focus', e => {
-      e.target.value = '';
+      e.target.select();
     });
 
     celcius.addEventListener('blur', e => {
@@ -209,7 +209,7 @@ class FevermapDataEntry extends LitElement {
     });
 
     fahrenheit.addEventListener('focus', e => {
-      e.target.value = '';
+      e.target.select();
     });
     // Programmatically set height of the temp meter
     setTimeout(() => {
