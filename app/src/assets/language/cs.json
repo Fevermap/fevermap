@@ -1,0 +1,145 @@
+{
+  "lang_name": "Čeština",
+  "language": "Jazyk",
+  "fevermap_title": "Fevermap",
+  "back": "Zpět",
+  "today": "Dnes",
+  "user_description": "Je ti %{age} let, %{gender}, s %{diagnosis} diagnózou",
+  "a_covid_diagnosis": "pozitivní COVID-19",
+  "no_covid_diagnosis": "bez pozitivní COVID-19",
+
+  "landing": {
+    "about": "O programu",
+    "about_title": "Co je Fevermap?",
+    "about_content_explanation": " je webová a mobilní aplikace, vytvořená pro jednoduchý sběr dat o rozšíření COVID-19 koronavirové pandemie v reálném čase",
+    "about_current_methods": "Současné metody sledující rozšíření koronaviru neposkytují dostatečné množství dat. Velké množství lidí zůstává netestováno z nedostatku personálu, který je k dispozici lidem, kteří potřebují péči.",
+    "about_solution": "Řešením tohoto problému je Fevermap. S Fevermap může kdokoli po celém světe anonymně sdílet, zda má horečku, nebo jiné symptomy. Díky tomu, můžeme mnohem ppřesněji odhadnout skutečné rozšíření COVID-19 v reálném čase a poskytnout data úřadům, což jim umožní provádět včasná, správná, na datech založená rozhodnutí o ochranných opatřeních.",
+    "about_data_collection": "Data, která Fevermap shromažďuje jsou anonymizována a budou použita na pomoc zvýšení povědomí o současné světové situaci.",
+    "about_current_participant_count": "K dnešnímu dni, %{participantCount} uživatelů nahlásilo pomocí Fevermap své symptomy. ",
+
+    "how_to_participate": "Jak se můžu zapojit?",
+    "participation_info": "Je to jednoduché. Prostě si změříte teplotu a výsledek spolu s pár statistickými údaji, jako je rok narození a PSČ odešlete.",
+    "info_disclaimer": "Neptáme se na nic, co by Vás mohlo identifikovat. Vážíme si Vašeho soukromí a anonymity.",
+
+    "how_will_my_data_be_used": "Jak budou má data použita?",
+    "data_use_explanation": "Data budou anonymizována a poté sdílena, otevřeně, pomoci API rozhraní."
+  },
+  "entry": {
+    "data_entry": "Vložení měření.",
+    "first_entry_disclaimer": "Měření jsou do databáze zadávána na základě vašeho zařízení. Velmi bychom ocenili, pokud budete všechna měření zadávat ze stejného přístroje. Umožní nám to přesněji sledovat průbeh vaši horečky.",
+    "last_submission": "Poslední měření",
+    "submission_period_disclaimer": "Abychom zamezili nadbytečným údajům, je možno měření odeslat jednou za 12 hodin.",
+    "sync_now": "Synchronizovat nyní",
+    "new_entry": "Nové měření",
+    "first_time_disclaimer": "Toto je poprvé, co používáte Fevermap, proto se Vás nejdříve zeptáme na pár otázek.",
+    "these_questions_wont_be_repeated": "Tyto otázky se již v budoucnu neobjeví.",
+    "queued_entries": "Ve frontě máte měření",
+    "send_now": "Odeslat",
+    "questions": {
+      "what_is_your_temperature": "Jaká je Vaše teplota?",
+      "temperature": "Teplota",
+      "how_much": "Kolik?",
+      "degrees_of_fever": "%{degrees} stupňů",
+      "havent_measured_but": "Teplotu jsem neměřil/neměřila, ale ...",
+      "feel_healthy": "Cítím se zdravě",
+      "feel_feverish": "Cítím se, jako bych měl/měla teplotu",
+      "set_temperature": "Zadat teplotu",
+      "other_symptoms": "Jiné symptomy?",
+      "choose_all_that_apply": "Vyberte vše, co se hodí",
+      "difficulty_to_breathe": "Dýchací obtíže",
+      "cough": "Kašel",
+      "sore_throat": "Bolest v krku",
+      "muscular_pain": "Bolest svalů",
+      "positive_covid_diagnosis": "Byl/byla jem pozitivně testován/testována na COVID-19.",
+      "set_symptoms": "Zadat symptomy",
+      "birth_year": "Rok narození",
+      "birth_year_placeholder": "Rok narození (roky 1900 - 2020)",
+      "gender_in_passport": "Pohlaví uvedené v Cestovním Pasu a jiných vládních dokumentech",
+      "male": "Muž",
+      "female": "Žena",
+      "location_information": "Informace o poloze",
+      "whats_your_location": "Jaká je vaše poloha?",
+      "city": "Město",
+      "country": "Země",
+      "postal_code": "PSČ",
+      "location_determination_subtitle": "Poloha je určena pomocí polohového API. Prosím, povolte určení polohy.",
+      "location_change_subtitle": "Pro aktualizaci polohy, upravte údaje o zemi a PSČ, nebo stiskněte tlačítko níže.",
+      "update_location": "Aktualizovat polohu",
+      "use_gps": "Nastavit polohu z GPS",
+      "set_location_and_submit": "Nastavit polohu a odeslat."
+    },
+    "previous_submissions": "Předchozí měření",
+    "submit": "Odeslat",
+    "save": "Uložit",
+
+    "last_submission_was_done": "Vaše poslední měření bylo dne %{date}",
+    "submission_count_text": "Informace o horečce jste zadali ",
+    "submission_count_times": "krát",
+    "currently_holding_a_streak_of": "Aktuální počet po sobě následujích dnů je: ",
+    "streak_days": "dnů"
+  },
+
+  "history": {
+    "title": "Historie",
+    "your_streak": "Po sobě následujíci dny",
+    "days": "dnů",
+    "total_entries": "Celkem měření",
+    "measurements": " ",
+    "add_entry": "Zadat měření"
+  },
+
+  "stats": {
+    "stats": "Statistika"
+  },
+
+  "system_messages": {
+    "success": {
+      "location_update": "Poloha úspěšně aktualizována.",
+      "data_entry": "Měření úspěšně odesláno.",
+      "offline_entry_queued": "Vypadá to, že jste offline. Měření bylo přidáno do fronty.",
+      "entry_send_failed_queued": "Odeslání selhalo. Měření bylo přidáno do fronty.",
+      "sync_finished": "Měření úspěšně synchronizována.",
+      "subscribe_success": "Push notifikace byly úspěšně zapnuty.",
+      "unsubscribe_success": "Push notifikace byly úspěšně vypnuty."
+    },
+    "error": {
+      "age_not_in_range": "Zadané datum narození není v povoleném rozsahu (1900 - 2020).",
+      "fever_temp_value_invalid": "Naměřená hodnota teploty neni platná.",
+      "location_data_invalid": "Zadaná poloha není platná.",
+      "api_data_invalid": "Data odeslaná do API nejsou platná.",
+      "gender_not_set": "Pohlaví není nastaveno.",
+      "do_not_submit_new_temp_until": "Neodesílejte novou teplotu dříve, než %{dateTime}",
+      "subscribe_error": "Aktivace push notifikací selhala.",
+      "unsubscribe_error": "Deaktivace push notifikací selhala."
+    }
+  },
+  "dialog": {
+    "pwa_installer": {
+      "title": "Nainstalovat Fevermap",
+      "content": "Fevermap může být nainstalován jako Progressive Web Application. Instalace poskytne extra prvky, jako jsou push notifikace, rychlejší běh a některé offline funkce.",
+      "approve_text": "Nainstalovat",
+      "decline_text": "Možná později"
+    },
+    "notifications": {
+      "title": "Povolit notifikace",
+      "content": "Fevermap Vám chce nabídnout denní upozornění na zapsání Vašeho zdravotního stavu. Povolit upozornění?",
+      "approve_text": "Povolit upozornění",
+      "decline_text": "Ne, děkuji"
+    }
+  },
+
+  "notification": {
+    "daily_reminder": {
+      "title": "Hezký večer! \uD83D\uDE0A",
+      "content": "Jak se dnes cítite?",
+      "healthy": "Zdravě",
+      "sick": "Nemocně"
+    },
+    "thank_you": {
+      "title": "Data úspěšně odeslána",
+      "content": "Děkujeme!"
+    },
+    "subscribe_to_notifications": "Zapnout notifikace",
+    "unsubscribe_from_notifications": "Vypnout notifikace"
+  }
+}
