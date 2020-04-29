@@ -132,8 +132,8 @@
       "sick": "Enfermo"
     },
     "thank_you": {
-      "title": "Successfully submitted data.",
-      "content": "Thank you for submitting!"
+      "title": "Datos enviados satisfactoriamente.",
+      "content": "Gracias por su envío!"
     },
     "subscribe_to_notifications": "Suscribirse a las notificaciones",
     "unsubscribe_from_notifications": "Cancelar las notificationes"
