@@ -18,7 +18,7 @@
     "about_current_participant_count": "Tähän päivään mennessä, %{participantCount} käyttäjää ovat käyttäneet Fevermapia raportoidakseen oireistaan",
 
     "how_to_participate": "Miten osallistun?",
-    "participation_info": "Se on helppoa. Mittaat vain lämpösi ja syötät mittarin antaman vastauksen – sekä joitain statistisia tietoja, kuten syntymävuotesi ja aluekoodisi – datan syöttönäkymään.",
+    "participation_info": "Se on helppoa. Syötät vain mittaamasi lämpötilan, tai valitset tuntemasi olotilan – sekä joitain statistisia tietoja, kuten syntymävuotesi ja aluekoodisi – kirjausnäkymään.",
     "info_disclaimer": "Emme kysy kysymyksiä jotka johtaisivat siihen, että sinut tunnistettaisiin. Arvostamme yksityisyyttäsi ja anonymiteettiäsi.",
 
     "how_will_my_data_be_used": "Miten dataani tullaan käyttämään?",
