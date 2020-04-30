@@ -20,7 +20,7 @@ test:
 	@echo "----------- Tests completed successfully -----------"
 
 test-extra:
-	gnitpick
+	gnitpick --target-repository https://gitlab.com/fevermap/fevermap.git
 	shellcheck $(shell find -name "*.sh" -not -path "*/node_modules/*" | xargs)
 	yamllint -d "{extends: default, rules: {line-length: {level: warning}}}" $(shell find -name "*.yaml" -or -name "*.yml" -not -path "*/node_modules/*" | xargs)
 	@echo "----------- Extra tests completed successfully -----------"
