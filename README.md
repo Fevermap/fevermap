@@ -43,7 +43,7 @@ Please research some good contacts to your own national health authority and mak
 
 ### 4. Help us with design and research
 
-Browse issues at https://gitlab.com/groups/fevermap/-/issues and chip in the discussion on our [Slack channel](https://join.slack.com/t/hackthecrisisfinland/shared_invite/zt-cv34hdk4-hI9chEn0cUF~MAQBFqCvhg)!
+Browse issues at https://gitlab.com/groups/fevermap/-/issues and chip in the discussion on our [Slack channel](https://join.slack.com/t/fevermap/shared_invite/zt-dw98cjqe-8oeLWv1zCz0bYMeIwhb~uQ)!
 
 If you come across similar apps or initiatives, add them to the list in issue #1. If you want to help with the analysis and science, see issue #14. Discussion on what questions to ask is in #15, and UI design in #19 and marketing in #16.
 

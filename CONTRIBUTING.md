@@ -128,7 +128,7 @@ If you are doing something small, just plan it, just implement it directly and f
 
 If you are working on an issue, please assign it to yourself, so people can see in the issue and in the [board](https://gitlab.com/fevermap/fevermap/-/boards) that you are working on it.
 
-### Joing the project on Gitlab
+### Join the project on Gitlab
 
 To open an issue, to comment on an issue or to make a Merge Request you just need a Gitlab account, you don't need to have any special role in the project you are contributing to.
 
