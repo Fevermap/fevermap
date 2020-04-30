@@ -172,19 +172,19 @@ class FevermapDataEntry extends LitElement {
       fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
     });
     celcius.addEventListener('keyup', e => {
-      if (e.key === 'Tab') {
+      if (e.key === 'Tab' || e.key === '.' || e.key === ',') {
         return;
       }
-      this.handleCommaInput(e);
+      // this.handleCommaInput(e);
       this.feverAmount = e.target.value;
       fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(e.target.value);
       tempMeter.value = this.feverAmount;
     });
     fahrenheit.addEventListener('keyup', e => {
-      if (e.key === 'Tab') {
+      if (e.key === 'Tab' || e.key === '.' || e.key === ',') {
         return;
       }
-      this.handleCommaInput(e);
+      // this.handleCommaInput(e);
       this.feverAmount = FeverDataUtil.fahrenheitToCelsius(e.target.value);
       celcius.value = this.feverAmount;
       tempMeter.value = this.feverAmount;
@@ -934,7 +934,11 @@ class FevermapDataEntry extends LitElement {
   getSubmitButton() {
     return html`
       <div class="entry-field">
-        ${this.errorMessage ? html` <p class="mdc-theme--error">${this.errorMessage}</p> ` : ''}
+        ${this.errorMessage
+          ? html`
+              <p class="mdc-theme--error">${this.errorMessage}</p>
+            `
+          : ''}
         <div class="submit-button">
           <button class="mdc-button mdc-button--outlined" @click="${this.handleSubmit}">
             <div class="mdc-button__ripple"></div>
