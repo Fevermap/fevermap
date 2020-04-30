@@ -13,7 +13,9 @@ class LanguageChooseDialog extends LitElement {
 
   constructor() {
     super();
-    this.possibleLanguages = Translator.getPossibleLanguages().sort((a, b) =>  (a.name > b.name) ? 1 : -1);
+    this.possibleLanguages = Translator.getPossibleLanguages().sort((a, b) =>
+      a.name > b.name ? 1 : -1,
+    );
     this.defaultedLanguage = Translator.getLang();
     this.fallbackLanguageCode = 'en';
     this.getLanguageFromUri();
