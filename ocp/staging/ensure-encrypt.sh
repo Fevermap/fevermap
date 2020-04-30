@@ -4,7 +4,7 @@ echo "Encrypting files, it's fine if you see error about already encrypted files
 
 for file in route-staging-fevermap-api.yaml \
 route-staging-fevermap-app.yaml \
-route-staging-fevermap-push-api.yaml \
+route-staging-push-api.yaml \
 secret-staging-aws-db-backup.yaml \
 secret-staging-fevermap-api-db.yaml \
 secret-staging-fevermap-db.yaml \
