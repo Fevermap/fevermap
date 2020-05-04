@@ -33,6 +33,7 @@
     "new_entry": "New entry",
     "first_time_disclaimer": "As this is your first time using Fevermap, we will ask you a few questions first.",
     "these_questions_wont_be_repeated": "These questions won't be repeated on future submissions.",
+    "choose_language": "choose a language",
     "queued_entries": "You have queued entries",
     "send_now": "Send now",
     "questions": {

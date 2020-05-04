@@ -33,6 +33,7 @@
     "new_entry": "Ny registrering",
     "first_time_disclaimer": "Eftersom detta är första gången du använder Fevermap, frågar vi några frågor först.",
     "these_questions_wont_be_repeated": "Följande gång behöver du inte svara på dessa.",
+    "choose_language": "välj språk",
     "queued_entries": "You have queued entries",
     "send_now": "Send now",
     "questions": {

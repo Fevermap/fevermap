@@ -2,9 +2,11 @@
 $bluegreen: rgb(48, 191, 191);
 $bluegreenlighter: change-color($bluegreen, $lightness: 93%);
 $bluegreendarker: rgb(37, 147, 147);
+
 $deeppurple: rgb(159, 43, 104);
 $deeppurpledarker: rgb(133, 36, 87);
 $white: rgb(255, 255, 255);
 $lightgray: rgb(229, 229, 229);
 $gunmetal: rgb(31, 38, 42);
+$gunmetallighter: scale-color($gunmetal, $lightness: 20%);
 $dark: rgb(11, 14, 15);
