@@ -84,7 +84,7 @@ class FevermapDataEntry extends LitElement {
   firstUpdated() {
     this.initSlider();
 
-    //The logic for handling main and secondary temperature unit is dependant on having the country code
+    // The logic for handling main and secondary temperature unit is dependant on having the country code
     this.getGeoLocationInfo().then(() => {
       this.feverAmountInMainUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
         false,
@@ -125,16 +125,16 @@ class FevermapDataEntry extends LitElement {
     this.selectedCountryIndex = 0;
   }
 
-  //Promisifying getCurrentPosition
+  // Promisifying getCurrentPosition
   getPosition() {
-    return new Promise(function(resolve, reject) {
+    return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
   }
 
   async getGeoLocationInfo(forceUpdate) {
     if (!this.geoCodingInfo || forceUpdate) {
-      let success = await this.getPosition();
+      const success = await this.getPosition();
       this.geoCodingInfo = await GeolocatorService.getGeoCodingInfo(
         success.coords.latitude,
         success.coords.longitude,
@@ -154,14 +154,14 @@ class FevermapDataEntry extends LitElement {
         SnackBar.success(Translator.get('system_messages.success.location_update'));
       }
       return Promise.resolve();
-    } else {
-      const countryInSelect = this.countrySelectionOptions.find(
-        opt => opt.id === this.geoCodingInfo.countryShort,
-      );
-      if (countryInSelect) {
-        this.selectedCountryIndex = this.countrySelectionOptions.indexOf(countryInSelect) + 1; // Take into account the empty option
-      }
     }
+    const countryInSelect = this.countrySelectionOptions.find(
+      opt => opt.id === this.geoCodingInfo.countryShort,
+    );
+    if (countryInSelect) {
+      this.selectedCountryIndex = this.countrySelectionOptions.indexOf(countryInSelect) + 1; // Take into account the empty option
+    }
+    return Promise.resolve();
   }
 
   handleFeverButton(hasFever) {
@@ -208,7 +208,7 @@ class FevermapDataEntry extends LitElement {
       if (!e.target.value || e.key === 'Tab' || e.key === '.' || e.key === ',') {
         return;
       }
-      //feveramount is always in celsius
+      // feveramount is always in celsius
       this.feverAmount = FeverDataUtil.useFahrenheit(this.geoCodingInfo)
         ? FeverDataUtil.fahrenheitToCelsius(e.target.value)
         : e.target.value;
@@ -222,7 +222,7 @@ class FevermapDataEntry extends LitElement {
       if (!e.target.value || e.key === 'Tab' || e.key === '.' || e.key === ',') {
         return;
       }
-      //feveramount is always in celsius
+      // feveramount is always in celsius
       this.feverAmount = FeverDataUtil.useFahrenheit(this.geoCodingInfo)
         ? e.target.value
         : FeverDataUtil.fahrenheitToCelsius(e.target.value);
@@ -237,22 +237,24 @@ class FevermapDataEntry extends LitElement {
     mainTempInput.addEventListener('blur', e => {
       const val = e.target.value;
       if (val.length < 1) {
-        this.feverAmountInMainUnit = e.target.value = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        this.feverAmountInMainUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
           false,
           this.feverAmount,
           this.geoCodingInfo,
         );
+        e.target.value = this.feverAmountInMainUnit;
       }
     });
 
     secondaryTempInput.addEventListener('blur', e => {
       const val = e.target.value;
       if (val.length < 1) {
-        this.feverAmountInSecondaryUnit = e.target.value = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        this.feverAmountInSecondaryUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
           true,
           this.feverAmount,
           this.geoCodingInfo,
         );
+        e.target.value = this.feverAmountInSecondaryUnit;
       }
     });
 
@@ -978,11 +980,7 @@ class FevermapDataEntry extends LitElement {
   getSubmitButton() {
     return html`
       <div class="entry-field">
-        ${this.errorMessage
-          ? html`
-              <p class="mdc-theme--error">${this.errorMessage}</p>
-            `
-          : ''}
+        ${this.errorMessage ? html` <p class="mdc-theme--error">${this.errorMessage}</p> ` : ''}
         <div class="submit-button">
           <button class="mdc-button mdc-button--outlined" @click="${this.handleSubmit}">
             <div class="mdc-button__ripple"></div>
