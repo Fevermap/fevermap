@@ -60,6 +60,8 @@ class FevermapDataEntry extends LitElement {
     this.errorMessage = null;
     this.hasFever = null;
     this.feverAmount = 35;
+    this.feverAmountInMainUnit = 35;
+    this.feverAmountInSecondaryUnit = 95;
     this.feverAmountNotKnown = false;
     this.birthYear = birthYear || null;
     this.gender = gender || null;
@@ -81,7 +83,21 @@ class FevermapDataEntry extends LitElement {
 
   firstUpdated() {
     this.initSlider();
-    this.getGeoLocationInfo();
+
+    //The logic for handling main and secondary temperature unit is dependant on having the country code
+    this.getGeoLocationInfo().then(() => {
+      this.feverAmountInMainUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        false,
+        this.feverAmount,
+        this.geoCodingInfo,
+      );
+      this.feverAmountInSecondaryUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        true,
+        this.feverAmount,
+        this.geoCodingInfo,
+      );
+    });
+
     Array.from(this.querySelectorAll('.mdc-checkbox')).forEach(elem => {
       // eslint-disable-next-line no-new
       new MDCCheckbox(elem);
@@ -109,28 +125,35 @@ class FevermapDataEntry extends LitElement {
     this.selectedCountryIndex = 0;
   }
 
+  //Promisifying getCurrentPosition
+  getPosition() {
+    return new Promise(function(resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+  }
+
   async getGeoLocationInfo(forceUpdate) {
     if (!this.geoCodingInfo || forceUpdate) {
-      navigator.geolocation.getCurrentPosition(async success => {
-        this.geoCodingInfo = await GeolocatorService.getGeoCodingInfo(
-          success.coords.latitude,
-          success.coords.longitude,
-        );
+      let success = await this.getPosition();
+      this.geoCodingInfo = await GeolocatorService.getGeoCodingInfo(
+        success.coords.latitude,
+        success.coords.longitude,
+      );
 
-        delete this.geoCodingInfo.success;
+      delete this.geoCodingInfo.success;
 
-        const countryInSelect = this.countrySelectionOptions.find(
-          opt => opt.id === this.geoCodingInfo.countryShort,
-        );
-        if (countryInSelect) {
-          this.selectedCountryIndex = this.countrySelectionOptions.indexOf(countryInSelect) + 1; // Take into account the empty option
-        }
+      const countryInSelect = this.countrySelectionOptions.find(
+        opt => opt.id === this.geoCodingInfo.countryShort,
+      );
+      if (countryInSelect) {
+        this.selectedCountryIndex = this.countrySelectionOptions.indexOf(countryInSelect) + 1; // Take into account the empty option
+      }
 
-        this.performUpdate();
-        if (forceUpdate) {
-          SnackBar.success(Translator.get('system_messages.success.location_update'));
-        }
-      });
+      this.performUpdate();
+      if (forceUpdate) {
+        SnackBar.success(Translator.get('system_messages.success.location_update'));
+      }
+      return Promise.resolve();
     } else {
       const countryInSelect = this.countrySelectionOptions.find(
         opt => opt.id === this.geoCodingInfo.countryShort,
@@ -163,52 +186,81 @@ class FevermapDataEntry extends LitElement {
     if (!tempMeter) {
       return;
     }
-    const celcius = this.querySelector('.celcius');
-    const fahrenheit = this.querySelector('.fahrenheit');
-    // This is extremely hacky but it works rn so
+    const mainTempInput = this.querySelector('#temp-input-main');
+    const secondaryTempInput = this.querySelector('#temp-input-secondary');
+
     tempMeter.addEventListener('input', e => {
       this.feverAmount = e.target.value;
-      celcius.value = this.feverAmount;
-      fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
+
+      this.feverAmountInMainUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        false,
+        this.feverAmount,
+        this.geoCodingInfo,
+      );
+
+      this.feverAmountInSecondaryUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        true,
+        this.feverAmount,
+        this.geoCodingInfo,
+      );
     });
-    celcius.addEventListener('keyup', e => {
-      if (e.key === 'Tab' || e.key === '.' || e.key === ',') {
+    mainTempInput.addEventListener('keyup', e => {
+      if (!e.target.value || e.key === 'Tab' || e.key === '.' || e.key === ',') {
         return;
       }
-      // this.handleCommaInput(e);
-      this.feverAmount = e.target.value;
-      fahrenheit.value = FeverDataUtil.celsiusToFahrenheit(e.target.value);
-      tempMeter.value = this.feverAmount;
+      //feveramount is always in celsius
+      this.feverAmount = FeverDataUtil.useFahrenheit(this.geoCodingInfo)
+        ? FeverDataUtil.fahrenheitToCelsius(e.target.value)
+        : e.target.value;
+      this.feverAmountInSecondaryUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        true,
+        this.feverAmount,
+        this.geoCodingInfo,
+      );
     });
-    fahrenheit.addEventListener('keyup', e => {
-      if (e.key === 'Tab' || e.key === '.' || e.key === ',') {
+    secondaryTempInput.addEventListener('keyup', e => {
+      if (!e.target.value || e.key === 'Tab' || e.key === '.' || e.key === ',') {
         return;
       }
-      // this.handleCommaInput(e);
-      this.feverAmount = FeverDataUtil.fahrenheitToCelsius(e.target.value);
-      celcius.value = this.feverAmount;
-      tempMeter.value = this.feverAmount;
+      //feveramount is always in celsius
+      this.feverAmount = FeverDataUtil.useFahrenheit(this.geoCodingInfo)
+        ? e.target.value
+        : FeverDataUtil.fahrenheitToCelsius(e.target.value);
+
+      this.feverAmountInMainUnit = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+        false,
+        this.feverAmount,
+        this.geoCodingInfo,
+      );
     });
 
-    celcius.addEventListener('focus', e => {
+    mainTempInput.addEventListener('blur', e => {
+      const val = e.target.value;
+      if (val.length < 1) {
+        this.feverAmountInMainUnit = e.target.value = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+          false,
+          this.feverAmount,
+          this.geoCodingInfo,
+        );
+      }
+    });
+
+    secondaryTempInput.addEventListener('blur', e => {
+      const val = e.target.value;
+      if (val.length < 1) {
+        this.feverAmountInSecondaryUnit = e.target.value = FeverDataUtil.getFeverWithUnitWithoutSuffix(
+          true,
+          this.feverAmount,
+          this.geoCodingInfo,
+        );
+      }
+    });
+
+    mainTempInput.addEventListener('focus', e => {
       e.target.select();
     });
 
-    celcius.addEventListener('blur', e => {
-      const val = e.target.value;
-      if (val.length < 1) {
-        e.target.value = this.feverAmount;
-      }
-    });
-
-    fahrenheit.addEventListener('blur', e => {
-      const val = e.target.value;
-      if (val.length < 1) {
-        e.target.value = FeverDataUtil.celsiusToFahrenheit(this.feverAmount);
-      }
-    });
-
-    fahrenheit.addEventListener('focus', e => {
+    secondaryTempInput.addEventListener('focus', e => {
       e.target.select();
     });
     // Programmatically set height of the temp meter
@@ -665,14 +717,10 @@ class FevermapDataEntry extends LitElement {
             <div class="fever-amount-display">
               <div class="fever-amount-field  mdc-elevation--z3">
                 <input
-                  class="celcius"
+                  id="temp-input-main"
                   type="number"
                   step="0.1"
-                  value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
-                    false,
-                    this.feverAmount,
-                    this.geoCodingInfo,
-                  )}"
+                  .value="${this.feverAmountInMainUnit}"
                 />
                 <p>${FeverDataUtil.getFeverUnitSuffix(false, this.geoCodingInfo)}</p>
               </div>
@@ -684,7 +732,7 @@ class FevermapDataEntry extends LitElement {
                 min="35"
                 max="42"
                 step="0.1"
-                value="35"
+                .value="${this.feverAmount}"
                 tabindex="-1"
               />
             </div>
@@ -693,12 +741,8 @@ class FevermapDataEntry extends LitElement {
                 <input
                   type="number"
                   step="0.1"
-                  class="fahrenheit"
-                  value="${FeverDataUtil.getFeverWithUnitWithoutSuffix(
-                    true,
-                    this.feverAmount,
-                    this.geoCodingInfo,
-                  )}"
+                  id="temp-input-secondary"
+                  .value="${this.feverAmountInSecondaryUnit}"
                 />
                 <p>${FeverDataUtil.getFeverUnitSuffix(true, this.geoCodingInfo)}</p>
               </div>
