@@ -41,6 +41,12 @@ Red Hat developer account for this unless you already have an account.
 
 ## Installing Fevermap project to OpenShift environment
 
+There are two ways for intalling the Fevermap. Template is a quick and easy
+one command. Ansible playbooks is to control different environmnets handling
+the secrets in proper encrypted way. Ansible is the GitOps way.
+
+## Install using templates
+
 The easiest way is to use the template. It asks you few parameters, and
 lets OpenShift bring up all the components. If you want to use GUI, import the
 template first (need admin for this):
@@ -104,6 +110,94 @@ oc new-app \
   -p API_IMG_URL=quay.io/fevermap/fevermap-api
   ```
 
+# Install using Ansible
+
+Ansible playbooks are in ```ocp/ansible``` directory. The configuration is
+capable of handling several sites. All config across the sites is similar,
+only the site specific details vary.
+
+There are some sites set up:
+
+* dev
+* staging
+* production
+* konttikoulu_staging (my personal playground)
+
+Their corresponding variables are in ```group_vars``` directory for each group.
+Each directory has the following files:
+
+* main.yml - variables specific for the environment.
+* vault - secrets that go into variables, e..g passwords, are encrypted here.
+
+There are also common variables for all sites in ```group_vars/all/main.yml```.
+Some common variables are also set in each role's ```defaults/main.yml``` file.
+
+To allow ansible access your project, do the following commands in your project:
+
+```
+oc create sa ansible
+oc adm policy add-role-to-user admin -z ansible
+oc sa get-token ansible
+```
+
+Then insert the ansible token from the last command to ```vault_api_key```
+-variable in your vault.
+
+To install fevermap into konttikoulu_staging I use:
+
+```
+ansible-playbook -i konttikoulu_staging fevermap.yml \
+  -e manage_projects=true -e state=present
+```
+
+To uninstall it, I use:
+
+```
+ansible-playbook -i konttikoulu_staging fevermap.yml \
+  -e manage_projects=true -e state=absent
+```
+
+I can also configure just parts of it, like update some secret, or e.g. api:
+```
+ansible-playbook -i staging fevermap.yml -t secrets
+ansible-playbook -i staging fevermap.yml -t api
+```
+
+## GitOps with Ansible
+
+Everything in OpenShift can and should be configured now via ansible. This way
+we can track the changes in git. If you want to change a setting or add
+something, do in ```ocp/ansible/``` directory:
+
+1. change the ansible configurations either in group variables, or
+the logic code in ```roles/*``` directories.
+2. test the changes first in staging
+   ```ansible-playbook -i staging fevermap.yml```
+3. Ensure the vault is encrypted
+  ```./ensure-encrypt.sh```
+3. commit the changes, do the usual merge and review...
+4. merge to master
+5. apply into production
+   ```ansible-playbook -i production fevermap.yml```
+
+When you edit ansible code, make sure it's idempodent. Which means you can
+always safely rerun the configurations, and it should repeatedly work and end
+up into same results.
+
+## Ansible secrets handling
+
+Things like passwords or tokens are in vault files. To access/modify them
+you need to place your vault password into ```ocp/ansible/.vault-pw``` file.
+
+You can now access the vaults the following ways:
+```
+ansible-vault decrypt group_vars/staging/vault
+ansible-vault encrypt group_vars/staging/vault
+ansible-vault edit    group_vars/staging/vault
+ansible-vault view    group_vars/staging/vault
+./ensure-encrypt.sh
+```
+
 # Storage
 
 Both web frontend and API service are static images, which won't need persistent
@@ -142,18 +236,18 @@ the ```app/```, ```api/```or ```push-api/``` dir, we don't care:
 ![detect change](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/
   ocp-pipeline-detect-change.png)
 
-If the change is in ```api/```, ```push-api/```or ```app/``` dirs, pipeline does
-the following steps:
+If the change is in ```api/```, ```push-api/```or ```app/``` dirs, pipeline
+does the following steps:
 
 ![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/
 ocp-pipeline-build.png)
 
 1. Detect change, and accordingly kick OpenShift buildstream to:
-   1. If API change, get the python container and do API image build with new
-      code. Store the new image locally
-   2. If APP change, get the code and do nodejs build. Store the artifacts.
-      Start second build step to build NginX image with generated static code.
-   3. If Push API change, get the code and do nodejs build.
+  * If API change, get the python container and do API image build with new
+    code. Store the new image locally
+  * If APP change, get the code and do nodejs build. Store the artifacts. Start
+    second build step to build NginX image with generated static code.
+  * If Push API change, get the code and do nodejs build.
 2. Tag the built images with git version hash in OpenShift registry.
 3. Push images to Quay.io for further use and security scan.
 4. Tag image in Quay.io with git version hash.
@@ -179,7 +273,6 @@ ocp-pipeline-release.png)
 8. Tag [Push API image in Quay.io](
    https://quay.io/repository/fevermap/fevermap-push-api?tab=tags) with
    release tag
-
 
 OpenShift is set to trigger on the release tag. New release tag will cause a
 rolling upgrade for production. See
@@ -236,51 +329,7 @@ container dies, it will be respawn by kubernetes.
 
 # OpenShift settings
 
-All OpenShift settings are stored in /ocp directory of this repository.
-under OCP we have the following directories:
+All OpenShift settings are stored in ```/ocp/ansible/``` directory of this
+repository.
 
-## production
-
-Directory ocp/production contains
-
-* all yamls from production
-* script pull-prod-config.sh to update it from OCP Online
-* utility script to patch the production
-* template for example
-
-## staging
-
-Directory ocp/staging contains
-
-* all yamls from staging
-* script pull-staging-config.sh to update it from OCP Online.
-* utility script to patch the production
-* template for example
-
-## containers
-
-* buildah/docker -files for building the utility containers like the backup one.
-
-## Security
-
-Secrets like quay.io push, web certs, backup bucket key are stored encrypted.
-Encryption is done by using ansible-vault. There are always more than one person
-who holds the ansible vault key. Make sure you **never check in the secrets into
-git as plain text!**. An example to encrypt/decrypt a secret, e.g. when SSL
-certs are changed (both staging and production have
-[utility for this](https://gitlab.com/fevermap/fevermap/-/blob/master/ocp/
-production/ensure-encrypt.sh)):
-
-
-```
-ansible-vault decrypt --vault-password-file .vault-pw \
-  secret-prod-aws-db-backup.yaml
-ansible-vault encrypt --vault-password-file .vault-pw \
-  secret-prod-aws-db-backup.yaml
-```
-
-The following files are encrypted:
-
-* Routes with SSL certs and keys
-* Any kubernetes secret
 

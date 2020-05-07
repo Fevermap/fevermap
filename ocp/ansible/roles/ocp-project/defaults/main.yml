@@ -1,0 +1,5 @@
+---
+state: present
+project_name: my_project
+project_description: My OpenShift environment for playing around.
+project_display_name: My OpenShift project

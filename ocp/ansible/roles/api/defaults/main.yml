@@ -1,0 +1,19 @@
+---
+state: present
+app: fevermap-api
+db_name: mariadb
+db_user: dbuser
+db_password: dbpass
+api_build_image: 'registry.redhat.io/ubi8/python-36'
+api_python_version: '3.6'
+api_source_repository_ref: 'master'
+api_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+api_gitlab_webhook_secret: 'glsecret'
+api_replicas: 1
+api_image: "{{ app }}-api"
+api_image_tag: latest
+api_fqdn: api.apps.youropenshift.com
+api_build: true
+api_hpa_min_replicas: 1
+api_hpa_max_replicas: 6
+api_hpa_target_cpu_utilization_percentage: 50

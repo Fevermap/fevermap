@@ -1,0 +1,7 @@
+---
+
+app: fevermap
+prod_namespace: fevermap-prod
+staging_namespace: fevermap-staging
+
+manage_projects: false

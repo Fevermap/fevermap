@@ -1,0 +1,51 @@
+---
+
+- name: setup fevermap
+  hosts: all
+  gather_facts: false
+  module_defaults:
+    group/k8s:
+      state: 'present'
+      host: "{{ api_url }}"
+      api_key: "{{ api_key }}"
+      namespace: "{{ project_name }}"
+
+  tasks:
+
+    - include_role:
+        name: ocp-project
+      tags: project
+      when: manage_projects|bool
+
+    - name: Do the modules only if project is still present.
+      block:
+
+        - include_role:
+            name: secrets
+          tags: secrets
+
+        - include_role:
+            name: db
+          tags: db
+
+        - include_role:
+            name: api
+          tags: api
+
+        - include_role:
+            name: app
+          tags: app
+
+        - include_role:
+            name: push-api
+          tags: push-api
+
+        - include_role:
+            name: pipelines
+          tags: pipelines
+
+        - include_role:
+            name: certbot-ocp
+          tags: certbot
+
+      when: not (manage_projects|bool and state == 'absent')

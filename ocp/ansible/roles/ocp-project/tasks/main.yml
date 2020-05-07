@@ -1,0 +1,14 @@
+---
+
+- name: Ensure project namespace
+  tags: handle_project
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: project.openshift.io/v1
+        kind: Project
+        metadata:
+          annotations:
+            openshift.io/description: "{{ project_description }}"
+            openshift.io/display-name: "{{ project_display_name }}"
+          name: "{{ project_name }}"

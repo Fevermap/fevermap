@@ -1,0 +1,372 @@
+---
+# tasks file for api
+
+- name: Image stream for API build image
+  tags: api
+  when: api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: ubi8-python-36
+          annotations:
+            description: Base image to build API onto
+            template.alpha.openshift.io/wait-for-ready: "true"
+          labels:
+            app: "{{ app }}"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ api_build_image }}"
+              name: latest
+              importPolicy:
+                scheduled: true
+              referencePolicy:
+                type: Source
+
+#
+# We have different source for API image depending whether whether
+# we use self built image or external. This is for self built (e.g. staging).
+#
+- name: Image stream
+  tags: api
+  when: api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: "{{ app }}-api"
+          annotations:
+            description: Image used to run API
+            template.alpha.openshift.io/wait-for-ready: "true"
+          labels:
+            app: "{{ app }}"
+        spec:
+          lookupPolicy:
+            local: false
+
+#
+# We have different source for API image depending whether whether
+# we use self built image or external. This is for external (e..g prod).
+#
+- name: Image stream
+  tags: api
+  when: not api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: "{{ app }}-api"
+          annotations:
+            description: Image used to run API
+            template.alpha.openshift.io/wait-for-ready: "true"
+          labels:
+            app: "{{ app }}"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ api_image }}:{{ api_image_tag }}"
+              name: "{{ api_image_tag }}"
+              importPolicy:
+                scheduled: true
+              referencePolicy:
+                type: Source
+
+- name: BuildConfig
+  tags: api
+  when: api_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: build.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+          name: "{{ app }}-api"
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: api
+            app.kubernetes.io/instance: "{{ app }}"
+            app.kubernetes.io/name: python
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: python
+            app.openshift.io/runtime-version: "{{ api_python_version }}"
+          annotations:
+            app.openshift.io/vcs-ref: "{{ api_source_repository_ref }}"
+            app.openshift.io/vcs-uri: "{{ api_source_repository_url }}"
+        spec:
+          output:
+            to:
+              kind: ImageStreamTag
+              name: "{{ app }}-api:latest"
+          successfulBuildsHistoryLimit: 5
+          failedBuildsHistoryLimit: 5
+          strategy:
+            type: Source
+            sourceStrategy:
+              from:
+                kind: ImageStreamTag
+                name: 'ubi8-python-36:latest'
+              pullSecret:
+                name: registry-redhat-io-secret
+          source:
+            type: Git
+            git:
+              uri: "{{ api_source_repository_url }}"
+              ref: "{{ api_source_repository_ref }}"
+            contextDir: /api
+          triggers:
+            - gitlab:
+                secretReference:
+                  name: "{{ app }}-gitlab-webhook"
+              type: GitLab
+            - imageChange:
+                from:
+                  kind: ImageStreamTag
+                  name: 'ubi8-python-36:latest'
+              type: ImageChange
+            - type: ConfigChange
+          runPolicy: Serial
+
+- name: Startup script as mountable config map
+  tags: api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        data:
+          entrypoint.sh: |
+            #!/bin/bash
+            set -e
+
+            # Turn on bash's job control so we can spawn subcommands
+            set -m
+
+            # https://flask.palletsprojects.com/en/1.1.x/cli/
+            export FLASK_APP="fevermap"
+
+            # Default to development if nothing is set
+            if [ -z "$FLASK_ENV" ]
+            then
+              export FLASK_ENV="development"
+            fi
+
+            export PYTHONPATH="${APPDIR}:${PYTHONPATH}"
+            export LC_ALL=C.UTF-8
+            export LANG=C.UTF-8
+
+            uwsgi \
+                --module=fevermap.wsgi:application \
+                --master \
+                --processes=5 \
+                --threads=2 \
+                --set-placeholder="base=${APPDIR}" \
+                --chdir="%(base)" \
+                --http-socket="0.0.0.0:9000" \
+                --uid="$(id -un)" \
+                --gid="$(id -gn)" \
+                --vacuum \
+                --die-on-term \
+                --env="LC_ALL=C.UTF-8" \
+                --env="LANG=C.UTF-8" \
+                --disable-logging
+        kind: ConfigMap
+        metadata:
+          name: "{{ app }}-api-uwsgi-starter"
+          labels:
+            app: "{{ app }}"
+
+- name: Deployment config
+  tags: api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: apps.openshift.io/v1
+        kind: DeploymentConfig
+        metadata:
+          annotations:
+            app.openshift.io/connects-to: "{{ app }}-db"
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: api
+            app.kubernetes.io/instance: "{{ app }}-api"
+            app.kubernetes.io/name: python
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: python
+            app.openshift.io/runtime-version: "{{ api_python_version }}"
+          name: "{{ app }}-api"
+        spec:
+          replicas: "{{ api_replicas }}"
+          revisionHistoryLimit: 5
+          selector:
+            deploymentconfig: "{{ app }}-api"
+          strategy:
+            activeDeadlineSeconds: 21600
+            rollingParams:
+              intervalSeconds: 1
+              maxSurge: 25%
+              maxUnavailable: 25%
+              timeoutSeconds: 600
+              updatePeriodSeconds: 1
+            type: Rolling
+          template:
+            metadata:
+              creationTimestamp: null
+              labels:
+                deploymentconfig: "{{ app }}-api"
+              name: "{{ app }}-api"
+            spec:
+              containers:
+                - env:
+                    - name: FEVERMAP_API_DATABASE_URI
+                      valueFrom:
+                        secretKeyRef:
+                          key: database-uri
+                          name: "{{ app }}-db"
+                    - name: FLASK_ENV
+                      value: kube
+                    - name: APP_SCRIPT
+                      value: entrypoint.sh
+                    - name: APPDIR
+                      value: /opt/app-root/src
+                    - name: UWSGIPLUGINLINE
+                  image: "{{ app }}-api:{{ api_image_tag }}"
+                  imagePullPolicy: IfNotPresent
+                  name: "{{ app }}-api"
+                  ports:
+                    - containerPort: 8080
+                      protocol: TCP
+                  resources:
+                    limits:
+                      memory: 1Gi
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  readinessProbe:
+                    httpGet:
+                      path: /ping
+                      port: 9000
+                      scheme: HTTP
+                    initialDelaySeconds: 5
+                    timeoutSeconds: 2
+                    periodSeconds: 10
+                    successThreshold: 1
+                    failureThreshold: 3
+                  livenessProbe:
+                    httpGet:
+                      path: /ping
+                      port: 9000
+                      scheme: HTTP
+                    initialDelaySeconds: 10
+                    timeoutSeconds: 3
+                    periodSeconds: 10
+                    successThreshold: 1
+                    failureThreshold: 3
+                  volumeMounts:
+                    - mountPath: /opt/app-root/src/entrypoint.sh
+                      name: uwsgi-starter
+                      readOnly: true
+                      subPath: entrypoint.sh
+              volumes:
+                - configMap:
+                    defaultMode: 0550
+                    name: "{{ app }}-api-uwsgi-starter"
+                  name: uwsgi-starter
+              dnsPolicy: ClusterFirst
+              restartPolicy: Always
+              schedulerName: default-scheduler
+              terminationGracePeriodSeconds: 30
+          test: false
+          triggers:
+            - imageChangeParams:
+                automatic: true
+                containerNames:
+                  - "{{ app }}-api"
+                from:
+                  kind: ImageStreamTag
+                  name: "{{ app }}-api:{{ api_image_tag }}"
+              type: ImageChange
+            - type: ConfigChange
+
+- name: Autoscaling
+  tags: api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: autoscaling/v1
+        kind: HorizontalPodAutoscaler
+        metadata:
+          labels:
+            app: "{{ app }}"
+          name: "{{ app }}-api"
+        spec:
+          maxReplicas: "{{ api_hpa_max_replicas }}"
+          minReplicas: "{{ api_hpa_min_replicas }}"
+          scaleTargetRef:
+            apiVersion: v1
+            kind: DeploymentConfig
+            name: "{{ app }}-api"
+          targetCPUUtilizationPercentage:
+            "{{ api_hpa_target_cpu_utilization_percentage }}"
+
+- name: service
+  tags: api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: api
+            app.kubernetes.io/instance: "{{ app }}"
+            app.kubernetes.io/name: python
+            app.kubernetes.io/part-of: "{{ app }}"
+          name: "{{ app }}-api"
+        spec:
+          ports:
+            - name: 9000-tcp
+              port: 9000
+              protocol: TCP
+              targetPort: 9000
+          sessionAffinity: None
+          type: ClusterIP
+          selector:
+            deploymentconfig: "{{ app }}-api"
+
+- name: Route
+  tags: api
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: route.openshift.io/v1
+        kind: Route
+        metadata:
+          name: "{{ app }}-api"
+          labels:
+            app: "{{ app }}"
+            letsencrypt-me: 'true'
+        spec:
+          host: "{{ api_fqdn }}"
+          port:
+            targetPort: 9000-tcp
+          to:
+            kind: Service
+            name: "{{ app }}-api"
+            weight: 100
+          wildcardPolicy: None
+          tls:
+            termination: edge

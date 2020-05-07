@@ -1,0 +1,75 @@
+---
+ansible_connection: local
+
+#
+# OpenShift
+#
+api_url: 'https://api.pro-eu-west-1.openshift.com'
+api_key: "{{ vault_api_key }}"
+
+#
+# Labels
+#
+env: staging
+app: fevermap
+
+#
+# Project
+#
+project_name: "{{ staging_namespace }}"
+manage_projects: false
+redhat_io_pull_token: "{{ vault_redhat_io_pull_token }}"
+quay_push_passwd: "{{ vault_quay_push_passwd }}"
+quay_push_user: "{{ vault_quay_push_user }}"
+
+#
+# Database
+#
+db_name: fevermap
+db_user: "{{ vault_db_user }}"
+db_password: "{{ vault_db_password }}"
+db_root_password: "{{ vault_db_root_password }}"
+
+#
+# API
+#
+api_build: true
+api_source_repository_ref: 'master'
+api_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+api_replicas: 1
+api_image: "{{ app }}-api:latest"
+api_fqdn: 'api-staging.fevermap.net'
+api_gitlab_webhook_secret_key: "{{ vault_api_gitlab_webhook_secret_key }}"
+
+#
+# Push-API
+#
+push_api_firebase_account: "{{ vault_push_api_firebase_account }}"
+push_api_fqdn: push-api-staging.fevermap.net
+push_api_replicas: 0
+push_api_build: true
+
+#
+# APP
+#
+app_build: true
+app_fqdn:
+  - 'staging.fevermap.net'
+app_google_analytics_code: "{{ vaut_app_google_analytics_code }}"
+ws_api_url: "https://{{ api_fqdn }}"
+ws_app_url: 'https://staging.fevermap.net'
+ws_push_api_url: 'https://{{ push_api_fqdn }}'
+app_replicas: 1
+apm_monitoring_js: vault_apm_monitoring_js
+
+#
+# Certbot
+#
+cb_extra_opts: ''
+cb_email: "{{ vault_cb_email }}"
+
+#
+# Pipelines
+#
+create_jenkins: false
+modify_default_jenkins: true

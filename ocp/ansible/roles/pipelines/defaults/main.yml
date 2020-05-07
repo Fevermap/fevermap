@@ -1,0 +1,11 @@
+---
+
+state: present
+app: fevermap
+project_name: fevermap
+env: staging
+jenkins_source_repository_ref: 'master'
+jenkins_source_repository_url: 'https://gitlab.com/fevermap/fevermap.git'
+jenkins_replicas: 1
+create_jenkins: true
+modify_default_jenkins: false

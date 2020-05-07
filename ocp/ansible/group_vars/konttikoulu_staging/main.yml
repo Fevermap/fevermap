@@ -1,0 +1,65 @@
+---
+
+ansible_connection: local
+
+#
+# Labels
+#
+env: staging
+app: fevermap
+
+#
+# OpenShift
+#
+api_url: 'https://api.ocp4.konttikoulu.fi:6443'
+api_key: "{{ vault_api_key }}"
+
+#
+# Project
+#
+project_name: "{{ staging_namespace }}"
+manage_projects: true
+project_description: Fevermap Staging environment for building,
+  testing and pipelines.
+project_display_name: Fevermap Staging
+redhat_io_pull_token: "{{ vault_redhat_io_pull_token }}"
+quay_push_passwd: "{{ vault_quay_push_passwd }}"
+quay_push_user: "{{ vault_quay_push_user }}"
+
+#
+# Database
+#
+db_name: mariadb
+db_size: '1Gi'
+#
+# API
+#
+api_fqdn: api-staging.apps.ocp4.konttikoulu.fi
+api_gitlab_webhook_secret_key: "{{ vault_api_gitlab_webhook_secret_key }}"
+api_build: true
+
+#
+# Push-API
+#
+push_api_fqdn: papi-staging.apps.ocp4.konttikoulu.fi
+push_api_build: true
+
+#
+# APP
+#
+app_fqdn:
+  - app-staging.apps.ocp4.konttikoulu.fi
+app_google_analytics_code: "{{ vaut_app_google_analytics_code }}"
+ws_api_url: "https://{{ api_fqdn }}"
+ws_app_url: 'https://app-staging.apps.ocp4.konttikoulu.fi'
+ws_push_api_url: 'https://{{ push_api_fqdn }}'
+app_replicas: 1
+app_build: true
+apm_monitoring_js: vault_apm_monitoring_js
+
+#
+# Certbot
+#
+cb_extra_opts: ''
+cb_email: "{{ vault_cb_email }}"
+certbot_storage_size: '20Mi'

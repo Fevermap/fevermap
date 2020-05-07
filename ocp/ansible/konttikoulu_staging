@@ -1,0 +1,8 @@
+
+[konttikoulu_staging]
+
+konttikoulu_staging ansible_connection=local
+
+
+
+

@@ -1,0 +1,504 @@
+---
+
+- name: Secret for New-Relic
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Secret
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: "{{ app }}-app"
+            app.kubernetes.io/part-of: "{{ app }}"
+            env: "{{ env }}"
+          name: "{{ app }}-apm-monitoring"
+        data:
+          apm-monitoring.js: "{{ apm_monitoring_js | string | b64encode }}"
+        type: Opaque
+
+- name: ImageStream Stage1 build image
+  tags: app
+  when: app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: ubi8-s2i-web-app
+          labels:
+            app: "{{ app }}"
+          annotations:
+            description: Base image to build front 1 stage onto
+            template.alpha.openshift.io/wait-for-ready: "true"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ app_stage1_build_image }}"
+              name: latest
+              importPolicy:
+                scheduled: true
+              referencePolicy:
+                type: Source
+
+- name: ImageStream Stage1 output image
+  tags: app
+  when: app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: "{{ app }}-app-compile"
+          labels:
+            app: "{{ app }}"
+          annotations:
+            description: 1st Stage builder image output for the front
+            template.alpha.openshift.io/wait-for-ready: "true"
+        spec:
+          lookupPolicy:
+            local: false
+
+- name: ImageStream Stage2 build image
+  tags: app
+  when: app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: nginx-116
+          labels:
+            app: "{{ app }}"
+          annotations:
+            description: 2nd base image to build front
+            template.alpha.openshift.io/wait-for-ready: "true"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ app_stage2_build_image }}"
+              name: latest
+              importPolicy:
+                scheduled: true
+              referencePolicy:
+                type: Source
+
+#
+# We have different source for APP image depending whether whether
+# we use self built image or external. This is for self built (e.g. staging).
+#
+- name: ImageStream
+  tags: app
+  when: app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: "{{ app }}-app"
+          labels:
+            app: "{{ app }}"
+          annotations:
+            description: The final run-time image for frontend
+            template.alpha.openshift.io/wait-for-ready: "true"
+        spec:
+          lookupPolicy:
+            local: false
+
+#
+# We have different source for APP image depending whether whether
+# we use self built image or external. This is for external (e.g. prod).
+#
+- name: ImageStream
+  tags: app
+  when: not app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: image.openshift.io/v1
+        kind: ImageStream
+        metadata:
+          name: "{{ app }}-app"
+          labels:
+            app: "{{ app }}"
+          annotations:
+            description: The final run-time image for frontend
+            template.alpha.openshift.io/wait-for-ready: "true"
+        spec:
+          lookupPolicy:
+            local: false
+          tags:
+            - annotations: null
+              from:
+                kind: DockerImage
+                name: "{{ app_image }}:{{ app_image_tag }}"
+              name: "{{ app_image_tag }}"
+              importPolicy:
+                scheduled: true
+              referencePolicy:
+                type: Source
+
+- name: BuildConfig Stage1 build
+  tags: app
+  when: app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: build.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+          name: "{{ app }}-app-compile"
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: front
+            app.kubernetes.io/instance: "{{ app }}"
+            app.kubernetes.io/name: nodejs
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: nodejs
+        spec:
+          failedBuildsHistoryLimit: 5
+          output:
+            to:
+              kind: ImageStreamTag
+              name: "{{ app }}-app-compile:latest"
+          resources:
+            limits:
+              memory: 2Gi
+          runPolicy: Serial
+          source:
+            contextDir: app
+            git:
+              uri: "{{ app_source_repository_url }}"
+              ref: "{{ app_source_repository_ref }}"
+            type: Git
+          strategy:
+            sourceStrategy:
+              env:
+                - name: NPM_BUILD
+                  value: >-
+                    webpack --mode production --env.NODE_ENV=production
+                - name: OUTPUT_DIR
+                  value: dist
+              from:
+                kind: ImageStreamTag
+                name: "ubi8-s2i-web-app:latest"
+            type: Source
+          successfulBuildsHistoryLimit: 5
+          triggers:
+            - gitlab:
+                secretReference:
+                  name: "{{ app }}-gitlab-webhook"
+              type: GitLab
+            - type: ConfigChange
+            - imageChange:
+              type: ImageChange
+
+- name: BuildConfig Stage2 build
+  tags: app
+  when: app_build
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: build.openshift.io/v1
+        kind: BuildConfig
+        metadata:
+          name: "{{ app }}-app"
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: front
+            app.kubernetes.io/instance: "{{ app }}-app"
+            app.kubernetes.io/name: nginx
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: nginx
+        spec:
+          failedBuildsHistoryLimit: 5
+          nodeSelector: null
+          output:
+            to:
+              kind: ImageStreamTag
+              name: "{{ app }}-app:latest"
+          runPolicy: Serial
+          source:
+            images:
+              - as: null
+                from:
+                  kind: ImageStreamTag
+                  name: "{{ app }}-app-compile:latest"
+                paths:
+                  - destinationDir: .
+                    sourcePath: /opt/app-root/output/.
+            type: Image
+          strategy:
+            type: Source
+            sourceStrategy:
+              from:
+                kind: ImageStreamTag
+                name: 'nginx-116:latest'
+              pullSecret:
+                name: registry-redhat-io-secret
+              incremental: true
+          successfulBuildsHistoryLimit: 5
+          triggers:
+            - type: ConfigChange
+            - imageChange:
+                from:
+                  kind: ImageStreamTag
+                  name: 'nginx-116:latest'
+              type: ImageChange
+
+- name: Window settings ConfigMap
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        data:
+          window-settings.js: |+
+            window.URLS = {
+                API_URL: '{{ ws_api_url }}',
+                APP_URL: '{{ ws_app_url }}',
+                PUSH_API_URL: '{{ ws_push_api_url }}'
+            };
+            window.GOOGLE_ANALYTICS_CODE="{{app_google_analytics_code}}";
+
+        kind: ConfigMap
+        metadata:
+          name: "{{ app }}-window-settings"
+          labels:
+            app: "{{ app }}"
+
+- name: Liveness Nginx server config
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        data:
+          liveness.conf: |2
+
+            map $http_user_agent $log_ua {
+
+                ~kube-probe 0;
+                ~Pingdom 0;
+
+                default 1;
+            }
+
+            server {
+                listen       8081 default_server;
+                listen       [::]:8081 default_server;
+                server_name  _;
+                root         /opt/app-root/src;
+
+                access_log /var/log/nginx/access.log main if=$log_ua;
+
+                location / {
+                }
+
+                error_page 404 /404.html;
+                location = /40x.html {
+                }
+
+                error_page 500 502 503 504  /50x.html;
+                location = /50x.html {
+                }
+            }
+        kind: ConfigMap
+        metadata:
+          name: "{{ app }}-app-nginx-liveness"
+          labels:
+            app: "{{ app }}"
+
+- name: DeploymentConfig
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: apps.openshift.io/v1
+        kind: DeploymentConfig
+        metadata:
+          labels:
+            app: "{{ app }}"
+            app.kubernetes.io/component: front
+            app.kubernetes.io/instance: "{{ app }}-app"
+            app.kubernetes.io/name: nginx
+            app.kubernetes.io/part-of: "{{ app }}"
+            app.openshift.io/runtime: nginx
+            app.openshift.io/runtime-version: "1.12"
+          name: "{{ app }}-app"
+        spec:
+          replicas: "{{ app_replicas }}"
+          revisionHistoryLimit: 10
+          selector:
+            deploymentconfig: "{{ app }}-app"
+          strategy:
+            activeDeadlineSeconds: 21600
+            rollingParams:
+              intervalSeconds: 1
+              maxSurge: 25%
+              maxUnavailable: 25%
+              timeoutSeconds: 600
+              updatePeriodSeconds: 1
+            type: Rolling
+          template:
+            metadata:
+              labels:
+                deploymentconfig: "{{ app }}-app"
+            spec:
+              containers:
+                - image: "{{ app }}-app:{{ app_image_tag }}"
+                  imagePullPolicy: IfNotPresent
+                  name: "{{ app }}-app"
+                  ports:
+                    - containerPort: 8080
+                      protocol: TCP
+                    - containerPort: 8081
+                      protocol: TCP
+                  livenessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /window-settings.js
+                      port: 8081
+                      scheme: HTTP
+                    initialDelaySeconds: 10
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 2
+                  readinessProbe:
+                    failureThreshold: 3
+                    httpGet:
+                      path: /window-settings.js
+                      port: 8081
+                      scheme: HTTP
+                    initialDelaySeconds: 5
+                    periodSeconds: 10
+                    successThreshold: 1
+                    timeoutSeconds: 2
+                  resources:
+                    limits:
+                      memory: 1Gi
+                  terminationMessagePath: /dev/termination-log
+                  terminationMessagePolicy: File
+                  volumeMounts:
+                    - mountPath: /opt/app-root/src/window-settings.js
+                      name: "{{ app }}-window-settings"
+                      readOnly: true
+                      subPath: window-settings.js
+                    - mountPath: /opt/app-root/etc/nginx.d/liveness.conf
+                      name: liveness-conf
+                      readOnly: true
+                      subPath: liveness.conf
+                    - mountPath: /opt/app-root/src/apm-monitoring.js
+                      name: apm-monitoring
+                      readOnly: true
+                      subPath: apm-monitoring.js
+              dnsPolicy: ClusterFirst
+              restartPolicy: Always
+              schedulerName: default-scheduler
+              terminationGracePeriodSeconds: 30
+              volumes:
+                - configMap:
+                    defaultMode: 420
+                    name: "{{ app }}-window-settings"
+                  name: "{{ app }}-window-settings"
+                - configMap:
+                    defaultMode: 0444
+                    name: "{{ app }}-app-nginx-liveness"
+                  name: liveness-conf
+                - secret:
+                    defaultMode: 420
+                    secretName: "{{ app }}-apm-monitoring"
+                  name: apm-monitoring
+          test: false
+          triggers:
+            - type: ConfigChange
+            - imageChangeParams:
+                automatic: true
+                containerNames:
+                  - "{{ app }}-app"
+                from:
+                  kind: ImageStreamTag
+                  name: "{{ app }}-app:{{ app_image_tag }}"
+              type: ImageChange
+
+- name: Autoscaling
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: autoscaling/v1
+        kind: HorizontalPodAutoscaler
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: "{{ app }}"
+          name: "{{ app }}-app"
+        spec:
+          maxReplicas: "{{ app_hpa_max_replicas }}"
+          minReplicas: "{{ app_hpa_min_replicas }}"
+          scaleTargetRef:
+            apiVersion: v1
+            kind: DeploymentConfig
+            name: "{{ app }}-app"
+          targetCPUUtilizationPercentage:
+            "{{ app_hpa_target_cpu_utilization_percentage }}"
+
+- name: Service
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: v1
+        kind: Service
+        metadata:
+          name: "{{ app }}-app"
+          labels:
+            app: "{{ app }}"
+        spec:
+          ports:
+            - name: 8080-tcp
+              port: 8080
+              protocol: TCP
+              targetPort: 8080
+          selector:
+            deploymentconfig: "{{ app }}-app"
+          sessionAffinity: None
+          type: ClusterIP
+
+- name: Routes
+  tags: app
+  k8s:
+    state: "{{ state }}"
+    definition:
+      - apiVersion: route.openshift.io/v1
+        kind: Route
+        metadata:
+          name: "{{ item }}"
+          labels:
+            app: "{{ app }}"
+            letsencrypt-me: 'true'
+        spec:
+          host: "{{ item }}"
+          port:
+            targetPort: 8080-tcp
+          to:
+            kind: Service
+            name: "{{ app }}-app"
+            weight: 100
+          wildcardPolicy: None
+          tls:
+            termination: edge
+  loop: "{{ app_fqdn }}"
