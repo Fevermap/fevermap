@@ -57,6 +57,8 @@ If you have Python/Flask skills, you can participate in back-end development. Se
 
 If you have checked out a clone of this repository, simply run `docker-compose up --build` to play around with the [local development environment](https://www.youtube.com/watch?v=hsXWF-hpBJM).
 
+If you have OpenShift/Kubernetes/Ansible skills, you can participate in operations automation. See [ocp/README.md](ocp/README.md) for details.
+
 This is an open source project, so feel free to review the code, fix things you think are important and open a merge request for others to review.
 
 Read more in [CONTRIBUTING.md](CONTRIBUTING.md).
