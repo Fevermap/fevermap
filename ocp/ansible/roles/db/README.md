@@ -20,6 +20,7 @@ Defaults for following variables are in defaults/main.yml:
 * **app**: app label for all resources created.
 * **db_size**: Storage size for database, e.g: 1Gi
 * **db_image**: Image to use for database, e.g: mariadb:10.2
+* **db_memory_limit**: Pod memory limit
 
 Dependencies
 ------------

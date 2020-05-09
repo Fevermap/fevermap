@@ -389,7 +389,7 @@
                     timeoutSeconds: 2
                   resources:
                     limits:
-                      memory: 1Gi
+                      memory: "{{ app_memory_limit }}"
                   terminationMessagePath: /dev/termination-log
                   terminationMessagePolicy: File
                   volumeMounts:

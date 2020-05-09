@@ -29,6 +29,7 @@ db_name: fevermap
 db_user: "{{ vault_db_user }}"
 db_password: "{{ vault_db_password }}"
 db_root_password: "{{ vault_db_root_password }}"
+db_memory_limit: "1Gi"
 
 #
 # API

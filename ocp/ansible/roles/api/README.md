@@ -31,6 +31,7 @@ Defaults for following variables are in defaults/main.yml:
 * **api_image_tag**: Image tag used, e.g. release/latest
 * **api_fqdn**: Public URL for your API.
 * **app_hpa_\***: Autoscaler limits and trigger
+* **app_memory_limit**: Pod memory limit
 
 Dependencies
 ------------

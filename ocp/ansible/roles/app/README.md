@@ -29,6 +29,7 @@ Defaults for following variables are in defaults/main.yml:
 * **ws_api_url**: How does browser reach your API? E.g:'https://api.example.com'
 * **ws_app_url**: How does browser reach your API? E.g:'https://app.example.com'
 * **api_hpa_\***: Autoscaler limits and trigger
+* **api_memory_limit**: Pod memory limit
 
 Dependencies
 ------------
