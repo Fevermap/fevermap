@@ -251,7 +251,7 @@
                       protocol: TCP
                   resources:
                     limits:
-                      memory: 1Gi
+                      memory: "{{ api_memory_limit }}"
                   terminationMessagePath: /dev/termination-log
                   terminationMessagePolicy: File
                   readinessProbe:

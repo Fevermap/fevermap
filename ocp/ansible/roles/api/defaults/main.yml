@@ -17,3 +17,4 @@ api_build: true
 api_hpa_min_replicas: 1
 api_hpa_max_replicas: 6
 api_hpa_target_cpu_utilization_percentage: 50
+api_memory_limit: "256Mi"

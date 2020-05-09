@@ -55,17 +55,22 @@ parameters:
     displayName: Memory Limit Frontned
     name: MEMORY_APP_LIMIT
     required: true
-    value: 512Mi
+    value: 256Mi
   - description: Maximum amount of memory the API container can use.
     displayName: Memory Limit API
     name: MEMORY_API_LIMIT
     required: true
-    value: 512Mi
+    value: 256Mi
+  - description: Maximum amount of memory the Push API container can use.
+    displayName: Memory Limit Push API
+    name: MEMORY_PUSH_API_LIMIT
+    required: true
+    value: 256Mi
   - description: Maximum amount of memory the MySQL container can use.
     displayName: Memory Limit (MySQL)
     name: MEMORY_MYSQL_LIMIT
     required: true
-    value: 512Mi
+    value: 1Gi
   - description: Volume space available for data, e.g. 512Mi, 2Gi
     displayName: Volume Capacity
     name: VOLUME_CAPACITY
@@ -159,7 +164,7 @@ objects:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1Gi
+          storage: ${VOLUME_CAPACITY}
   - apiVersion: apps.openshift.io/v1
     kind: DeploymentConfig
     metadata:
@@ -244,7 +249,7 @@ objects:
                 timeoutSeconds: 1
               resources:
                 limits:
-                  memory: 2Gi
+                  memory: ${MEMORY_MYSQL_LIMIT}
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               volumeMounts:
@@ -473,7 +478,7 @@ objects:
                   protocol: TCP
               resources:
                 limits:
-                  memory: 1Gi
+                  memory: ${MEMORY_API_LIMIT}
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               readinessProbe:
@@ -822,7 +827,7 @@ objects:
                 timeoutSeconds: 2
               resources:
                 limits:
-                  memory: 1Gi
+                  memory: ${MEMORY_APP_LIMIT}
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               volumeMounts:
@@ -989,6 +994,9 @@ objects:
               ports:
                 - containerPort: 9001
                   protocol: TCP
+              resources:
+                limits:
+                  memory: ${MEMORY_PUSH_API_LIMIT}
               terminationMessagePath: /dev/termination-log
               terminationMessagePolicy: File
               volumeMounts:

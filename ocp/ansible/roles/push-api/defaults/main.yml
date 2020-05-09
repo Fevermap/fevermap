@@ -10,3 +10,4 @@ push_api_image_tag: latest
 push_api_fqdn: papi.example.com
 push_api_replicas: 0
 push_api_build: true
+push_api_memory_limit: "256Mi"

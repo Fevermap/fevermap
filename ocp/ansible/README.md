@@ -72,6 +72,7 @@ Labels are applied to all created resources:
 * **db_user**: Database credentials
 * **db_password**: Database credentials
 * **db_root_password**: Database credentials for root
+* **db_memory_limit**: Pod memory limit
 
 ## API
 
@@ -84,6 +85,7 @@ Labels are applied to all created resources:
 * **api_fqdn**: Public FQDN for your API. This will be set with SSL certs too.
 * **api_gitlab_webhook_secret_key**: Gitlab starts pipelines by sending webhook.
   This is the secret that is required for webhook.
+* **api_memory_limit**: Pod memory limit
 
 ## APP
 
@@ -96,6 +98,7 @@ Labels are applied to all created resources:
 * **app_replicas**: How many instances of APP you need?
 * **apm_monitoring_js**: vault_apm_monitoring_js
 * **app_image**: Which image to use for APP? In production we fix this to
+* **app_memory_limit**: Pod memory limit
 
 ## Push-API
 
@@ -107,6 +110,7 @@ Labels are applied to all created resources:
 * **push_api_build**: true/false whether to build Push-API. E.g. false in
   production.
 * **push_api_image**: Which image to use for Push-API? In production we fix this to
+* **push_api_memory_limit**: Pod memory limit
 
 ## Certbot
 

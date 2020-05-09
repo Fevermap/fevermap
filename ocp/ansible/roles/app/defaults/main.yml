@@ -19,3 +19,4 @@ app_hpa_min_replicas: 1
 app_hpa_max_replicas: 6
 app_hpa_target_cpu_utilization_percentage: 50
 apm_monitoring_js: ''
+app_memory_limit: "256Mi"

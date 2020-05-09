@@ -195,6 +195,9 @@
                   ports:
                     - containerPort: 9001
                       protocol: TCP
+                  resources:
+                    limits:
+                      memory: "{{ push_api_memory_limit }}"
                   terminationMessagePath: /dev/termination-log
                   terminationMessagePolicy: File
                   volumeMounts:

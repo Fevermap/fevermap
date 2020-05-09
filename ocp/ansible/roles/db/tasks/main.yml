@@ -109,7 +109,7 @@
                     timeoutSeconds: 1
                   resources:
                     limits:
-                      memory: 2Gi
+                      memory: "{{ db_memory_limit }}"
                   terminationMessagePath: /dev/termination-log
                   terminationMessagePolicy: File
                   volumeMounts:
