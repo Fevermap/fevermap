@@ -74,3 +74,4 @@ cb_email: "{{ vault_cb_email }}"
 #
 create_jenkins: false
 modify_default_jenkins: true
+slack_webhook_url: "{{ vault_slack_webhook_url }}"

@@ -22,6 +22,8 @@ Defaults for following variables are in defaults/main.yml:
 * **env**: Label for environment.
 * **modify_default_jenkins**: In OCP3 Jenkins get's automatically created.
   We need to modify that a bit in OCP3, but not elsewhere.
+* **slack_webhook_url**: URL to send notification to slack with Incoming Webhook.
+  Defaults to -.
 
 
 Dependencies

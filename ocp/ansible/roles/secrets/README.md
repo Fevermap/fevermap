@@ -25,6 +25,7 @@ Defaults for following variables are in defaults/main.yml:
 * **db_user**: Database username
 * **db_password**: User's password
 * **db_root_password**: Databaes root password
+* **slack_webhook_url**: Slack webhook url
 
 Dependencies
 ------------
