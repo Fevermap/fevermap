@@ -1,4 +1,21 @@
+import groovy.json.JsonOutput
 def project = 'fevermap-staging'
+def notifySlack(text) {
+    def slackUrl = '';
+    withCredentials([usernamePassword(credentialsId: 'fevermap-staging-slack-webhook-secret', usernameVariable: 'USERNAME', passwordVariable: 'SLACK_URL')]) {
+      slackUrl = SLACK_URL
+    }
+    
+    if (slackUrl && slackUrl.length() > 1) {
+      def payload = JsonOutput.toJson([text: text,
+          channel: "ops",
+          username: "openshift",
+          icon_url: 'https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png',
+          attachments: []
+      ])
+      sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackUrl}"
+    }
+}
 pipeline {
     agent {
       kubernetes(
@@ -16,6 +33,11 @@ pipeline {
       )
     }
     stages{
+        stage('Start'){
+          steps{
+            notifySlack("Staging pipeline started.")
+          }
+        }
         stage ('Get commit info') {
             steps{
                 script{
@@ -45,6 +67,7 @@ pipeline {
                     }
                   }
                 }
+                notifySlack("[app] change in code triggered build.")
               }
             }
             stage ('Build - api') {
@@ -61,6 +84,7 @@ pipeline {
                     }
                   }
                 }
+                notifySlack("[api] change in code triggered build.")
               }
             }
             stage ('Build - push-api') {
@@ -77,6 +101,8 @@ pipeline {
                     }
                   }
                 }
+                notifySlack("[push-api] change in code triggered build.")
+                
               }
             }
           }
@@ -97,6 +123,8 @@ pipeline {
                 }
               }
             }
+            notifySlack("[app, api, push-api] latest tagged with commit ${env.commit_id}.")
+            
           }
         }
         stage('Push app images tag to quay.io'){
@@ -117,6 +145,8 @@ pipeline {
                 }
               }
             }
+            notifySlack("[app] tags latest and ${env.commit_id} pushed to Quay.io.")
+            
           }
         }
         stage('Push api images tag to quay.io'){
@@ -137,6 +167,7 @@ pipeline {
                 }
               }
             }
+            notifySlack("[api] tags latest and ${env.commit_id} pushed to Quay.io.")
           }
         }
         stage('Push push-api images tag to quay.io'){
@@ -157,6 +188,12 @@ pipeline {
                 }
               }
             }
+            notifySlack("[push-api] tags latest and ${env.commit_id} pushed to Quay.io.")
+          }
+        }
+        stage('Finish'){
+          steps{
+            notifySlack("Staging pipeline executed succesfully.")
           }
         }
     }

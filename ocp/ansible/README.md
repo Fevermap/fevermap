@@ -116,3 +116,6 @@ Labels are applied to all created resources:
 
 * **cb_extra_opts**: Extra parameters for certbot. Usually --test
 * **cb_email**: Email address used for Let's Encrypt registration
+
+## Pipelines
+* **slack_webhook_url**: Slack incoming webhook url.
