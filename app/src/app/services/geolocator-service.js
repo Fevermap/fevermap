@@ -73,6 +73,17 @@ export default class GeolocatorService {
     });
   }
 
+  static getCountrySeekTreatmentUrl(countryCode) {
+    if (!countryCode) {
+      return false;
+    }
+    const countryEntry = countryList.countries.find(o => o.country.country_id === countryCode);
+    if (!countryEntry || !countryEntry.country.seek_treatment_url) {
+      return false;
+    }
+    return countryEntry.country.seek_treatment_url;
+  }
+
   static returnErrorMessage() {
     return { success: false, message: 'COULD_NOT_LOCATE' };
   }

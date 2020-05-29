@@ -67,6 +67,8 @@
       "location_change_subtitle": "To update location information, update the value in the country and postal code field or press the button below.",
       "update_location": "Update location",
       "use_gps": "Get location from GPS",
+      "location_seek_for_help_text": "Information about how to get help related to the virus is available in ",
+      "location_seek_for_help_link_text": "this page.",
       "set_location_and_submit": "Set location and submit"
     },
     "previous_submissions": "Previous submissions",

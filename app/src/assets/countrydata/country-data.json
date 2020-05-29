@@ -411,7 +411,8 @@
     {
       "country": {
         "country_id": "FI",
-        "country_name": "FINLAND"
+        "country_name": "FINLAND",
+        "seek_treatment_url": "https://thl.fi/fi/web/infektiotaudit-ja-rokotukset/ajankohtaista/ajankohtaista-koronaviruksesta-covid-19"
       }
     },
     {
@@ -591,7 +592,8 @@
     {
       "country": {
         "country_id": "HU",
-        "country_name": "HUNGARY"
+        "country_name": "HUNGARY",
+        "seek_treatment_url": "https://koronavirus.gov.hu/mit-tegyunk-tunetek-eseten"
       }
     },
     {

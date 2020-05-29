@@ -50,6 +50,9 @@ A easy work process is to copy the English translation object, paste it at the e
 
 The language selector on the page takes care of adding the choice to change to given language so all you need to do is rewrite the translation values in the file `translator.js`.
 
+#### Adding URL-s to seek help in different countries
+
+The application displays a text in the data view with a country specific link where people can find help if they have symptoms. To add the correct link of a country find the country-s entry in the `country-data.json` file in the `app/src/assets/countrydata/` directory and add a new property called `seek_treatment_url` to the entry. 
 
 #### Contacting external API's
 

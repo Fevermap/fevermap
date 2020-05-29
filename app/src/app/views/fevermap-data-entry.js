@@ -366,6 +366,7 @@ class FevermapDataEntry extends LitElement {
     localStorage.setItem('BIRTH_YEAR', feverData.birth_year);
     localStorage.setItem('COVID_DIAGNOSIS', feverData.diagnosed_covid19);
     localStorage.setItem('LAST_ENTRY_SUBMISSION_TIME', submissionTime);
+    localStorage.setItem('LOCATION_COUNTRY', feverData.location_country_code);
 
     if (!entryGotQueued) {
       DataEntryService.setEntriesToIndexedDb(submissionResponse);
@@ -882,7 +883,6 @@ class FevermapDataEntry extends LitElement {
           </button>
         </div>
       </div>
-
       <div class="proceed-button">
         <button class="mdc-button mdc-button--raised" @click="${this.handleSubmit}">
           <i class="material-icons mdc-button__icon" aria-hidden="true">done</i>
