@@ -15,10 +15,10 @@
       "about_current_methods": "Azok a módszerek, melyekkel jelenleg követik a COVID-19 koronavírus járvány terjedését, nem mutatnak teljes képet. Sokakat nem tesztelnek, hogy a szűkös számú teszt elérhető legyen az arra rászorulók számára. ",
       "about_solution": "A Fevermap megoldást ad erre a problémára. A Fevermap-ben bárki, bárhol a világon megadhatja a saját hőmérsékletét és egyéb tüneteit. Az így felépített anonim adatbázis alapján, valős időben követhetővé válik a COVID-19 koronavírus járvány valódi terjedése, ami segítheti azt, hogy a helyi hatóságok adatokon alapuló, helyes és gyors döntéseket tudjanak hozni a szükséges intézkedésekhez.",
       "about_data_collection": "A Fevermap által gyűjtött adatok anonimizáltak és arra fogjuk őket használni, hogy felhívjuk a figyelmet a jelenlegi globális helyzetre.",
-      "about_current_participant_count": "A mai napig %{participantCount} felhasználó jelentette a tümeteit a Fevermapnak.",
+      "about_current_participant_count": "A mai napig %{participantCount} felhasználó jelentette a tüneteit a Fevermapnak.",
 
       "how_to_participate": "Hogyan tudok részt venni?",
-      "participation_info": "A dolog nagyon egyszerű: csak mérd meg a hőmérsékleted és pár egyéb statisztikai információval együtt készíts egy bejegyzést a Fevermap–ban.",
+      "participation_info": "A dolog nagyon egyszerű: csak mérd meg a hőmérsékleted és pár egyéb statisztikai információval együtt készíts bejegyzéseket a Fevermap–ban. Az első bejegyzéshez kattints az \"Új bejegyzés\"-re alúl.",
       "info_disclaimer": "Olyan kérdést nem teszünk fel, ami alapján bárki beazonosítható lenne. Fontosnak tartjuk a felhasználók anonimitását és adataik biztonságát.",
 
       "how_will_my_data_be_used": "Hogyan fogjátok használni az adataimat?",
