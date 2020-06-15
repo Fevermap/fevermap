@@ -26,17 +26,16 @@ locations.
 ## Pre-requisites
 
 Setup expects you have OpenShift access, and the oc -client installed. For local
-tests on your laptop, get [Code Ready Containers installed](https://
-developers.redhat.com/blog/2019/09/05/
-red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/) on
+tests on your laptop, get
+[Code Ready Containers installed](https://developers.redhat.com/blog/2019/09/05/red-hat-openshift-4-on-your-laptop-introducing-red-hat-codeready-containers/) on
 your laptop. It's OpenShift in virtual machine. Also this assumes you have done
-Red Hat [registry pull token](https://docs.openshift.com/container-platform/
-3.11/install_config/configuring_red_hat_registry.html#creating-service-accounts
--tokens_configuring_red_hat_registry) and added it to secret named
-registry-redhat-io-secret [instructed here](https://docs.openshift.com/
-container-platform/3.11/install_config/configuring_red_hat_registry.html#
-using-service-accounts_configuring_red_hat_registry). You need to create free
-Red Hat developer account for this unless you already have an account.
+Red Hat
+[registry pull token](https://docs.openshift.com/container-platform/3.11/install_config/configuring_red_hat_registry.html#creating-service-accounts-tokens_configuring_red_hat_registry)
+and added it to secret named
+registry-redhat-io-secret
+[instructed here](https://docs.openshift.com/container-platform/3.11/install_config/configuring_red_hat_registry.html#using-service-accounts_configuring_red_hat_registry).
+You need to create free Red Hat developer account for this unless you already
+have an account.
 
 
 ## Installing Fevermap project to OpenShift environment
@@ -221,8 +220,9 @@ is not set up yet.
 Fevermap has been setup with environment in OpenShift Online cloud service for
 automated image builds, and test/stage environment. Environment follows the git
 changes, and rebuilds and deploys the new versions based on code changes in
-GitLab. Pipelines are in [ocp/staging/pipelines](https://gitlab.com/fevermap/
-fevermap/-/tree/master/ocp/staging/pipelines)directory.
+GitLab. Pipelines are in
+[ocp/staging/pipelines](https://gitlab.com/fevermap/fevermap/-/tree/master/ocp/staging/pipelines)
+directory.
 
 Everything start from merge, commit or tag of master branch in gitlab. That will
 send webhook to OCP. OCP will run the following pipelines for image build in
@@ -233,14 +233,12 @@ Jenkins.
 First we evaluate which directories the changes are in. If it doesn't consern
 the ```app/```, ```api/```or ```push-api/``` dir, we don't care:
 
-![detect change](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/
-  ocp-pipeline-detect-change.png)
+![detect change](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-detect-change.png)
 
 If the change is in ```api/```, ```push-api/```or ```app/``` dirs, pipeline
 does the following steps:
 
-![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/
-ocp-pipeline-build.png)
+![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-build.png)
 
 1. Detect change, and accordingly kick OpenShift buildstream to:
   * If API change, get the python container and do API image build with new
@@ -258,8 +256,7 @@ Once the team is ready to publish a new version into production, they create a
 new tag on master branch. The following pipeline get's triggered by webhook from
 gitlab:
 
-![release pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/
-ocp-pipeline-release.png)
+![release pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-pipeline-release.png)
 
 1. Detect release tag
 2. Get commit hash
@@ -276,15 +273,13 @@ ocp-pipeline-release.png)
 
 OpenShift is set to trigger on the release tag. New release tag will cause a
 rolling upgrade for production. See
-[OpenShiftdocs](https://docs.openshift.com/container-platform/latest/
-applications/deployments/managing-deployment-processes.html) for options to roll
-back and forwards.
+[OpenShiftdocs](https://docs.openshift.com/container-platform/latest/applications/deployments/managing-deployment-processes.html)
+for options to roll back and forwards.
 
 Images can be used from there for local development too. You can see the info
 about images from Quay.io:
 
-![build pipeline](
-  https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-quayio-releases.png)
+![build pipeline](https://gitlab.com/fevermap/fevermap/-/raw/master/ocp/ocp-quayio-releases.png)
 
 
 ## Build strategies
