@@ -11,6 +11,7 @@ import './components/button.js';
 import './components/development-mode-banner.js';
 import AccessibilityUtil from './util/accessibility-util.js';
 import './components/language-choose-dialog.js';
+import './components/closing-notification.js';
 
 class FevermapRoot extends LitElement {
   static get properties() {
@@ -36,10 +37,8 @@ class FevermapRoot extends LitElement {
 
   render() {
     return html`
-      ${window.location.origin.includes('dev') || window.location.origin.includes('localhost')
-        ? html` <development-mode-banner></development-mode-banner> `
-        : ''}
       <language-controller></language-controller>
+      <closing-notification></closing-notification>
       ${this.hasSubmittedAtLeastOnce
         ? html` <fevermap-data-view></fevermap-data-view> `
         : html` <fevermap-landing></fevermap-landing> `}
