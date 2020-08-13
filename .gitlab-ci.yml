@@ -74,9 +74,11 @@ pages:
   rules:
     - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
   script:
-    - mkdir .public
-    - cp -r * .public
-    - mv .public public
+    - hugo
   artifacts:
     paths:
       - public
+  # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
+  # Use 0.40.1 which is the same version as in Ubuntu 18.04, making it easier for Ubuntu/Debian
+  # users to contribute without installing out-of-repos bleeding edge software.
+  image: registry.gitlab.com/pages/hugo:0.40.1

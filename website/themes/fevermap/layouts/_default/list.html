@@ -1,0 +1,50 @@
+{{ define "main" }}
+
+  <section class="breaker">
+  <h2>{{ .Title }}</h2>
+  {{ with .Content }}
+    {{ . }}
+  {{ end }}
+  </section>
+
+  <section class="posts-list">
+    {{ range .Paginator.Pages }}
+      <article class="post-preview">
+        <a href="{{ .Permalink }}">
+          <h2 class="post-title">{{ .Title }}</h2>
+        </a>
+
+        <p class="post-meta">
+          Posted on {{ .Site.Params.dateformat | .Date.Format }}
+        </p>
+
+        <div class="post-entry">
+          {{ if .Truncated }}
+            {{ .Summary }}
+            <a href="{{ .Permalink }}" class="post-read-more">Read More &raquo;</a>
+          {{ else }}
+            {{ .Content }}
+          {{ end }}
+        </div>
+
+      </article>
+    {{ end }}
+
+    {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+      <ul class="pager main-pager">
+        {{ if .Paginator.HasPrev }}
+          <li class="previous">
+            <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}">&larr; Newer Posts</a>
+          </li>
+        {{ end }}
+        {{ if .Paginator.HasNext }}
+          <li class="next">
+            <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}">Older Posts &rarr;</a>
+          </li>
+        {{ end }}
+      </ul>
+    {{ end }}
+
+  </section>
+
+{{ end }}

@@ -1,0 +1,17 @@
+baseurl = "https://fevermap.net/"
+contentdir = "content"
+layoutdir = "layouts"
+publishdir = "public"
+title = "Fevermap: tracking the COVID-19 situation around the world"
+canonifyurls = true
+
+theme = "fevermap"
+metaDataFormat = "yaml"
+pygmentsUseClasses = true
+pygmentCodeFences = true
+
+[Params]
+  dateFormat = "January 2, 2006"
+  commit = false
+  rss = false
+  comments = false
