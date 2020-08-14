@@ -77,7 +77,7 @@ pages:
     - cd website && hugo
   artifacts:
     paths:
-      - public
+      - website/public
   # All available Hugo versions are listed here: https://gitlab.com/pages/hugo/container_registry
   # Use 0.40.1 which is the same version as in Ubuntu 18.04, making it easier for Ubuntu/Debian
   # users to contribute without installing out-of-repos bleeding edge software.
