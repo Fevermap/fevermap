@@ -74,7 +74,7 @@ pages:
   rules:
     - if: $CI_PROJECT_NAMESPACE == "fevermap" && $CI_COMMIT_BRANCH == "master"
   script:
-    - hugo
+    - cd website && hugo
   artifacts:
     paths:
       - public
