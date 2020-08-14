@@ -258,9 +258,10 @@ button {
     font-family: Karla;
 }
 
-section.mission {
+section.mission, section.posts-list p, section.post {
     max-width: 60rem;
 }
+
 
 #presentations iframe {
     margin: 1rem;

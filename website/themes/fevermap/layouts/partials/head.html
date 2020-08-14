@@ -1,0 +1,31 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {{- with .Title | default .Site.Title }}
+    <title>{{ . }}</title>
+    <meta property="og:title" content="{{ . }}" />
+    <meta name="twitter:title" content="{{ . | truncate 70 }}" />
+    {{- end }}
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-160636162-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'UA-160636162-1');
+    </script>
+
+    <link rel="canonical" href="{{ .URL | absLangURL }}">
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg">
+    <meta itemprop="image" content="/images/hero.png">
+    <meta property="og:image" content="/images/hero.png">
+    <meta name="twitter:image" content="/images/hero.png">
+
+    <link rel="stylesheet" href="/index.css">
+
+    <!-- Hugo Version number -->
+    {{ .Hugo.Generator -}}
+</head>
